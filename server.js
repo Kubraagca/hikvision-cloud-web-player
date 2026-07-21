@@ -161,6 +161,7 @@ app.get("/api/stream", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
   const { resourceId, deviceSerial } = req.query;
+  const code = (req.query.code || "").toString().trim();
   const protocol = Number(req.query.protocol || 2); // 2: HLS, 3: FLV (platforma gore degisebilir)
   const quality = Number(req.query.quality || 1); // 1: HD, 2: Fluent
 
@@ -180,6 +181,9 @@ app.get("/api/stream", async (req, res) => {
       quality,
       expireTime: 600,
     };
+    if (code) {
+      payload.code = code;
+    }
 
     const candidatePaths = [
       "/api/hccgw/video/v1/live/address/get",

@@ -228,6 +228,8 @@
         <option value="1">HD</option>
         <option value="2">Akici</option>
       </select>
+      <label for="code-input">Sifre Kodu</label>
+      <input id="code-input" type="text" placeholder="Kamera sifre kodu" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
     </div>
     <div class="placeholder" id="camera-placeholder">Kameralar yukleniyor...</div>
   </aside>
@@ -261,6 +263,7 @@
   const expireEl = document.getElementById("expire-text");
   const healthEl = document.getElementById("health-box");
   const qualityEl = document.getElementById("quality-select");
+  const codeEl = document.getElementById("code-input");
   const cameraMetaEl = document.getElementById("camera-meta");
   const protocolMetaEl = document.getElementById("protocol-meta");
   let hls = null;
@@ -339,6 +342,9 @@
         deviceSerial: cam.deviceSerial,
         quality: qualityEl.value,
       });
+      if (codeEl.value.trim()) {
+        params.set("code", codeEl.value.trim());
+      }
 
       const res = await fetch(`/api/stream?${params}`);
       const data = await res.json();
