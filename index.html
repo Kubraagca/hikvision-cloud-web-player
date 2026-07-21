@@ -293,6 +293,7 @@
   let sdkPlayer = null;
   let sdkReady = false;
   let sdkWindowIndex = 0;
+  let sdkOptionsReady = false;
 
   async function loadHealth() {
     try {
@@ -355,9 +356,24 @@
     });
 
     try {
-      if (typeof sdkPlayer.JS_Resize === "function") {
-        sdkPlayer.JS_Resize(width, height);
+      sdkPlayer.JS_SetWindowControlCallback({
+        windowEventSelect: function (iWndIndex) {
+          sdkWindowIndex = iWndIndex;
+        },
+        pluginErrorHandler: function (iWndIndex, iErrorCode, oError) {
+          console.error("sdk plugin error", iWndIndex, iErrorCode, oError);
+          sdkBoxEl.innerHTML = `<strong>SDK:</strong> plugin hatasi<br>Pencere: ${iWndIndex}, Kod: ${iErrorCode}`;
+        },
+        firstFrameDisplay: function () {
+          statusEl.textContent = `${cameraMetaEl.textContent} - ilk kare geldi.`;
+        }
+      });
+
+      if (typeof sdkPlayer.JS_SetOptions === "function") {
+        await sdkPlayer.JS_SetOptions({});
+        sdkOptionsReady = true;
       }
+
       sdkReady = true;
       sdkBoxEl.innerHTML = `<strong>SDK modu:</strong> aktif<br><strong>Base path:</strong> /sdk/dist<br>JSDecoder oynatici hazirlandi.`;
     } catch (err) {
@@ -468,6 +484,11 @@
     }
 
     try {
+      if (!sdkOptionsReady && typeof sdkPlayer.JS_SetOptions === "function") {
+        await sdkPlayer.JS_SetOptions({});
+        sdkOptionsReady = true;
+      }
+
       if (secretKey && typeof sdkPlayer.JS_SetSecretKey === "function") {
         sdkPlayer.JS_SetSecretKey(sdkWindowIndex, secretKey);
       }
@@ -522,6 +543,11 @@
         Math.max(Math.floor(sdkPlayerEl.clientWidth || 960), 640),
         Math.max(Math.floor((sdkPlayerEl.clientWidth || 960) * 9 / 16), 360)
       );
+    }
+  });
+  window.addEventListener("beforeunload", () => {
+    if (sdkPlayer && typeof sdkPlayer.JS_DestroyWorker === "function") {
+      sdkPlayer.JS_DestroyWorker().catch(() => {});
     }
   });
   loadHealth();
