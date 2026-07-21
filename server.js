@@ -172,41 +172,73 @@ app.get("/api/stream", async (req, res) => {
 
   try {
     const { accessToken, areaDomain } = await getToken();
+    const payload = {
+      resourceId,
+      deviceSerial,
+      type: "1",
+      protocol,
+      quality,
+      expireTime: 600,
+    };
 
-    const response = await fetch(
-      `${areaDomain}/api/hccgw/video/v1/live/address/get`,
-      {
+    const candidatePaths = [
+      "/api/hccgw/video/v1/live/address/get",
+      "/api/hccgw/video/v1/live/url/get",
+      "/api/hccgw/video/v1/play/address/get",
+      "/api/lapp/live/url/ezopen",
+      "/api/lapp/live/url/hls",
+    ];
+
+    const attempts = [];
+
+    for (const candidatePath of candidatePaths) {
+      const response = await fetch(`${areaDomain}${candidatePath}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Token: accessToken,
         },
-        body: JSON.stringify({
-          resourceId,
-          deviceSerial,
-          type: "1", // 1: canli yayin
+        body: JSON.stringify(payload),
+      });
+
+      const rawText = await response.text();
+      let parsed = null;
+
+      try {
+        parsed = JSON.parse(rawText);
+      } catch (err) {
+        attempts.push({
+          path: candidatePath,
+          status: response.status,
+          rawText: rawText.slice(0, 300),
+        });
+        continue;
+      }
+
+      attempts.push({
+        path: candidatePath,
+        status: response.status,
+        errorCode: parsed.errorCode,
+        message: parsed.errorMsg || parsed.message || null,
+      });
+
+      if (response.ok && parsed.errorCode === "0" && parsed.data?.url) {
+        return res.json({
+          url: parsed.data.url,
           protocol,
           quality,
-          expireTime: 600, // saniye
-        }),
+          expireTime: normalizeExpireTime(parsed.data.expireTime),
+          resolvedPath: candidatePath,
+          raw: parsed.data,
+        });
       }
-    );
-
-    const data = await response.json();
-
-    if (data.errorCode !== "0") {
-      return res.status(502).json({
-        error: `Hikvision hata dondu. errorCode: ${data.errorCode}`,
-        raw: data,
-      });
     }
 
-    res.json({
-      url: data.data.url,
-      protocol,
-      quality,
-      expireTime: normalizeExpireTime(data.data.expireTime),
-      raw: data.data,
+    return res.status(502).json({
+      error: "Calisabilir bir canli yayin endpointi bulunamadi.",
+      attempts,
+      requestPayload: payload,
+      areaDomain,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
