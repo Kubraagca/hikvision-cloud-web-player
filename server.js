@@ -202,7 +202,7 @@ app.get("/api/stream", async (req, res) => {
 
   const { resourceId, deviceSerial } = req.query;
   const code = (req.query.code || "").toString().trim();
-  const protocol = Number(req.query.protocol || 2); // 2: HLS, 3: FLV (platforma gore degisebilir)
+  const protocol = Number(req.query.protocol || 1); // 1: EZOPEN, 2: HLS, 3: RTMP
   const quality = Number(req.query.quality || 1); // 1: HD, 2: Fluent
 
   if (!resourceId || !deviceSerial) {

@@ -267,7 +267,7 @@
         </div>
         <div class="meta-card">
           <span>Protokol</span>
-          <strong id="protocol-meta">HLS</strong>
+          <strong id="protocol-meta">EZOPEN / SDK</strong>
         </div>
       </div>
     </div>
@@ -434,13 +434,21 @@
         return;
       }
 
-      protocolMetaEl.textContent = data.protocol === 2 ? "HLS" : `Protocol ${data.protocol}`;
+      protocolMetaEl.textContent =
+        data.protocol === 1 ? "EZOPEN / SDK" :
+        data.protocol === 2 ? "HLS" :
+        data.protocol === 3 ? "RTMP" :
+        `Protocol ${data.protocol}`;
       const playedWithSdk = await playSdkUrl(data.url, codeEl.value.trim());
       if (playedWithSdk) {
         statusEl.textContent = `${cam.name} - JSDecoder SDK ile oynatiliyor.`;
       } else {
-        playHls(data.url);
-        statusEl.textContent = `${cam.name} - HLS fallback bulundu.`;
+        if (data.protocol === 2) {
+          playHls(data.url);
+          statusEl.textContent = `${cam.name} - HLS fallback bulundu.`;
+        } else {
+          statusEl.textContent = `${cam.name} - URL alindi ama SDK oynatma basarisiz oldu.`;
+        }
       }
 
       if (data.expireTime) {
@@ -473,7 +481,7 @@
         sdkWindowIndex
       );
 
-      protocolMetaEl.textContent = "JSDecoder";
+      protocolMetaEl.textContent = "EZOPEN / JSDecoder";
       return true;
     } catch (err) {
       console.error("sdk play failed", err);
