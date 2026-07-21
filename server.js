@@ -173,18 +173,6 @@ app.get("/api/stream", async (req, res) => {
 
   try {
     const { accessToken, areaDomain } = await getToken();
-    const payload = {
-      resourceId,
-      deviceSerial,
-      type: "1",
-      protocol,
-      quality,
-      expireTime: 600,
-    };
-    if (code) {
-      payload.code = code;
-    }
-
     const candidatePaths = [
       "/api/hccgw/video/v1/live/address/get",
       "/api/hccgw/video/v1/live/url/get",
@@ -192,56 +180,88 @@ app.get("/api/stream", async (req, res) => {
       "/api/lapp/live/url/ezopen",
       "/api/lapp/live/url/hls",
     ];
+    const codeVariants = code
+      ? [
+          { code },
+          { verifyCode: code },
+          { verificationCode: code },
+          { encryptionKey: code },
+          { secretKey: code },
+        ]
+      : [{}];
 
     const attempts = [];
 
     for (const candidatePath of candidatePaths) {
-      const response = await fetch(`${areaDomain}${candidatePath}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Token: accessToken,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const rawText = await response.text();
-      let parsed = null;
-
-      try {
-        parsed = JSON.parse(rawText);
-      } catch (err) {
-        attempts.push({
-          path: candidatePath,
-          status: response.status,
-          rawText: rawText.slice(0, 300),
-        });
-        continue;
-      }
-
-      attempts.push({
-        path: candidatePath,
-        status: response.status,
-        errorCode: parsed.errorCode,
-        message: parsed.errorMsg || parsed.message || null,
-      });
-
-      if (response.ok && parsed.errorCode === "0" && parsed.data?.url) {
-        return res.json({
-          url: parsed.data.url,
+      for (const codeVariant of codeVariants) {
+        const payload = {
+          resourceId,
+          deviceSerial,
+          type: "1",
           protocol,
           quality,
-          expireTime: normalizeExpireTime(parsed.data.expireTime),
-          resolvedPath: candidatePath,
-          raw: parsed.data,
+          expireTime: 600,
+          ...codeVariant,
+        };
+
+        const response = await fetch(`${areaDomain}${candidatePath}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Token: accessToken,
+          },
+          body: JSON.stringify(payload),
         });
+
+        const rawText = await response.text();
+        let parsed = null;
+
+        try {
+          parsed = JSON.parse(rawText);
+        } catch (err) {
+          attempts.push({
+            path: candidatePath,
+            codeField: Object.keys(codeVariant)[0] || null,
+            status: response.status,
+            rawText: rawText.slice(0, 300),
+          });
+          continue;
+        }
+
+        attempts.push({
+          path: candidatePath,
+          codeField: Object.keys(codeVariant)[0] || null,
+          status: response.status,
+          errorCode: parsed.errorCode,
+          message: parsed.errorMsg || parsed.message || null,
+        });
+
+        if (response.ok && parsed.errorCode === "0" && parsed.data?.url) {
+          return res.json({
+            url: parsed.data.url,
+            protocol,
+            quality,
+            expireTime: normalizeExpireTime(parsed.data.expireTime),
+            resolvedPath: candidatePath,
+            resolvedCodeField: Object.keys(codeVariant)[0] || null,
+            raw: parsed.data,
+          });
+        }
       }
     }
 
     return res.status(502).json({
       error: "Calisabilir bir canli yayin endpointi bulunamadi.",
       attempts,
-      requestPayload: payload,
+      requestPayload: {
+        resourceId,
+        deviceSerial,
+        type: "1",
+        protocol,
+        quality,
+        expireTime: 600,
+        codeProvided: Boolean(code),
+      },
       areaDomain,
     });
   } catch (err) {
