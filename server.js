@@ -27,6 +27,7 @@ let tokenCache = {
 
 const SDK_BASE_PATH = "/sdk";
 const SDK_DIST_PATH = path.join(__dirname, "sdk", "dist");
+const streamCache = new Map();
 
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
@@ -58,6 +59,208 @@ function normalizeExpireTime(expireTime) {
 
 function isSdkInstalled() {
   return fs.existsSync(path.join(SDK_DIST_PATH, "jsPlugin-3.0.0.min.js"));
+}
+
+function buildStreamCacheKey({ resourceId, deviceSerial, quality, protocol }) {
+  return [resourceId, deviceSerial, quality, protocol].join(":");
+}
+
+function normalizeUrlExpireTime(expireTime) {
+  const normalized = normalizeExpireTime(expireTime);
+  if (normalized) return normalized;
+  return Date.now() + 5 * 60 * 1000;
+}
+
+async function requestLiveAddress({
+  accessToken,
+  areaDomain,
+  resourceId,
+  deviceSerial,
+  protocol,
+  quality,
+  code,
+}) {
+  const candidatePaths = [
+    "/api/hccgw/video/v1/live/address/get",
+    "/api/hccgw/video/v1/live/url/get",
+    "/api/hccgw/video/v1/play/address/get",
+  ];
+  const attempts = [];
+
+  for (const candidatePath of candidatePaths) {
+    const payload = {
+      resourceId,
+      deviceSerial,
+      type: "1",
+      protocol,
+      quality,
+      expireTime: 600,
+    };
+
+    if (protocol === 1 && code) {
+      payload.code = code;
+    }
+
+    const response = await fetch(`${areaDomain}${candidatePath}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: accessToken,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const rawText = await response.text();
+    let parsed = null;
+
+    try {
+      parsed = JSON.parse(rawText);
+    } catch (err) {
+      attempts.push({
+        path: candidatePath,
+        status: response.status,
+        rawText: rawText.slice(0, 300),
+      });
+      continue;
+    }
+
+    attempts.push({
+      path: candidatePath,
+      status: response.status,
+      errorCode: parsed.errorCode,
+      message: parsed.errorMsg || parsed.message || null,
+    });
+
+    if (response.ok && parsed.errorCode === "0" && parsed.data?.url) {
+      return {
+        url: parsed.data.url,
+        expireTime: normalizeUrlExpireTime(parsed.data.expireTime),
+        resolvedPath: candidatePath,
+        raw: parsed.data,
+        attempts,
+      };
+    }
+  }
+
+  const lastAttempt = attempts[attempts.length - 1] || {};
+  const err = new Error("Calisabilir bir canli yayin endpointi bulunamadi.");
+  err.details = {
+    error: err.message,
+    attempts,
+    requestPayload: {
+      resourceId,
+      deviceSerial,
+      type: "1",
+      protocol,
+      quality,
+      codeProvided: Boolean(code),
+    },
+    areaDomain,
+  };
+
+  if (protocol === 2) {
+    const encryptionBlocked = attempts.some(
+      (attempt) => attempt.errorCode === "EVZ60019"
+    );
+
+    if (encryptionBlocked) {
+      err.details.error =
+        "HLS adresi alinamadi. Kamera tarafinda stream encryption acik gorunuyor. Dokumana gore HLS/RTMP icin yayin sifrelemesi kapali olmali.";
+    } else if (lastAttempt.errorCode) {
+      err.details.error = `HLS adresi alinamadi. errorCode: ${lastAttempt.errorCode}`;
+    }
+  }
+
+  throw err;
+}
+
+async function getCachedStreamSource({
+  resourceId,
+  deviceSerial,
+  quality,
+  protocol,
+  code,
+}) {
+  const cacheKey = buildStreamCacheKey({
+    resourceId,
+    deviceSerial,
+    quality,
+    protocol,
+  });
+  const existing = streamCache.get(cacheKey);
+
+  if (existing && existing.expireTime - Date.now() > 30 * 1000) {
+    return existing;
+  }
+
+  const { accessToken, areaDomain } = await getToken();
+  const result = await requestLiveAddress({
+    accessToken,
+    areaDomain,
+    resourceId,
+    deviceSerial,
+    protocol,
+    quality,
+    code,
+  });
+
+  const cached = {
+    ...result,
+    resourceId,
+    deviceSerial,
+    quality,
+    protocol,
+    areaDomain,
+  };
+
+  streamCache.set(cacheKey, cached);
+  return cached;
+}
+
+function buildLocalProxyBase(req, resourceId, deviceSerial, quality) {
+  const origin = `${req.protocol}://${req.get("host")}`;
+  const params = new URLSearchParams({
+    resourceId,
+    deviceSerial,
+    quality: String(quality),
+  });
+  return `${origin}/api/hls/manifest?${params.toString()}`;
+}
+
+function rewriteManifest(content, manifestUrl, req, resourceId, deviceSerial, quality) {
+  const lines = content.split(/\r?\n/);
+
+  return lines
+    .map((line) => {
+      const trimmed = line.trim();
+
+      if (!trimmed || trimmed.startsWith("#")) {
+        if (trimmed.startsWith("#EXT-X-KEY") && trimmed.includes('URI="')) {
+          return line.replace(/URI="([^"]+)"/, (_, uri) => {
+            const absolute = new URL(uri, manifestUrl).toString();
+            const target = new URLSearchParams({
+              target: absolute,
+              resourceId,
+              deviceSerial,
+              quality: String(quality),
+            });
+            return `URI="/api/hls/chunk?${target.toString()}"`;
+          });
+        }
+
+        return line;
+      }
+
+      const absolute = new URL(trimmed, manifestUrl).toString();
+      const target = new URLSearchParams({
+        target: absolute,
+        resourceId,
+        deviceSerial,
+        quality: String(quality),
+      });
+      return `/api/hls/chunk?${target.toString()}`;
+    })
+    .join("\n");
 }
 
 // Token'i al (gerekirse yenile)
@@ -202,7 +405,7 @@ app.get("/api/stream", async (req, res) => {
 
   const { resourceId, deviceSerial } = req.query;
   const code = (req.query.code || "").toString().trim();
-  const protocol = Number(req.query.protocol || 1); // 1: EZOPEN, 2: HLS, 3: RTMP
+  const protocol = Number(req.query.protocol || 2); // 1: EZOPEN, 2: HLS, 3: RTMP
   const quality = Number(req.query.quality || 1); // 1: HD, 2: Fluent
 
   if (!resourceId || !deviceSerial) {
@@ -212,100 +415,110 @@ app.get("/api/stream", async (req, res) => {
   }
 
   try {
-    const { accessToken, areaDomain } = await getToken();
-    const candidatePaths = [
-      "/api/hccgw/video/v1/live/address/get",
-      "/api/hccgw/video/v1/live/url/get",
-      "/api/hccgw/video/v1/play/address/get",
-      "/api/lapp/live/url/ezopen",
-      "/api/lapp/live/url/hls",
-    ];
-    const codeVariants = code
-      ? [
-          { code },
-          { verifyCode: code },
-          { verificationCode: code },
-          { encryptionKey: code },
-          { secretKey: code },
-        ]
-      : [{}];
+    const stream = await getCachedStreamSource({
+      resourceId,
+      deviceSerial,
+      quality,
+      protocol,
+      code,
+    });
 
-    const attempts = [];
+    const proxiedUrl =
+      protocol === 2
+        ? buildLocalProxyBase(req, resourceId, deviceSerial, quality)
+        : stream.url;
 
-    for (const candidatePath of candidatePaths) {
-      for (const codeVariant of codeVariants) {
-        const payload = {
-          resourceId,
-          deviceSerial,
-          type: "1",
-          protocol,
-          quality,
-          expireTime: 600,
-          ...codeVariant,
-        };
-
-        const response = await fetch(`${areaDomain}${candidatePath}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Token: accessToken,
-          },
-          body: JSON.stringify(payload),
-        });
-
-        const rawText = await response.text();
-        let parsed = null;
-
-        try {
-          parsed = JSON.parse(rawText);
-        } catch (err) {
-          attempts.push({
-            path: candidatePath,
-            codeField: Object.keys(codeVariant)[0] || null,
-            status: response.status,
-            rawText: rawText.slice(0, 300),
-          });
-          continue;
-        }
-
-        attempts.push({
-          path: candidatePath,
-          codeField: Object.keys(codeVariant)[0] || null,
-          status: response.status,
-          errorCode: parsed.errorCode,
-          message: parsed.errorMsg || parsed.message || null,
-        });
-
-        if (response.ok && parsed.errorCode === "0" && parsed.data?.url) {
-          return res.json({
-            url: parsed.data.url,
-            protocol,
-            quality,
-            expireTime: normalizeExpireTime(parsed.data.expireTime),
-            resolvedPath: candidatePath,
-            resolvedCodeField: Object.keys(codeVariant)[0] || null,
-            raw: parsed.data,
-          });
-        }
-      }
-    }
-
-    return res.status(502).json({
-      error: "Calisabilir bir canli yayin endpointi bulunamadi.",
-      attempts,
-      requestPayload: {
-        resourceId,
-        deviceSerial,
-        type: "1",
-        protocol,
-        quality,
-        expireTime: 600,
-        codeProvided: Boolean(code),
-      },
-      areaDomain,
+    return res.json({
+      url: proxiedUrl,
+      sourceUrl: stream.url,
+      protocol,
+      quality,
+      expireTime: stream.expireTime,
+      resolvedPath: stream.resolvedPath,
+      raw: stream.raw,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(502).json(err.details || { error: err.message });
+  }
+});
+
+app.get("/api/hls/manifest", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const { resourceId, deviceSerial } = req.query;
+  const quality = Number(req.query.quality || 1);
+
+  if (!resourceId || !deviceSerial) {
+    return res
+      .status(400)
+      .json({ error: "resourceId ve deviceSerial parametreleri zorunlu." });
+  }
+
+  try {
+    const stream = await getCachedStreamSource({
+      resourceId,
+      deviceSerial,
+      quality,
+      protocol: 2,
+      code: "",
+    });
+
+    const upstreamResponse = await fetch(stream.url);
+    const manifest = await upstreamResponse.text();
+
+    if (!upstreamResponse.ok) {
+      return res.status(502).json({
+        error: "Upstream HLS manifest alinamadi.",
+        status: upstreamResponse.status,
+        rawText: manifest.slice(0, 300),
+      });
+    }
+
+    res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
+    res.setHeader("Cache-Control", "no-store");
+    res.send(
+      rewriteManifest(
+        manifest,
+        stream.url,
+        req,
+        resourceId.toString(),
+        deviceSerial.toString(),
+        quality
+      )
+    );
+  } catch (err) {
+    res.status(502).json(err.details || { error: err.message });
+  }
+});
+
+app.get("/api/hls/chunk", async (req, res) => {
+  const target = req.query.target?.toString();
+
+  if (!target) {
+    return res.status(400).json({ error: "target parametresi zorunlu." });
+  }
+
+  try {
+    const upstreamResponse = await fetch(target);
+    if (!upstreamResponse.ok) {
+      const rawText = await upstreamResponse.text();
+      return res.status(502).json({
+        error: "Upstream HLS parcasi alinamadi.",
+        status: upstreamResponse.status,
+        rawText: rawText.slice(0, 300),
+      });
+    }
+
+    const contentType =
+      upstreamResponse.headers.get("content-type") ||
+      "application/octet-stream";
+    const arrayBuffer = await upstreamResponse.arrayBuffer();
+
+    res.setHeader("Content-Type", contentType);
+    res.setHeader("Cache-Control", "no-store");
+    res.send(Buffer.from(arrayBuffer));
+  } catch (err) {
+    res.status(502).json({ error: err.message });
   }
 });
 

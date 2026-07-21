@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hikvision Cloud Izleme Paneli</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.15/hls.min.js"></script>
-<script src="/sdk/dist/jquery-1.12.1.min.js"></script>
-<script src="/sdk/dist/jquery.cookie.js"></script>
-<script src="/sdk/dist/cryptico.min.js"></script>
-<script src="/sdk/dist/uuid.js"></script>
-<script src="/sdk/dist/jsPlugin-3.0.0.min.js"></script>
 <style>
   :root {
     --bg: #f3efe7;
@@ -172,22 +167,12 @@
     box-shadow: 0 22px 60px rgba(70, 50, 20, 0.12);
   }
 
-  #sdk-player {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #3d3b39;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
   video {
     width: 100%;
     aspect-ratio: 16 / 9;
     display: block;
     border-radius: 12px;
     background: black;
-    margin-top: 14px;
   }
 
   .status-line {
@@ -243,22 +228,19 @@
         <option value="1">HD</option>
         <option value="2">Akici</option>
       </select>
-      <label for="code-input">Sifre Kodu</label>
-      <input id="code-input" type="text" placeholder="Kamera sifre kodu" style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;" />
+    </div>
+    <div class="health">
+      Web uzerinden HLS oynatma kullaniliyor. Dokumana gore HLS icin kamera yayin sifrelemesi kapali olmali.
     </div>
     <div class="placeholder" id="camera-placeholder">Kameralar yukleniyor...</div>
   </aside>
 
   <section id="stage">
     <div id="video-wrap">
-      <div id="sdk-player"></div>
       <video id="player" controls muted playsinline></video>
       <div class="status-line">
         <span id="status-text">Bir kamera secin</span>
         <span id="expire-text"></span>
-      </div>
-      <div id="sdk-box" class="health" style="margin-top:14px;">
-        SDK durumu kontrol ediliyor...
       </div>
       <div class="meta">
         <div class="meta-card">
@@ -267,7 +249,7 @@
         </div>
         <div class="meta-card">
           <span>Protokol</span>
-          <strong id="protocol-meta">EZOPEN / SDK</strong>
+          <strong id="protocol-meta">HLS</strong>
         </div>
       </div>
     </div>
@@ -282,102 +264,23 @@
   const expireEl = document.getElementById("expire-text");
   const healthEl = document.getElementById("health-box");
   const qualityEl = document.getElementById("quality-select");
-  const codeEl = document.getElementById("code-input");
   const cameraMetaEl = document.getElementById("camera-meta");
   const protocolMetaEl = document.getElementById("protocol-meta");
-  const sdkBoxEl = document.getElementById("sdk-box");
-  const sdkPlayerEl = document.getElementById("sdk-player");
   let hls = null;
   let activeCard = null;
-  let sdkConfig = null;
-  let sdkPlayer = null;
-  let sdkReady = false;
-  let sdkWindowIndex = 0;
-  let sdkOptionsReady = false;
 
   async function loadHealth() {
     try {
       const res = await fetch("/api/health");
       const data = await res.json();
       if (!data.ok) {
-        healthEl.innerHTML = `<strong>Durum:</strong> hazir degil<br>${data.error || "Kimlik bilgileri eksik."}<br><strong>SDK:</strong> ${data.sdkInstalled ? "kurulu" : "eksik"}`;
+        healthEl.innerHTML = `<strong>Durum:</strong> hazir degil<br>${data.error || "Kimlik bilgileri eksik."}`;
         return;
       }
 
-      healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}<br><strong>SDK:</strong> ${data.sdkInstalled ? "kurulu" : "eksik"}`;
+      healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}<br><strong>Mod:</strong> HLS proxy`;
     } catch (err) {
       healthEl.innerHTML = `<strong>Durum:</strong> hata<br>${err.message}`;
-    }
-  }
-
-  async function loadSdkConfig() {
-    try {
-      const res = await fetch("/api/sdk-config");
-      const data = await res.json();
-
-      if (!res.ok) {
-        sdkBoxEl.innerHTML = `<strong>SDK:</strong> hazir degil<br>${data.error || "SDK config alinamadi."}`;
-        return;
-      }
-
-      sdkConfig = data;
-      sdkBoxEl.innerHTML = `<strong>SDK modu:</strong> ${data.sdkInstalled ? "hazir" : "eksik"}<br><strong>Beklenen klasor:</strong> ${data.sdkBasePath}<br>${data.note}`;
-      await initSdkPlayer();
-    } catch (err) {
-      sdkBoxEl.innerHTML = `<strong>SDK:</strong> hata<br>${err.message}`;
-    }
-  }
-
-  async function initSdkPlayer() {
-    if (sdkReady || !sdkConfig?.sdkInstalled) {
-      return;
-    }
-
-    if (typeof JSPlugin === "undefined") {
-      sdkBoxEl.innerHTML = `<strong>SDK:</strong> yuklenemedi<br>jsPlugin-3.0.0.min.js bulunamadi veya tarayici tarafinda acilmadi.`;
-      return;
-    }
-
-    const width = Math.max(Math.floor(sdkPlayerEl.clientWidth || 960), 640);
-    const height = Math.max(Math.floor(width * 9 / 16), 360);
-
-    sdkPlayer = new JSPlugin({
-      szId: "sdk-player",
-      iWidth: width,
-      iHeight: height,
-      iMaxSplit: 1,
-      iCurrentSplit: 1,
-      szBasePath: "/sdk/dist",
-      oStyle: {
-        border: "#343434",
-        borderSelect: "#005f73",
-        background: "#3d3b39"
-      }
-    });
-
-    try {
-      sdkPlayer.JS_SetWindowControlCallback({
-        windowEventSelect: function (iWndIndex) {
-          sdkWindowIndex = iWndIndex;
-        },
-        pluginErrorHandler: function (iWndIndex, iErrorCode, oError) {
-          console.error("sdk plugin error", iWndIndex, iErrorCode, oError);
-          sdkBoxEl.innerHTML = `<strong>SDK:</strong> plugin hatasi<br>Pencere: ${iWndIndex}, Kod: ${iErrorCode}`;
-        },
-        firstFrameDisplay: function () {
-          statusEl.textContent = `${cameraMetaEl.textContent} - ilk kare geldi.`;
-        }
-      });
-
-      if (typeof sdkPlayer.JS_SetOptions === "function") {
-        await sdkPlayer.JS_SetOptions({});
-        sdkOptionsReady = true;
-      }
-
-      sdkReady = true;
-      sdkBoxEl.innerHTML = `<strong>SDK modu:</strong> aktif<br><strong>Base path:</strong> /sdk/dist<br>JSDecoder oynatici hazirlandi.`;
-    } catch (err) {
-      sdkBoxEl.innerHTML = `<strong>SDK:</strong> pencere olusturulamadi<br>${err.message}`;
     }
   }
 
@@ -438,10 +341,8 @@
         resourceId: cam.resourceId,
         deviceSerial: cam.deviceSerial,
         quality: qualityEl.value,
+        protocol: "2",
       });
-      if (codeEl.value.trim()) {
-        params.set("code", codeEl.value.trim());
-      }
 
       const res = await fetch(`/api/stream?${params}`);
       const data = await res.json();
@@ -453,21 +354,12 @@
       }
 
       protocolMetaEl.textContent =
-        data.protocol === 1 ? "EZOPEN / SDK" :
         data.protocol === 2 ? "HLS" :
+        data.protocol === 1 ? "EZOPEN" :
         data.protocol === 3 ? "RTMP" :
         `Protocol ${data.protocol}`;
-      const playedWithSdk = await playSdkUrl(data.url, codeEl.value.trim());
-      if (playedWithSdk) {
-        statusEl.textContent = `${cam.name} - JSDecoder SDK ile oynatiliyor.`;
-      } else {
-        if (data.protocol === 2) {
-          playHls(data.url);
-          statusEl.textContent = `${cam.name} - HLS fallback bulundu.`;
-        } else {
-          statusEl.textContent = `${cam.name} - URL alindi ama SDK oynatma basarisiz oldu.`;
-        }
-      }
+      playHls(data.url);
+      statusEl.textContent = `${cam.name} - HLS oynatma baslatiliyor.`;
 
       if (data.expireTime) {
         const expires = new Date(data.expireTime);
@@ -519,11 +411,19 @@
       hls = null;
     }
 
+    videoEl.pause();
+    videoEl.removeAttribute("src");
+    videoEl.load();
+
     if (Hls.isSupported()) {
       hls = new Hls();
       hls.loadSource(url);
       hls.attachMedia(videoEl);
       hls.on(Hls.Events.MANIFEST_PARSED, () => videoEl.play().catch(() => {}));
+      hls.on(Hls.Events.ERROR, (_event, data) => {
+        console.error("hls error", data);
+        statusEl.textContent = `HLS oynatma hatasi: ${data?.details || "bilinmeyen hata"}`;
+      });
       return;
     }
 
@@ -537,21 +437,7 @@
   }
 
   document.getElementById("refresh-btn").addEventListener("click", loadCameras);
-  window.addEventListener("resize", () => {
-    if (sdkPlayer && typeof sdkPlayer.JS_Resize === "function") {
-      sdkPlayer.JS_Resize(
-        Math.max(Math.floor(sdkPlayerEl.clientWidth || 960), 640),
-        Math.max(Math.floor((sdkPlayerEl.clientWidth || 960) * 9 / 16), 360)
-      );
-    }
-  });
-  window.addEventListener("beforeunload", () => {
-    if (sdkPlayer && typeof sdkPlayer.JS_DestroyWorker === "function") {
-      sdkPlayer.JS_DestroyWorker().catch(() => {});
-    }
-  });
   loadHealth();
-  loadSdkConfig();
   loadCameras();
 </script>
 </body>
