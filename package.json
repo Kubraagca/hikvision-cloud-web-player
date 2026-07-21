@@ -1,0 +1,16 @@
+{
+  "name": "hikconnect-demo",
+  "version": "1.0.0",
+  "description": "Hik-Connect for Teams OpenAPI - tek kamera canli goruntu demosu",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hikvision Cloud Izleme Paneli</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.15/hls.min.js"></script>
+<style>
+  :root {
+    --bg: #f3efe7;
+    --panel: #fffaf1;
+    --border: #d8cfc0;
+    --text: #231f1a;
+    --muted: #766c60;
+    --accent: #005f73;
+    --ok: #22c55e;
+    --off: #6b7280;
+    --err: #ef4444;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Georgia, "Segoe UI", serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at top left, #fff4d6 0, transparent 32%),
+      linear-gradient(180deg, #f7f1e6 0%, #efe6d6 100%);
+  }
+
+  header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 250, 241, 0.82);
+    backdrop-filter: blur(8px);
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  header .sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  button,
+  select {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: calc(100vh - 73px);
+  }
+
+  @media (max-width: 760px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  #camera-list {
+    padding: 14px;
+    border-right: 1px solid var(--border);
+    background: rgba(255, 250, 241, 0.6);
+    overflow-y: auto;
+  }
+
+  .health,
+  .toolbar,
+  .cam-item,
+  #video-wrap {
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .health,
+  .toolbar {
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .health strong {
+    color: var(--text);
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .placeholder {
+    color: var(--muted);
+    text-align: center;
+    padding: 40px 12px;
+    font-size: 13px;
+  }
+
+  .cam-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .cam-item:hover {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .cam-item.active {
+    outline: 1px solid var(--accent);
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot.on { background: var(--ok); }
+  .dot.off { background: var(--off); }
+
+  .cam-name {
+    flex: 1;
+  }
+
+  #stage {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #video-wrap {
+    width: 100%;
+    max-width: 980px;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 22px 60px rgba(70, 50, 20, 0.12);
+  }
+
+  video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+    border-radius: 12px;
+    background: black;
+  }
+
+  .status-line {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .meta {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .meta-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.58);
+    font-size: 13px;
+  }
+
+  .meta-card span {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Hikvision Cloud Izleme Paneli</h1>
+    <div class="sub">Kameralari listele, oynatma URL'si al ve web'de HLS olarak oynat.</div>
+  </div>
+  <button id="refresh-btn">Listeyi yenile</button>
+</header>
+
+<main>
+  <aside id="camera-list">
+    <div class="health" id="health-box">Baglanti kontrol ediliyor...</div>
+    <div class="toolbar">
+      <label for="quality-select">Kalite</label>
+      <select id="quality-select">
+        <option value="1">HD</option>
+        <option value="2">Akici</option>
+      </select>
+    </div>
+    <div class="placeholder" id="camera-placeholder">Kameralar yukleniyor...</div>
+  </aside>
+
+  <section id="stage">
+    <div id="video-wrap">
+      <video id="player" controls muted playsinline></video>
+      <div class="status-line">
+        <span id="status-text">Bir kamera secin</span>
+        <span id="expire-text"></span>
+      </div>
+      <div class="meta">
+        <div class="meta-card">
+          <span>Kamera</span>
+          <strong id="camera-meta">Secim yok</strong>
+        </div>
+        <div class="meta-card">
+          <span>Protokol</span>
+          <strong id="protocol-meta">HLS</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const listEl = document.getElementById("camera-list");
+  const placeholderEl = document.getElementById("camera-placeholder");
+  const videoEl = document.getElementById("player");
+  const statusEl = document.getElementById("status-text");
+  const expireEl = document.getElementById("expire-text");
+  const healthEl = document.getElementById("health-box");
+  const qualityEl = document.getElementById("quality-select");
+  const cameraMetaEl = document.getElementById("camera-meta");
+  const protocolMetaEl = document.getElementById("protocol-meta");
+  let hls = null;
+  let activeCard = null;
+
+  async function loadHealth() {
+    try {
+      const res = await fetch("/api/health");
+      const data = await res.json();
+      if (!data.ok) {
+        healthEl.innerHTML = `<strong>Durum:</strong> hazir degil<br>${data.error || "Kimlik bilgileri eksik."}`;
+        return;
+      }
+
+      healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}`;
+    } catch (err) {
+      healthEl.innerHTML = `<strong>Durum:</strong> hata<br>${err.message}`;
+    }
+  }
+
+  async function loadCameras() {
+    listEl.querySelectorAll(".cam-item").forEach((el) => el.remove());
+    placeholderEl.style.display = "block";
+    placeholderEl.textContent = "Kameralar yukleniyor...";
+    placeholderEl.style.color = "var(--muted)";
+
+    try {
+      const res = await fetch("/api/cameras");
+      const data = await res.json();
+
+      if (!res.ok) {
+        placeholderEl.textContent = data.error || "Kamera listesi alinamadi";
+        placeholderEl.style.color = "var(--err)";
+        return;
+      }
+
+      if (!data.cameras || data.cameras.length === 0) {
+        placeholderEl.textContent = "Kamera bulunamadi";
+        return;
+      }
+
+      placeholderEl.style.display = "none";
+
+      data.cameras.forEach((cam) => {
+        const card = document.createElement("div");
+        card.className = "cam-item";
+        card.innerHTML = `
+          <span class="dot ${cam.online ? "on" : "off"}"></span>
+          <span class="cam-name">${cam.name}</span>
+        `;
+        card.addEventListener("click", () => selectCamera(cam, card));
+        listEl.appendChild(card);
+      });
+    } catch (err) {
+      placeholderEl.textContent = err.message;
+      placeholderEl.style.color = "var(--err)";
+    }
+  }
+
+  async function selectCamera(cam, card) {
+    if (activeCard) activeCard.classList.remove("active");
+    card.classList.add("active");
+    activeCard = card;
+    cameraMetaEl.textContent = cam.name;
+    statusEl.textContent = `${cam.name} - yayin adresi aliniyor...`;
+    expireEl.textContent = "";
+
+    if (!cam.deviceSerial) {
+      statusEl.textContent = "Bu kamerada deviceSerial bilgisi yok.";
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams({
+        resourceId: cam.resourceId,
+        deviceSerial: cam.deviceSerial,
+        quality: qualityEl.value,
+      });
+
+      const res = await fetch(`/api/stream?${params}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        statusEl.textContent = `Hata: ${data.error || "Yayin alinamadi"}`;
+        return;
+      }
+
+      protocolMetaEl.textContent = data.protocol === 2 ? "HLS" : `Protocol ${data.protocol}`;
+      playHls(data.url);
+      statusEl.textContent = `${cam.name} - oynatiliyor`;
+
+      if (data.expireTime) {
+        const expires = new Date(data.expireTime);
+        expireEl.textContent = `Link gecerlilik: ${expires.toLocaleTimeString("tr-TR")}`;
+      }
+    } catch (err) {
+      statusEl.textContent = `Hata: ${err.message}`;
+    }
+  }
+
+  function playHls(url) {
+    if (hls) {
+      hls.destroy();
+      hls = null;
+    }
+
+    if (Hls.isSupported()) {
+      hls = new Hls();
+      hls.loadSource(url);
+      hls.attachMedia(videoEl);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => videoEl.play().catch(() => {}));
+      return;
+    }
+
+    if (videoEl.canPlayType("application/vnd.apple.mpegurl")) {
+      videoEl.src = url;
+      videoEl.play().catch(() => {});
+      return;
+    }
+
+    statusEl.textContent = "Tarayiciniz HLS oynatmayi desteklemiyor.";
+  }
+
+  document.getElementById("refresh-btn").addEventListener("click", loadCameras);
+  loadHealth();
+  loadCameras();
+</script>
+</body>
+</html>
