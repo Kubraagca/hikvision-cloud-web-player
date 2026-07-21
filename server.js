@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const app = express();
+app.set("trust proxy", true);
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
@@ -218,7 +219,9 @@ async function getCachedStreamSource({
 }
 
 function buildLocalProxyBase(req, resourceId, deviceSerial, quality) {
-  const origin = `${req.protocol}://${req.get("host")}`;
+  const forwardedProto = req.get("x-forwarded-proto");
+  const protocol = forwardedProto ? forwardedProto.split(",")[0].trim() : req.protocol;
+  const origin = `${protocol}://${req.get("host")}`;
   const params = new URLSearchParams({
     resourceId,
     deviceSerial,
