@@ -355,7 +355,9 @@
     });
 
     try {
-      await sdkPlayer.JS_CreateWnd("sdk-player", width, height);
+      if (typeof sdkPlayer.JS_Resize === "function") {
+        sdkPlayer.JS_Resize(width, height);
+      }
       sdkReady = true;
       sdkBoxEl.innerHTML = `<strong>SDK modu:</strong> aktif<br><strong>Base path:</strong> /sdk/dist<br>JSDecoder oynatici hazirlandi.`;
     } catch (err) {
@@ -466,7 +468,7 @@
     }
 
     try {
-      if (secretKey) {
+      if (secretKey && typeof sdkPlayer.JS_SetSecretKey === "function") {
         sdkPlayer.JS_SetSecretKey(sdkWindowIndex, secretKey);
       }
 
@@ -516,7 +518,10 @@
   document.getElementById("refresh-btn").addEventListener("click", loadCameras);
   window.addEventListener("resize", () => {
     if (sdkPlayer && typeof sdkPlayer.JS_Resize === "function") {
-      sdkPlayer.JS_Resize();
+      sdkPlayer.JS_Resize(
+        Math.max(Math.floor(sdkPlayerEl.clientWidth || 960), 640),
+        Math.max(Math.floor((sdkPlayerEl.clientWidth || 960) * 9 / 16), 360)
+      );
     }
   });
   loadHealth();
