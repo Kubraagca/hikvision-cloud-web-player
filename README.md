@@ -9,6 +9,33 @@ Bu surum su akisi kurar:
 3. Secilen kamera icin `/api/stream` uzerinden HLS oynatma linki alir.
 4. `index.html` bu linki `hls.js` ile tarayicida oynatir.
 
+## JSDecoder SDK notu
+
+Bu projede cloud akisinin Hikvision tarafinda sifreli gelmesi nedeniyle nihai hedef `WASM / JSDecoder SDK` entegrasyonudur.
+
+Su an proje:
+
+- token alma
+- kamera listeleme
+- stream endpoint deneme
+- SDK config hazirlama
+
+adimlarini yapar.
+
+Tam entegrasyon icin TPP'den indirdiginiz `WASM (JSDecoder) Develop Kit` dosyalarini proje altinda su klasore koymaniz gerekir:
+
+```text
+/sdk
+```
+
+Beklenen tipik dosyalar:
+
+- `*.js`
+- `*.wasm`
+- `*.worker.js`
+
+Bu dosyalar geldikten sonra frontend tarafi Hikvision'in resmi player akisina gecirilecektir.
+
 ## Gereken ortam degiskenleri
 
 | Degisken | Aciklama |

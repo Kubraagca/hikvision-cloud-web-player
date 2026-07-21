@@ -1,9 +1,9 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(express.json());
-app.use(express.static(__dirname));
 
 const PORT = process.env.PORT || 3000;
 
@@ -25,6 +25,19 @@ let tokenCache = {
   expireTime: 0, // epoch saniye
 };
 
+const SDK_BASE_PATH = "/sdk";
+const SDK_DIST_PATH = path.join(__dirname, "sdk", "dist");
+
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
+
+app.use(express.static(__dirname));
+app.use(SDK_BASE_PATH, express.static(path.join(__dirname, "sdk")));
+
 function ensureCredentials(res) {
   if (!APP_KEY || !APP_SECRET) {
     res.status(500).json({
@@ -41,6 +54,10 @@ function normalizeExpireTime(expireTime) {
   const numeric = Number(expireTime);
   if (Number.isNaN(numeric)) return null;
   return numeric > 10_000_000_000 ? numeric : numeric * 1000;
+}
+
+function isSdkInstalled() {
+  return fs.existsSync(path.join(SDK_DIST_PATH, "jsPlugin-3.0.0.min.js"));
 }
 
 // Token'i al (gerekirse yenile)
@@ -86,6 +103,7 @@ app.get("/api/health", async (req, res) => {
       ok: false,
       configured: false,
       initialServer: INITIAL_SERVER,
+      sdkInstalled: isSdkInstalled(),
     });
   }
 
@@ -97,6 +115,9 @@ app.get("/api/health", async (req, res) => {
       initialServer: INITIAL_SERVER,
       areaDomain: token.areaDomain,
       expiresAt: normalizeExpireTime(token.expireTime),
+      sdkMode: true,
+      sdkBasePath: SDK_BASE_PATH,
+      sdkInstalled: isSdkInstalled(),
     });
   } catch (err) {
     res.status(500).json({
@@ -104,7 +125,26 @@ app.get("/api/health", async (req, res) => {
       configured: true,
       initialServer: INITIAL_SERVER,
       error: err.message,
+      sdkInstalled: isSdkInstalled(),
     });
+  }
+});
+
+app.get("/api/sdk-config", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  try {
+    const token = await getToken();
+    res.json({
+      sdkBasePath: SDK_BASE_PATH,
+      areaDomain: token.areaDomain,
+      accessToken: token.accessToken,
+      expiresAt: normalizeExpireTime(token.expireTime),
+      sdkInstalled: isSdkInstalled(),
+      note: "JSDecoder SDK dosyalarini proje altindaki /sdk klasorune koyun.",
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
