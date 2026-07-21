@@ -289,21 +289,11 @@
   const sdkPlayerEl = document.getElementById("sdk-player");
   let hls = null;
   let activeCard = null;
-  let runtimeConfig = null;
   let sdkConfig = null;
   let sdkPlayer = null;
   let sdkReady = false;
   let sdkWindowIndex = 0;
   let sdkOptionsReady = false;
-
-  async function loadRuntime() {
-    try {
-      const res = await fetch("/api/runtime");
-      runtimeConfig = await res.json();
-    } catch (err) {
-      runtimeConfig = null;
-    }
-  }
 
   async function loadHealth() {
     try {
@@ -314,10 +304,7 @@
         return;
       }
 
-      const bridgeText = data.bridgeConfigured
-        ? `aktif (${data.bridgeBaseUrl})`
-        : "kapali";
-      healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}<br><strong>Bridge:</strong> ${bridgeText}<br><strong>SDK:</strong> ${data.sdkInstalled ? "kurulu" : "eksik"}`;
+      healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}<br><strong>SDK:</strong> ${data.sdkInstalled ? "kurulu" : "eksik"}`;
     } catch (err) {
       healthEl.innerHTML = `<strong>Durum:</strong> hata<br>${err.message}`;
     }
@@ -334,10 +321,7 @@
       }
 
       sdkConfig = data;
-      const modeText = data.bridgeConfigured
-        ? `Bridge hazir (${data.bridgeBaseUrl})`
-        : (data.sdkInstalled ? "SDK hazir" : "SDK eksik");
-      sdkBoxEl.innerHTML = `<strong>Calisma modu:</strong> ${modeText}<br><strong>Beklenen klasor:</strong> ${data.sdkBasePath}<br>${data.note}`;
+      sdkBoxEl.innerHTML = `<strong>SDK modu:</strong> ${data.sdkInstalled ? "hazir" : "eksik"}<br><strong>Beklenen klasor:</strong> ${data.sdkBasePath}<br>${data.note}`;
       await initSdkPlayer();
     } catch (err) {
       sdkBoxEl.innerHTML = `<strong>SDK:</strong> hata<br>${err.message}`;
@@ -450,18 +434,13 @@
     }
 
     try {
-      const useBridge = Boolean(runtimeConfig?.bridgeConfigured);
       const params = new URLSearchParams({
         resourceId: cam.resourceId,
         deviceSerial: cam.deviceSerial,
         quality: qualityEl.value,
-        cameraName: cam.name,
       });
       if (codeEl.value.trim()) {
         params.set("code", codeEl.value.trim());
-      }
-      if (useBridge) {
-        params.set("target", "bridge");
       }
 
       const res = await fetch(`/api/stream?${params}`);
@@ -473,19 +452,18 @@
         return;
       }
 
-      if (data.mode === "bridge" || data.protocol === "hls") {
-        protocolMetaEl.textContent = "Bridge / HLS";
-        playHls(data.url);
-        statusEl.textContent = `${cam.name} - bridge cikisi oynatiliyor.`;
+      protocolMetaEl.textContent =
+        data.protocol === 1 ? "EZOPEN / SDK" :
+        data.protocol === 2 ? "HLS" :
+        data.protocol === 3 ? "RTMP" :
+        `Protocol ${data.protocol}`;
+      const playedWithSdk = await playSdkUrl(data.url, codeEl.value.trim());
+      if (playedWithSdk) {
+        statusEl.textContent = `${cam.name} - JSDecoder SDK ile oynatiliyor.`;
       } else {
-        protocolMetaEl.textContent =
-          data.protocol === 1 ? "EZOPEN / SDK" :
-          data.protocol === 2 ? "HLS" :
-          data.protocol === 3 ? "RTMP" :
-          `Protocol ${data.protocol}`;
-        const playedWithSdk = await playSdkUrl(data.url, codeEl.value.trim());
-        if (playedWithSdk) {
-          statusEl.textContent = `${cam.name} - JSDecoder SDK ile oynatiliyor.`;
+        if (data.protocol === 2) {
+          playHls(data.url);
+          statusEl.textContent = `${cam.name} - HLS fallback bulundu.`;
         } else {
           statusEl.textContent = `${cam.name} - URL alindi ama SDK oynatma basarisiz oldu.`;
         }
@@ -572,11 +550,9 @@
       sdkPlayer.JS_DestroyWorker().catch(() => {});
     }
   });
-  loadRuntime().finally(() => {
-    loadHealth();
-    loadSdkConfig();
-    loadCameras();
-  });
+  loadHealth();
+  loadSdkConfig();
+  loadCameras();
 </script>
 </body>
 </html>
