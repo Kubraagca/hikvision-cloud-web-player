@@ -9,6 +9,13 @@ Bu surum su akisi kurar:
 3. Secilen kamera icin `/api/stream` uzerinden HLS oynatma linki alir.
 4. `index.html` bu linki `hls.js` ile tarayicida oynatir.
 
+22 Temmuz 2026 itibariyla projede ayri bir web sayfasi daha vardir:
+
+5. `/camera-setup` uzerinden kamera aktivasyon ve provisioning akisi calistirilir.
+6. Linux ortaminda resmi `HCNetSDK` paketiyle native helper kullanilarak `NET_DVR_ActivateDevice` cagrilir.
+7. ISAPI ile `deviceInfo`, ag ayarlari ve `EZVIZ` durumu yonetilir.
+8. `registerStatus=true` olduktan sonra Team OpenAPI ile cihaz eklenir ve kamera kanallari area'ya otomatik aktarilir.
+
 ## JSDecoder SDK notu
 
 Bu projede cloud akisinin Hikvision tarafinda sifreli gelmesi nedeniyle nihai hedef `WASM / JSDecoder SDK` entegrasyonudur.
@@ -45,6 +52,35 @@ Bu dosyalar geldikten sonra frontend tarafi Hikvision'in resmi player akisina ge
 | `HIK_INITIAL_SERVER` | Ilk token sunucusu. Varsayilan: `https://ieu.hikcentralconnect.com` |
 | `PORT` | Opsiyonel. Varsayilan: `3000` |
 
+## Linux provisioning notu
+
+Eger projeyi Linux sunucuda ve kamera ile ayni yerel agda calistiracaksaniz:
+
+- resmi Linux SDK paketi workspace altinda su dizinde olmalidir:
+
+```text
+/third_party/hcnetsdk_linux64/EN-HCNetSDKV6.1.9.48_build20230410_linux64
+```
+
+- native helper'i derleyin:
+
+```bash
+npm run build:linux-helper
+```
+
+Bu komut su binary'yi uretir:
+
+```text
+/native/hik_activation_helper_linux/build/hik_activation_helper
+```
+
+Sunucuda ayrica sunlar gerekli:
+
+- `g++` / `make`
+- `Node.js 18+`
+- kameraya HTTP (`80`) ve SDK (`8000`) erisimi
+- backend ile kameranin ayni yerel agda olmasi
+
 ## Yerelde calistirma
 
 ```bash
@@ -64,6 +100,12 @@ Sonra tarayicida:
 
 ```text
 http://localhost:3000
+```
+
+Provisioning sayfasi:
+
+```text
+http://localhost:3000/camera-setup
 ```
 
 ## API'ler

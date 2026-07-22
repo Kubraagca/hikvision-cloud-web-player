@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tarayici Kamera Erisim Testi</title>
+<style>
+  :root {
+    --bg: #f3efe7;
+    --panel: #fffaf1;
+    --border: #d8cfc0;
+    --text: #231f1a;
+    --muted: #766c60;
+    --accent: #005f73;
+    --ok: #15803d;
+    --warn: #b45309;
+    --err: #dc2626;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Georgia, "Segoe UI", serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at top left, #fff4d6 0, transparent 30%),
+      linear-gradient(180deg, #f7f1e6 0%, #efe6d6 100%);
+  }
+
+  header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: rgba(255, 250, 241, 0.82);
+    backdrop-filter: blur(8px);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  a.button-link,
+  button,
+  input {
+    font: inherit;
+  }
+
+  a.button-link,
+  button {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 9px 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.72);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 16px 40px rgba(70, 50, 20, 0.08);
+    margin-bottom: 18px;
+  }
+
+  .row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: end;
+  }
+
+  .field {
+    flex: 1 1 280px;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .field input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #fffdf8;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid #e8dfd0;
+    vertical-align: top;
+  }
+
+  th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .ok { color: var(--ok); }
+  .warn { color: var(--warn); }
+  .err { color: var(--err); }
+
+  pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12px;
+  }
+
+  .note {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Tarayici Kamera Erisim Testi</h1>
+    <div class="sub">Chrome Local Network Access ve kamera CORS davranisini gercek fetch istegiyle test eder.</div>
+  </div>
+  <div style="display:flex; gap:10px;">
+    <a class="button-link" href="/">Izleme Paneli</a>
+    <a class="button-link" href="/camera-setup">Kamera Kurulum</a>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="camera-ip">Kamera IP</label>
+        <input id="camera-ip" type="text" value="192.168.1.64" />
+      </div>
+      <div class="field" style="flex:0 0 auto;">
+        <button id="run-btn">Testi Calistir</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="note">
+      Bu sayfa iki test yapar:
+      <br>1. Basit `GET /ISAPI/System/activateStatus`
+      <br>2. Ozel baslikli `GET` ile preflight/CORS denemesi
+      <br><br>Burada amac sahte basari gostermek degil; eger tarayici veya kamera engelliyorsa bunu acikca gormek.
+    </div>
+  </section>
+
+  <section class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Sonuc</th>
+          <th>Detay</th>
+        </tr>
+      </thead>
+      <tbody id="results-body">
+        <tr><td colspan="3">Henuz test calismadi.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2 style="margin-top:0;">Yorum</h2>
+    <pre id="summary">Test bekleniyor.</pre>
+  </section>
+</main>
+
+<script>
+  const runBtn = document.getElementById("run-btn");
+  const cameraIpInput = document.getElementById("camera-ip");
+  const resultsBody = document.getElementById("results-body");
+  const summaryEl = document.getElementById("summary");
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function renderResults(rows) {
+    resultsBody.innerHTML = rows.map((row) => `
+      <tr>
+        <td>${escapeHtml(row.name)}</td>
+        <td class="${escapeHtml(row.cssClass)}">${escapeHtml(row.status)}</td>
+        <td><pre>${escapeHtml(row.detail)}</pre></td>
+      </tr>
+    `).join("");
+  }
+
+  function classifyNetworkError(error) {
+    const text = String(error?.message || error || "");
+    if (/Failed to fetch/i.test(text) || /Load failed/i.test(text)) {
+      return "Tarayici istegi cevaba ulasmadan kesti. Bu genelde CORS, Local Network Access, mixed content veya kamera tarafinin preflight destegi vermemesi anlamina gelir.";
+    }
+
+    return text || "Bilinmeyen tarayici hatasi";
+  }
+
+  async function runFetch(name, url, init) {
+    try {
+      const response = await fetch(url, init);
+      const body = await response.text();
+      return {
+        name,
+        ok: response.ok,
+        status: response.status,
+        detail: `HTTP ${response.status}\n\n${body.slice(0, 800) || "(bos govde)"}`,
+        rawBody: body,
+      };
+    } catch (error) {
+      return {
+        name,
+        ok: false,
+        status: "FETCH_ERROR",
+        detail: classifyNetworkError(error),
+        rawBody: "",
+      };
+    }
+  }
+
+  function makeSummary(results) {
+    const getTest = results.find((item) => item.name === "Basit GET");
+    const preflightTest = results.find((item) => item.name === "Preflight Probu");
+
+    if (getTest?.status === "FETCH_ERROR") {
+      return "Basit GET bile browser tarafinda bloklandi. Bu durumda tarayicidan dogrudan ISAPI cagrisi bu ortamda guvenilir degil. Sahte basari gostermemeliyiz; once LNA/CORS engeli kaldirilmali ya da kamera ile ayni agda bir backend/proxy kullanilmali.";
+    }
+
+    if (getTest?.ok && preflightTest?.status === "FETCH_ERROR") {
+      return "Basit GET gecti ama preflight tetikleyen istek bloklandi. Bu senaryoda sadece okuma islemleri calisabilir; aktivasyon, PUT ve XML guncellemeleri buyuk ihtimalle browser'dan dogrudan calismaz.";
+    }
+
+    if (getTest?.ok && preflightTest?.ok) {
+      return "Hem basit GET hem de preflight denemesi browser seviyesinde cevap alabildi. Bu iyi bir isaret, ama hala aktivasyon icin kameranin gercek web arayuzunden yakalanmis request semantigiyle ilerlemek gerekir.";
+    }
+
+    return "Sonuc karisik. Detay tablosundaki HTTP durumlarini ve response govdelerini incelemek gerekir.";
+  }
+
+  async function runTests() {
+    const cameraIp = cameraIpInput.value.trim();
+    if (!cameraIp) {
+      summaryEl.textContent = "Kamera IP zorunlu.";
+      return;
+    }
+
+    const baseUrl = `http://${cameraIp}`;
+    const targetAddressSpaceSupported = { targetAddressSpace: "local" };
+
+    renderResults([
+      { name: "Hazirlaniyor", status: "Calisiyor", cssClass: "warn", detail: `${baseUrl} icin fetch testleri baslatildi.` }
+    ]);
+    summaryEl.textContent = "Testler calisiyor...";
+
+    const simpleGet = await runFetch(
+      "Basit GET",
+      `${baseUrl}/ISAPI/System/activateStatus`,
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-store",
+        ...targetAddressSpaceSupported,
+      }
+    );
+
+    const preflightProbe = await runFetch(
+      "Preflight Probu",
+      `${baseUrl}/ISAPI/System/activateStatus`,
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-store",
+        headers: {
+          "X-Camera-Cors-Probe": "1"
+        },
+        ...targetAddressSpaceSupported,
+      }
+    );
+
+    const rows = [simpleGet, preflightProbe].map((item) => ({
+      name: item.name,
+      status:
+        item.status === "FETCH_ERROR"
+          ? "Bloklandi"
+          : item.ok
+            ? "Cevap alindi"
+            : `HTTP ${item.status}`,
+      cssClass:
+        item.status === "FETCH_ERROR"
+          ? "err"
+          : item.ok
+            ? "ok"
+            : "warn",
+      detail: item.detail,
+    }));
+
+    renderResults(rows);
+    summaryEl.textContent = makeSummary([simpleGet, preflightProbe]);
+  }
+
+  runBtn.addEventListener("click", runTests);
+</script>
+</body>
+</html>

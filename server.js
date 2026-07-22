@@ -515,6 +515,32 @@ async function readActivateStatus(cameraIp) {
 }
 
 function resolveSdkHelperCommand() {
+  if (process.platform === "linux") {
+    const linuxHelper = path.join(
+      __dirname,
+      "native",
+      "hik_activation_helper_linux",
+      "build",
+      "hik_activation_helper"
+    );
+    const linuxSdkLibDir = path.join(
+      __dirname,
+      "third_party",
+      "hcnetsdk_linux64",
+      "EN-HCNetSDKV6.1.9.48_build20230410_linux64",
+      "lib"
+    );
+
+    return {
+      file: linuxHelper,
+      args: [],
+      env: {
+        LD_LIBRARY_PATH: linuxSdkLibDir,
+      },
+      logDir: path.join(__dirname, "native", "hik_activation_helper_linux", "logs"),
+    };
+  }
+
   const exeCandidates = [
     path.join(
       __dirname,
@@ -543,7 +569,12 @@ function resolveSdkHelperCommand() {
 
   for (const candidate of exeCandidates) {
     if (fs.existsSync(candidate)) {
-      return { file: candidate, args: ["activate"] };
+      return {
+        file: candidate,
+        args: ["activate"],
+        env: {},
+        logDir: path.join(__dirname, "src", "HikDiscovery", "HikSdk.SadpConsole", "bin", "sdk-logs"),
+      };
     }
   }
 
@@ -558,19 +589,20 @@ function resolveSdkHelperCommand() {
       "--",
       "activate",
     ],
+    env: {},
+    logDir: path.join(__dirname, "src", "HikDiscovery", "HikSdk.SadpConsole", "bin", "sdk-logs"),
   };
 }
 
 async function activateCameraWithSdk(cameraIp, sdkPort, password) {
   const helper = resolveSdkHelperCommand();
-  const logDir = path.join(
-    __dirname,
-    "src",
-    "HikDiscovery",
-    "HikSdk.SadpConsole",
-    "bin",
-    "sdk-logs"
-  );
+  if (!fs.existsSync(helper.file) && helper.file !== "dotnet") {
+    throw new Error(
+      `HCNetSDK helper bulunamadi: ${helper.file}. Linux deploy icin native/hik_activation_helper_linux klasorunde 'make' calistirin.`
+    );
+  }
+
+  const logDir = helper.logDir;
 
   const args = [
     ...helper.args,
@@ -587,6 +619,7 @@ async function activateCameraWithSdk(cameraIp, sdkPort, password) {
       cwd: __dirname,
       env: {
         ...process.env,
+        ...helper.env,
         HIKSDK_ACTIVATE_PASSWORD: password,
       },
       windowsHide: true,
@@ -1688,6 +1721,10 @@ app.get("/api/provision/tasks/:taskId", (req, res) => {
 
 app.get("/camera-setup", (req, res) => {
   res.sendFile(path.join(__dirname, "provisioning.html"));
+});
+
+app.get("/camera-browser-test", (req, res) => {
+  res.sendFile(path.join(__dirname, "browser-network-test.html"));
 });
 
 app.get("/", (req, res) => {
