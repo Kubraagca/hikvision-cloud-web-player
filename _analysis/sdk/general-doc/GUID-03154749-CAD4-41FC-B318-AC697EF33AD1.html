@@ -1,0 +1,141 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Start Live View Based on ISAPI Protocol" /><meta name="abstract" content="For some specific devices, e.g., face recognition server, you can remotely get the live stream via the URL returned by device for live view by calling HCNetSDK API based on ISAPI protocol communication." /><meta name="description" content="For some specific devices, e.g., face recognition server, you can remotely get the live stream via the URL returned by device for live view by calling HCNetSDK API based on ISAPI protocol communication." /><meta name="DC.Relation" scheme="URI" content="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1" /><meta name="DC.Language" content="en-US" /><title>Start Live View Based on ISAPI Protocol</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Start Live View Based on ISAPI
+        Protocol</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">For some specific devices, e.g., face recognition server, you can remotely
+        get the live stream via the URL returned by device for live view by calling HCNetSDK API
+        based on ISAPI protocol communication. </p>
+
+<div class="section prereq p" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-9993D364-B6F1-4DE6-8F11-35859EDB3863">
+            <ul class="ul" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__UL_XYX_ZRL_V2B">
+                <li class="li" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-C45D61AB-8EB9-4AE6-BB6D-BC6CCF3E1298">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs."><span class="keyword apiname">NET_DVR_Init</span></a> to initialize the programming
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-0CD3A0E8-F059-4B93-8F77-C4A992EC35C2">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login)."><span class="keyword apiname">NET_DVR_Login_V40</span></a> to log in to
+                        the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-821C0B9A-8500-4F3B-834B-16520EF3B77E">
+                <div class="fig fignone" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__FIG_OQ2_ZZJ_52B">
+                    
+                    <img class="image" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__IMAGE_KGN_Q2K_52B" src="GUID-30B4EFDF-C08D-49B0-90FD-9895A34C104B-high.png" height="945" />
+                <span class="figcap">Figure 1 Programming Flow of
+                        Starting Live View Based on ISAPI Protocol</span></div>
+
+            </p><ol class="ol steps" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-EDA5E1CB-D464-41AE-BEEE-398BCEF9D03E"><li class="li step" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-DE74D052-8A57-4B9C-8E9C-F0394170C9AC">
+                <span class="ph cmd">Call <a class="xref" href="GUID-BADD19B9-E5B0-4C9B-9226-F46ED83B3F96.html#GUID-BADD19B9-E5B0-4C9B-9226-F46ED83B3F96" title="Start live view (get stream from URLs) ."><span class="keyword apiname">NET_DVR_RealPlaySpecial</span></a>
+                    to start decoding and live view.</span>
+            </li>
+<li class="li step" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-1D86F649-D8B8-4F15-ACBC-CED73FEB8686">
+                <span class="ph cmd">Call <a class="xref" href="GUID-90584BC9-6474-4D2F-8746-B161DA499673.html#GUID-90584BC9-6474-4D2F-8746-B161DA499673" title="Stop live view."><span class="keyword apiname">NET_DVR_StopRealPlay</span></a> to stop live
+                    view.</span>
+            </li>
+</ol>
+
+<div class="section postreq" id="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1__GUID-77A9EB2B-683C-4B9A-A5BA-03BEF5EA59F0">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices."><span class="keyword apiname">NET_DVR_Logout</span></a>
+                and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended."><span class="keyword apiname">NET_DVR_Cleanup</span></a>
+                to log out and release resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html">Video and Audio</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492.html">Start Live View</a></span></li><li class="active"><span class="topicref">Start Live View Based on ISAPI Protocol</span></li><li><span class="topicref"><a href="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A.html">Perform PTZ Control</a></span></li><li><span class="topicref"><a href="GUID-F6375406-A6C9-4B67-A4E1-7A10A453E635.html">Search for Recording Start and End Time by Channel</a></span></li><li><span class="topicref"><a href="GUID-486489B8-E670-46C3-B8EA-E6FC5CCDF760.html">Start Playback</a></span></li><li><span class="topicref"><a href="GUID-2F93B07A-00F0-4D57-A159-4CD852A2EFA0.html">Two-Way Audio</a></span></li><li><span class="topicref"><a href="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473.html">Stream Encoding</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

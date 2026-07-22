@@ -1,0 +1,1298 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="Supported Alarm/Event Types" /><meta name="abstract" content="This part lists the alarm or event types that can be received or subscribed via HCNetSDK and the corresponding commands for getting the details." /><meta name="description" content="This part lists the alarm or event types that can be received or subscribed via HCNetSDK and the corresponding commands for getting the details." /><meta name="DC.Relation" scheme="URI" content="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D" /><meta name="DC.Language" content="en-US" /><title>Supported Alarm/Event Types</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page appendix1" id="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+  <h1 class="title topictitle1">Supported Alarm/Event Types</h1>
+
+  
+  <div class="body refbody"><p class="shortdesc">This part lists the alarm or event types that can be received or
+    subscribed via HCNetSDK and the corresponding commands for getting the details.</p>
+
+    <div class="section" id="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D__GUID-626873E4-7CA2-48B0-A6CA-189C92AE25E6">
+      
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D__GUID-626E2978-5981-4E0B-982A-5AE8EF0A26BF" class="table" frame="border" border="1" rules="all">
+          
+          
+          
+          
+          <thead class="thead" align="left">
+            <tr>
+              <th class="entry" valign="top" width="17.391304347826086%" id="d433298e34">
+                <p class="p">Alarm/Event Type</p>
+
+              </th>
+
+              <th class="entry" valign="top" width="13.043478260869565%" id="d433298e40">
+                <p class="p">Value of &lt;type&gt;in Subscription Capability</p>
+
+              </th>
+
+              <th class="entry" valign="top" width="34.78260869565217%" id="d433298e46">
+                <p class="p">lCommand (Command No.)</p>
+
+              </th>
+
+              <th class="entry" valign="top" width="34.78260869565217%" id="d433298e52">
+                <p class="p">Alarm/Event Details</p>
+
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody class="tbody">
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Sensor Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">IO</p>
+
+              </td>
+
+              <td class="entry" rowspan="4" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_V40 (0x4007)</p>
+
+              </td>
+
+              <td class="entry" rowspan="4" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-D617F1E2-1ACD-4C1A-B8AD-7F1C5BE76CA5.html#GUID-D617F1E2-1ACD-4C1A-B8AD-7F1C5BE76CA5">NET_DVR_ALARMINFO_V40</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Motion Detection Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">VMD</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Video Loss Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">videoloss</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Tampering Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">shelteralarm</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Defocus Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">defocus</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_DEFOCUS (0x1151)</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-285B514E-754D-428F-B277-0C5F0C50E382.html#GUID-285B514E-754D-428F-B277-0C5F0C50E382" title="Defocus alarm information structure">NET_DVR_DEFOCUS_ALARM</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Audio Exception Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">audioexception</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_AUDIOEXCEPTION (0x1150)</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-CC685311-F65B-4B9B-8361-449FE198B103.html#GUID-CC685311-F65B-4B9B-8361-449FE198B103" title="Audio exception alarm information structure">NET_DVR_AUDIOEXCEPTION_ALARM</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Scene Changed Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">scenechangedetection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_SCENECHANGE_DETECTION_UPLOAD (0x1130)</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-53E6E583-B6A9-42E9-B999-6AF54CF2C3F7.html#GUID-53E6E583-B6A9-42E9-B999-6AF54CF2C3F7" title="Structure about the information of the scene change alarm.">NET_DVR_SCENECHANGE_DETECTION_RESULT</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Intrusion Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">fielddetection</p>
+
+              </td>
+
+              <td class="entry" rowspan="16" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_RULE (0x1102)</p>
+
+              </td>
+
+              <td class="entry" rowspan="16" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (Behavior
+                    Analysis)_Developer Guide</cite> for details.</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Line Crossing Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">linedetection</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Region Entrance Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">regionEntrance</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Region Exiting Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">regionExiting</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Loitering Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">loitering</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">People Gathering Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">group</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Fast Moving Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">rapidMove</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Parking Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">parking</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Unattended Baggage Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">unattendedBaggage</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Object Removal Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">attendedBaggage</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Absence Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">leavePosition</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">People Number Changed Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">peopleNumChange</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Fast Moving Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">running</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Violent Motion Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">violentMotion</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">People Falling Down Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">failDown</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Overstay Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">retention</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">PIR Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">PIR</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_IPC_AUXALARM_RESULT (0x2820)</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-2634E9A1-2616-4210-A347-870D3BA8DCCF.html#GUID-2634E9A1-2616-4210-A347-870D3BA8DCCF" title="Structure about auxiliary (PIR or wireless) alarm parameters.">NET_IPC_AUXALARM_RESULT</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">People Counting Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">PeopleCounting</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_PDC (0x1103)</p>
+
+              </td>
+
+              <td class="entry" rowspan="2" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (People
+                    Counting)_Developer Guide</cite></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">People Counting Event of Single Frame</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">framePeopleCounting</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_FRAMES_PEOPLE_COUNTING_ALARM (0x6069)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Temperature Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">thermometry</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_THERMOMETRY_ALARM (0x5212)</p>
+
+              </td>
+
+              <td class="entry" rowspan="7" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (Thermal
+                    Application)_Developer Guide</cite> for details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Temperature Difference Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">temperature</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_THERMOMETRY_DIFF_ALARM (0x5211)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Fire Source Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">fireDetection</p>
+
+              </td>
+
+              <td class="entry" rowspan="3" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_FIREDETECTION_ALARM (0x4991)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Smoke Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">smokeDetection</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Fire and Smoke Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">smokeAndFireDetection</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Ship Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">shipsDetection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_SHIPSDETECTION (0x4521)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Face Thermometry Event</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">faceThermometry</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_FACE_THERMOMETRY_ALARM (0x4994)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD Full</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">diskfull</p>
+
+              </td>
+
+              <td class="entry" rowspan="10" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_V40 (0x4007)</p>
+
+              </td>
+
+              <td class="entry" rowspan="10" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-D617F1E2-1ACD-4C1A-B8AD-7F1C5BE76CA5.html#GUID-D617F1E2-1ACD-4C1A-B8AD-7F1C5BE76CA5">NET_DVR_ALARMINFO_V40</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD Error</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">diskerror</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Network Disconnected</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">nicbroken</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">IP Address Conflicted</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">ipconflict</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Illegal Login Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">illaccess</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">PoE Power Exception Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">poe</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Video Exception Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">videoException</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Recording Exception Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">recordException</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD Unformatted Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">diskUnformat</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Supply Voltage Exception Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">voltageinstable</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Face Detection Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">facedetection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_FACE_DETECTION (0x4010)</p>
+
+              </td>
+
+              <td class="entry" rowspan="5" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (Facial
+                    Application)_Developer Guide</cite> for details.</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Face Capture Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">faceCapture</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_UPLOAD_FACESNAP_RESULT (0x1112)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Face Picture Comparison Result</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">alarmResult</p>
+
+              </td>
+
+              <td class="entry" rowspan="2" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_SNAP_MATCH_ALARM (0x2902)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Stranger Detection Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">whiteFaceContrast</td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">High Frequently Person Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">HFPD</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_HFPD_ALARM (0x6121)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Waiting Time Detection Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">personQueueTime</p>
+
+              </td>
+
+              <td class="entry" rowspan="14" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_VCA_ALARM (0x4993)</p>
+
+              </td>
+
+              <td class="entry" rowspan="3" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (Queue Management)_Developer Guide</cite> for
+                  details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">People Queuing-Up Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">personQueueCounting</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Real-Time Queue Management Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">personQueueRealTime</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Multi-Target-Type Detection Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">mixedTargetDetection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Multi-Target-Type Detection
+                    Application_HCNetSDK User Manual</cite> for details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Low Frequency Person Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">LFPD</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (Facial
+                    Application)_Developer Guide</cite> for details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Hard Hat Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">safetyHelmetDetection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (Behavior Analysis)_Developer Guide</cite> for
+                  details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD High Temperature Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">highHDTemperature</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-00997BEA-0027-40B3-80EC-29F52E156A62.html#GUID-00997BEA-0027-40B3-80EC-29F52E156A62" title="The event details of the HDD high temperature detection are uploaded in JSON format of EventNotificationAlert message, here shows an example.">JSON_EventNotificationAlert_HDDHighTemperatureEventMsg</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD Low Temperature Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">lowHDTemperature</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-1578ADBF-9A1F-4ABA-B9C9-B6EE70EE06D6.html#GUID-1578ADBF-9A1F-4ABA-B9C9-B6EE70EE06D6" title="The event details of the HDD low temperature detection are uploaded in JSON format of EventNotificationAlert message, here shows an example.">JSON_EventNotificationAlert_HDDLowTemperatureEventMsg</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD Impact Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">hdImpact</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-E8E982BB-D63E-4256-B5BD-9E31E79C14C3.html#GUID-E8E982BB-D63E-4256-B5BD-9E31E79C14C3" title="The event details of the HDD impact detection are uploaded in JSON format of EventNotificationAlert message, here shows an example.">JSON_EventNotificationAlert_HDDImpactEventMsg</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD Bad Sector Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">hdBadBlock</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-5F3D5ED7-9202-4626-AC84-AA73DC0F5370.html#GUID-5F3D5ED7-9202-4626-AC84-AA73DC0F5370" title="The event details of the HDD bad sector detection are uploaded in JSON format of EventNotificationAlert message, here shows an example.">JSON_EventNotificationAlert_HDDBadSectorEventMsg</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">HDD Severe Fault Detection</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">severeHDFailure</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-A3CE87E8-8E6A-4589-945B-DFB474137D06.html#GUID-A3CE87E8-8E6A-4589-945B-DFB474137D06" title="The event details of the HDD severe fault detection are uploaded in JSON format of EventNotificationAlert message, here shows an example.">JSON_EventNotificationAlert_HDDSevereFaultEventMsg</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Certificate Expiry Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">certificateRevocation</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-59342F84-79D2-4545-BB18-CA53330D0A05.html#GUID-59342F84-79D2-4545-BB18-CA53330D0A05" title="The certificate expiry alarm details are uploaded in JSON format of EventNotificationAlert message, here shows an example.">JSON_EventNotificationAlert_CertificateExpiryAlarmMsg</a></p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Auto Person Arming</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">personArmingTrack</p>
+
+              </td>
+
+              <td class="entry" rowspan="2" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Intelligent Security API (Person Arming) _Developer Guide</cite>
+                  for details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Manual Person Arming</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">manualPersonArmingTrack</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">ANPR Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">ANPR</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ITS_PLATE_RESULT (0x3050)</p>
+
+              </td>
+
+              <td class="entry" rowspan="3" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">ANPR Application_HCNetSDK User Manual</cite> for details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Blocklist and Allowlist ANPR Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">vehicleMatchResult</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_VEHICLE_CONTROL_ALARM (0x3059)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Vehicle Feature Recognition Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">vehicleRcogResult</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_VEHICLE_RECOG_RESULT (0x3062)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Heat Map Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">heatmap</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_UPLOAD_HEATMAP_RESULT (0x4008)</p>
+
+              </td>
+
+              <td class="entry" rowspan="2" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Heat Map Application_HCNetSDK User
+                    Manual</cite> for details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Intersection Analysis Event</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">intersectionAnalysis</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_UPLOAD_HEATMAP_RESULT_INTERSECTION (0x4020)</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Face and ID Card Recognition Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">cardMatch</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ID_INFO_ALARM (0x5200)</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p">Refer to <cite class="cite">Device Network SDK (Access Control on
+                    Card)_Developer Guide</cite> for details</p>
+
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="entry" valign="top" width="17.391304347826086%" headers="d433298e34 ">
+                <p class="p">Hot Spare Exception Alarm</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="13.043478260869565%" headers="d433298e40 ">
+                <p class="p">hotSpare</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e46 ">
+                <p class="p">COMM_ALARM_HOT_SPARE (0x4006)</p>
+
+              </td>
+
+              <td class="entry" valign="top" width="34.78260869565217%" headers="d433298e52 ">
+                <p class="p"><a class="xref" href="GUID-91431B7D-D124-4D17-893C-7A691D662C74.html#GUID-91431B7D-D124-4D17-893C-7A691D662C74" title="Hot spare (N+1 mode) exception alarm information structure">NET_DVR_ALARM_HOT_SPARE</a></p>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+
+    </div>
+
+  </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html">Alarm and Event Receiving</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Supported Alarm/Event Types</span></li><li><span class="topicref"><a href="GUID-05DA94E5-0692-440C-B6A0-EF5DA377FBB7.html">Configure Exception Alarm</a></span></li><li><span class="topicref"><a href="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB.html">Configure Audio Exception Detection Alarm</a></span></li><li><span class="topicref"><a href="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED.html">Configure Certificate Expiry Alarm</a></span></li><li><span class="topicref"><a href="GUID-08B26BCD-F96A-47E2-BF2F-8248A0355C7D.html">Configure Network Traffic Pre-alarm</a></span></li><li><span class="topicref"><a href="GUID-E1B1BF4A-4841-4D36-B525-4B3EB5CB3FBF.html">Configure Vibration Detection Alarm</a></span></li><li><span class="topicref"><a href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html">Receive Alarm/Event in Arming Mode</a></span></li><li><span class="topicref"><a href="GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1.html">Receive Alarm/Event in Listening Mode</a></span></li><li><span class="topicref"><a href="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8.html">Subscribe Alarm/Event in Arming Mode</a></span></li><li><span class="topicref"><a href="GUID-673C21A2-6826-491E-BAED-F4FDB4AA91F2.html">Search for Alarms or Events</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

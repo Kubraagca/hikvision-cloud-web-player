@@ -1,0 +1,369 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_DVR_EncodeG722Frame" /><meta name="abstract" content="Encode audio in G.722 mode." /><meta name="description" content="Encode audio in G.722 mode." /><meta name="DC.Relation" scheme="URI" content="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1" /><meta name="DC.Language" content="en-US" /><title>NET_DVR_EncodeG722Frame</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_DVR_EncodeG722Frame</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Encode audio in G.722 mode.</p>
+
+        <div class="section" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-ECFAD748-3768-484E-9217-4788A4759A06"><h2 class="title sectiontitle">API Definition (For 32-Bit Windows
+                Operating System)</h2>
+            
+            <pre class="pre codeblock">BOOL NET_DVR_EncodeG722Frame(
+  void            *<span class="keyword parmname">pEncodeHandle</span>,
+  unsigned char   *<span class="keyword parmname">pInBuffer</span>,
+  unsigned char   *<span class="keyword parmname">pOutBuffer</span>
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-4B5F4A7D-FDA7-40DF-8F81-FC12B9F4E759"><h2 class="title sectiontitle">Parameters (For 32-Bit Windows
+                Operating System)</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-827D3181-CB74-4BC0-B4CC-3272B61084A7"><!-- --></a>pEncodeHandle</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Handle for audio encoding, which is returned by the API
+                                <a class="xref" href="GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A.html#GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A" title="Initialize resources for G.722 audio encoding.">NET_DVR_InitG722Encoder</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-26D31DCF-4E29-4AFC-A2CA-F9D9D72D7ED6"><!-- --></a>pInBuffer</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Input buffer, which is used to save the audio data in
+                            PCM format that sampled according to the sampling standard (sampling
+                            frequency is 16000, sample in 16-bit, single channel), and the data size
+                            is 1280 bytes.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-BE71EDAD-CD00-430E-958C-44707F47D5DE"><!-- --></a>pOutBuffer</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Output buffer, the size of output data after encoding is 80
+                            bytes.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+<div class="section" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-556038B4-4BB1-45AD-8F4B-9925177EA457"><h2 class="title sectiontitle">API Definition (For Linux
+                Operating System and 64-Bit Windows Operating System)</h2>
+            
+            <pre class="pre codeblock">BOOL NET_DVR_EncodeG722Frame(
+  void                             *<span class="keyword parmname">handle</span>,
+  <var class="keyword varname">NET_DVR_AUDIOENC_PROCESS_PARAM</var>   *<span class="keyword parmname">param</span>
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-DDCAFF6F-4D2E-4428-9785-2B03296D11B0"><h2 class="title sectiontitle">Parameters (For Linux Operating
+                System and 64-Bit Windows Operating System)</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-5364FCF2-9C86-4E63-8F4B-8CC8C50656F9"><!-- --></a>handle</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Handle for audio encoding, which is returned by <a class="xref" href="GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A.html#GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A" title="Initialize resources for G.722 audio encoding.">NET_DVR_InitG722Encoder</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-E75AAB74-9B70-4B53-9810-C40FE3A406C2"><!-- --></a>param</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN][OUT] Encoding parameters, see details in the structure
+                                <a class="xref" href="GUID-A0D90948-7A50-4458-B34B-D24BAC95EE12.html#GUID-A0D90948-7A50-4458-B34B-D24BAC95EE12" title="Audio encoding parameter structure">NET_DVR_AUDIOENC_PROCESS_PARAM</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-CF608D87-6044-42D7-9CD6-411F6CD8DECE"><h2 class="title sectiontitle">Return Values</h2>
+            
+            <p class="p">Return <samp class="ph systemoutput">TRUE</samp> for success, and return
+                    <samp class="ph systemoutput">FALSE</samp> for failure.</p>
+
+            <p class="p">If <samp class="ph systemoutput">FALSE</samp> is returned, you can call <a class="xref" href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html#GUID-14773B75-3782-443F-ACB8-C40146725A9B" title="Return the error code of the last operation.">NET_DVR_GetLastError</a> to get the error code.</p>
+
+        </div>
+
+        <div class="section" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-934A675F-AA08-475F-A978-0E792161989D"><h2 class="title sectiontitle">Remarks</h2>
+            
+            <ul class="ul" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__UL_WMG_F4K_JBB">
+                <li class="li" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-A9410565-B4E5-44BF-8FFE-BBE429066979">
+                    <p class="p">This API is mainly for two-way audio and audio forwarding
+                        function. You can encode the original audio data by this API and send the
+                        encoded audio data to the platform/system. And then the API <a class="xref" href="GUID-C61A6DFB-C61E-4400-8B90-49ACA098A24C.html#GUID-C61A6DFB-C61E-4400-8B90-49ACA098A24C" title="Decode the audio to G722 format.">NET_DVR_DecodeG722Frame</a> can be called to decode the data after
+                        receiving the encoded audio data.</p>
+
+                </li>
+
+                <li class="li" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-281CBB3E-D990-403C-83AE-15A4DEEC44D1">
+                    <p class="p">Initialization is required before call this API, and after calling this API,
+                        you should also release the resource.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="section" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-AB704828-81D3-4B35-A688-A5A7A64D3F70"><h2 class="title sectiontitle">See Also</h2>
+            
+            <p class="p"><a class="xref" href="GUID-9F793A30-10B6-426C-A155-9DE444A915BB.html#GUID-9F793A30-10B6-426C-A155-9DE444A915BB" title="Release resources of G.722 audio encoding. This API is available for both the Windows and Linux operating system.">NET_DVR_ReleaseG722Encoder</a></p>
+
+        </div>
+
+        <div class="example" id="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1__GUID-5B817A76-2870-4B87-A4A4-79E178260D5A"><h2 class="title sectiontitle">G.722 Encoding and Decoding (For
+                Linux Operating System and 64-Bit Windows Operating System)</h2>
+            
+            <pre class="pre codeblock">void Test_VoiceTalk_DecEncG722()
+{
+    printf("Test_VoiceTalk_DecEncG722\n");
+	
+    /**************Encode Audio in G.722 Mode**************/
+    LPVOID hEncInstance = 0;
+    NET_DVR_AUDIOENC_INFO info_param;
+    int blockcount= 0;
+	
+    hEncInstance = NET_DVR_InitG722Encoder(&amp;info_param);
+    if ((long)hEncInstance == -1)
+    {
+	printf("NET_DVR_InitG722Encoder fail,err %d!\n", NET_DVR_GetLastError());
+        return;
+    }
+
+    NET_DVR_AUDIOENC_PROCESS_PARAM  enc_proc_param;
+    FILE                *infile;
+    FILE                *outfile;
+    char * infile_path = "tst_16k_ch_fmale.wav";
+    char * outfile_path = "temp.g722";
+    const unsigned int  AUDIO_CODEC_BUF_SIZE = 8192;  
+    const unsigned int HIK_CODEC722_IN_SAMPLES = 320;
+    const unsigned int HIK_CODEC722_OUT_BITS = 160;
+    const unsigned int AUDIO_DEC_DATA_SIZE = 2048;
+    short encode_input[2048];  //20ms
+    unsigned char encoded_data[2048];
+
+    infile=fopen(infile_path,"rb");
+    outfile=fopen(outfile_path,"wb");
+    if(infile == NULL)
+    {
+	printf("infile open error.");
+	return ;
+    }
+    if(outfile == NULL)
+    {
+	printf("outfile open error.");
+	return ;
+    }
+
+    enc_proc_param.in_buf   = (unsigned char *)encode_input;  
+    enc_proc_param.out_buf  = (unsigned char *)encoded_data; 
+
+    while (1)
+   {	
+	int encode_samples = fread((short *)enc_proc_param.in_buf,1,info_param.in_frame_size,infile);
+	if (encode_samples &lt; 640)
+	{
+            fclose(infile);
+            fclose(outfile);
+	    break;
+	}
+	blockcount++;
+        BOOL ret = NET_DVR_EncodeG722Frame(hEncInstance, &amp;enc_proc_param);
+	if (ret != 1)
+	{
+	    exit(-1);
+	}
+
+	fwrite(
+            enc_proc_param.out_buf,
+            sizeof(unsigned char),
+	    enc_proc_param.out_frame_size,
+	    outfile
+        ); 
+	printf("g722 Enc frame %d \n", blockcount);
+    }
+
+    NET_DVR_ReleaseG722Encoder(hEncInstance);
+
+   /**************Decode Audio Data for G.722 Encoding**************/
+    LPVOID hDecInstance = 0;
+    hDecInstance = NET_DVR_InitG722Decoder();
+    if (hDecInstance == 0)
+    {
+	printf("NET_DVR_InitG722Decoder fail,err %d!\n", NET_DVR_GetLastError());
+        return;
+    }
+
+    NET_DVR_AUDIODEC_PROCESS_PARAM  dec_proc_param;
+    char * infile_path2 = "temp.g722";
+    char * outfile_path2 = "g722_ret.pcm";
+    unsigned char decode_input[2048];
+    short decode_data[2048];
+    infile=fopen(infile_path2,"rb");
+    outfile=fopen(outfile_path2,"wb");
+    if(infile == NULL)
+    {
+	printf("infile open error.");
+        return ;
+    }
+    if(outfile == NULL)
+    {
+        printf("outfile open error.");
+	return ;
+    }
+    dec_proc_param.in_buf  = (unsigned char *)decode_input;        
+    dec_proc_param.out_buf  = (unsigned char *)decode_data; 
+    dec_proc_param.reserved[0] = 0;   
+    dec_proc_param.in_data_size = 0;
+    int decode_samples = fread(dec_proc_param.in_buf, sizeof(char), AUDIO_DEC_DATA_SIZE,infile);
+    dec_proc_param.in_data_size += decode_samples;
+    blockcount= 0;
+    while  (1)
+    {
+        if (decode_samples == 0){
+            fclose(infile);
+            fclose(outfile);
+             break;
+        }
+        BOOL ret = NET_DVR_DecodeG722Frame(hDecInstance ,&amp;dec_proc_param);
+
+        if (ret == 1)
+        {		
+            //dec_proc_param-&gt;out_buf=output;
+            fwrite(
+                dec_proc_param.out_buf,
+                sizeof(unsigned char),
+                dec_proc_param.out_frame_size,
+                outfile
+            ); 
+            blockcount++;
+            printf("g722 Dec frame %d \n", blockcount);
+
+            dec_proc_param.in_data_size = dec_proc_param.in_data_size - dec_proc_param.proc_data_size;
+            memmove(dec_proc_param.in_buf, dec_proc_param.in_buf + dec_proc_param.proc_data_size, dec_proc_param.in_data_size);//
+
+            if (dec_proc_param.in_data_size &lt; AUDIO_DEC_DATA_SIZE )
+            {                
+                decode_samples = fread(dec_proc_param.in_buf + dec_proc_param.in_data_size, sizeof(char), AUDIO_DEC_DATA_SIZE - dec_proc_param.in_data_size,infile);
+                dec_proc_param.in_data_size += decode_samples;
+
+                
+            }
+        }
+        else
+        {
+
+        }
+    }
+    NET_DVR_ReleaseG722Decoder(hDecInstance);
+}</pre>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-DBD84983-507A-4FA9-ACF4-E033F5736B8E.html">NET_DVR_AddDVR_V30</a></span></li><li><span class="topicref"><a href="GUID-4EFB0CB8-579B-4505-B3AD-834BDFCFDC35.html">NET_DVR_ClientAudioStart_V30</a></span></li><li><span class="topicref"><a href="GUID-087E7DD8-647F-475A-89DB-5636FC989A1F.html">NET_DVR_ClientAudioStop</a></span></li><li><span class="topicref"><a href="GUID-30F6789A-1D09-4F56-9059-F2CC79C79DD9.html">NET_DelDVR_V30</a></span></li><li><span class="topicref"><a href="GUID-2896BD15-6970-4502-9683-694B008D0463.html">NET_DVR_GetCurrentAudioCompress_V50</a></span></li><li><span class="topicref"><a href="GUID-C4366806-FAA5-475B-B0B2-B363B7B513AF.html">NET_DVR_EncodeMP3Frame</a></span></li><li><span class="topicref"><a href="GUID-45AB94A7-40BD-4FB8-833C-D03332FB991A.html">NET_DVR_DecodeMP3Frame</a></span></li><li><span class="topicref"><a href="GUID-B01535F9-761C-4548-A00A-226BB2774456.html">NET_DVR_InitG711Encoder</a></span></li><li><span class="topicref"><a href="GUID-51FD578A-40DD-4AC4-947B-6236B3D9E3F5.html">NET_DVR_EncodeG711Frame</a></span></li><li><span class="topicref"><a href="GUID-2C1C0BE7-D272-4E9D-B998-4A2DE914225A.html">NET_DVR_ReleaseG711Encoder</a></span></li><li><span class="topicref"><a href="GUID-330F6990-BD23-43C8-AB46-C201EE1EC2FB.html">NET_DVR_InitG711Decoder</a></span></li><li><span class="topicref"><a href="GUID-1968492D-873B-42F4-8A7E-D86082E6CAF1.html">NET_DVR_DecodeG711Frame</a></span></li><li><span class="topicref"><a href="GUID-2FBD7DAD-A8E1-4DEB-AE41-4A4903EB6162.html">NET_DVR_ReleaseG711Decoder</a></span></li><li><span class="topicref"><a href="GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A.html">NET_DVR_InitG722Encoder</a></span></li><li class="active"><span class="topicref">NET_DVR_EncodeG722Frame</span></li><li><span class="topicref"><a href="GUID-9F793A30-10B6-426C-A155-9DE444A915BB.html">NET_DVR_ReleaseG722Encoder</a></span></li><li><span class="topicref"><a href="GUID-25093FF5-1174-4CE8-A6D4-04FC1E275851.html">NET_DVR_InitG722Decoder</a></span></li><li><span class="topicref"><a href="GUID-C61A6DFB-C61E-4400-8B90-49ACA098A24C.html">NET_DVR_DecodeG722Frame</a></span></li><li><span class="topicref"><a href="GUID-AFA1CDC1-C427-46FA-83EE-759223F8EB38.html">NET_DVR_ReleaseG722Decoder</a></span></li><li><span class="topicref"><a href="GUID-71E090FA-2D4D-4305-ABB4-6AECCB80F149.html">NET_DVR_InitG726Encoder</a></span></li><li><span class="topicref"><a href="GUID-89020620-9FC9-4E15-879A-A3C00C2BD128.html">NET_DVR_EncodeG726Frame</a></span></li><li><span class="topicref"><a href="GUID-E14B4027-65E4-42C7-BFC2-57A6123A060D.html">NET_DVR_ReleaseG726Encoder</a></span></li><li><span class="topicref"><a href="GUID-1AD8DED0-DEC0-40B1-9A52-99ACDABFA568.html">NET_DVR_InitG726Decoder</a></span></li><li><span class="topicref"><a href="GUID-BB0E91E5-0B23-4004-9E6F-D854A4194188.html">NET_DVR_DecodeG726Frame</a></span></li><li><span class="topicref"><a href="GUID-DCAB0D46-F368-48C6-B0BD-56FE5A4D5738.html">NET_DVR_ReleaseG726Decoder</a></span></li><li><span class="topicref"><a href="GUID-45D603CC-E8D9-4646-AB79-908F286852B8.html">NET_DVR_SetVoiceDataCallBack</a></span></li><li><span class="topicref"><a href="GUID-F24F7F8B-BFA8-461F-A4D4-8A0353859DBA.html">NET_DVR_StartVoiceCom_MR_V30</a></span></li><li><span class="topicref"><a href="GUID-F80C75EA-05E9-4AA4-9A5C-1232742A3B4D.html">NET_DVR_StartVoiceCom_V30</a></span></li><li><span class="topicref"><a href="GUID-BD9C2142-475E-47FE-B8B8-1D90FA5388E2.html">NET_DVR_StopVoiceCom</a></span></li><li><span class="topicref"><a href="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE.html">NET_DVR_VoiceComSendData</a></span></li></ul></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

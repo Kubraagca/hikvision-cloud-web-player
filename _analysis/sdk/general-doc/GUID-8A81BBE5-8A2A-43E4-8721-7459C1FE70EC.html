@@ -1,0 +1,530 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Wireless Hotspot Get Wireless Hotspot Capability Call NET_DVR_GetSTDAbility with &#34;NET_DVR_GET_WIRELESSSERVER_CAPABILITIES&#34; (command No.: 3716) and set lpCondBuffer to a 4-byte wireless NIC No. The ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Wireless Network" /><meta name="DC.Relation" scheme="URI" content="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC" /><meta name="DC.Language" content="en-US" /><title>Wireless Network</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Wireless Network</h1>
+
+<div class="body conbody">
+        <div class="section" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-27EC1D01-3025-44B1-AD5F-7846A2ACB673"><h2 class="title sectiontitle">Wireless Hotspot</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__TABLE_XQC_T1P_QJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Wireless Hotspot Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a> with
+                                    "NET_DVR_GET_WIRELESSSERVER_CAPABILITIES" (command No.: 3716)
+                                    and set <span class="keyword parmname">lpCondBuffer</span> to a
+                                    4-byte wireless NIC No.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-920ED1A7-C2A1-4165-AD0C-D7D0A0502D69.html#GUID-920ED1A7-C2A1-4165-AD0C-D7D0A0502D69" title="WirelessServer capability message in XML format">XML_Cap_WirelessServer</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Wireless Hotspot Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with
+                                    "NET_DVR_GET_WIRELESSSERVER" (command No.: 3717) and set
+                                        <span class="keyword parmname">lpCondBuffer</span> to a 4-byte
+                                    wireless NIC No.</p>
+
+                                <p class="p">The parameters are returned in the structure <a class="xref" href="GUID-4A4A62CB-8DCC-4F10-A2EB-67D082F29491.html#GUID-4A4A62CB-8DCC-4F10-A2EB-67D082F29491" title="Hotspot service parameter structure">NET_DVR_WIRELESSSERVER</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Set Wireless Hotspot Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html#GUID-19B97F95-5F55-48EF-9450-AC33661876D2" title="Set the device parameters.">NET_DVR_SetSTDConfig</a> with
+                                    "NET_DVR_SET_WIRELESSSERVER" (command No.: 3718), set <span class="keyword parmname">lpCondBuffer</span> to a 4-byte wireless
+                                    NIC No., and specify <span class="keyword parmname">lpInBuffer</span> as the structure <a class="xref" href="GUID-4A4A62CB-8DCC-4F10-A2EB-67D082F29491.html#GUID-4A4A62CB-8DCC-4F10-A2EB-67D082F29491" title="Hotspot service parameter structure">NET_DVR_WIRELESSSERVER</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-4367E6EE-B51C-47E9-AC86-5D635CA6EED5"><h2 class="title sectiontitle">Wireless Dial-up</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__TABLE_DD2_QBP_QJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Wireless Dial-up Configuration Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <ul class="ul" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__UL_V3H_45Q_RJB">
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-849E2968-D565-4D30-8FFB-9629B5E4486C">
+                                        <p class="p">Option 1: Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a> with
+                                            "NET_DVR_GET_WIRELESSDIAL_CAPABILITIES" (command No.:
+                                            3580) and set <span class="keyword parmname">lpCondBuffer</span> to a 4-byte wireless NIC
+                                            No.</p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-3908F73A-4C36-4FDA-BE2B-D2D38E4F2919">
+                                        <p class="p">Option 2: Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit
+                                                <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-31C50AE4-341D-4A8B-B579-50B1F5359B23.html#GUID-31C50AE4-341D-4A8B-B579-50B1F5359B23" title="Get the wireless dial-up capability.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/dial/capabilities</a>.</p>
+
+                                    </li>
+
+                                </ul>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-9860FDBD-CC23-4877-9B5C-2B91E5F38DA9.html#GUID-9860FDBD-CC23-4877-9B5C-2B91E5F38DA9" title="Dial capability message in XML format">XML_Cap_Dial</a> by <span class="keyword parmname">lpOutBuffer</span> or <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Wireless Dial-up Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <ul class="ul" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__UL_XVN_T5Q_RJB">
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-B6E4DB5D-BEA0-4943-B6AB-A2AE2875C37B">
+                                        <p class="p">Option 1: Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with
+                                            "NET_DVR_GET_WIRELESS_DIAL" (command No.: 3578) and set
+                                                <span class="keyword parmname">lpCondBuffer</span> to a
+                                            4-byte wireless NIC No.</p>
+
+                                        <p class="p">The parameters are returned in the structure
+                                                <a class="xref" href="GUID-258AF2D2-DDC8-422E-A0F2-5FA4768BFA13.html#GUID-258AF2D2-DDC8-422E-A0F2-5FA4768BFA13" title="Wireless dial-up connection configuration structure.">NET_DVR_WIRELESSDIAL_CFG</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-C3843FA1-595E-4154-80DA-C354B46E16AD">
+                                        <p class="p">Option 2: Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit
+                                                <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-5B4E28F7-ED22-491F-8204-BA80310DC74A.html#GUID-5B4E28F7-ED22-491F-8204-BA80310DC74A" title="Operations about the wireless dial-up configuration.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/dial</a>.</p>
+
+                                        <p class="p">The parameters are returned in the message <a class="xref" href="GUID-282108CC-4BF1-4C90-86B0-7D4F9F607A3C.html#GUID-282108CC-4BF1-4C90-86B0-7D4F9F607A3C" title="Dial message in XML format">XML_Dial</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Set Wireless Dial-up Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <ul class="ul" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__UL_NRG_W5Q_RJB">
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-1CBD1F92-E2AA-40B7-9B84-C4DC264F8410">
+                                        <p class="p">Option 1: Call <a class="xref" href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html#GUID-19B97F95-5F55-48EF-9450-AC33661876D2" title="Set the device parameters.">NET_DVR_SetSTDConfig</a> with
+                                            "NET_DVR_SET_WIRELESS_DIAL" (command No.: 3579), set
+                                                <span class="keyword parmname">lpCondBuffer</span> to a
+                                            4-byte wireless NIC No., and set the input parameter
+                                                <span class="keyword parmname">lpInputParam</span> to the
+                                            structure <a class="xref" href="GUID-258AF2D2-DDC8-422E-A0F2-5FA4768BFA13.html#GUID-258AF2D2-DDC8-422E-A0F2-5FA4768BFA13" title="Wireless dial-up connection configuration structure.">NET_DVR_WIRELESSDIAL_CFG</a>.</p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-01699FF5-9A95-4485-B8A9-07B504267CD6">
+                                        <p class="p">Option 2: Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit
+                                                <span class="ph synph">PUT</span>
+                                            <a class="xref" href="GUID-5B4E28F7-ED22-491F-8204-BA80310DC74A.html#GUID-5B4E28F7-ED22-491F-8204-BA80310DC74A" title="Operations about the wireless dial-up configuration.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/dial</a> and set <span class="keyword parmname">lpInputParam</span> to the message
+                                                <a class="xref" href="GUID-282108CC-4BF1-4C90-86B0-7D4F9F607A3C.html#GUID-282108CC-4BF1-4C90-86B0-7D4F9F607A3C" title="Dial message in XML format">XML_Dial</a>.</p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Wireless Dial-up Schedule Capability </p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a> with
+                                    "NET_DVR_GET_WIRELESSDIAL_SCHEDULE_CAPABILITIES" (command No.:
+                                    3592) and set <span class="keyword parmname">lpCondBuffer</span> to
+                                    a 4-byte wireless NIC No.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-3B59EB8A-7FD1-4211-9EC0-D9238EAF27C9.html#GUID-3B59EB8A-7FD1-4211-9EC0-D9238EAF27C9" title="Schedule capability message in XML format">XML_Cap_Schedule</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Wireless Dial-up Schedule Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <ul class="ul" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__UL_RRT_PVQ_RJB">
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-29876F38-2B5B-421E-A703-8977D763FBC7">
+                                        <p class="p">Option 1: Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with
+                                            "NET_DVR_GET_WIRELESSDIAL_SCHEDULE" (command No.: 3581)
+                                            and set <span class="keyword parmname">lpCondBuffer</span> to
+                                            a 4-byte wireless NIC No.</p>
+
+                                        <p class="p">The parameters are returned in the structure
+                                                <a class="xref" href="GUID-B1646EBF-5358-42CF-8FE7-0E6EF9A77B6B.html#GUID-B1646EBF-5358-42CF-8FE7-0E6EF9A77B6B" title="Wireless dial-up schedule structure.">NET_DVR_WIRELESSDIAL_SCHEDULE</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-3C772DC4-E9F0-4A30-8FA9-8ACFFFE6D1FC">
+                                        <p class="p">Option 2: Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit
+                                                <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-D56324D9-DC49-4D3C-80EB-3AA36610733B.html#GUID-D56324D9-DC49-4D3C-80EB-3AA36610733B" title="Get or set dial-up schedule parameters.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/schedule</a>.</p>
+
+                                        <p class="p">The parameters are returned in the message <a class="xref" href="GUID-F441577B-9446-4A78-A790-70C5E6798B60.html#GUID-F441577B-9446-4A78-A790-70C5E6798B60" title="Schedule message in XML format">XML_Schedule</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Set Wireless Dial-up Schedule Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <ul class="ul" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__UL_NX5_5VQ_RJB">
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-20F58097-F94C-4632-B849-A30D09B98EF7">
+                                        <p class="p">Call <a class="xref" href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html#GUID-19B97F95-5F55-48EF-9450-AC33661876D2" title="Set the device parameters.">NET_DVR_SetSTDConfig</a> with
+                                            "NET_DVR_SET_WIRELESSDIAL_SCHEDULE" (command No.: 3582),
+                                            set <span class="keyword parmname">lpCondBuffer</span> to a
+                                            4-byte wireless NIC No., and set <span class="keyword parmname">lpInputParam</span> to the structure <a class="xref" href="GUID-B1646EBF-5358-42CF-8FE7-0E6EF9A77B6B.html#GUID-B1646EBF-5358-42CF-8FE7-0E6EF9A77B6B" title="Wireless dial-up schedule structure.">NET_DVR_WIRELESSDIAL_SCHEDULE</a>.</p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-B8F35B2E-978E-404A-A35F-A0B0BF20C833">
+                                        <p class="p">Option 2: Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit
+                                                <span class="ph synph">PUT</span>
+                                            <a class="xref" href="GUID-D56324D9-DC49-4D3C-80EB-3AA36610733B.html#GUID-D56324D9-DC49-4D3C-80EB-3AA36610733B" title="Get or set dial-up schedule parameters.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/schedule</a> and set <span class="keyword parmname">lpInputParam</span>
+                                            to the message <a class="xref" href="GUID-F441577B-9446-4A78-A790-70C5E6798B60.html#GUID-F441577B-9446-4A78-A790-70C5E6798B60" title="Schedule message in XML format">XML_Schedule</a>.</p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Wireless Dial-up Status Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with
+                                    "NET_DVR_GET_WIRELESSDIAL_STATUS" (command No.: 3583) and set
+                                        <span class="keyword parmname">lpCondBuffer</span> to a 4-byte
+                                    wireless NIC No.</p>
+
+                                <p class="p">The parameters are returned in the structure <a class="xref" href="GUID-98B5E380-57CC-4F59-9B39-13A2CDF93761.html#GUID-98B5E380-57CC-4F59-9B39-13A2CDF93761" title="Wireless connection status structure">NET_DVR_WIRELESSDIAL_STATUS</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-154DB4B5-51C7-4BD5-B6D6-E64CDC4D11C4"><h2 class="title sectiontitle">Network Keepalive</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__TABLE_FQM_13V_QJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Network Keepalive Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-CF23B9EA-FB8A-4665-81CA-2EF9523CC55D.html#GUID-CF23B9EA-FB8A-4665-81CA-2EF9523CC55D" title="Get the configuration capability of network keepalive.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/keepAlive/capabilities?format=json</a>.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-749BFEB0-CBA6-4ED7-8F89-9C1F7A459C99.html#GUID-749BFEB0-CBA6-4ED7-8F89-9C1F7A459C99" title="KeepAliveCap message in JSON format">JSON_KeepAliveCap</a> by the output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Network Keepalive Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-E5BA4E6B-FF5A-4C72-B06E-9066DF229D23.html#GUID-E5BA4E6B-FF5A-4C72-B06E-9066DF229D23" title="Set network keepalive parameters.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/keepAlive?format=json</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-F3FEFEF5-6036-4F50-923B-EE4F7DFECAC0.html#GUID-F3FEFEF5-6036-4F50-923B-EE4F7DFECAC0" title="KeepAlive message in JSON format">JSON_KeepAlive</a> by the output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Set Network Keepalive Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-E5BA4E6B-FF5A-4C72-B06E-9066DF229D23.html#GUID-E5BA4E6B-FF5A-4C72-B06E-9066DF229D23" title="Set network keepalive parameters.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/keepAlive?format=json</a> and set the input parameter <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-F3FEFEF5-6036-4F50-923B-EE4F7DFECAC0.html#GUID-F3FEFEF5-6036-4F50-923B-EE4F7DFECAC0" title="KeepAlive message in JSON format">JSON_KeepAlive</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Test Network Keepalive</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">POST</span>
+                                    <a class="xref" href="GUID-E09D8BD1-1709-492C-9413-A877A2107CFF.html#GUID-E09D8BD1-1709-492C-9413-A877A2107CFF" title="Test network keepalive configuration.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/keepAlive/test?format=json</a> and set the input parameter <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-F3FEFEF5-6036-4F50-923B-EE4F7DFECAC0.html#GUID-F3FEFEF5-6036-4F50-923B-EE4F7DFECAC0" title="KeepAlive message in JSON format">JSON_KeepAlive</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__GUID-EF01CDAC-A65E-467C-BE08-5D2E135F2738"><h2 class="title sectiontitle">Traffic Monitoring</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC__TABLE_M1W_2BX_TJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Traffic Monitoring Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-B63CD518-EC4B-48D9-942F-A46F76857FFD.html#GUID-B63CD518-EC4B-48D9-942F-A46F76857FFD" title="Get traffic monitoring configuration capability.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/trafficMonitor/capabilities?format=json</a>.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-FC67300C-B155-4F9F-98DD-793325A766E2.html#GUID-FC67300C-B155-4F9F-98DD-793325A766E2" title="TrafficMonitorCap message in JSON format">JSON_TrafficMonitorCap</a> by the output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Get Network Keepalive Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-D1FE8A5D-C793-4CC3-B4C3-4A640AA8BFEC.html#GUID-D1FE8A5D-C793-4CC3-B4C3-4A640AA8BFEC" title="Get traffic monitoring parameters.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/trafficMonitor?format=json</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-55C8C601-E51E-47EF-B174-0F5B5335E156.html#GUID-55C8C601-E51E-47EF-B174-0F5B5335E156" title="TrafficMonitor message in JSON format">JSON_TrafficMonitor</a> by the output parameter
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Set Network Keepalive Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-D1FE8A5D-C793-4CC3-B4C3-4A640AA8BFEC.html#GUID-D1FE8A5D-C793-4CC3-B4C3-4A640AA8BFEC" title="Get traffic monitoring parameters.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/trafficMonitor?format=json</a> and set the input parameter <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-55C8C601-E51E-47EF-B174-0F5B5335E156.html#GUID-55C8C601-E51E-47EF-B174-0F5B5335E156" title="TrafficMonitor message in JSON format">JSON_TrafficMonitor</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Test Network Keepalive</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-97C3C2DF-B9FE-4E00-878E-617DAF8E82F2.html#GUID-97C3C2DF-B9FE-4E00-878E-617DAF8E82F2" title="Get traffic monitoring status.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/trafficMonitor/status?format=json</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-0D7F1E92-C940-4E4B-B73C-99A137716B1A.html#GUID-0D7F1E92-C940-4E4B-B73C-99A137716B1A" title="TrafficMonitorStatus message in JSON format">JSON_TrafficMonitorStatus</a> by the output parameter
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0.html">Channel Settings</a></span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li><span class="topicref"><a href="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014.html">Video/Image Settings</a></span></li><li><span class="topicref"><a href="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html">Network Settings</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF.html">Address Filter</a></span></li><li><span class="topicref"><a href="GUID-96255498-3AEB-4447-B310-03D6A8227839.html">Network Access</a></span></li><li><span class="topicref"><a href="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A.html">Network Interface</a></span></li><li><span class="topicref"><a href="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4.html">Network Service</a></span></li><li class="active"><span class="topicref">Wireless Network</span></li><li><span class="topicref"><a href="GUID-4F4A40F2-D35F-4C6F-9B8D-D7FC019580C5.html">Multicast</a></span></li></ul></li><li><span class="topicref"><a href="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9.html">Peripherals Settings</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

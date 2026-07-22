@@ -1,0 +1,1502 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Summary of Changes in Version 6.1.7.15_Aug., 2021 Extended the structure about RS-485 parameters of the security control panel NET_DVR_ALARM_RS485CFG (related APIs: NET_DVR_GetDVRConfig with command ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Version 6.1.X.X" /><meta name="DC.Relation" scheme="URI" content="GUID-0871100D-7E78-4BDE-9E9A-2ECC3F8AA735.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-516454BA-B739-48C5-B128-01A388373233" /><meta name="DC.Language" content="en-US" /><title>Version 6.1.X.X</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-516454BA-B739-48C5-B128-01A388373233" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Version 6.1.X.X</h1>
+
+<div class="body conbody">
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-C8E32BF6-1E38-4C0F-BCD4-1AF0681E2C9B"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.7.15_Aug., 2021</h2>
+      
+      
+      <p class="p">Extended the structure about RS-485 parameters of the security control panel <a class="xref" href="GUID-B0D22B61-D03A-4201-A0F3-D061B5B89228.html#GUID-B0D22B61-D03A-4201-A0F3-D061B5B89228" title="Structure about the RS-485 parameters of the security control panel">NET_DVR_ALARM_RS485CFG</a> (related APIs: <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with command 1188-"NET_DVR_SET_ALARM_RS485CFG" and <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with command 1189-"NET_DVR_GET_ALARM_RS485CFG"):</p>
+
+      <p class="p">added a member <span class="keyword parmname">byStairsOutputDataType</span> (output data type of the
+        elevator controller) by one byte.</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-D1E2E7FC-1A0A-48E1-80FC-543AACCEA071"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.7.X_July, 2021</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_P5P_NXM_KQB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-10A58574-3F00-40F0-8B01-A00DE6758328">
+          <p class="p">Extended the message about capability of device information <a class="xref" href="GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52.html#GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52" title="MXL message about capability of device information">XML_Cap_DeviceInfo</a> and the message about device information <a class="xref" href="GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300.html#GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300" title="XML message about device information">XML_DeviceInfo</a> (related URIs: <a class="xref" href="GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C.html#GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C" title="Get the device information configuration capability.">/ISAPI/System/deviceInfo/capabilities</a> and <a class="xref" href="GUID-468B5836-8658-4605-94F4-5EE809F786A0.html#GUID-468B5836-8658-4605-94F4-5EE809F786A0" title="Operations about the device information.">/ISAPI/System/deviceInfo</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added 3 language types to the node <span class="keyword parmname">languageType</span>: "dutch" (Dutch), "hungarian" (Hungarian), and "irish"
+            (Irish).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CFF5D361-4678-411C-A3B9-B4B571CC68EF">
+          <p class="p">Extended the message about the configuration capability of accessing
+            servers via ISUP <a class="xref" href="GUID-C32D4242-BC6D-4179-9539-9FC2B696DEDC.html#GUID-C32D4242-BC6D-4179-9539-9FC2B696DEDC" title="XML message about the configuration capability of accessing servers via ISUP">XML_Cap_EHome</a>, message about the parameters of accessing a server via
+            ISUP <a class="xref" href="GUID-1C00B63C-1F3C-49F0-B532-25AB94C081D1.html#GUID-1C00B63C-1F3C-49F0-B532-25AB94C081D1" title="XML message about the parameters of accessing a server via ISUP">XML_Ehome</a>, and message about the parameters of accessing all servers via ISUP <a class="xref" href="GUID-934E8003-A3F8-47E7-B87E-C93B3FF72B8D.html#GUID-934E8003-A3F8-47E7-B87E-C93B3FF72B8D" title="XML message about the parameters of accessing all servers via ISUP">XML_EhomeList</a> (related URIs: <a class="xref" href="GUID-8B5C4DFD-640F-4182-91C6-F1CB0390250C.html#GUID-8B5C4DFD-640F-4182-91C6-F1CB0390250C" title="Get the configuration capability of accessing servers via ISUP.">/ISAPI/System/Network/Ehome/capabilities</a>, <a class="xref" href="GUID-A47059D7-30A3-439B-8B57-E387D20D67F8.html#GUID-A47059D7-30A3-439B-8B57-E387D20D67F8" title="Get or set the parameters of accessing a server via ISUP.">/ISAPI/System/Network/Ehome/&lt;ISUPID&gt;</a>, and <a class="xref" href="GUID-16A231EF-75C5-466A-BD36-9FE2E9C9B71F.html#GUID-16A231EF-75C5-466A-BD36-9FE2E9C9B71F" title="Get the parameters of accessing all servers via ISUP.">/ISAPI/System/Network/EhomeList?centerID=</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added 2 nodes: <span class="keyword parmname">periodicTestEnabled</span>
+            (whether to enable periodic test) and <span class="keyword parmname">periodicTestTime</span>
+            (periodic test interval).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CCD06892-C97F-41D0-89CA-AAC02607D80B">
+          <p class="p">Extended the message about the EZVIZ access configuration capability <a class="xref" href="GUID-015416B8-5129-4B39-9464-1CC8C708A4BA.html#GUID-015416B8-5129-4B39-9464-1CC8C708A4BA" title="XML message about the EZVIZ access configuration capability">XML_Cap_EZVIZ</a> and message about the EZVIZ access configuration
+            parameters <a class="xref" href="GUID-A6A95A93-CDEF-401C-9890-C3C830FB0892.html#GUID-A6A95A93-CDEF-401C-9890-C3C830FB0892" title="XML message about the EZVIZ access configuration parameters">XML_EZVIZ</a> (related URIs: <a class="xref" href="GUID-FD713860-DAB1-45F5-8BD9-142C99796421.html#GUID-FD713860-DAB1-45F5-8BD9-142C99796421" title="Get the Guarding Vision access configuration capability.">/ISAPI/System/Network/EZVIZ/capabilities</a> and <a class="xref" href="GUID-90F004D5-F6D2-4D16-9467-E6B473B3910E.html#GUID-90F004D5-F6D2-4D16-9467-E6B473B3910E" title="Operations about Hik-Connect access configurations.">/ISAPI/System/Network/EZVIZ</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added 2 nodes: <span class="keyword parmname">periodicTestEnabled</span>
+            (whether to enable periodic test) and <span class="keyword parmname">periodicTestTime</span>
+            (periodic test interval).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-6D1F8508-8335-4703-82AB-11932711ACE2">
+          <p class="p">Extended the message about the configuration capability of all users'
+            permission <a class="xref" href="GUID-FEFF0EB2-62DD-4062-9420-893D2B85BF04.html#GUID-FEFF0EB2-62DD-4062-9420-893D2B85BF04" title="XML message about the configuration capability of all users' permission">XML_Cap_UserPermissionList</a>, message about a specific user's permission <a class="xref" href="GUID-40395056-E0B6-48C9-9E43-AE458DB4DC79.html#GUID-40395056-E0B6-48C9-9E43-AE458DB4DC79" title="XML message about a specific user's permission">XML_UserPermission</a>, message about the capability of managing the user
+            permission <a class="xref" href="GUID-7C433D41-7255-4F52-AAF4-94E53B03F8BD.html#GUID-7C433D41-7255-4F52-AAF4-94E53B03F8BD" title="XML message about the capability of managing the user permission">XML_UserPermissionCap</a>, and message about all users' permission <a class="xref" href="GUID-EC56731A-51D7-45AC-ADA5-4A5914C3B1AE.html#GUID-EC56731A-51D7-45AC-ADA5-4A5914C3B1AE" title="XML message about all users' permission">XML_UserPermissionList</a> (related URIs: <a class="xref" href="GUID-451513FA-1C6D-40B8-8212-2938C860DFDC.html#GUID-451513FA-1C6D-40B8-8212-2938C860DFDC" title="Get the configuration capability of all users' permission.">/ISAPI/Security/UserPermission/capabilities</a>, <a class="xref" href="GUID-F00F4680-E943-4B72-8FCF-77D774877AB1.html#GUID-F00F4680-E943-4B72-8FCF-77D774877AB1" title="Operations about a specific user's permission.">/ISAPI/Security/UserPermission/&lt;ID&gt;</a>, <a class="xref" href="GUID-E1D0BDC6-7301-4C60-B2D2-BC72E45EE10D.html#GUID-E1D0BDC6-7301-4C60-B2D2-BC72E45EE10D" title="Get the capability of managing the user permission.">/ISAPI/Security/UserPermission/adminCap</a>, and <a class="xref" href="GUID-FCDE3D2A-E8B0-40A9-9CE8-CD4A00495758.html#GUID-FCDE3D2A-E8B0-40A9-9CE8-CD4A00495758" title="Operations about the user permission of the device.">/ISAPI/Security/UserPermission</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added 2 sub nodes to the node <span class="keyword parmname">remotePermission</span>: <span class="keyword parmname">restoreTamper</span> (whether
+            to restore tampering) and <span class="keyword parmname">restoreConfirmedAlarm</span>
+            (whether to restore alarm acknowledgment).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-45FD4016-E2F7-409B-BD2C-7901BD84B3E4">
+          <p class="p">Extended the message about the capability of managing cloud users <a class="xref" href="GUID-FECC0D5B-3459-4EC0-A60E-3073E06012E0.html#GUID-FECC0D5B-3459-4EC0-A60E-3073E06012E0" title="JSON message about the capability of managing cloud users">JSON_CloudUserManageCap</a>, message about the cloud user information <a class="xref" href="GUID-532D1109-7689-4F85-8714-EFA5636FC851.html#GUID-532D1109-7689-4F85-8714-EFA5636FC851" title="JSON message about the cloud user information">JSON_CloudUserManage</a>, and message about information of multiple cloud users
+              <a class="xref" href="GUID-ABA1B4A8-41F8-4CA9-B8CB-96920B25E954.html#GUID-ABA1B4A8-41F8-4CA9-B8CB-96920B25E954" title="JSON message about information of multiple cloud users">JSON_CloudUserManageList</a> (related URIs: <a class="xref" href="GUID-6862FAD7-4D06-459E-8AD1-42F947DAE1F0.html#GUID-6862FAD7-4D06-459E-8AD1-42F947DAE1F0" title="Get the capability of managing cloud users.">/ISAPI/Security/CloudUserManage/users/capabilities?format=json</a>, <a class="xref" href="GUID-18BF7C62-0BB4-4022-A289-B44A09135DDE.html#GUID-18BF7C62-0BB4-4022-A289-B44A09135DDE" title="Get, set, or delete the information of a cloud user.">/ISAPI/Security/CloudUserManage/users/&lt;ID&gt;?format=json</a>, <a class="xref" href="GUID-6574DB22-4470-4CAA-B6BA-B03B6540AC74.html#GUID-6574DB22-4470-4CAA-B6BA-B03B6540AC74" title="Get information of all cloud users or add information of a cloud user.">/ISAPI/Security/CloudUserManage/users?format=json</a>, and <a class="xref" href="GUID-CCA712FA-AA60-4384-86C6-76739BC5DE46.html#GUID-CCA712FA-AA60-4384-86C6-76739BC5DE46" title="Get information of cloud users by type.">/ISAPI/Security/CloudUserManage/users/byType?format=json</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added 2 nodes: <span class="keyword parmname">adminType</span> (admin type)
+            and <span class="keyword parmname">installerType</span> (installer type).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-D4B8D56C-53A2-471D-8547-8D7528D528EE">
+          <p class="p">Extended the message about user configuration capability <a class="xref" href="GUID-4E00969E-7E99-4519-8F08-FA77F8926E23.html#GUID-4E00969E-7E99-4519-8F08-FA77F8926E23" title="XML message about user configuration capability">XML_Cap_User</a>, message about a specific user's configuration <a class="xref" href="GUID-B1BA411A-5A3B-4F4E-9BF2-DA7C386F5872.html#GUID-B1BA411A-5A3B-4F4E-9BF2-DA7C386F5872" title="XML message about a specific user's configuration">XML_User</a>, and message about configuration of all users <a class="xref" href="GUID-95A93922-7001-4F9F-A9FE-807EF9CB7E8E.html#GUID-95A93922-7001-4F9F-A9FE-807EF9CB7E8E" title="UserList message in XML format">XML_UserList</a> (related URIs:<a class="xref" href="GUID-356AC4AE-5192-40B5-BB99-273A3C9AE44A.html#GUID-356AC4AE-5192-40B5-BB99-273A3C9AE44A" title="Get the configuration capability of a specific user.">/ISAPI/Security/users/&lt;ID&gt;/capabilities</a>, <a class="xref" href="GUID-9658293E-795E-4212-BCF3-5DA1CA25F665.html#GUID-9658293E-795E-4212-BCF3-5DA1CA25F665" title="Get, set, or delete information of a specific user.">/ISAPI/Security/users/&lt;ID&gt;</a>, and <a class="xref" href="GUID-F4D1163E-5143-467E-8E5D-55A2D91907EA.html#GUID-F4D1163E-5143-467E-8E5D-55A2D91907EA" title="Get, set, or delete information of all users; add a new user.">/ISAPI/Security/users</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added 2 nodes: <span class="keyword parmname">adminType</span> (admin type)
+            and <span class="keyword parmname">installerType</span> (installer type).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B387F096-E145-479C-A599-8E64481B830A"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.7.15_May, 2021</h2>
+      
+      
+      <p class="p">Added one function of getting all tasks of manually copying back videos:</p>
+
+      <p class="p">related API <a class="xref" href="GUID-23388F56-C88E-46E9-8B0B-A1ECF29945F5.html#GUID-23388F56-C88E-46E9-8B0B-A1ECF29945F5" title="Enable remote configuration.">NET_DVR_StartRemoteConfig</a> with command "NET_DVR_GET_ALL_RECORD_PASSBACK_TASK_MANUAL"
+        (command No.: 6235).</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CB301313-1E76-493C-BB56-903622C0322D"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.6_Jan., 2021</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_NCQ_DGD_M4B">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-39B67A1F-C5C0-4DDD-AEF4-54D20E4DC441">
+          <p class="p">Extended the enumeration about files to be downloaded <a class="xref" href="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA.html#GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA" title="Enumerate file types to be downloaded.">NET_SDK_DOWNLOAD_TYPE</a>:</p>
+
+          <p class="p">added one enumeration type <span class="keyword parmname">NET_SDK_DOWNLOAD_LENS_PARAM_FILE</span> (lens
+            parameters file).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-7C16A42C-CE68-4C6F-9CE8-B49BD6C5FC3F">
+          <p class="p">Extended the enumeration about files to be uploaded <a class="xref" href="GUID-576C3694-A8D3-44A4-B23B-46D3AA8F3AC1.html#GUID-576C3694-A8D3-44A4-B23B-46D3AA8F3AC1">NET_SDK_UPLOAD_TYPE</a>:</p>
+
+          <p class="p">added one enumeration type <span class="keyword parmname">UPLOAD_LENS_PARAM_FILE</span> (lens parameters
+            file).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-60305085-7924-4893-9B1F-E9839779F91F"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.6.151_Dec., 2020</h2>
+      
+      
+      <p class="p">Added one API of getting the error code categorized by functional modules: <a class="xref" href="GUID-C1820200-F6BA-4201-9F38-7873B4DC631A.html#GUID-C1820200-F6BA-4201-9F38-7873B4DC631A" title="Get the error code categorized by functional modules of the last operation.">NET_DVR_GetLastErrorModelCode</a>.</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-59133FFB-DDBE-43D3-8B6E-81E9BE5D5DAB"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.6_Aug., 2020</h2>
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_O5F_RLD_5MB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-61E52699-C1B0-4B62-AEC0-6FBAC2A9EC53">
+          <p class="p">Extended the file search condition structure <a class="xref" href="GUID-66CE3123-A809-444E-9525-A8B172C335A0.html#GUID-66CE3123-A809-444E-9525-A8B172C335A0" title="File search condition structure.">NET_DVR_FILECOND_V50</a> (related API: <a class="xref" href="GUID-D24BB91B-B2E7-4EF2-9E6E-E13468DF3346.html#GUID-D24BB91B-B2E7-4EF2-9E6E-E13468DF3346" title="Search for video files by file type or by time.">NET_DVR_FindFile_V50</a>):</p>
+
+          <p class="p">added a member <span class="keyword parmname">dwTimeout</span> (timeout time
+            of searching for files) by 4 bytes.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-498D9E2B-68CD-4CD0-AD8C-2FFDAC84AEEC">
+          <p class="p">Added an API of getting the IP address and port information of the stream sender and
+            recipient: <a class="xref" href="GUID-F8E0AECB-4918-4493-983B-22E342C83F08.html#GUID-F8E0AECB-4918-4493-983B-22E342C83F08" title="Get the IP address and port information of the stream sender and recipient.">NET_DVR_GetLinkAddr</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CBA4FFFF-BCC6-4728-8F55-E4024ADA00F1">
+          <p class="p">Extended the structure about alarm search condition parameters <a class="xref" href="GUID-7A8E841A-C18D-4BA9-9A9C-02374F76DE70.html#GUID-7A8E841A-C18D-4BA9-9A9C-02374F76DE70" title="Structure about alarm search condition parameters.">NET_DVR_ALARM_SEARCH_COND</a> (related API: <a class="xref" href="GUID-23388F56-C88E-46E9-8B0B-A1ECF29945F5.html#GUID-23388F56-C88E-46E9-8B0B-A1ECF29945F5" title="Enable remote configuration.">NET_DVR_StartRemoteConfig</a> with command 4193-"NET_DVR_GET_ALARM_INFO"):</p>
+
+          <p class="p">added a member <span class="keyword parmname">byNoBoundary</span> (whether form
+            data is contained in the returned alarm information) by 1 bytes.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-48B1FFBF-2048-455B-8443-C239BBA7D93B">
+          <p class="p">Added a remark to the API <a class="xref" href="GUID-F80C75EA-05E9-4AA4-9A5C-1232742A3B4D.html#GUID-F80C75EA-05E9-4AA4-9A5C-1232742A3B4D" title="Enable two-way audio function.">NET_DVR_StartVoiceCom_V30</a>: "This API is supported for programming in 64-bit Windows/Linux operating system and
+            32-bit Windows operating system".</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-DC406685-53BD-4E76-99B6-8B83F7281790"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.5.26_Nov., 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_N4G_QTC_MNB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B676CF6E-E98F-48AC-8B95-F17943552B0D">
+          <p class="p">Extended the channel attributes message <a class="xref" href="GUID-999DBDB2-8941-46BC-8099-F86FA09AC005.html#GUID-999DBDB2-8941-46BC-8099-F86FA09AC005" title="ChannelInfo message in XML format.">XML_ChannelInfo</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-3CFE7B66-C2D6-41F0-9447-D1FB5E7AE603.html#GUID-3CFE7B66-C2D6-41F0-9447-D1FB5E7AE603" title="Get the attributes of a specific channel according to channel ID.">/ISAPI/AUXInfo/attributes/Channels/&lt;ID&gt;</a>) : </p>
+
+          <p class="p">added one node: &lt;<span class="keyword parmname">TemperatureIntervalMeasurement</span>&gt; (interval temperature measurement).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F390FA9F-23FB-478D-9FFE-A0D2CA6C8265">
+          <p class="p">Extended recording schedule configuration capability <a class="xref" href="GUID-218A55C9-462B-42B8-BBA9-8BBDC5A0EAC8.html#GUID-218A55C9-462B-42B8-BBA9-8BBDC5A0EAC8" title="XML message about recording schedule configuration capability">XML_Cap_Track</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-D92C513C-1994-4407-BBFB-CD3F64EEB471.html#GUID-D92C513C-1994-4407-BBFB-CD3F64EEB471" title="Get the configuration capability of the recording schedule.">/ISAPI/ContentMgmt/record/tracks/&lt;ID&gt;/capabilities</a>) : </p>
+
+          <p class="p">added one record type "temperatureIntervalMeasurement" (interval
+            temperature measurement) to nodes &lt;<span class="keyword parmname">ActionRecordingMode</span>&gt; and &lt;<span class="keyword parmname">DefaultRecordingMode</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-84072443-AC44-4DCF-9B56-F2C7B3FBF87E">
+          <p class="p">Extended recording schedule configuration parameters <a class="xref" href="GUID-D6591E0A-4031-43B8-A459-922BC401B19D.html#GUID-D6591E0A-4031-43B8-A459-922BC401B19D" title="XML message about recording schedule configuration parameters">XML_Track</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-F13779E7-A579-43D4-8508-EF1FEBF0B293.html#GUID-F13779E7-A579-43D4-8508-EF1FEBF0B293" title="Operations about recording schedule configuration.">/ISAPI/ContentMgmt/record/tracks</a>) : </p>
+
+          <p class="p">added one record type "temperatureIntervalMeasurement" (interval
+            temperature measurement) to node &lt;<span class="keyword parmname">ActionRecordingMode</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-0094F951-813B-47D6-8B87-7996083FAAFF">
+          <p class="p">Extended search conditions of video and picture <a class="xref" href="GUID-FF26CB5C-EF0B-4F4F-AF28-5428388FFA3A.html#GUID-FF26CB5C-EF0B-4F4F-AF28-5428388FFA3A" title="XML message about search conditions of video and picture">XML_VideoPic_CMSearchDescription</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-4DBB1778-5E0E-46B0-84D7-9268EC5FD6ED.html#GUID-4DBB1778-5E0E-46B0-84D7-9268EC5FD6ED" title="Search for specified resources.">/ISAPI/ContentMgmt/search</a>) : </p>
+
+          <p class="p">added one search condition "temperatureIntervalMeasurement" (interval
+            temperature measurement) to node &lt;<span class="keyword parmname">metadataDescriptor</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-FB3CCB8F-CAA3-4E42-9CD4-D9CB1A9D73AC">
+          <p class="p">Extended device storage capability <a class="xref" href="GUID-6A64A5F0-39E5-4DEB-9D79-7E695B78AAFD.html#GUID-6A64A5F0-39E5-4DEB-9D79-7E695B78AAFD" title="XML message about device storage capability">XML_RacmCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-C8BEE0B2-2EBD-4B9C-ABF8-9FB918CA05AE.html#GUID-C8BEE0B2-2EBD-4B9C-ABF8-9FB918CA05AE" title="Get storage capability.">/ISAPI/ContentMgmt/capabilities</a>) : </p>
+
+          <p class="p">added one search condition "temperatureIntervalMeasurement" (interval
+            temperature measurement) to nodes &lt;<span class="keyword parmname">pictureSearchType</span>&gt; and &lt;<span class="keyword parmname">recordSearchType</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9BA23AF7-877A-464E-9F14-CC16BC0322A3">
+          <p class="p">Extended the event capability of a single channel <a class="xref" href="GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C.html#GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C" title="XML message about event capability of a single channel">XML_ChannelEventCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F.html#GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F" title="Get event capabilities supported by the channel.">/ISAPI/Event/channels/&lt;ID&gt;/capabilities</a>): </p>
+
+          <p class="p">added one event type "temperatureIntervalMeasurement" (interval
+            temperature measurement) to node &lt;<span class="keyword parmname">eventType</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B17F70E7-BA72-466B-A68F-C71AA9F026A2">
+          <p class="p">Extended device event capability <a class="xref" href="GUID-A2514CE9-A8F9-4642-9374-ED00DDD370C7.html#GUID-A2514CE9-A8F9-4642-9374-ED00DDD370C7" title="EventCap capability message in XML format">XML_EventCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-2E58CA89-1FEA-4DEB-9CE1-E57338273E5B.html#GUID-2E58CA89-1FEA-4DEB-9CE1-E57338273E5B" title="Get the device event capability.">/ISAPI/Event/capabilities</a>) : </p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportTemperatureIntervalMeasurement</span>&gt; (whether the device supports
+            interval temperature measurement).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-E27CFD4E-BF7B-4D8C-AA9C-DACC22DBF3E8"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.5.25_Nov., 2020</h2>
+      
+      
+      <p class="p">Extended the message about capability of device information <a class="xref" href="GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52.html#GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52" title="MXL message about capability of device information">XML_Cap_DeviceInfo</a> and message about device information <a class="xref" href="GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300.html#GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300" title="XML message about device information">XML_DeviceInfo</a> (related URIs: <a class="xref" href="GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C.html#GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C" title="Get the device information configuration capability.">/ISAPI/System/deviceInfo/capabilities</a> and <a class="xref" href="GUID-468B5836-8658-4605-94F4-5EE809F786A0.html#GUID-468B5836-8658-4605-94F4-5EE809F786A0" title="Operations about the device information.">/ISAPI/System/deviceInfo</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+      <p class="p">added 3 nodes: &lt;<span class="keyword parmname">ZigBeeVersion</span>&gt; (ZigBee
+        module version), &lt;<span class="keyword parmname">R3Version</span>&gt; (R3 module version),
+        and &lt;<span class="keyword parmname">RxVersion</span>&gt; (Rx module version).</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-95BB0266-5603-4106-8B17-344E11508C4B"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.5.25_Sept., 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_HQB_TK5_ZMB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-97F7EAAE-DE21-44F6-B0EC-84F4A495D44D">
+          <p class="p">Extended the device information capability <a class="xref" href="GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52.html#GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52" title="MXL message about capability of device information">XML_Cap_DeviceInfo</a> and device information <a class="xref" href="GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300.html#GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300" title="XML message about device information">XML_DeviceInfo</a> (related URIs: <a class="xref" href="GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C.html#GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C" title="Get the device information configuration capability.">/ISAPI/System/deviceInfo/capabilities</a> and <a class="xref" href="GUID-468B5836-8658-4605-94F4-5EE809F786A0.html#GUID-468B5836-8658-4605-94F4-5EE809F786A0" title="Operations about the device information.">/ISAPI/System/deviceInfo</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">bootTime</span>&gt; (system boot time).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-185989F6-9258-4BF9-A119-3253C1B048C1">
+          <p class="p">Extended focus configuration capability <a class="xref" href="GUID-144E2166-F73C-4FA0-BA9D-0D6D930A2CD1.html#GUID-144E2166-F73C-4FA0-BA9D-0D6D930A2CD1" title="FocusConfiguration capability message in XML format">XML_Cap_FocusConfiguration</a> (related URI: <a class="xref" href="GUID-913CB036-1353-4FEA-AB65-B729CD74B3F6.html#GUID-913CB036-1353-4FEA-AB65-B729CD74B3F6" title="Get the focus configuration capability.">/ISAPI/Image/channels/&lt;ID&gt;/focusConfiguration/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added two nodes &lt;<span class="keyword parmname">focusStatus</span>&gt; (focus status) and
+              &lt;<span class="keyword parmname">motorMovementType</span>&gt; (motor movement type).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-17F8A993-2B2D-4D8D-91B0-9A55777C64A3">
+          <p class="p">Added one URI for getting focus status: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-BB4466E3-9A29-4F39-9C91-9808ECC1488B.html#GUID-BB4466E3-9A29-4F39-9C91-9808ECC1488B" title="Get the focus status.">/ISAPI/Image/channels/&lt;ID&gt;/focusConfiguration/status?format=json</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9ADEFF41-BDE2-4BCA-9BB0-EEB18BBE1F99"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.5.25_Aug., 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_GQ1_SLH_QMB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-671F007F-F39D-4D08-8B70-4C4FDE593D12">
+          <p class="p">Extended audible warning configuration capability <a class="xref" href="GUID-0F05BA6F-BB0B-4A14-9D62-AA60229D0229.html#GUID-0F05BA6F-BB0B-4A14-9D62-AA60229D0229" title="JSON message about audible warning configuration capability">JSON_AudioAlarmCap</a> (related URI: <a class="xref" href="GUID-B149E8B2-C46E-44B0-944C-31AAD79D1A4D.html#GUID-B149E8B2-C46E-44B0-944C-31AAD79D1A4D" title="Get audible warning configuration capability.">/ISAPI/Event/triggers/notifications/AudioAlarm/capabilities?format=json</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one audio type 16 (AI custom audio file) to node <span class="keyword parmname">audioTypeListCap</span>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-611BA0BC-1B5D-45E1-ACD0-1FB774F8FDB0">
+          <p class="p">Extended information of custom alarm audio file <a class="xref" href="GUID-D0F77457-63AF-4F34-954F-B22B7E6580B4.html#GUID-D0F77457-63AF-4F34-954F-B22B7E6580B4" title="JSON message about the custom alarm audio file">JSON_GetCustomAudio</a> (related URI: <a class="xref" href="GUID-B9BA992F-D09E-4E6F-AF7F-2E97D6B553F6.html#GUID-B9BA992F-D09E-4E6F-AF7F-2E97D6B553F6" title="Get the custom alarm audio file.">/ISAPI/Event/triggers/notifications/AudioAlarm/customAudioInfo?format=json</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one node <span class="keyword parmname">AudioType</span> (audio file
+            type).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-3D8E48E4-7A01-48A8-8677-698C0FFB0CC0">
+          <p class="p">Extended the information of custom alarm audio file to be imported <a class="xref" href="GUID-B8762B94-763D-4E71-A95A-64100074B7A3.html#GUID-B8762B94-763D-4E71-A95A-64100074B7A3" title="JSON message about information of custom alarm audio file to be imported">JSON_ImportCustomAudio</a> (related URI: <a class="xref" href="GUID-CB471230-83C4-49E6-AC4E-5DE78E879A66.html#GUID-CB471230-83C4-49E6-AC4E-5DE78E879A66" title="Import custom alarm audio file.">/ISAPI/Event/triggers/notifications/AudioAlarm/customAudio?format=json</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added two nodes <span class="keyword parmname">AudioType</span> (audio file
+            type) and <span class="keyword parmname">isCover</span> (whether to cover the audio file with
+            same name).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F4ECF9A3-7CA3-4EDA-A9AD-FF003C24F7CC">
+          <p class="p">Extended the device capability <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> (related URI: <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added two nodes &lt;<span class="keyword parmname">isSupportAIOpenPlatform</span>&gt; (whether the device supports AI open platform
+            capabilities) and &lt;<span class="keyword parmname">isSupportPictureDownloadError</span>&gt; (whether the device supports reporting
+            picture download failure).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-D5FFFFD1-95C7-4155-AC45-9645DC6FBFEE"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.5.20_Sept, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_J13_NH3_CNB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-93D503F8-C4C4-4C12-84B2-F2BD3DB8923F">
+          <p class="p">Extended the device capability <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> (related URI: <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">characteristicCode</span>&gt;
+            (device attribute code).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-65D510DA-AF08-4E2E-9037-B4212B3F0431">
+          <p class="p">Added one URI for getting the device attribute code (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>): <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-43743902-3796-41C7-8862-B1FC7EDF8DC3.html#GUID-43743902-3796-41C7-8862-B1FC7EDF8DC3" title="Get the device attribute code.">/ISAPI/System/deviceInfo/characteristicCode?format=json</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-94EB0D88-A392-4420-A958-2D6C931D3C52">
+          <p class="p">Extended the capability of exporting diagnosis information <a class="xref" href="GUID-E22563C8-445E-4BF3-8DDE-33C8414F1D08.html#GUID-E22563C8-445E-4BF3-8DDE-33C8414F1D08" title="XML message about capability of exporting diagnose information">XML_Cap_DiagnosedDataParameter</a> (related URI: <a class="xref" href="GUID-38A14286-4040-47B8-86DC-E1710DF15201.html#GUID-38A14286-4040-47B8-86DC-E1710DF15201" title="Get the capability of exporting device diagnose information.">/ISAPI/System/diagnosedData/parameter/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportServer</span>&gt;
+            (whether the device supports diagnostic server configuration).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-776A439C-6EB2-43F0-AC58-7240A538C64F">
+          <p class="p">Added URIs for diagnostic server configuration (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">Get the diagnostic server capability: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-1A7814B2-B03F-4AFC-961D-05CA81360D8A.html#GUID-1A7814B2-B03F-4AFC-961D-05CA81360D8A" title="Get the diagnostic server capability.">/ISAPI/System/diagnosedData/server/capabilities?format=json</a>;</p>
+
+          <p class="p">Get or set diagnostic server parameters: <span class="ph synph">GET</span> or
+              <span class="ph synph">PUT</span>
+            <a class="xref" href="GUID-292D8AD7-7D85-4897-B37D-25D5B2717D06.html#GUID-292D8AD7-7D85-4897-B37D-25D5B2717D06" title="Get or set the diagnostic server parameters.">/ISAPI/System/diagnosedData/server?format=json</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-30BF4B04-EE34-4D4F-BFF3-EDE6EE778022">
+          <p class="p">Added one URI for testing diagnostic server (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>): <span class="ph synph">POST</span>
+            <a class="xref" href="GUID-B2925C03-3C09-4DD2-A0A5-6CD9693660AC.html#GUID-B2925C03-3C09-4DD2-A0A5-6CD9693660AC" title="Test the diagnostic server.">/ISAPI/System/diagnosedData/server/test?format=json</a>.</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-4E081B44-A42B-4857-A87B-8EFFC854DB06"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.5.15_Aug., 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_DC5_CMY_PMB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-5D4A8716-5786-4DC6-88EB-D37ABA2AC0E5">
+          <p class="p">Extended the network capability message <a class="xref" href="GUID-62A83405-10A1-4956-8E53-1267242B4514.html#GUID-62A83405-10A1-4956-8E53-1267242B4514" title="NetworkCap capability message in XML format">XML_NetworkCap</a> (related URI: <a class="xref" href="GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F.html#GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F" title="Get the network capability.">/ISAPI/System/Network/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added two nodes &lt;<span class="keyword parmname">isSupportEZVIZUnbind</span>&gt; (whether it supports unbinding devices from the
+            Guarding Vision account) and &lt;<span class="keyword parmname">isSupportEZVIZQRcode</span>&gt; (whether it supports getting the Guarding Vision QR
+            code).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-C4F5BA17-08A8-49F5-A7DE-E4A13E00DA45">
+          <p class="p">Added a URI of getting the Guarding Vision QR code of the device (related
+            API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>): <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-D6227106-0582-45D1-AE06-E90B96952EAC.html#GUID-D6227106-0582-45D1-AE06-E90B96952EAC" title="Get the Guarding Vision QR code of the device.">/ISAPI/System/Network/EZVIZ/QRCode</a>.</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-E06ED8BA-3AC4-43AD-8297-9D8F91797F0E"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.5.5_July, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9720FEC1-FEF2-41E0-BC72-8CAF9C537C35">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-1720AACA-7217-40A3-9D67-4E815AEA2578">
+          <p class="p">Extended wireless dial-up capability message <a class="xref" href="GUID-9860FDBD-CC23-4877-9B5C-2B91E5F38DA9.html#GUID-9860FDBD-CC23-4877-9B5C-2B91E5F38DA9" title="Dial capability message in XML format">XML_Cap_Dial</a> and wireless dial-up parameter message <a class="xref" href="GUID-282108CC-4BF1-4C90-86B0-7D4F9F607A3C.html#GUID-282108CC-4BF1-4C90-86B0-7D4F9F607A3C" title="Dial message in XML format">XML_Dial</a> (related URIs: <a class="xref" href="GUID-31C50AE4-341D-4A8B-B579-50B1F5359B23.html#GUID-31C50AE4-341D-4A8B-B579-50B1F5359B23" title="Get the wireless dial-up capability.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/dial/capabilities</a> and <a class="xref" href="GUID-5B4E28F7-ED22-491F-8204-BA80310DC74A.html#GUID-5B4E28F7-ED22-491F-8204-BA80310DC74A" title="Operations about the wireless dial-up configuration.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/dial</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added four nodes: &lt;<span class="keyword parmname">ISPName</span>&gt; (ISP
+            name), &lt;<span class="keyword parmname">IMEINo</span>&gt; (IMEI code), &lt;<span class="keyword parmname">ICCID</span>&gt; (ICCID code), and &lt;<span class="keyword parmname">netType</span>&gt; (network type).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9CA82076-60DD-4777-A028-7F5A84A1998E">
+          <p class="p">Extended condition message of searching for specific resources <a class="xref" href="GUID-FF26CB5C-EF0B-4F4F-AF28-5428388FFA3A.html#GUID-FF26CB5C-EF0B-4F4F-AF28-5428388FFA3A" title="XML message about search conditions of video and picture">XML_VideoPic_CMSearchDescription</a> (related URI: <a class="xref" href="GUID-4DBB1778-5E0E-46B0-84D7-9268EC5FD6ED.html#GUID-4DBB1778-5E0E-46B0-84D7-9268EC5FD6ED" title="Search for specified resources.">/ISAPI/ContentMgmt/search</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added a sub node <span class="keyword parmname">pircamID</span> (pircam search
+            ID) to the node <span class="keyword parmname">contentTypeList</span>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-30490D79-BD34-4F53-8FED-CE5F81A34B6D">
+          <p class="p">Extended event linkage notification message <a class="xref" href="GUID-1C25AE20-13DC-4B34-ABFB-1B951C0F1886.html#GUID-1C25AE20-13DC-4B34-ABFB-1B951C0F1886" title="Event linkage notification message in XML format">XML_EventTriggerNotification</a> (related URI: <a class="xref" href="GUID-5FED129E-CC9A-439F-8A06-5CBF8CD4DAF6.html#GUID-5FED129E-CC9A-439F-8A06-5CBF8CD4DAF6" title="Operations about configurations of alarm/event linkage actions.">/ISAPI/Event/triggers/&lt;eventType&gt;-&lt;channelID&gt;/notifications</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added two linkage actions "siren" (siren linkage) and "output" (relay
+            linkage) to the sub node <span class="keyword parmname">EventTriggerNotification</span> of
+            the node <span class="keyword parmname">EventTriggerNotificationList</span>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-C6826A4C-3251-4B25-91D6-19EBEA2E0485">
+          <p class="p">Extended alarm linkage capability message <a class="xref" href="GUID-DC6B9540-35EE-4529-812C-EADCA8E6B11E.html#GUID-DC6B9540-35EE-4529-812C-EADCA8E6B11E" title="XML message about linkage capabilities of different alarm categories">XML_EventTriggersCap</a> (related URI: <a class="xref" href="GUID-ED21D2B5-B36E-4188-9D1C-083D0000A3FD.html#GUID-ED21D2B5-B36E-4188-9D1C-083D0000A3FD" title="Get alarm linkage capability.">/ISAPI/Event/triggersCap</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added two sub nodes to the node <span class="keyword parmname">DiskfullTriggerCap</span>, i.e., <span class="keyword parmname">isSupportSiren</span>
+            (whether it supports siren linkage) and <span class="keyword parmname">isSupportOutput</span>
+            (whether it supports relay linkage).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-66CDC378-ED2F-4AF0-B501-7C5B7443C5D3">
+          <p class="p">Added 8 sub status codes to status code 4 (Invalid Operation) in <a class="xref" href="GUID-C4BA9253-2E18-4292-942F-7CD65AF6E8B0.html#GUID-C4BA9253-2E18-4292-942F-7CD65AF6E8B0" title="The response codes returned during the text protocol integration is based on the status codes of HTTP. 7 kinds of status codes are predefined, including 1 (OK), 2 (Device Busy), 3 (Device Error), 4 (Invalid Operation), 5 (Invalid Message Format), 6 (Invalid Message Content), and 7 (Reboot Required). Each kind of status code contains multiple sub status codes, and the response codes are in a one-to-one correspondence with the sub status codes.">Response Codes of Text Protocol</a>:</p>
+
+          <p class="p">0x40008038-"overAudioFileNumLimit" (The number of audio files exceeds the
+            limit), 0x40008039-"audioFileNameIsLong" (The audio file name is too long),
+            0x4000803a-"audioFormatIsWrong" (The audio file format is invalid),
+            0x4000803b-"audioFileIsLarge" (The size of the audio file exceeds the limit),
+            0x4000803c-"pircamCapTimeOut" (Capturing of pircam timed out),
+            0x4000803d-"pircamCapFail" (Capturing of pircam failed), 0x4000803e-"pircamIsCaping"
+            (The pircam is capturing), and 0x4000803f-"audioFileHasExisted" (The audio file already
+            exists).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-4E906EE5-2A96-4271-A779-34AE69865128"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4.40_July, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_GX3_Z4M_GMB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-49215D43-F4B6-4B8D-8C17-433388A4254B">
+          <p class="p">Extended the device parameter structure (V30) <a class="xref" href="GUID-E8E16809-6EF2-40AA-9388-476167767369.html#GUID-E8E16809-6EF2-40AA-9388-476167767369" title="Device parameter structure (V30).">NET_DVR_DEVICEINFO_V30</a>:</p>
+
+          <p class="p">added one value bySupport4&amp;0x02 (whether the device supports
+            transmitting form format data) to the member <span class="keyword parmname">bySupport4</span>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-DC3ABF87-1005-497B-AF2D-A90E1594169B">
+          <p class="p">Extended the capability of digital video channel proxy <a class="xref" href="GUID-4F6F9561-3B65-48E0-9B34-2FB355575A14.html#GUID-4F6F9561-3B65-48E0-9B34-2FB355575A14" title="StreamingChannel capability message in XML format">XML_Cap_StreamingChannel</a> (related URI: <a class="xref" href="GUID-1CABE34A-47F3-4148-88D3-1B2763CB6E48.html#GUID-1CABE34A-47F3-4148-88D3-1B2763CB6E48" title="Get the capability of digital video channel proxy.">/ISAPI/ContentMgmt/StreamingProxy/channels/&lt;ID&gt;/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportPictureByUrl</span>&gt; (whether the device supports capture picture in
+            URL format).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-45D8C9B6-88A4-47E5-AD44-95E4643E539D">
+          <p class="p">Added URIs for capturing the picture in URL format (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">Get capability: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-5F5509BA-F442-4A31-B92D-12B6BEE4C264.html#GUID-5F5509BA-F442-4A31-B92D-12B6BEE4C264" title="Get the capability of capturing picture in URL format">/ISAPI/ContentMgmt/StreamingProxy/channels/&lt;ID&gt;/PictureByUrl/capabilities?format=json</a>;</p>
+
+          <p class="p">Capture the picture in URL format: <span class="ph synph">POST</span>
+            <a class="xref" href="GUID-FEA17838-CD4E-4E4B-975F-2790274DE2C5.html#GUID-FEA17838-CD4E-4E4B-975F-2790274DE2C5" title="Capture the picture in URL format.">/ISAPI/ContentMgmt/StreamingProxy/channels/&lt;ID&gt;/PictureByUrl?format=json</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-EB5D6AE1-1086-4EE9-9102-A54606D046DA">
+          <p class="p">Extended the Guarding Vision access configuration capability <a class="xref" href="GUID-015416B8-5129-4B39-9464-1CC8C708A4BA.html#GUID-015416B8-5129-4B39-9464-1CC8C708A4BA" title="XML message about the EZVIZ access configuration capability">XML_Cap_EZVIZ</a> (related URI: <a class="xref" href="GUID-FD713860-DAB1-45F5-8BD9-142C99796421.html#GUID-FD713860-DAB1-45F5-8BD9-142C99796421" title="Get the Guarding Vision access configuration capability.">/ISAPI/System/Network/EZVIZ/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportEZVIZQRCode</span>&gt; (whether the device supports getting the Guarding
+            Vision QR code).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-A91B2025-3CED-4C08-AFD9-BBBC7855E8B6">
+          <p class="p">Added one URI for getting Guarding Vision QR code (related API:<a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>): <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-26F5FBCF-42DE-41CD-A423-75FAFA4AFD89.html#GUID-26F5FBCF-42DE-41CD-A423-75FAFA4AFD89" title="Get the Guarding Vision QR code.">/ISAPI/System/Network/EZVIZ/QRCode?format=json</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-41F40359-3B44-49A7-9153-07097194756C">
+          <p class="p">Extended the HDD parameters <a class="xref" href="GUID-346935B9-12FD-4991-A10D-9BE7EECA48FB.html#GUID-346935B9-12FD-4991-A10D-9BE7EECA48FB" title="XML message about HDD parameters">XML_hdd</a> and HDD list parameters <a class="xref" href="GUID-E7AB4271-8F50-488F-8BAE-B862A9CF9ED3.html#GUID-E7AB4271-8F50-488F-8BAE-B862A9CF9ED3" title="XML message about HDD list parameters">XML_hddList</a> (related URI: <a class="xref" href="GUID-3E6FF28E-0136-4040-81D6-C75802BA2451.html#GUID-3E6FF28E-0136-4040-81D6-C75802BA2451" title="Get configuration parameters of all HDDs.">/ISAPI/ContentMgmt/Storage/hdd</a> and <a class="xref" href="GUID-0722101F-EA5D-4051-8CBA-8D1347E0EFA9.html#GUID-0722101F-EA5D-4051-8CBA-8D1347E0EFA9" title="Get and set parameters for a specific HDD.">/ISAPI/ContentMgmt/Storage/hdd/&lt;ID&gt;</a>; related API:<a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>): </p>
+
+          <p class="p">added three values to node &lt;<span class="keyword parmname">status</span>&gt;
+            (HDD status): "synching" (synchronizing), "syncError" (synchronization exception), and
+            "unloaded".</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-3362A0F2-ACC8-406E-A7CC-14E6346B7C1E">
+          <p class="p">Added the URI for getting the HDD data sync status (related API:<a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>): <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-24185B0F-A3D9-4555-87DF-D0508EBB2B9B.html#GUID-24185B0F-A3D9-4555-87DF-D0508EBB2B9B" title="Get the HDD data sync status. Now only supports data sync from HDD to SSD.">/ISAPI/ContentMgmt/Storage/hdd/&lt;ID&gt;/syncStatus?format=json</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-EB6D59E2-F4EC-4BDE-A63D-5328C6C723CF">
+          <p class="p">Extended the device storage capability <a class="xref" href="GUID-6A64A5F0-39E5-4DEB-9D79-7E695B78AAFD.html#GUID-6A64A5F0-39E5-4DEB-9D79-7E695B78AAFD" title="XML message about device storage capability">XML_RacmCap</a> (related URI: <a class="xref" href="GUID-C8BEE0B2-2EBD-4B9C-ABF8-9FB918CA05AE.html#GUID-C8BEE0B2-2EBD-4B9C-ABF8-9FB918CA05AE" title="Get storage capability.">/ISAPI/ContentMgmt/capabilities</a>; related API:<a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportSSDSMARTTest</span>&gt; (whether the device supports SSD S.M.A.R.T
+            detection).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-A86954B9-4D14-46E3-B8DB-4FDAE60140C5">
+          <p class="p">Extended the device capability <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> (related URI: <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a>; related API:<a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added three nodes: &lt;<span class="keyword parmname">isSupportSSDFileSystemUpgrade</span>&gt; (whether the device supports SSD file
+            system upgrade), &lt;<span class="keyword parmname">isSupportSSDFileSystemFormat</span>&gt;
+            (whether the device supports SSD file system formatting), and &lt;<span class="keyword parmname">isSupportSSDFileSystemCapacity</span>&gt; (whether the device supports getting
+            space distribution information of SSD file system).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-686AABA4-66E3-4F11-96A3-73815C12C9E5">
+          <p class="p">Added URIs for SSD management, see <a class="xref" href="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58.html#GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58" title="The SSD (solid state driver) is used for storage. Here introduces the URIs to implement the functions of SSD file system format, file system upgrade, SSD firmware upgrade, SSD S.M.A.R.T (self-monitoring, analysis, and reporting technology) detection, and so on.">SSD Management</a>for details.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CB874FF9-AC8A-4D64-8042-CBC274048947">
+          <p class="p">Extended the log types <a class="xref" href="GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F.html#GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F" title="The logs generated by the devices during the HCNetSDK integration are classified as five major types, i.e., alarm log (MAJOR_ALARM-01), exception log (MAJOR_EXCEPTION-0x2), operation log (MAJOR_OPERATION-0x3), additional information log (MAJOR_INFORMATION-0x4), and event log (MAJOR_EVENT-0x5). Each major log type corresponds to multiple minor types, see details below.">HCNetSDK Log Types</a>:</p>
+
+          <p class="p">added one minor exception log type "MINOR_EZVIZ_UPGRADE_EXCEPTION"
+            (Guarding Vision upgrade exception);</p>
+
+          <p class="p">added four minor operation log types: "MINOR_LOCAL_SSD_OPERATE_START"
+            (Local SSD operation (firmware operations) started), "MINOR_LOCAL_SSD_OPERATE_STOP"
+            (Local SSD operation (firmware operations) ended), "MINOR_REMOTE_SSD_OPERATE_START"
+            (Remote SSD operation (firmware operations) started), "MINOR_REMOTE_SSD_OPERATE_STOP"
+            (Remote SSD operation (firmware operations) ended).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-E867B81C-4065-4B1E-A4AB-C3CBC79D0E52"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.4.35_July, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_NPP_SQV_2MB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-97034013-8218-4352-B4EB-0512374D7FC9">
+          <p class="p">Extended the enumeration about file types to be uploaded <a class="xref" href="GUID-576C3694-A8D3-44A4-B23B-46D3AA8F3AC1.html#GUID-576C3694-A8D3-44A4-B23B-46D3AA8F3AC1">NET_SDK_UPLOAD_TYPE</a> (related API: <a class="xref" href="GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8.html#GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8" title="Upload file.">NET_DVR_UploadFile_V40</a>):</p>
+
+          <p class="p">added a file type to be uploaded "UPLOAD_SECURITY_CFG_FILE" (configuration file to be
+            securely imported).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CFD98A37-4D7B-4F16-AE23-314D0E6B720F">
+          <p class="p">Extended the enumeration about file types to be downloaded <a class="xref" href="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA.html#GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA" title="Enumerate file types to be downloaded.">NET_SDK_DOWNLOAD_TYPE</a>(related API: <a class="xref" href="GUID-C1BC563E-07E3-49A5-B247-FD785477479B.html#GUID-C1BC563E-07E3-49A5-B247-FD785477479B" title="Start downloading files">NET_DVR_StartDownload</a>):</p>
+
+          <p class="p">added a file type to be downloaded "NET_SDK_DOWNLOAD_SECURITY_CFG_FILE" (configuration
+            file to be securely exported).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-4541FD9E-0ECA-42D0-A69C-379AE816EA45">
+          <p class="p">Extended the log types in <a class="xref" href="GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F.html#GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F" title="The logs generated by the devices during the HCNetSDK integration are classified as five major types, i.e., alarm log (MAJOR_ALARM-01), exception log (MAJOR_EXCEPTION-0x2), operation log (MAJOR_OPERATION-0x3), additional information log (MAJOR_INFORMATION-0x4), and event log (MAJOR_EVENT-0x5). Each major log type corresponds to multiple minor types, see details below.">HCNetSDK Log Types</a>:</p>
+
+          <p class="p">added two minor types, i.e., 0x43a-"MINOR_DSP_START_FAILED" (Starting up
+            DSP failed) and 0x43b-"MINOR_SMART_REGULATION_NOT_ALLOWED" (Intelligent rule is not
+            supported) to major type 0x2 (exception log).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-90C363E5-B430-4E3B-BBB9-21B4CA0AC598"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4.20_June, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_MPK_D3H_XLB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B224C341-9573-497B-8FA7-C7BBAC500AA3">
+          <p class="p">Extended picture search result structure <a class="xref" href="GUID-5A37EEF8-B6F0-4C62-A828-523A816A3AD2.html#GUID-5A37EEF8-B6F0-4C62-A828-523A816A3AD2" title="Picture search result structure.">NET_DVR_FIND_PICTURE_V50</a> (related API: <a class="xref" href="GUID-E6E8BDB3-938D-4AB5-B53C-A198890733F4.html#GUID-E6E8BDB3-938D-4AB5-B53C-A198890733F4" title="Search for pictures by type and time.">NET_DVR_FindPicture</a>):</p>
+
+          <p class="p">added two members <span class="keyword parmname">byThermometryUnit</span>
+            (temperature unit) and <span class="keyword parmname">fFaceSnapTemperature</span>
+            (temperature information of face in captured face picture).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-1EFE8FA0-D42F-4DBB-863E-6410BB32EA0F">
+          <p class="p">Extended the channel attributes <a class="xref" href="GUID-999DBDB2-8941-46BC-8099-F86FA09AC005.html#GUID-999DBDB2-8941-46BC-8099-F86FA09AC005" title="ChannelInfo message in XML format.">XML_ChannelInfo</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-3CFE7B66-C2D6-41F0-9447-D1FB5E7AE603.html#GUID-3CFE7B66-C2D6-41F0-9447-D1FB5E7AE603" title="Get the attributes of a specific channel according to channel ID.">/ISAPI/AUXInfo/attributes/Channels/&lt;ID&gt;</a>):</p>
+
+          <p class="p">added one sub node &lt;<span class="keyword parmname">FaceSnapThermometry</span>&gt; (upload the captured face picture with temperature
+            information) to node &lt;<span class="keyword parmname">Thermal</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-889B1715-C1ED-4ED6-8726-0D2FDDA90010">
+          <p class="p">Extended the audible warning configuration capability <a class="xref" href="GUID-0F05BA6F-BB0B-4A14-9D62-AA60229D0229.html#GUID-0F05BA6F-BB0B-4A14-9D62-AA60229D0229" title="JSON message about audible warning configuration capability">JSON_AudioAlarmCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-B149E8B2-C46E-44B0-944C-31AAD79D1A4D.html#GUID-B149E8B2-C46E-44B0-944C-31AAD79D1A4D" title="Get audible warning configuration capability.">/ISAPI/Event/triggers/notifications/AudioAlarm/capabilities?format=json</a>) and audible warning configurations <a class="xref" href="GUID-26CBB592-B498-444F-A2E6-7A47F509742F.html#GUID-26CBB592-B498-444F-A2E6-7A47F509742F" title="AudioAlarm message in JSON format">JSON_AudioAlarm</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-46CC2F30-3E3D-4CEB-B23E-B842D3EF28BD.html#GUID-46CC2F30-3E3D-4CEB-B23E-B842D3EF28BD" title="Get or set audible warning parameters.">/ISAPI/Event/triggers/notifications/AudioAlarm?format=json</a>):</p>
+
+          <p class="p">added one alarm type "noMaskDetection" (no wearing mask detection) to node
+              <span class="keyword parmname">alarmType</span>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-BF5D280F-AAA8-43F5-A927-1B0561D42FC8">
+          <p class="p">Extended the device event capability <a class="xref" href="GUID-A2514CE9-A8F9-4642-9374-ED00DDD370C7.html#GUID-A2514CE9-A8F9-4642-9374-ED00DDD370C7" title="EventCap capability message in XML format">XML_EventCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-2E58CA89-1FEA-4DEB-9CE1-E57338273E5B.html#GUID-2E58CA89-1FEA-4DEB-9CE1-E57338273E5B" title="Get the device event capability.">/ISAPI/Event/capabilities</a>):</p>
+
+          <p class="p">added two nodes &lt;<span class="keyword parmname">isSupportNoMaskDetection</span>&gt; (whether device supports no wearing mask
+            detection) and &lt;<span class="keyword parmname">isSupportTMPA</span>&gt; (whether device
+            supports temperature measurement pre-alarm).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-E627CC0D-E115-4468-BEBD-CD65988B26B7"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4.20_May, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_HJ2_21L_5LB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-17A17F75-ADB5-4130-B0FA-BE5845344C63">
+          <p class="p">Extended device capability <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a>):</p>
+
+          <p class="p">added five nodes: &lt;<span class="keyword parmname">isSupportPersonArmingTrack</span>&gt; (whether device supports auto person
+            arming), &lt;<span class="keyword parmname">isSupportManualPersonArmingTrack</span>&gt;
+            (whether device supports manual person arming), &lt;<span class="keyword parmname">isSupportGPSCalibrationMode</span>&gt; (whether device supports GPS calibration),
+              &lt;<span class="keyword parmname">isSupportGPSVerification</span>&gt; (whether device
+            supports GPS verification), and &lt;<span class="keyword parmname">isSupportHBDLib</span>&gt;
+            (whether device supports human body picture library).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-4B46F753-9DBB-49D2-97E2-E1389270D7BC">
+          <p class="p">Extended message of event capability supported by a single channel <a class="xref" href="GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C.html#GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C" title="XML message about event capability of a single channel">XML_ChannelEventCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F.html#GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F" title="Get event capabilities supported by the channel.">/ISAPI/Event/channels/&lt;ID&gt;/capabilities</a>):</p>
+
+          <p class="p">added two event types "personArmingTrack" (person arming) and
+            "manualPersonArmingTrack" (manual person arming) to the node &lt;<span class="keyword parmname">eventType</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-E715A965-137E-4225-97C9-6FECF02FC895">
+          <p class="p">Extended the linkage capabilities of different alarm categories <a class="xref" href="GUID-DC6B9540-35EE-4529-812C-EADCA8E6B11E.html#GUID-DC6B9540-35EE-4529-812C-EADCA8E6B11E" title="XML message about linkage capabilities of different alarm categories">XML_EventTriggersCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-ED21D2B5-B36E-4188-9D1C-083D0000A3FD.html#GUID-ED21D2B5-B36E-4188-9D1C-083D0000A3FD" title="Get alarm linkage capability.">/ISAPI/Event/triggersCap</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">HBDLibTriggerCap</span>&gt;
+            (alarm linkage capability of human body picture library).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-01CB3D9A-F2F0-442A-B7D9-36C7DF01D02B">
+          <p class="p">Extended the smart linkage capability <a class="xref" href="GUID-9B01B93B-7D60-40E9-8A57-479AEC287620.html#GUID-9B01B93B-7D60-40E9-8A57-479AEC287620" title="MasterSlaveTrackingCap capability message in XML format">XML_MasterSlaveTrackingCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-1E1A5E41-4D8A-42E9-9412-8D0EA32C485F.html#GUID-1E1A5E41-4D8A-42E9-9412-8D0EA32C485F" title="Get the smart linkage capability.">/ISAPI/MasterSlaveTracking/capabilities</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportLinkedTracking</span>&gt; (whether device supports advanced parameters
+            configuration of linked tracking capture).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B992ACAB-2B81-4456-9190-297A51144BF2">
+          <p class="p">Added a function of configuring advanced parameters of linked tracking
+            capture (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">Get capability: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-D293ED75-E127-419E-904B-B271FE33AC5A.html#GUID-D293ED75-E127-419E-904B-B271FE33AC5A" title="Get capability of configuring advanced parameters of linked tracking capture.">/ISAPI/MasterSlaveTracking/linkedTracking/capabilities?format=json</a>;</p>
+
+          <p class="p">Get or set advanced parameters of linked tracking capture:
+              <span class="ph synph">GET</span> or <span class="ph synph">PUT</span>
+            <a class="xref" href="GUID-A2E17F2B-F558-42DD-A98F-6ABAA7D1D05E.html#GUID-A2E17F2B-F558-42DD-A98F-6ABAA7D1D05E" title="Get or set the advanced parameters of linked tracking capture.">/ISAPI/MasterSlaveTracking/linkedTracking?format=json</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B390F6F1-5EF5-4F1F-B70E-4141D24FFFF7">
+          <p class="p">Extended the capability of exporting device diagnose information <a class="xref" href="GUID-E22563C8-445E-4BF3-8DDE-33C8414F1D08.html#GUID-E22563C8-445E-4BF3-8DDE-33C8414F1D08" title="XML message about capability of exporting diagnose information">XML_Cap_DiagnosedDataParameter</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-38A14286-4040-47B8-86DC-E1710DF15201.html#GUID-38A14286-4040-47B8-86DC-E1710DF15201" title="Get the capability of exporting device diagnose information.">/ISAPI/System/diagnosedData/parameter/capabilities</a>) and device diagnose information exporting parameters <a class="xref" href="GUID-32FDFAB3-C31D-4BC0-8846-F82B79329D43.html#GUID-32FDFAB3-C31D-4BC0-8846-F82B79329D43" title="XML message about parameters of exporting diagnose information">XML_DiagnosedDataParameter</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-E0F822F3-E756-41E5-BE64-F79D0E9DFDBE.html#GUID-E0F822F3-E756-41E5-BE64-F79D0E9DFDBE" title="Get or set the parameters of exporting device diagnose information.">/ISAPI/System/diagnosedData/parameter</a>):</p>
+
+          <p class="p">added three nodes &lt;<span class="keyword parmname">HardwareInfo</span>&gt;
+            (whether to enable exporting hardware information), &lt;<span class="keyword parmname">SoftwareInfo</span>&gt; (whether to enable exporting software information), and
+              &lt;<span class="keyword parmname">logInfo</span>&gt; (whether to enable exporting startup
+            log).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-A902442C-8AC1-4BB6-84A4-04F3DB90175E">
+          <p class="p">Added the URIs for verifying GPS calibration, refer to <a class="xref" href="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85.html#GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-9ABAAB6B-3937-4F9B-B47D-E8BD0666BFBC">GPS Calibration</a> for details.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-33D7AB9A-3ABB-4EFC-B065-AEFB5DF40011">
+          <p class="p">Extended the device protocol capability <a class="xref" href="GUID-57C0B531-90FA-407F-9926-A00FD4ED9CE4.html#GUID-57C0B531-90FA-407F-9926-A00FD4ED9CE4" title="AdminAccessProtocol capability message in XML format">XML_Cap_AdminAccessProtocolList</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-BF5940AF-E1C5-43F2-8D96-4A49CEE9A3E0.html#GUID-BF5940AF-E1C5-43F2-8D96-4A49CEE9A3E0" title="Get device protocol capability.">/ISAPI/Security/adminAccesses/capabilities</a>) and device supported protocol parameters <a class="xref" href="GUID-736854EF-9508-4A41-BC24-B7F55B8C3725.html#GUID-736854EF-9508-4A41-BC24-B7F55B8C3725" title="AdminAccessProtocol message in XML format">XML_AdminAccessProtocol</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-15A3303B-431B-4156-B5ED-B90897850E1E.html#GUID-15A3303B-431B-4156-B5ED-B90897850E1E" title="Get or set parameters of all protocols supported by device.">/ISAPI/Security/adminAccesses</a>):</p>
+
+          <p class="p">added one protocol "Bonjour" to node &lt;<span class="keyword parmname">protocol</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-74A94CE1-2235-40BC-A207-88AE45F2BCA1">
+          <p class="p">Extended the device security capability <a class="xref" href="GUID-CCC2D076-F53E-44DD-89D0-FA0F74924250.html#GUID-CCC2D076-F53E-44DD-89D0-FA0F74924250" title="SecurityCap capability message in XML format">XML_SecurityCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-E4FEA21E-3382-4943-A753-2BF39A623237.html#GUID-E4FEA21E-3382-4943-A753-2BF39A623237" title="Get the security capability of the device.">/ISAPI/Security/capabilities</a>) and <a class="xref" href="GUID-6FF8AFC9-A1EE-4B73-B864-1AB04370488F.html#GUID-6FF8AFC9-A1EE-4B73-B864-1AB04370488F" title="IllegalLoginLock message in XML format">XML_IllegalLoginLock</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-EF5296F5-8889-4BBA-B250-F9D6A1736BD1.html#GUID-EF5296F5-8889-4BBA-B250-F9D6A1736BD1" title="Get or set locking parameters of illegal login.">/ISAPI/Security/illegalLoginLock</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">maxIllegalLoginLockTime</span>&gt; (lock duration when maximum illegal login
+            attempts reached the upper limit).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-565B3D28-EFA5-4055-BB67-3191E98059A0">
+          <p class="p">Extended the PTZ channel capability <a class="xref" href="GUID-77085394-8ED2-4F01-8AD5-6FF3667E17BD.html#GUID-77085394-8ED2-4F01-8AD5-6FF3667E17BD" title="XML message about PTZ channel capability">XML_PTZChanelCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-AEC3808E-ED26-4EBA-889C-095B3F22E4CF.html#GUID-AEC3808E-ED26-4EBA-889C-095B3F22E4CF" title="Get the PTZ control capabilities.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/capabilities</a>):</p>
+
+          <p class="p">added one nodes &lt;<span class="keyword parmname">isSupportGyroVerify</span>&gt; (whether device supports gyroscope attitude
+            calibration).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-96AC3AFA-416F-4D1F-BDF7-39C4E64BC016">
+          <p class="p">Added URIs for calibrating gyroscope attitude (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">Get capability: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-FEA77AA9-67ED-4367-8675-D540E4C2ED11.html#GUID-FEA77AA9-67ED-4367-8675-D540E4C2ED11" title="Get the gyroscope calibration capability.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/gyroVerify/capabilities?format=json</a></p>
+
+          <p class="p">Set gyroscope attitude calibration parameters: <span class="ph synph">PUT</span>
+            <a class="xref" href="GUID-734F164D-61C8-4A0A-AB53-3C6DAF46FA64.html#GUID-734F164D-61C8-4A0A-AB53-3C6DAF46FA64" title="Set the gyroscope calibration parameters.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/gyroVerify?format=json</a></p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-A0966867-F8DC-4659-B74C-95F1B5DAE160">
+          <p class="p">Added two event types "personArmingTrack" (auto person arming) and
+            "manualPersonArmingTrack" (manual person arming) to <a class="xref" href="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D.html#GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D" title="This part lists the alarm or event types that can be received or subscribed via HCNetSDK and the corresponding commands for getting the details.">Supported Alarm/Event Types</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-53CF4C7A-DEE6-4B7E-B02C-5ED2C8E82496">
+          <p class="p">Added one error code 3504-"NET_DVR_UPLOAD_HBDLIBID_ERROR" (incorrect ID of human body
+            picture library) to <a class="xref" href="GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238.html#GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238" title="The errors that may occur during the device network SDK integration are listed here for reference. You can search for the error descriptions according to the error codes or names returned by a specific API (NET_DVR_GetLastError or NET_DVR_GetErrorMsg).">Device Network SDK Errors</a>.</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-59B52656-5F7F-4893-B065-E368939F9D0D"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4.15_June, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_H44_Q3Y_KNB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-5ECC95F5-22D8-42DD-9A10-75F91FF54B71">
+          <p class="p">Extended configuration capability message of the device information <a class="xref" href="GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52.html#GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52" title="MXL message about capability of device information">XML_Cap_DeviceInfo</a> (related URI: <a class="xref" href="GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C.html#GUID-3FF103E7-AA57-4E9A-91A5-0E93500FBC0C" title="Get the device information configuration capability.">/ISAPI/System/deviceInfo/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added a node &lt;<span class="keyword parmname">isSupportNewVersionDevlanguageSwitch</span>&gt; (whether it supports switching
+            language by new version of the protocol).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-8CE639A6-D112-44FF-A67C-2E26506CD708">
+          <p class="p">Extended configuration capability message of the device language <a class="xref" href="GUID-58A9E65D-6F55-4206-99D4-28E7518EAE25.html#GUID-58A9E65D-6F55-4206-99D4-28E7518EAE25" title="DeviceLanguage capability message in XML format">XML_Cap_DeviceLanguage</a> (related URI: <a class="xref" href="GUID-2C4DB88C-E04D-41EE-88FF-A1F0E4CE0E75.html#GUID-2C4DB88C-E04D-41EE-88FF-A1F0E4CE0E75" title="Get the capability of device language configuration.">/ISAPI/System/DeviceLanguage/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added a node &lt;<span class="keyword parmname">upgradeFirmWareEnabled</span>&gt; (whether to upgrade the firmware).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-354FAD83-87E3-4551-A557-B91AFF35B839"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4.15_May, 2020</h2>
+      
+      
+      <p class="p">Added a function of configuring device USB parameters (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+      <p class="p">Get USB parameters configuration capability: <span class="ph synph">GET</span>
+        <a class="xref" href="GUID-AA0C4534-1182-4106-9294-BE1F1E11486B.html#GUID-AA0C4534-1182-4106-9294-BE1F1E11486B" title="Get the USB parameters configuration capability.">/ISAPI/System/usb/capabilities?format=json</a>;</p>
+
+      <p class="p">Get or set USB parameters: <span class="ph synph">GET</span> or <span class="ph synph">PUT</span>
+        <a class="xref" href="GUID-C73E8E48-D4E8-4C3D-92A4-23BA163E82AC.html#GUID-C73E8E48-D4E8-4C3D-92A4-23BA163E82AC" title="Get or set the USB parameters.">/ISAPI/System/usb?format=json</a>.</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-00045538-42A8-464A-A88D-22BFD3795360"><h2 class="title sectiontitle">Summary of Changes in Version
+        V6.1.4.15_April, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_WBJ_KSP_HLB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-D4234D47-051C-4385-9CD6-D8AF87BB857A">
+          <p class="p">Extended the supplement light configuration capability <a class="xref" href="GUID-95401305-FB8E-48B0-93B3-DCB6DF3C67A3.html#GUID-95401305-FB8E-48B0-93B3-DCB6DF3C67A3" title="SupplementLight capability message in XML format">XML_Cap_SupplementLight</a> and supplement light configuration parameters <a class="xref" href="GUID-27B5980C-CA19-45E9-846E-3ADA0B36A916.html#GUID-27B5980C-CA19-45E9-846E-3ADA0B36A916" title="SupplementLight message in XML format">XML_SupplementLight</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URIs: <a class="xref" href="GUID-6534A7A7-2DD7-49CD-B5E4-CC855EDDA8F8.html#GUID-6534A7A7-2DD7-49CD-B5E4-CC855EDDA8F8" title="Get supplement light configuration capability by channel.">/ISAPI/Image/channels/&lt;ID&gt;/supplementLight/capabilities</a> and <a class="xref" href="GUID-C4028049-C6A1-4A99-891C-A2A60F7C0026.html#GUID-C4028049-C6A1-4A99-891C-A2A60F7C0026" title="Get or set supplement light parameters by channel.">/ISAPI/Image/channels/&lt;ID&gt;/supplementLight</a>):</p>
+
+          <p class="p">added two nodes: &lt;<span class="keyword parmname">irLightbrightnessLimit</span>&gt; (IR light brightness limit) and &lt;<span class="keyword parmname">whiteLightbrightnessLimit</span>&gt; (white light brightness
+            limit).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F3BEA310-7B52-408A-9056-6AEA6D2CBABC">
+          <p class="p">Extended the structure about supplement light configuration parameters
+              <a class="xref" href="GUID-4DEA2F15-8D91-478E-848F-F0B52969CCD5.html#GUID-4DEA2F15-8D91-478E-848F-F0B52969CCD5" title="Configuration parameter structure of supplement light">NET_DVR_BUILTIN_SUPPLEMENTLIGHT</a> (related API: <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with command 3728-"NET_DVR_GET_SUPPLEMENTLIGHT", and <a class="xref" href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html#GUID-19B97F95-5F55-48EF-9450-AC33661876D2" title="Set the device parameters.">NET_DVR_SetSTDConfig</a> with command 3729-"NET_DVR_SET_SUPPLEMENTLIGHT"):</p>
+
+          <p class="p">added two members <span class="keyword parmname">byIrLightbrightnessLimit</span> (IR light brightness limit) and <span class="keyword parmname">byWhiteLightbrightnessLimit</span> (white light brightness limit)
+            with two reserved bytes.</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B6AD6E3E-BEA9-41DA-9D0B-3667C2CDDF68"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4.15_Mar., 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_DCD_KKG_ZKB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-3EACFE04-65F8-4BCB-943A-0B44E72A5771">
+          <p class="p">Added function of configuring vibration detection alarm, see <a class="xref" href="GUID-E1B1BF4A-4841-4D36-B525-4B3EB5CB3FBF.html#GUID-E1B1BF4A-4841-4D36-B525-4B3EB5CB3FBF" title="Vibration detection function can be applied to the scenes in which the real-time vibration status of devices should be detected in case people damage the devices on purpose. You can configure the arming schedule and linkage actions of the vibration detection alarm. For those triggered alarms, you can also search for the related pictures.">Configure Vibration Detection Alarm</a> for details.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-92001478-26B7-4F11-A9EC-5A0E532745E9">
+          <p class="p">Extended device capability message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportVibrationDetection</span>&gt; (whether it supports vibration
+            detection).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9B4ABA28-B63A-4073-9C37-52875A30637A">
+          <p class="p">Extended message about event capability of all channels <a class="xref" href="GUID-76B73B45-F16D-4D0A-A1D5-78F59DAB1AE7.html#GUID-76B73B45-F16D-4D0A-A1D5-78F59DAB1AE7" title="Message about event capability of all channels in XML format">XML_ChannelEventCapList</a> and message about event capability of a single channel
+              <a class="xref" href="GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C.html#GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C" title="XML message about event capability of a single channel">XML_ChannelEventCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URIs: <a class="xref" href="GUID-AD45AEF6-547F-4B43-9674-1C143316CF94.html#GUID-AD45AEF6-547F-4B43-9674-1C143316CF94" title="Get the event capability of all channels.">/ISAPI/Event/channels/capabilities</a> and <a class="xref" href="GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F.html#GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F" title="Get event capabilities supported by the channel.">/ISAPI/Event/channels/&lt;ID&gt;/capabilities</a>):</p>
+
+          <p class="p">added one event type "vibrationDetection" (vibration detection) to the
+            node &lt;<span class="keyword parmname">eventType</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-803CD548-8D01-4D4E-A8E4-F31556ED9FF1">
+          <p class="p">Extended message about linkage capabilities of different alarm categories
+              <a class="xref" href="GUID-DC6B9540-35EE-4529-812C-EADCA8E6B11E.html#GUID-DC6B9540-35EE-4529-812C-EADCA8E6B11E" title="XML message about linkage capabilities of different alarm categories">XML_EventTriggersCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-ED21D2B5-B36E-4188-9D1C-083D0000A3FD.html#GUID-ED21D2B5-B36E-4188-9D1C-083D0000A3FD" title="Get alarm linkage capability.">/ISAPI/Event/triggersCap</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">VibrationDetectionTriggerCap</span>&gt; (alarm linkage capability of vibration
+            detection).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B9B78536-DB56-4A4F-B60C-7C1B25920CCF">
+          <p class="p">Extended linkage parameter message <a class="xref" href="GUID-82453EEF-F819-4F0A-9042-151128DBA97C.html#GUID-82453EEF-F819-4F0A-9042-151128DBA97C" title="Linkage parameter message in XML format">XML_EventTrigger</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88.html#GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88" title="Get, set, or delete the alarm linkage action by channel.">/ISAPI/Event/triggers/&lt;eventType&gt;-&lt;channelID&gt;</a>):</p>
+
+          <p class="p">added one event type "vibrationDetection" (vibration detection) to the
+            node &lt;<span class="keyword parmname">eventType</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F9363288-75AB-409A-BED6-F97A30BCB7B5">
+          <p class="p">Extended capability message <a class="xref" href="GUID-C238C9AE-BC5B-47DA-9FBE-9ADBAF705967.html#GUID-C238C9AE-BC5B-47DA-9FBE-9ADBAF705967" title="Capability message of intelligent resources switch in XML format">XML_Cap_VCAResource</a> and configuration message <a class="xref" href="GUID-E45974F8-4F79-4777-AB3F-7ACEE39FB34E.html#GUID-E45974F8-4F79-4777-AB3F-7ACEE39FB34E" title="Message about intelligent resources switch in XML format">XML_VCAResource</a> about intelligent resources switch (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URIs: <a class="xref" href="GUID-38723763-561E-443D-8C9C-5FE74EBDBF98.html#GUID-38723763-561E-443D-8C9C-5FE74EBDBF98" title="Get capability of intelligent resources switch.">/ISAPI/System/Video/inputs/channels/&lt;ID&gt;/VCAResource/capabilities</a> and <a class="xref" href="GUID-201132C1-F9D4-4545-9637-D2DAB7C57C86.html#GUID-201132C1-F9D4-4545-9637-D2DAB7C57C86" title="Operation about configuration of intelligent resources switch.">/ISAPI/System/Video/inputs/channels/&lt;ID&gt;/VCAResource</a>):</p>
+
+          <p class="p">added one intelligent resource type "faceCounting" (face counting) to the
+            node &lt;<span class="keyword parmname">type</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-2A7B2746-205B-435F-B589-97FABD88300E">
+          <p class="p">Extended picture search condition structure <a class="xref" href="GUID-F98830B0-A06A-4CCF-9B04-8335892A46AE.html#GUID-F98830B0-A06A-4CCF-9B04-8335892A46AE" title="Picture search condition structure.">NET_DVR_FIND_PICTURE_PARAM</a> (related API: <a class="xref" href="GUID-E6E8BDB3-938D-4AB5-B53C-A198890733F4.html#GUID-E6E8BDB3-938D-4AB5-B53C-A198890733F4" title="Search for pictures by type and time.">NET_DVR_FindPicture</a>):</p>
+
+          <p class="p">added one picture capture type 0x58 (capture based on vibration detection) to the
+            member <span class="keyword parmname">byFileType</span>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9140FBBF-6DD1-4EFD-BEC3-42E292A9BF3B">
+          <p class="p">Extended picture capture capability message <a class="xref" href="GUID-D0BFB0F7-9E38-4288-A8F8-96EE93579BB8.html#GUID-D0BFB0F7-9E38-4288-A8F8-96EE93579BB8" title="JPEG picture capture capability message in XML format">XML_JpegCaptureAbility</a> (related API: <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a>; related Command: DEVICE_JPEG_CAP_ABILITY; <span class="keyword parmname">pInBuf</span>: <a class="xref" href="GUID-DEB61283-D70D-4E29-B9F0-0FBF82559229.html#GUID-DEB61283-D70D-4E29-B9F0-0FBF82559229" title="Input description message for getting device capability of capturing JPEG picture.">XML_Desc_JpegCaptureAbility</a>):</p>
+
+          <p class="p">added one supported capture type 0x58-"vibrationDetection" (vibration detection) to the
+            sub node &lt;<span class="keyword parmname">supportFileType</span>&gt; of
+              &lt;<span class="keyword parmname">FindPicInfo</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-21B72146-CD45-4CFF-ABCC-1F5E24EB9A6D">
+          <p class="p">Extended the log types in <a class="xref" href="GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F.html#GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F" title="The logs generated by the devices during the HCNetSDK integration are classified as five major types, i.e., alarm log (MAJOR_ALARM-01), exception log (MAJOR_EXCEPTION-0x2), operation log (MAJOR_OPERATION-0x3), additional information log (MAJOR_INFORMATION-0x4), and event log (MAJOR_EVENT-0x5). Each major log type corresponds to multiple minor types, see details below.">HCNetSDK Log Types</a>:</p>
+
+          <p class="p">added two minor types 0x132-"MINOR_VIBRATION_DETECTION_ALARM_BEGIN" (Vibration
+            detection alarm started) and 0x133-"MINOR_VIBRATION_DETECTION_ALARM_END" (Vibration
+            detection alarm started) to major type 0x1 (alarm logs).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F62DC7AC-5072-421A-ACBD-0327BE09E94C"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4_Nov., 2019</h2>
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-46B848D1-79C8-4C3A-AF1C-9FFD5B881437">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-4D4485B5-C928-414A-8EAB-5D37D7BF06C4">
+          <p class="p">Added a local SDK configuration type "NET_SDK_LOCAL_CFG_ASYNC" (asynchronous
+            configuration parameters) to the enumeration <a class="xref" href="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588.html#GUID-AA2E55F8-68E8-45B7-B3D1-970971406588" title="Enumerate the local configuration types of device network SDK.">NET_SDK_LOCAL_CFG_TYPE</a> (related APIs: <a class="xref" href="GUID-CA76A5BB-42FD-42E5-8AAF-9EE269F769CC.html#GUID-CA76A5BB-42FD-42E5-8AAF-9EE269F769CC" title="Get the HCNetSDK's local configuration parameters.">NET_DVR_GetSDKLocalCfg</a> and <a class="xref" href="GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120.html#GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120" title="Set the local parameters.">NET_DVR_SetSDKLocalCfg</a>): </p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CBD5349B-488C-4D86-8688-129FC708A30E">
+          <p class="p">Extended the API (<a class="xref" href="GUID-330F6990-BD23-43C8-AB46-C201EE1EC2FB.html#GUID-330F6990-BD23-43C8-AB46-C201EE1EC2FB" title="Initialize resources to decode audio data for G.711 encoding. This API is available for Linux operating system only.">NET_DVR_InitG711Decoder</a>) about initializing resources for decoding audio data encoded by G.711
+            (only for Linux operating system) : </p>
+
+          <p class="p">added a parameter <span class="keyword parmname">pDecHandle</span> (handle for audio decoding).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-2217901C-A35D-47C6-B3AE-5F5EA925861C">
+          <p class="p">Extended the playback or downloading information structure <a class="xref" href="GUID-996CEEA2-B1A9-48E1-9DE5-58CBEF992F13.html#GUID-996CEEA2-B1A9-48E1-9DE5-58CBEF992F13">NET_DVR_PLAYCOND</a> (related API: <a class="xref" href="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A.html#GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A" title="Download video files by time.">NET_DVR_GetFileByTime_V40</a>): </p>
+
+          <p class="p">added three members, i.e., <span class="keyword parmname">byDownload</span> (whether to download),
+              <span class="keyword parmname">byOptimalStreamType</span> (whether to play back the stream with optimal
+            type), and <span class="keyword parmname">byVODFileType</span> (stream type of downloaded video file) by
+            3 bytes. </p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-93CCC095-7FBF-4EFD-A6A5-E5FCBD566999">
+          <p class="p">Added two initialization parameter types (related API: <a class="xref" href="GUID-7EB8CAB7-E96B-4EB3-96C7-B1896CF44C0F.html#GUID-7EB8CAB7-E96B-4EB3-96C7-B1896CF44C0F" title="Set initialization parameters.">NET_DVR_SetSDKInitCfg</a>):</p>
+
+          <p class="p">"NET_SDK_INIT_CFG_LIBEAY_PATH"-set path (including library name) for libeay32.dll
+            (Windows), libcrypto.so (Linux), and libcrypto.dylib (Mac) of OpenSSL in version 1.1.1
+            and 1.0.2</p>
+
+          <p class="p">"NET_SDK_INIT_CFG_SSLEAY_PATH"-set path (including library name) for ssleay32.dll
+            (Windows), libssl.so (Linux), libssl.dylib (Mac) of OpenSSL in version 1.1.1 and
+            1.0.2</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-E9571CE0-65EE-4FA3-A4FA-3093A35BCBFE">
+          <p class="p">Added the function of log file compression by extended the value of parameter
+              <span class="keyword parmname">bAutoDel</span> in the API <a class="xref" href="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456.html#GUID-813F58DC-160A-40AD-B24E-8CD3D217F456" title="Write log files.">NET_DVR_SetLogToFile</a>: "FALSE"-compress the log files when the number of files reaches
+            50.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F6EDFB8C-2C54-4536-97FF-089BC5DBBF55">
+          <p class="p">Added the support of 64-bit Windows operating system to the audio encoding and decoding
+            APIs: <a class="xref" href="GUID-51FD578A-40DD-4AC4-947B-6236B3D9E3F5.html#GUID-51FD578A-40DD-4AC4-947B-6236B3D9E3F5" title="Encode audio in G.711 mode.">NET_DVR_EncodeG711Frame</a>, <a class="xref" href="GUID-1968492D-873B-42F4-8A7E-D86082E6CAF1.html#GUID-1968492D-873B-42F4-8A7E-D86082E6CAF1" title="Decode the audio to G711 format.">NET_DVR_DecodeG711Frame</a>, <a class="xref" href="GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A.html#GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A" title="Initialize resources for G.722 audio encoding.">NET_DVR_InitG722Encoder</a>, <a class="xref" href="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1.html#GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1" title="Encode audio in G.722 mode.">NET_DVR_EncodeG722Frame</a>, <a class="xref" href="GUID-25093FF5-1174-4CE8-A6D4-04FC1E275851.html#GUID-25093FF5-1174-4CE8-A6D4-04FC1E275851" title="Initialize resources to decode audio data for G.722 encoding.">NET_DVR_InitG722Decoder</a>, and <a class="xref" href="GUID-C61A6DFB-C61E-4400-8B90-49ACA098A24C.html#GUID-C61A6DFB-C61E-4400-8B90-49ACA098A24C" title="Decode the audio to G722 format.">NET_DVR_DecodeG722Frame</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-545D780A-C205-433A-8826-C534791B0183">
+          <p class="p">Added an exception message type to the callback function <a class="xref" href="GUID-CE07B63E-4A20-41FC-8DEF-9FC90EB716B0.html#GUID-CE07B63E-4A20-41FC-8DEF-9FC90EB716B0" title="Exception message callback function.">fExceptionCallBack</a> (related API: <a class="xref" href="GUID-4884769C-52D1-44F7-A077-4A3449CF6FC8.html#GUID-4884769C-52D1-44F7-A077-4A3449CF6FC8" title="Sign up a window handle or callback function for receiving the message of exception, reconnection, and so on.">NET_DVR_SetExceptionCallBack_V30</a>):</p>
+
+          <p class="p">0x804b-"EXCEPTION_VIDEO_DOWNLOAD" (video downloading exception).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9430F90C-4F3F-486B-B949-7C94D2906719">
+          <p class="p">Added an error to <a class="xref" href="GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238.html#GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238" title="The errors that may occur during the device network SDK integration are listed here for reference. You can search for the error descriptions according to the error codes or names returned by a specific API (NET_DVR_GetLastError or NET_DVR_GetErrorMsg).">Device Network SDK Errors</a>: 186-"NET_SDK_ERR_FUNCTION_INVALID" (Invalid function. The
+            asynchronous mode is enabled).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-3EF84BCE-A4FD-4CA6-B1D2-93A34614F10F"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.4.10_Feb., 2020</h2>
+      
+      
+      <p class="p">Added URIs of configuring laser optical axis (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+      <p class="p">get capability: <span class="ph synph">GET</span>
+        <a class="xref" href="GUID-B4C2ED17-1965-4C47-BEC6-6D2D86723061.html#GUID-B4C2ED17-1965-4C47-BEC6-6D2D86723061" title="Get the configuration capability of laser optical axis.">/ISAPI/System/laserOpticalAxis/capabilities?format=json</a>;</p>
+
+      <p class="p">get or set laser optical axis parameters: <span class="ph synph">GET</span> or
+          <span class="ph synph">PUT</span>
+        <a class="xref" href="GUID-BA49C8B2-4422-4E5E-876F-DB78ECB65AAF.html#GUID-BA49C8B2-4422-4E5E-876F-DB78ECB65AAF" title="Get or set laser optical axis parameters.">/ISAPI/System/laserOpticalAxis?format=json</a>;</p>
+
+      <p class="p">adjust laser optical axis: <span class="ph synph">PUT</span>
+        <a class="xref" href="GUID-342FAD4F-E5B4-4D54-B4FD-CBC609258B8D.html#GUID-342FAD4F-E5B4-4D54-B4FD-CBC609258B8D" title="Adjust the laser optical axis.">/ISAPI/System/laserOpticalAxis/goto?format=json</a>.</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-C6BF8215-9DDA-4B78-BE89-68C1680319C8"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.40_Feb., 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_TQG_S35_QKB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-AD20CDD1-2160-4A6D-823A-8E984F44D41F">
+          <p class="p">Extended configuration capability message <a class="xref" href="GUID-58A9E65D-6F55-4206-99D4-28E7518EAE25.html#GUID-58A9E65D-6F55-4206-99D4-28E7518EAE25" title="DeviceLanguage capability message in XML format">XML_Cap_DeviceLanguage</a> and parameter message <a class="xref" href="GUID-61F36496-F280-4896-A765-E02172710BF1.html#GUID-61F36496-F280-4896-A765-E02172710BF1" title="DeviceLanguage message in XML format">XML_DeviceLanguage</a> of device language (related URIs: <a class="xref" href="GUID-2C4DB88C-E04D-41EE-88FF-A1F0E4CE0E75.html#GUID-2C4DB88C-E04D-41EE-88FF-A1F0E4CE0E75" title="Get the capability of device language configuration.">/ISAPI/System/DeviceLanguage/capabilities</a> and <a class="xref" href="GUID-013D9D49-73CE-4E34-85DC-2B9DBB8154CC.html#GUID-013D9D49-73CE-4E34-85DC-2B9DBB8154CC" title="Operations about device language configuration.">/ISAPI/System/DeviceLanguage</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <p class="p">added a language supported by the device "Ukrainian" to the node
+              &lt;<span class="keyword parmname">language</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-59266454-AC3D-4B3D-9900-CCB9613A3D57">
+          <p class="p">Extended log types in <a class="xref" href="GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F.html#GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F" title="The logs generated by the devices during the HCNetSDK integration are classified as five major types, i.e., alarm log (MAJOR_ALARM-01), exception log (MAJOR_EXCEPTION-0x2), operation log (MAJOR_OPERATION-0x3), additional information log (MAJOR_INFORMATION-0x4), and event log (MAJOR_EVENT-0x5). Each major log type corresponds to multiple minor types, see details below.">HCNetSDK Log Types</a>:</p>
+
+          <p class="p">added 20 minor types to additional information logs
+            (MAJOR_INFORMATION-0x4): 0x40e-"MINOR_CLR_USER" (clear all users),
+            0x40f-"MINOR_CLR_CARD" (clear all cards), 0x410-"MINOR_CLR_FINGER_BY_READER" (clear all
+            fingerprints by fingerprint and card reader), 0x411-"MINOR_CLR_FINGER_BY_CARD" (clear
+            all fingerprints by card No.), 0x412-"MINOR_CLR_FINGER_BY_EMPLOYEE_ON" (clear all
+            fingerprints by employee ID), 0x413-"MINOR_DEL_FINGER" (delete a fingerprint),
+            0x414-"MINOR_CLR_WEEK_PLAN" (clear week schedules of access permission control),
+            0x415-"MINOR_SET_WEEK_PLAN" (set the week schedule of access permission control),
+            0x416-"MINOR_SET_HOLIDAY_PLAN" (set the holiday schedule of access permission control),
+            0x417-"MINOR_CLR_HOLIDAY_PLAN" (clear holiday schedules of access permission control),
+            0x418-"MINOR_SET_HOLIDAY_GROUP" (set the holiday group of access permission control
+            schedule), 0x419-"MINOR_CLR_HOLIDAY_GROUP" (clear holiday groups of access permission
+            control schedule), 0x41a-"MINOR_CLR_TEMPLATE_PLAN" (clear access permission control
+            schedules), 0x41b-"MINOR_SET_TEMPLATE_PLAN" (set the access permission control
+            schedule), 0x41c-"MINOR_ADD_CARD" (add a card), 0x41d-"MINOR_MOD_CARD" (edit a card),
+            0x41e-"MINOR_ADD_FINGER_BY_CARD" (add a fingerprint by card No.),
+            0x41f-"MINOR_ADD_FINGER_BY_EMPLOYEE_NO" (add a fingerprint by employee ID),
+            0x420-"MINOR_MOD_FINGER_BY_CARD" (edit a fingerprint by card No.), and
+            0x421-"MINOR_MOD_FINGER_BY_EMPLOYEE_NO" (edit a fingerprint by employee ID).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-E46E0F52-BB58-4DE8-9ADE-4F04B91F788F"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.3.35_Dec., 2019</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_UKT_KBR_DKB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-D5B0719F-08D7-403D-9A82-2A1FA99001D5">
+          <p class="p">Extended the arming parameter structures, i.e., <a class="xref" href="GUID-4B8276A5-2B7C-4E70-BE87-7CA0F244144B.html#GUID-4B8276A5-2B7C-4E70-BE87-7CA0F244144B" title="Arming parameter structure.">NET_DVR_SETUPALARM_PARAM</a> and <a class="xref" href="GUID-BA878909-4020-4AE5-BED9-5D50A78FCE52.html#GUID-BA878909-4020-4AE5-BED9-5D50A78FCE52">NET_DVR_SETUPALARM_PARAM_V50</a>:</p>
+
+          <p class="p">added a member <span class="keyword parmname">bySubScription</span> (subscription parameters) via one
+            reserved byte.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-D3D76443-944C-47E1-936D-14FEF87FF11C">
+          <p class="p">Extended the constant alarm information structure <a class="xref" href="GUID-AF22A4CF-95CE-4154-A6FD-35F3EEC868DA.html#GUID-AF22A4CF-95CE-4154-A6FD-35F3EEC868DA">NET_DVR_ALRAM_FIXED_HEADER</a>:</p>
+
+          <p class="p">added four members, i.e., <span class="keyword parmname">dwPicLen</span> (alarm picture size),
+              <span class="keyword parmname">byPicURL</span> (picture data format), <span class="keyword parmname">byTarget</span>
+            (detection target type), and <span class="keyword parmname">pDataBuff</span> (alarm picture data or URL),
+            to the sub structure <var class="keyword varname">struAlarmChannel</var> (alarm channel parameter
+            structure) of the union <var class="keyword varname">uStruAlarm</var> (alarm information union).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CF61725B-B5E5-4046-B642-ACC9D02679C8"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.30_Jan., 2020</h2>
+      
+      
+      <p class="p">Extended message about version information of algorithm library <a class="xref" href="GUID-4566F47C-AC1E-4B79-943F-FB2A178B5B93.html#GUID-4566F47C-AC1E-4B79-943F-FB2A178B5B93" title="Message about version information of algorithm library in XML format">XML_AlgorithmsVersion</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>, related URI: <a class="xref" href="GUID-C5273A42-D2F2-4594-A7E1-0F8F071DDDCA.html#GUID-C5273A42-D2F2-4594-A7E1-0F8F071DDDCA" title="Get the version information of algorithm library.">/ISAPI/System/algorithmsVersion</a>):</p>
+
+      <p class="p">added two algorithm library names "streetBehavior" (street behavior) and
+        "workBehavior" (work behavior) to the node &lt;<span class="keyword parmname">name</span>&gt; of
+          &lt;<span class="keyword parmname">AlgorithmsVersionInfo</span>&gt;.</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-C501D9C6-F534-4A0B-A685-599C2F3FC4CE"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.25_Dec., 2019</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_FXY_S14_ZJB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F827BD79-69E8-4CAD-9A87-12142ED28CEA">
+          <p class="p">Extended serial port capability <a class="xref" href="GUID-AFFEB0EE-17B2-481A-A019-AA95377006C7.html#GUID-AFFEB0EE-17B2-481A-A019-AA95377006C7" title="Serial port capability message in XML format">XML_SerialCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-704FAA37-5080-4899-A626-9A99BBEB615F.html#GUID-704FAA37-5080-4899-A626-9A99BBEB615F" title="Get the serial port capability of the device.">/ISAPI/System/Serial/capabilities</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportAuthenticationService</span>&gt; (whether the device supports serial
+            port authentication).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-A3820F1B-499C-4FD9-88B9-378FB022CD61">
+          <p class="p">Added URIs of serial authentication service (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+          <ul class="ul" id="GUID-516454BA-B739-48C5-B128-01A388373233__UL_ACH_FCS_ZJB">
+            <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-1FF4B1EE-3E08-43B6-B75B-4220D6D4C55F">
+              <p class="p">Get capability of serial authentication service: <span class="ph synph">GET</span>
+                <a class="xref" href="GUID-9B24EBA6-0E76-4CF5-8AAD-ABDC3AF8D283.html#GUID-9B24EBA6-0E76-4CF5-8AAD-ABDC3AF8D283" title="Get capability of serial authentication service.">/ISAPI/System/Serial/authentication/capabilities?format=json</a>.</p>
+
+            </li>
+
+            <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-2946C484-0F1C-43A5-8C9D-EAF000BAF0E6">
+              <p class="p">Get or set parameters of serial authentication service:
+                  <span class="ph synph">GET</span> or <span class="ph synph">PUT</span>
+                <a class="xref" href="GUID-E9FE7993-6804-40C4-AA85-AE4C64F20BDB.html#GUID-E9FE7993-6804-40C4-AA85-AE4C64F20BDB" title="Get or set parameters of serial authentication service.">/ISAPI/System/Serial/authentication?format=json</a>.</p>
+
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F9AF1318-13D9-4C90-B885-85B417B632E2">
+          <p class="p">Extended device parameter structure <a class="xref" href="GUID-89355155-D06F-4EAA-8188-05D7F8B651D1.html#GUID-89355155-D06F-4EAA-8188-05D7F8B651D1">NET_DVR_DEVICEINFO_V40</a>:</p>
+
+          <p class="p">added one member <span class="keyword parmname">byPassWordResetLevel</span>
+            (whether to prompt the non-admin user to change the password) via one byte.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-299FFE23-2DD6-42E5-8475-FFD7B8B75A63">
+          <p class="p">Extended the batch configuration of SNMP <a class="xref" href="GUID-4B27994B-9FB9-4CEA-9D34-FC78FB4E5B74.html#GUID-4B27994B-9FB9-4CEA-9D34-FC78FB4E5B74" title="XML message about SNMP configuration">XML_SNMP</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-063C4F27-B8DC-440F-B6E5-1B6BA2B16FFE.html#GUID-063C4F27-B8DC-440F-B6E5-1B6BA2B16FFE" title="Get or set batch configuration parameters of SNMP (Simple Network Management Protocol).">/ISAPI/System/Network/SNMP</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">SNMPAdvanced</span>&gt;
+            (advanced parameters).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9248FB0F-D138-4F88-A36E-F98722B84E3C">
+          <p class="p">Extended advanced parameters of SNMP <a class="xref" href="GUID-E50D4D25-A0B1-411F-B7BF-7518A3C23AA6.html#GUID-E50D4D25-A0B1-411F-B7BF-7518A3C23AA6" title="XML message about SNMP advanced parameter configuration">XML_SNMPAdvanced</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-D6792EF8-FA7B-480B-8FD3-4F004B7982F4.html#GUID-D6792EF8-FA7B-480B-8FD3-4F004B7982F4" title="Get or set advanced parameters of SNMP (Simple Network Management Protocol).">/ISAPI/System/Network/SNMP/advanced</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">SNMPTrapReceiverList</span>&gt; (all trap address information of SNMP in version
+            3).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9693D2D3-3F77-4BBB-9E5F-9606EF269BC4">
+          <p class="p">Add URIs of trap address configuration of SNMP in version 3, see <a class="xref" href="GUID-96255498-3AEB-4447-B310-03D6A8227839.html#GUID-96255498-3AEB-4447-B310-03D6A8227839__GUID-79FE9308-4E46-4A1A-B57A-6D3C91BE308F">SNMP Access</a> for details.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-82B25E3F-4BB5-4BA3-AA93-14736C179179">
+          <p class="p">Extended capability <a class="xref" href="GUID-9AA91663-F962-409B-AD4D-04B959D403A7.html#GUID-9AA91663-F962-409B-AD4D-04B959D403A7" title="XML message about capability of RTSP authentication mode">XML_RTSPCertificateCap</a> and parameters <a class="xref" href="GUID-427D0F3E-FF9D-4901-A0B3-75CB6B9D2BCB.html#GUID-427D0F3E-FF9D-4901-A0B3-75CB6B9D2BCB" title="XML message about parameters of RTSP authentication mode">XML_RTSPCertificate</a> of device's RTSP authentication mode, and parameters
+            about certificate types of the web service <a class="xref" href="GUID-EB3FCD98-6715-4BAE-9E1E-12EB0015C670.html#GUID-EB3FCD98-6715-4BAE-9E1E-12EB0015C670" title="WebCertificate message in XML format">XML_WebCertificate</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URIs: <a class="xref" href="GUID-7E0AE2AF-4F57-4AD2-BC0F-22E3FEF1DDD6.html#GUID-7E0AE2AF-4F57-4AD2-BC0F-22E3FEF1DDD6" title="Get the capability of devices' RTSP authentication mode.">/ISAPI/Security/RTSPCertificate/capabilities</a>, <a class="xref" href="GUID-0EBB9522-807E-4006-A75B-88F740A432EF.html#GUID-0EBB9522-807E-4006-A75B-88F740A432EF" title="Get or set parameters of devices' RTSP authentication mode.">/ISAPI/Security/RTSPCertificate</a> and <a class="xref" href="GUID-0D38E414-996A-45F0-A9E3-1BD375B29E57.html#GUID-0D38E414-996A-45F0-A9E3-1BD375B29E57" title="Get or set the certificate type parameters of web service.">/ISAPI/Security/webCertificate</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">SecurityAlgorithm</span>&gt;
+            (authentication algorithm), which contains a sub node &lt;<span class="keyword parmname">algorithmType</span>&gt; (algorithm type).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-D99D35C6-FF9F-4EF2-B931-212BCBCC1E27">
+          <p class="p">Extended security capability of the device <a class="xref" href="GUID-CCC2D076-F53E-44DD-89D0-FA0F74924250.html#GUID-CCC2D076-F53E-44DD-89D0-FA0F74924250" title="SecurityCap capability message in XML format">XML_SecurityCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-E4FEA21E-3382-4943-A753-2BF39A623237.html#GUID-E4FEA21E-3382-4943-A753-2BF39A623237" title="Get the security capability of the device.">/ISAPI/Security/capabilities</a>):</p>
+
+          <p class="p">added one sub node &lt;<span class="keyword parmname">SecurityAlgorithm</span>&gt; (authentication algorithm) to the node &lt;<span class="keyword parmname">WebCertificateCap</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9EE66F73-46C1-446D-B87F-49CEF07506B0">
+          <p class="p">Added URIs to configure log storage mode, see <a class="xref" href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html#GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2" title="You can save the log files in default mode or custom mode. In the default mode, each HDD can save up to 64 MB log files, and the storage space will automatically be overwritten when the space usage reaches 64 MB. In the custom mode, it is available to specify HDDs to save log files.">Configure Log Storage Mode</a> for details.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-FF698001-ACC4-4CC5-B1B6-D6A01C64395B">
+          <p class="p">Extended the log types in <a class="xref" href="GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F.html#GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F" title="The logs generated by the devices during the HCNetSDK integration are classified as five major types, i.e., alarm log (MAJOR_ALARM-01), exception log (MAJOR_EXCEPTION-0x2), operation log (MAJOR_OPERATION-0x3), additional information log (MAJOR_INFORMATION-0x4), and event log (MAJOR_EVENT-0x5). Each major log type corresponds to multiple minor types, see details below.">HCNetSDK Log Types</a>: </p>
+
+          <p class="p">added two minor types 0x2671-"MINOR_LOCAL_EZVIZ_OPERATION" (local EZVIZ
+            operations) and 0x2672-"MINOR_REMOTE_EZVIZ_OPERATION" (remote EZVIZ operations) to
+            operation logs (MAJOR_OPERATION-0x3). </p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-F5A8FE3C-2812-453E-8F26-0724EF2B26B1"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.25_Dec., 2019</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_F2C_TYQ_YJB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CCB6F1CD-0590-4CF9-82D5-ED19CE8E6B9C">
+          <p class="p">Added the function of searching for alarms or events, refer to <a class="xref" href="GUID-673C21A2-6826-491E-BAED-F4FDB4AA91F2.html#GUID-673C21A2-6826-491E-BAED-F4FDB4AA91F2" title="You can search for history alarms or events saved in the storage medium by specific conditions. You can also get the real-time alarm or event immediately when the alarm is triggered or the event occurs.">Search for Alarms or Events</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-59F573AE-AE06-4A12-838D-A7F78D725356">
+          <p class="p">Extended event capability message <a class="xref" href="GUID-EBAA067C-19A4-42A4-BDC6-142DD5A3A818.html#GUID-EBAA067C-19A4-42A4-BDC6-142DD5A3A818" title="EventAbility capability message in XML format">XML_EventAbility</a> (related API: <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a>; capability type: 0x011-"DEVICE_ABILITY_INFO"):</p>
+
+          <p class="p">added a node &lt;<span class="keyword parmname">AlarmSearch</span>&gt; (capability of searching for alarm
+            or event information).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-FA82658F-6A20-4EA6-AAF6-E32F31536A69"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.3.25_Dec., 2019</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_QDM_4S1_YJB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-AFB97846-E7DD-426E-8CCE-AE8FBD0A6750">
+          <p class="p">Added URIs to be transmitted by <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to set clearing parameters of HDD storage space, see <a class="xref" href="GUID-AF1A6462-1C19-4C4B-90D3-AB9AA13B1BA7.html#GUID-AF1A6462-1C19-4C4B-90D3-AB9AA13B1BA7__GUID-6285ADC4-66A2-437E-8B95-0385F440C27C">HDD Clearing</a> for details.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-6633883C-EA25-433D-9A5D-C5A81DC4905C">
+          <p class="p">Extended the condition and result of log search condition and result
+            message (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-C8551A67-9DFE-4783-803B-21B4F3C696A4.html#GUID-C8551A67-9DFE-4783-803B-21B4F3C696A4" title="Search log information.">/ISAPI/ContentMgmt/logSearch?format=json</a>):</p>
+
+          <p class="p">added a node "<span class="keyword parmname">operationType</span>" (operation
+            types) to <a class="xref" href="GUID-9E4F9833-E695-4926-9444-F535E652BE58.html#GUID-9E4F9833-E695-4926-9444-F535E652BE58" title="JSON message about condition information of log search">JSON_SearchCondition</a>.</p>
+
+          <p class="p">added two nodes "<span class="keyword parmname">operationType</span>"
+            (operation types) and "<span class="keyword parmname">remarks</span>" (operation remarks) to
+              <a class="xref" href="GUID-6B777F7A-CCD7-49C1-A8B3-E105FFACC8B9.html#GUID-6B777F7A-CCD7-49C1-A8B3-E105FFACC8B9" title="JSON Message about log search results">JSON_MatchList</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B73C1A3F-7211-4AA6-B770-17FBB9A5AB74">
+          <p class="p">Extended the capability (<a class="xref" href="GUID-02821124-E488-44D0-87CD-97FB12AEE381.html#GUID-02821124-E488-44D0-87CD-97FB12AEE381" title="XML message about video locking and unlocking capability">XML_LockCap</a>) and parameters (<a class="xref" href="GUID-A65B16AD-FC41-484A-A4D7-DB7EAA3973F1.html#GUID-A65B16AD-FC41-484A-A4D7-DB7EAA3973F1" title="XML message about parameters of locking and unlocking video by file name">XML_LockByName</a>) of video file locking and unlocking (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URIs: <a class="xref" href="GUID-EC46FB80-C74C-41A5-951F-EACCDF45331A.html#GUID-EC46FB80-C74C-41A5-951F-EACCDF45331A" title="Get video locking or unlocking capability.">/ISAPI/ContentMgmt/record/control/locks/capabilities</a> and <a class="xref" href="GUID-0CB4D5F8-AC73-4070-A1C3-867EA5AEB0AB.html#GUID-0CB4D5F8-AC73-4070-A1C3-867EA5AEB0AB" title="Lock or unlock videos by file name.">/ISAPI/ContentMgmt/record/control/locks/name</a>):</p>
+
+          <p class="p">added query parameters <span class="keyword parmname">security</span> and
+              <span class="keyword parmname">iv</span> to encrypt the nodes of &lt;<span class="keyword parmname">recorderCode</span>&gt; and &lt;<span class="keyword parmname">policeCode</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-09D48820-2544-4546-A349-2D11E0415270">
+          <p class="p">Extended the file search result (<a class="xref" href="GUID-8C5540B5-16E2-4576-912F-10B80FE40BD7.html#GUID-8C5540B5-16E2-4576-912F-10B80FE40BD7" title="XML message about search results of videos and pictures">XML_VideoPic_CMSearchResult</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-4DBB1778-5E0E-46B0-84D7-9268EC5FD6ED.html#GUID-4DBB1778-5E0E-46B0-84D7-9268EC5FD6ED" title="Search for specified resources.">/ISAPI/ContentMgmt/search</a>):</p>
+
+          <p class="p">added three nodes to the sub node
+              &lt;<span class="keyword parmname">mediaSegmentDescriptor</span>&gt;, i.e., &lt;<span class="keyword parmname">shootingTime</span>&gt; (captured or recorded time), &lt;<span class="keyword parmname">FileTime</span>&gt; (time duration of the video files), and &lt;<span class="keyword parmname">remarks</span>&gt; (file remarks).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-950A5893-4A6C-46E7-9DB4-8F33D147C222">
+          <p class="p">Extended the capability (<a class="xref" href="GUID-92816BD8-5EC5-4441-AE06-3A6FC8AC2358.html#GUID-92816BD8-5EC5-4441-AE06-3A6FC8AC2358" title="JSON message about capability of adding remarks for videos by video ID">JSON_Cap_RemarkList</a>) and parameters (<a class="xref" href="GUID-ED1A942E-D325-4332-A74B-FBD4FD885D46.html#GUID-ED1A942E-D325-4332-A74B-FBD4FD885D46" title="JSON message about remark information list of videos">JSON_RemarkList</a>) of adding remarks to video files by file name (related
+            API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URIs: <a class="xref" href="GUID-4F1D837A-BB05-4D2A-BE85-CED6B03CFCC5.html#GUID-4F1D837A-BB05-4D2A-BE85-CED6B03CFCC5" title="Get capability of adding remarks for videos by video ID.">/ISAPI/ContentMgmt/record/control/remark/capabilities?format=json</a> and <a class="xref" href="GUID-88F503B3-EC37-4280-9EF3-1BA9AD528D6B.html#GUID-88F503B3-EC37-4280-9EF3-1BA9AD528D6B" title="Add remarks for videos by video ID.">/ISAPI/ContentMgmt/record/control/remark?format=json</a>):</p>
+
+          <p class="p">added three nodes, i.e., "<span class="keyword parmname">recordName</span>"
+            (video file name), "<span class="keyword parmname">recorderCode</span>" (ID of device that
+            collects data), and "<span class="keyword parmname">policeCode</span>" (ID of police that
+            collects the data).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-AF2F86A0-2F15-490D-A455-D4C471B2ED34"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.20_Nov., 2019</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_KN3_JF2_WKB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-30BBBE1E-5CDA-42C6-B910-03D96047F721">
+          <p class="p">Added the function of searching for recording start and end time, refer to
+              <a class="xref" href="GUID-F6375406-A6C9-4B67-A4E1-7A10A453E635.html#GUID-F6375406-A6C9-4B67-A4E1-7A10A453E635" title="You can check whether the channel has recorded videos and get the recording start and end time.">Search for Recording Start and End Time by Channel</a> for details.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-0CB66D0C-523B-4AAE-8007-8344F0311178">
+          <p class="p">Extended device storage capability message <a class="xref" href="GUID-6A64A5F0-39E5-4DEB-9D79-7E695B78AAFD.html#GUID-6A64A5F0-39E5-4DEB-9D79-7E695B78AAFD" title="XML message about device storage capability">XML_RacmCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-C8BEE0B2-2EBD-4B9C-ABF8-9FB918CA05AE.html#GUID-C8BEE0B2-2EBD-4B9C-ABF8-9FB918CA05AE" title="Get storage capability.">/ISAPI/ContentMgmt/capabilities</a>):</p>
+
+          <p class="p">Added a node &lt;<span class="keyword parmname">isSupportTimeSearch</span>&gt;
+            (whether it supports searching for recording start and end time by channel).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-03A3B3FC-0B47-4005-ABE1-428189EE23B8">
+          <p class="p">Extended the log types in <a class="xref" href="GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F.html#GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F" title="The logs generated by the devices during the HCNetSDK integration are classified as five major types, i.e., alarm log (MAJOR_ALARM-01), exception log (MAJOR_EXCEPTION-0x2), operation log (MAJOR_OPERATION-0x3), additional information log (MAJOR_INFORMATION-0x4), and event log (MAJOR_EVENT-0x5). Each major log type corresponds to multiple minor types, see details below.">HCNetSDK Log Types</a>:</p>
+
+          <p class="p">added two minor types 0x320-"MINOR_802_1X_AUTH_SUCC" (802.1x
+            authentication succeeded) and 0x321-"MINOR_802_1X_AUTH_FAIL" (802.1x authentication
+            failed) to major type 0x4 (additional information log).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-8AC75A9C-F172-483D-9584-17BC7D2CC450">
+          <p class="p">Extended structure of single physical disk parameter <a class="xref" href="GUID-E060156A-60C1-4573-9BB9-1DD3E1419C08.html#GUID-E060156A-60C1-4573-9BB9-1DD3E1419C08" title="Structure of single physical disk parameter.">NET_DVR_PHY_DISK_INFO</a>:</p>
+
+          <p class="p">added one disk status type 11-"SMR disk does not support RAID" to the
+            member <span class="keyword parmname">byStatus</span>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CCDB3A73-D0D6-4BAA-8B4B-BDB88E6D7855">
+          <p class="p">Extended error codes in <a class="xref" href="GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238.html#GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238" title="The errors that may occur during the device network SDK integration are listed here for reference. You can search for the error descriptions according to the error codes or names returned by a specific API (NET_DVR_GetLastError or NET_DVR_GetErrorMsg).">Device Network SDK Errors</a>:</p>
+
+          <p class="p">added one error code 2269-NET_DVR_SMRDISK_NOT_SUPPORT_RAID (SMR disk does
+            not support RAID).</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-23B21A56-14C0-499B-888D-DE579D225470"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.15_March, 2020</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_TPS_W55_XKB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-21145C2A-C914-4751-A4EB-E38D98D7CC25">
+          <p class="p">Extended the camera parameters capability <a class="xref" href="GUID-7B6A1D3C-6028-417C-80A9-2324308A7026.html#GUID-7B6A1D3C-6028-417C-80A9-2324308A7026" title="CAMERAPARA message in XML format">XML_CAMERAPARA</a>:</p>
+
+          <p class="p">added seven modes to node &lt;<span class="keyword parmname">fusionMode</span>
+            (fusion mode): "Visible" (visible light mode), "fusionB/W" (white and black mode),
+            "city" (city mode), "jungle" (jungle mode), "deset" (desert mode), "sea" (sea mode),
+            "snow" (snow mode);</p>
+
+          <p class="p">added two nodes &lt;<span class="keyword parmname">isSupportGPSControl</span>&gt; (whether device supports GPS control capability) and
+              &lt;<span class="keyword parmname">gearRange</span>&gt; (number of ranges supported by the
+            device).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-04D29325-A893-40D0-8BF3-08AA2C015A37">
+          <p class="p">Extended the structure of camera configuration parameters <a class="xref" href="GUID-BE9716B3-2A64-4AEF-B7A4-50CA68C9FADE.html#GUID-BE9716B3-2A64-4AEF-B7A4-50CA68C9FADE" title="Camera configuration parameter structure">NET_DVR_CAMERAPARAMCFG_EX</a> (related API: <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with command 3368-"NET_DVR_GET_CCDPARAMCFG_EX", and <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with command 3369-"NET_DVR_SET_CCDPARAMCFG_EX")</p>
+
+          <p class="p">added seven modes to member <span class="keyword parmname">byFusionMode</span>:
+            3-visible light mode, 4-black and white fusion mode, 5-jungle (fusion color mode),
+            6-desert (fusion color mode), 7-snow (fusion color mode), 8-sea (fusion color mode),
+            9-city (fusion color mode);</p>
+
+          <p class="p">added one member <span class="keyword parmname">byGPSEnabled</span> (whether
+            to enable GPS) with one reserved byte.</p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-CF2CEE26-6EAE-47BB-B56F-60C405AD7B44"><h2 class="title sectiontitle">Summary of Changes in Version 6.1.3.10_Jan., 2020</h2>
+      
+      
+      <p class="p">Extended device capability message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> (related URI: <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+      <p class="p">added two nodes:
+        &lt;<span class="keyword parmname">isSupportCertificateCaptureEvent&gt;</span>&gt; (whether it supports
+        certificate capture and comparison events) and &lt;<span class="keyword parmname">isSupportAlgorithmsInfo</span>&gt; (whether it supports getting the algorithm library
+        version information).</p>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-A3E8CBC0-03EF-4175-80DF-F0FECF5D4B3E"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.10_Nov., 2019</h2>
+      
+      
+      <ol class="ol" id="GUID-516454BA-B739-48C5-B128-01A388373233__OL_JNS_L15_SJB">
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-6946AE3F-014E-4514-9E14-4673AC7F2C1B">
+          <p class="p">Extended event capability supported by the channel <a class="xref" href="GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C.html#GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C" title="XML message about event capability of a single channel">XML_ChannelEventCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <a class="xref" href="GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F.html#GUID-D5888414-E1AC-49DC-80D1-7899FD002F0F" title="Get event capabilities supported by the channel.">/ISAPI/Event/channels/&lt;ID&gt;/capabilities</a>):</p>
+
+          <p class="p">added one event type "dataPreAlarm" (traffic pre-alarm) to the node
+              &lt;<span class="keyword parmname">eventType</span>&gt;.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-9CBB8303-3455-4C97-82A9-B8AE54551408">
+          <p class="p">Extended traffic monitoring configuration capability <a class="xref" href="GUID-FC67300C-B155-4F9F-98DD-793325A766E2.html#GUID-FC67300C-B155-4F9F-98DD-793325A766E2" title="TrafficMonitorCap message in JSON format">JSON_TrafficMonitorCap</a> and traffic monitoring parameters <a class="xref" href="GUID-55C8C601-E51E-47EF-B174-0F5B5335E156.html#GUID-55C8C601-E51E-47EF-B174-0F5B5335E156" title="TrafficMonitor message in JSON format">JSON_TrafficMonitor</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URIs: <a class="xref" href="GUID-B63CD518-EC4B-48D9-942F-A46F76857FFD.html#GUID-B63CD518-EC4B-48D9-942F-A46F76857FFD" title="Get traffic monitoring configuration capability.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/trafficMonitor/capabilities?format=json</a> and <a class="xref" href="GUID-D1FE8A5D-C793-4CC3-B4C3-4A640AA8BFEC.html#GUID-D1FE8A5D-C793-4CC3-B4C3-4A640AA8BFEC" title="Get traffic monitoring parameters.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/trafficMonitor?format=json</a>):</p>
+
+          <ul class="ul" id="GUID-516454BA-B739-48C5-B128-01A388373233__UL_ORR_XB5_SJB">
+            <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-07D81195-F9F8-492D-B160-16CE7CD78E26">
+              <p class="p">added one data plan type "year" (annual plan) to the node <span class="keyword parmname">packageType</span>.</p>
+
+            </li>
+
+            <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-246AFE1F-73CC-4041-AD19-00D0DAB92180">
+              <p class="p">added one notification method "center" (upload to center) to the node
+                  <span class="keyword parmname">alertType</span>.</p>
+
+            </li>
+
+          </ul>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B57DA85B-AD69-4DC0-BA96-306F8E182CF5">
+          <p class="p">Extended network traffic monitoring status <a class="xref" href="GUID-0D7F1E92-C940-4E4B-B73C-99A137716B1A.html#GUID-0D7F1E92-C940-4E4B-B73C-99A137716B1A" title="TrafficMonitorStatus message in JSON format">JSON_TrafficMonitorStatus</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-97C3C2DF-B9FE-4E00-878E-617DAF8E82F2.html#GUID-97C3C2DF-B9FE-4E00-878E-617DAF8E82F2" title="Get traffic monitoring status.">/ISAPI/System/Network/WirelessDial/Interfaces/&lt;ID&gt;/trafficMonitor/status?format=json</a>):</p>
+
+          <p class="p">added 11 nodes: <span class="keyword parmname">todayUsedUpstreamTrafficValue</span> (today's upstream data usage), <span class="keyword parmname">todayUsedDownstreamTrafficValue</span> (today's downstream data
+            usage), <span class="keyword parmname">monthUsedTrafficValue</span> (data usage of this
+            month), <span class="keyword parmname">monthUsedUpstreamTrafficValue</span> (upstream data
+            usage of this month), <span class="keyword parmname">monthUsedDownstreamTrafficValue</span>
+            (downstream data usage of this month), <span class="keyword parmname">yearUsedTrafficValue</span> (data usage of this year), <span class="keyword parmname">yearUsedUpstreamTrafficValue</span> (upstream data usage of this year), <span class="keyword parmname">yearUsedDownstreamTrafficValue</span> (downstream data usage of this
+            year), <span class="keyword parmname">enabled</span> (whether traffic monitoring is
+            enabled), <span class="keyword parmname">packageType</span> (data plan type), and <span class="keyword parmname">alertValue</span> (alarm value).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-066CAA40-8D5B-4C13-9450-A78F30AEA7E6">
+          <p class="p">Extended network capability <a class="xref" href="GUID-62A83405-10A1-4956-8E53-1267242B4514.html#GUID-62A83405-10A1-4956-8E53-1267242B4514" title="NetworkCap capability message in XML format">XML_NetworkCap</a> (related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>; related URI: <span class="ph synph">GET</span>
+            <a class="xref" href="GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F.html#GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F" title="Get the network capability.">/ISAPI/System/Network/capabilities</a>):</p>
+
+          <p class="p">added one node &lt;<span class="keyword parmname">isSupportWiredandWirelessTrafficMonitor</span>&gt; (whether it supports
+            monitoring traffic of wired NIC and wireless NIC).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-678220D5-68E0-40B0-A106-A9F930C79B96">
+          <p class="p">Extended country index enumeration <a class="xref" href="GUID-515AE0E5-6AE5-4AEF-A2BD-A8CB1EB9A54A.html#GUID-515AE0E5-6AE5-4AEF-A2BD-A8CB1EB9A54A" title="Enumerate country names.">COUNTRY_INDEX</a>:</p>
+
+          <p class="p">added a member <span class="keyword parmname">COUNTRY_INVALID = 0xfd</span>
+              (<span class="keyword parmname">byCountry</span> is invalid and you should use <span class="keyword parmname">CRIndex</span>).</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-6DCD40FE-0E28-4E22-90C1-4D23CC485F72">
+          <p class="p">Added an enumeration about country or region index <a class="xref" href="GUID-DBF4EBF4-7600-4A29-A55F-D64802838E9E.html#GUID-DBF4EBF4-7600-4A29-A55F-D64802838E9E" title="Enumeration about country or region index.">CR_INDEX</a>.</p>
+
+        </li>
+
+        <li class="li" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-B38DBAC6-F0A4-446F-A549-386E303CC547">
+          <p class="p">Extended log types in <a class="xref" href="GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F.html#GUID-7DF7F519-7F8D-4D6A-BB68-D4527180FC3F" title="The logs generated by the devices during the HCNetSDK integration are classified as five major types, i.e., alarm log (MAJOR_ALARM-01), exception log (MAJOR_EXCEPTION-0x2), operation log (MAJOR_OPERATION-0x3), additional information log (MAJOR_INFORMATION-0x4), and event log (MAJOR_EVENT-0x5). Each major log type corresponds to multiple minor types, see details below.">HCNetSDK Log Types</a>:</p>
+
+          <p class="p">added one minor type "MINOR_DATA_PREALARM_ALARM"- 0x127 (network traffic
+            pre-alarm) to alarm logs. </p>
+
+        </li>
+
+      </ol>
+
+    </div>
+
+    <div class="section" id="GUID-516454BA-B739-48C5-B128-01A388373233__GUID-AA9A209E-14EC-427F-80D8-F0EADABF0EF8"><h2 class="title sectiontitle">Summary of Changes in Version
+        6.1.3.5_Nov., 2019</h2>
+      
+      
+      <p class="p">Extended PTZ control capability message <a class="xref" href="GUID-77085394-8ED2-4F01-8AD5-6FF3667E17BD.html#GUID-77085394-8ED2-4F01-8AD5-6FF3667E17BD" title="XML message about PTZ channel capability">XML_PTZChanelCap</a> (related URI: <a class="xref" href="GUID-AEC3808E-ED26-4EBA-889C-095B3F22E4CF.html#GUID-AEC3808E-ED26-4EBA-889C-095B3F22E4CF" title="Get the PTZ control capabilities.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/capabilities</a>; related API: <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a>):</p>
+
+      <p class="p">added a node &lt;<span class="keyword parmname">isSupportPTZCtrlStatus</span>&gt;
+        (whether it supports getting the absolute PTZ position of the current channel).</p>
+
+    </div>
+
+  </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-F2CD393F-29F7-421C-AFBE-AC95149FB603.html">Overview</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A82CDAD6-61F8-4E42-B543-9DF0AABE34F0.html">Introduction</a></span></li><li><span class="topicref"><a href="GUID-7C86C017-AF43-482C-AA05-85031169673D.html">System Requirements</a></span></li><li><span class="topicref"><a href="GUID-C74AA6EA-807D-4D2D-9D15-331E3FF87F1C.html">SDK Component</a></span></li><li><span class="topicref"><a href="GUID-0871100D-7E78-4BDE-9E9A-2ECC3F8AA735.html">Update History</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Version 6.1.X.X</span></li></ul></li><li><span class="topicref"><a href="GUID-39F5E767-B2D1-4102-BF9B-32A92562D9B6.html">Notices</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

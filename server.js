@@ -1,34 +1,29 @@
+const crypto = require("crypto");
 const express = require("express");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
+const { spawn } = require("child_process");
 
 const app = express();
 app.set("trust proxy", true);
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 
 const PORT = process.env.PORT || 3000;
-
-// --- Ayarlar (Railway'de "Variables" sekmesinden ekleyeceksiniz) ---
 const APP_KEY = process.env.HIK_APP_KEY;
 const APP_SECRET = process.env.HIK_APP_SECRET;
-
-// Ilk token istegi icin bolge sunucu adresi (Turkiye -> Europe).
-// Diger bolgeler: Rusya https://hikcentralconnectru.com
-//                 Singapur/Hindistan https://isgp.hikcentralconnect.com
-//                 Guney Amerika https://isa.hikcentralconnect.com
-//                 Kuzey Amerika https://ius.hikcentralconnect.com
-const INITIAL_SERVER = process.env.HIK_INITIAL_SERVER || "https://ieu.hikcentralconnect.com";
-
-// Token ve bolge adresi bellekte tutulur, suresi dolunca yenilenir
-let tokenCache = {
-  accessToken: null,
-  areaDomain: null,
-  expireTime: 0, // epoch saniye
-};
+const INITIAL_SERVER =
+  process.env.HIK_INITIAL_SERVER || "https://ieu.hikcentralconnect.com";
 
 const SDK_BASE_PATH = "/sdk";
 const SDK_DIST_PATH = path.join(__dirname, "sdk", "dist");
 const streamCache = new Map();
+const provisioningTasks = new Map();
+
+let tokenCache = {
+  accessToken: null,
+  areaDomain: null,
+  expireTime: 0,
+};
 
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
@@ -44,7 +39,7 @@ function ensureCredentials(res) {
   if (!APP_KEY || !APP_SECRET) {
     res.status(500).json({
       error:
-        "HIK_APP_KEY / HIK_APP_SECRET ortam degiskenleri tanimli degil. Railway > Variables kismindan ekleyin.",
+        "HIK_APP_KEY / HIK_APP_SECRET ortam degiskenleri tanimli degil. Backend bunlari environment variable olarak okumali.",
     });
     return false;
   }
@@ -70,6 +65,984 @@ function normalizeUrlExpireTime(expireTime) {
   const normalized = normalizeExpireTime(expireTime);
   if (normalized) return normalized;
   return Date.now() + 5 * 60 * 1000;
+}
+
+function createProvisioningTask(input) {
+  const taskId = crypto.randomUUID();
+  const task = {
+    taskId,
+    status: "running",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    input: {
+      cameraIp: input.cameraIp,
+      userName: input.userName,
+      areaName: input.areaName || "",
+      enableDhcp: Boolean(input.enableDhcp),
+      gatewayOverride: input.gatewayOverride || "",
+    },
+    stages: [
+      createStage("Erisim"),
+      createStage("Aktivasyon"),
+      createStage("Cihaz Bilgileri"),
+      createStage("Ag Ayarlari"),
+      createStage("Hik-Connect Ayari"),
+      createStage("Team Hesabina Ekleme"),
+      createStage("Kanal Aktarimi"),
+      createStage("Tamamlandi"),
+    ],
+    result: null,
+    error: null,
+  };
+
+  provisioningTasks.set(taskId, task);
+  return task;
+}
+
+function createStage(name) {
+  return { name, status: "Bekliyor", detail: "" };
+}
+
+function updateTaskStage(task, name, status, detail) {
+  const stage = task.stages.find((item) => item.name === name);
+  if (!stage) {
+    return;
+  }
+
+  stage.status = status;
+  stage.detail = detail;
+  task.updatedAt = new Date().toISOString();
+}
+
+function markTaskFailed(task, error) {
+  task.status = "failed";
+  task.error = sanitizeMessage(error?.message || String(error));
+  task.updatedAt = new Date().toISOString();
+}
+
+function markTaskSucceeded(task, result) {
+  task.status = "completed";
+  task.result = result;
+  task.updatedAt = new Date().toISOString();
+}
+
+function sanitizeMessage(message) {
+  if (!message) return "Bilinmeyen hata";
+  let output = String(message);
+  if (APP_KEY) {
+    output = output.replaceAll(APP_KEY, "***");
+  }
+  if (APP_SECRET) {
+    output = output.replaceAll(APP_SECRET, "***");
+  }
+  return output
+    .replace(/"token"\s*:\s*"[^"]+"/gi, '"token":"***"')
+    .replace(/"accessToken"\s*:\s*"[^"]+"/gi, '"accessToken":"***"')
+    .replace(/Token:\s*[^\s,]+/gi, "Token: ***");
+}
+
+function md5(value) {
+  return crypto.createHash("md5").update(value).digest("hex");
+}
+
+function parseDigestChallenge(headerValue) {
+  if (!headerValue || !/^Digest /i.test(headerValue)) {
+    return null;
+  }
+
+  const challenge = {};
+  const input = headerValue.replace(/^Digest\s+/i, "");
+  const regex = /(\w+)=("([^"]*)"|([^,]+))/g;
+  let match;
+  while ((match = regex.exec(input)) !== null) {
+    challenge[match[1]] = match[3] || match[4];
+  }
+
+  return challenge;
+}
+
+function buildDigestAuthorization({ challenge, method, uri, userName, password }) {
+  const realm = challenge.realm;
+  const nonce = challenge.nonce;
+  const qop = (challenge.qop || "auth").split(",").map((item) => item.trim())[0];
+  const opaque = challenge.opaque;
+  const algorithm = challenge.algorithm || "MD5";
+
+  if (!realm || !nonce || algorithm.toUpperCase() !== "MD5") {
+    throw new Error("Kamera Digest challenge yaniti desteklenmeyen formatta.");
+  }
+
+  const nc = "00000001";
+  const cnonce = crypto.randomBytes(8).toString("hex");
+  const ha1 = md5(`${userName}:${realm}:${password}`);
+  const ha2 = md5(`${method}:${uri}`);
+  const response = qop
+    ? md5(`${ha1}:${nonce}:${nc}:${cnonce}:${qop}:${ha2}`)
+    : md5(`${ha1}:${nonce}:${ha2}`);
+
+  const parts = [
+    `username="${userName}"`,
+    `realm="${realm}"`,
+    `nonce="${nonce}"`,
+    `uri="${uri}"`,
+    `response="${response}"`,
+    `algorithm=MD5`,
+  ];
+
+  if (opaque) {
+    parts.push(`opaque="${opaque}"`);
+  }
+
+  if (qop) {
+    parts.push(`qop=${qop}`, `nc=${nc}`, `cnonce="${cnonce}"`);
+  }
+
+  return `Digest ${parts.join(", ")}`;
+}
+
+async function fetchWithDigest({
+  cameraIp,
+  pathName,
+  method = "GET",
+  userName,
+  password,
+  body = null,
+  contentType = "application/xml",
+  accept = "application/xml",
+}) {
+  const url = `http://${cameraIp}${pathName}`;
+  const headers = { Accept: accept };
+
+  if (body !== null) {
+    headers["Content-Type"] = contentType;
+  }
+
+  let response = await fetch(url, { method, headers, body });
+  if (response.status === 401) {
+    const challenge = parseDigestChallenge(response.headers.get("www-authenticate"));
+    if (!challenge) {
+      const text = await response.text();
+      return { ok: false, status: response.status, body: text, headers: response.headers };
+    }
+
+    const uri = new URL(url).pathname + new URL(url).search;
+    const authorization = buildDigestAuthorization({
+      challenge,
+      method,
+      uri,
+      userName,
+      password,
+    });
+
+    response = await fetch(url, {
+      method,
+      headers: {
+        ...headers,
+        Authorization: authorization,
+      },
+      body,
+    });
+  }
+
+  const text = await response.text();
+  return { ok: response.ok, status: response.status, body: text, headers: response.headers };
+}
+
+function getXmlValue(xml, names) {
+  for (const name of names) {
+    const match = new RegExp(
+      `<(?:\\w+:)?${name}\\b[^>]*>([\\s\\S]*?)<\\/(?:\\w+:)?${name}>`,
+      "i"
+    ).exec(xml);
+    if (match && match[1] != null) {
+      return decodeXml(match[1].trim());
+    }
+  }
+
+  return "";
+}
+
+function replaceXmlValue(xml, names, value) {
+  let updated = xml;
+
+  for (const name of names) {
+    const regex = new RegExp(
+      `(<(?:\\w+:)?${name}\\b[^>]*>)([\\s\\S]*?)(<\\/(?:\\w+:)?${name}>)`,
+      "gi"
+    );
+
+    if (regex.test(updated)) {
+      updated = updated.replace(regex, `$1${escapeXml(value)}$3`);
+    }
+  }
+
+  return updated;
+}
+
+function decodeXml(value) {
+  return value
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&amp;", "&")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&apos;", "'");
+}
+
+function escapeXml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function extractSubStatusCode(xml) {
+  return getXmlValue(xml, ["subStatusCode"]);
+}
+
+function parseActivateStatus(xml) {
+  const activateStatus = getXmlValue(xml, ["activateStatus"]).toLowerCase();
+  const subStatusCode = extractSubStatusCode(xml);
+  return {
+    isActive: ["active", "activated", "1", "true"].includes(activateStatus),
+    isInactive: ["inactive", "notactivated", "not_activated", "0", "false"].includes(activateStatus),
+    subStatusCode,
+  };
+}
+
+function normalizeMac(mac) {
+  return String(mac || "")
+    .replaceAll(":", "-")
+    .trim()
+    .toUpperCase();
+}
+
+function parseDeviceInfo(xml) {
+  const serialNumber = getXmlValue(xml, ["serialNumber"]);
+  const subSerialNumber = getXmlValue(xml, ["subSerialNumber"]);
+  const shortSerial = subSerialNumber || serialNumber;
+  return {
+    model: getXmlValue(xml, ["model"]),
+    serialNumber,
+    shortSerial,
+    subSerialNumber,
+    firmwareVersion: getXmlValue(xml, ["firmwareVersion"]),
+    macAddress: normalizeMac(getXmlValue(xml, ["macAddress"])),
+    rawXml: xml,
+  };
+}
+
+function findInterfaceBlocks(xml) {
+  const blocks = [];
+  const regex = /<(?:\w+:)?(?:NetworkInterface|Interface)\b[^>]*>[\s\S]*?<\/(?:\w+:)?(?:NetworkInterface|Interface)>/gi;
+  let match;
+  while ((match = regex.exec(xml)) !== null) {
+    blocks.push(match[0]);
+  }
+
+  if (blocks.length === 0) {
+    blocks.push(xml);
+  }
+
+  return blocks;
+}
+
+function parseNetworkInterfaces(xml) {
+  return findInterfaceBlocks(xml)
+    .map((block) => ({
+      id:
+        getXmlValue(block, ["id", "interfaceId", "name", "portNo"]) || "-",
+      ipAddress:
+        getXmlValue(block, ["ipAddress", "ipv4Address", "IPAddress"]) || "-",
+      subnetMask:
+        getXmlValue(block, ["subnetMask", "ipv4SubnetMask"]) || "-",
+      gateway:
+        getXmlValue(block, ["DefaultGateway", "defaultGateway", "ipv4DefaultGateway"]) || "-",
+      primaryDns:
+        getXmlValue(block, ["PrimaryDNS", "primaryDNS", "dnsServer1IpAddr", "DNS1"]) || "-",
+      secondaryDns:
+        getXmlValue(block, ["SecondaryDNS", "secondaryDNS", "dnsServer2IpAddr", "DNS2"]) || "-",
+      dhcpMode:
+        getXmlValue(block, ["addressingType", "ipAddressingType", "dhcp", "DHCP"]) || "-",
+      rawXml: block,
+    }))
+    .filter((item) => item.id !== "-" || item.ipAddress !== "-");
+}
+
+function getSubnetPrefix(ipAddress) {
+  const parts = String(ipAddress || "")
+    .split(".")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return parts.length === 4 ? `${parts[0]}.${parts[1]}.${parts[2]}` : null;
+}
+
+function inferGateway(ipAddress, currentGateway, overrideGateway) {
+  if (overrideGateway && overrideGateway.trim()) {
+    return overrideGateway.trim();
+  }
+
+  if (currentGateway && currentGateway !== "-") {
+    return currentGateway;
+  }
+
+  const prefix = getSubnetPrefix(ipAddress);
+  return prefix ? `${prefix}.1` : currentGateway || "";
+}
+
+function updateNetworkXml(rawXml, { gatewayOverride, dns1, dns2, enableDhcp }) {
+  const blocks = findInterfaceBlocks(rawXml);
+  let updated = rawXml;
+
+  for (const block of blocks) {
+    const ipAddress = getXmlValue(block, ["ipAddress", "ipv4Address", "IPAddress"]);
+    const currentGateway = getXmlValue(block, ["DefaultGateway", "defaultGateway", "ipv4DefaultGateway"]);
+    const nextGateway = inferGateway(ipAddress, currentGateway, gatewayOverride);
+
+    let nextBlock = block;
+    nextBlock = replaceXmlValue(nextBlock, ["DefaultGateway", "defaultGateway", "ipv4DefaultGateway"], nextGateway);
+    nextBlock = replaceXmlValue(nextBlock, ["PrimaryDNS", "primaryDNS", "dnsServer1IpAddr", "DNS1"], dns1);
+    nextBlock = replaceXmlValue(nextBlock, ["SecondaryDNS", "secondaryDNS", "dnsServer2IpAddr", "DNS2"], dns2);
+
+    if (enableDhcp) {
+      nextBlock = replaceXmlValue(nextBlock, ["ipAddressingType", "addressingType"], "dynamic");
+      nextBlock = replaceXmlValue(nextBlock, ["DHCP", "dhcp"], "true");
+    }
+
+    updated = updated.replace(block, nextBlock);
+  }
+
+  return updated;
+}
+
+function parseEzvizStatus(xml) {
+  const enabledRaw = getXmlValue(xml, ["enabled"]).toLowerCase();
+  const registerRaw = getXmlValue(xml, ["registerStatus"]).toLowerCase();
+  return {
+    enabled: ["true", "1"].includes(enabledRaw) ? true : ["false", "0"].includes(enabledRaw) ? false : null,
+    registerStatus:
+      ["true", "1"].includes(registerRaw) ? true : ["false", "0"].includes(registerRaw) ? false : null,
+  };
+}
+
+function createVerificationCode(length = 12) {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = crypto.randomBytes(length);
+  let output = "";
+  for (const value of bytes) {
+    output += alphabet[value % alphabet.length];
+  }
+  return output;
+}
+
+async function requestIsapiXml(cameraIp, pathName, userName, password) {
+  const response = await fetchWithDigest({
+    cameraIp,
+    pathName,
+    method: "GET",
+    userName,
+    password,
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      `GET ${pathName} basarisiz. HTTP ${response.status}. ${compactResponseText(response.body)}`
+    );
+    error.status = response.status;
+    error.body = response.body;
+    error.subStatusCode = extractSubStatusCode(response.body);
+    throw error;
+  }
+
+  return response.body;
+}
+
+async function putIsapiXml(cameraIp, pathName, userName, password, body) {
+  const response = await fetchWithDigest({
+    cameraIp,
+    pathName,
+    method: "PUT",
+    userName,
+    password,
+    body,
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      `PUT ${pathName} basarisiz. HTTP ${response.status}. ${compactResponseText(response.body)}`
+    );
+    error.status = response.status;
+    error.body = response.body;
+    error.subStatusCode = extractSubStatusCode(response.body);
+    throw error;
+  }
+}
+
+function compactResponseText(text) {
+  return String(text || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 240);
+}
+
+async function waitForDeviceInfo(cameraIp, userName, password, timeoutMs) {
+  const deadline = Date.now() + timeoutMs;
+  let lastError = null;
+
+  while (Date.now() < deadline) {
+    try {
+      const xml = await requestIsapiXml(cameraIp, "/ISAPI/System/deviceInfo", userName, password);
+      return parseDeviceInfo(xml);
+    } catch (error) {
+      lastError = error;
+      await delay(3000);
+    }
+  }
+
+  throw new Error(
+    `Aktivasyon sonrasi 90 saniye boyunca /ISAPI/System/deviceInfo okunamadi. ${lastError ? sanitizeMessage(lastError.message) : ""}`.trim()
+  );
+}
+
+async function readActivateStatus(cameraIp) {
+  const response = await fetch(`http://${cameraIp}/ISAPI/System/activateStatus`, {
+    method: "GET",
+    headers: { Accept: "application/xml" },
+  });
+  const body = await response.text();
+  return { status: response.status, body };
+}
+
+function resolveSdkHelperCommand() {
+  const exeCandidates = [
+    path.join(
+      __dirname,
+      "src",
+      "HikDiscovery",
+      "HikSdk.SadpConsole",
+      "bin",
+      "Release",
+      "net8.0-windows",
+      "win-x64",
+      "HikSdk.SadpConsole.exe"
+    ),
+    path.join(
+      __dirname,
+      "src",
+      "HikDiscovery",
+      "HikSdk.SadpConsole",
+      "bin",
+      "x64",
+      "Release",
+      "net8.0-windows",
+      "win-x64",
+      "HikSdk.SadpConsole.exe"
+    ),
+  ];
+
+  for (const candidate of exeCandidates) {
+    if (fs.existsSync(candidate)) {
+      return { file: candidate, args: ["activate"] };
+    }
+  }
+
+  return {
+    file: "dotnet",
+    args: [
+      "run",
+      "--project",
+      path.join(__dirname, "src", "HikDiscovery", "HikSdk.SadpConsole", "HikSdk.SadpConsole.csproj"),
+      "-c",
+      "Release",
+      "--",
+      "activate",
+    ],
+  };
+}
+
+async function activateCameraWithSdk(cameraIp, sdkPort, password) {
+  const helper = resolveSdkHelperCommand();
+  const logDir = path.join(
+    __dirname,
+    "src",
+    "HikDiscovery",
+    "HikSdk.SadpConsole",
+    "bin",
+    "sdk-logs"
+  );
+
+  const args = [
+    ...helper.args,
+    "--ip",
+    cameraIp,
+    "--port",
+    String(sdkPort),
+    "--logDir",
+    logDir,
+  ];
+
+  return new Promise((resolve, reject) => {
+    const child = spawn(helper.file, args, {
+      cwd: __dirname,
+      env: {
+        ...process.env,
+        HIKSDK_ACTIVATE_PASSWORD: password,
+      },
+      windowsHide: true,
+    });
+
+    let stdout = "";
+    let stderr = "";
+
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk.toString();
+    });
+
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
+    });
+
+    child.on("error", (error) => {
+      reject(error);
+    });
+
+    child.on("close", (code) => {
+      const lines = stdout
+        .split(/\r?\n/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+      const jsonLine = lines.reverse().find((item) => item.startsWith("{") && item.endsWith("}"));
+
+      if (!jsonLine) {
+        reject(
+          new Error(
+            `HCNetSDK aktivasyon yardimcisi beklenen JSON yanitini vermedi. exitCode=${code}, stderr=${stderr.trim() || "-"}`
+          )
+        );
+        return;
+      }
+
+      try {
+        const payload = JSON.parse(jsonLine);
+        resolve(payload);
+      } catch (error) {
+        reject(new Error(`HCNetSDK yardimci yaniti parse edilemedi. ${error.message}`));
+      }
+    });
+  });
+}
+
+async function limitedSubnetScan({
+  originalIpAddress,
+  userName,
+  password,
+  expectedShortSerial,
+  expectedMacAddress,
+}) {
+  const prefix = getSubnetPrefix(originalIpAddress);
+  if (!prefix) {
+    return null;
+  }
+
+  const concurrency = 16;
+  let index = 1;
+  let found = null;
+
+  async function worker() {
+    while (!found && index <= 254) {
+      const host = index++;
+      const candidateIp = `${prefix}.${host}`;
+
+      try {
+        const xml = await requestIsapiXml(candidateIp, "/ISAPI/System/deviceInfo", userName, password);
+        const info = parseDeviceInfo(xml);
+        if (
+          info.shortSerial &&
+          info.shortSerial.toLowerCase() === String(expectedShortSerial || "").toLowerCase()
+        ) {
+          found = candidateIp;
+          return;
+        }
+
+        if (
+          info.macAddress &&
+          normalizeMac(info.macAddress) === normalizeMac(expectedMacAddress)
+        ) {
+          found = candidateIp;
+          return;
+        }
+      } catch {
+        // subnet probe failures are expected
+      }
+    }
+  }
+
+  await Promise.all(Array.from({ length: concurrency }, () => worker()));
+  return found;
+}
+
+function extractTokenInfo(data) {
+  const rawExpireTime = Number(data.data?.expireTime || data.data?.expire || 0);
+  const expireTime = Number.isFinite(rawExpireTime)
+    ? rawExpireTime > 10_000_000_000
+      ? Math.floor(rawExpireTime / 1000)
+      : rawExpireTime
+    : 0;
+
+  return {
+    accessToken: data.data?.accessToken || data.data?.token || null,
+    areaDomain: data.data?.areaDomain || null,
+    expireTime,
+  };
+}
+
+async function getToken(forceRefresh = false) {
+  const now = Math.floor(Date.now() / 1000);
+  if (!forceRefresh && tokenCache.accessToken && tokenCache.expireTime - now > 60) {
+    return tokenCache;
+  }
+
+  const response = await fetch(`${INITIAL_SERVER}/api/hccgw/platform/v1/token/get`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ appKey: APP_KEY, secretKey: APP_SECRET }),
+  });
+
+  const data = await response.json();
+  const errorCode = String(data.errorCode || data.code || "");
+  if (!response.ok || errorCode !== "0") {
+    throw new Error(
+      `Token alinamadi. ${friendlyOpenApiError(errorCode, data.errorMsg || data.msg || "Token istegi basarisiz.")}`
+    );
+  }
+
+  tokenCache = extractTokenInfo(data);
+  return tokenCache;
+}
+
+async function postOpenApi(pathName, payload, forceRefresh = false) {
+  let token = await getToken(forceRefresh);
+
+  const call = async () => {
+    const response = await fetch(`${token.areaDomain}${pathName}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: token.accessToken,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    return { response, data };
+  };
+
+  let { response, data } = await call();
+  const errorCode = String(data.errorCode || data.code || "");
+  if (errorCode === "OPEN000007" && !forceRefresh) {
+    token = await getToken(true);
+    ({ response, data } = await call());
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      `OpenAPI istegi basarisiz. HTTP ${response.status}. ${data.errorMsg || data.msg || "Bilinmeyen hata"}`
+    );
+  }
+
+  return data;
+}
+
+function friendlyOpenApiError(errorCode, fallback) {
+  switch (errorCode) {
+    case "OPEN000007":
+      return "Token hatasi olustu. Backend tokeni bir kez yenileyip tekrar denedi; sorun devam ederse AK/SK ve area domain ayarlarini kontrol edin.";
+    case "LAP000001":
+      return "Giris parametresi hatasi var.";
+    case "EVZ20007":
+      return "Cihaz Hik-Connect tarafinda cevrimdisi gorunuyor. Gateway ve DNS ayarlarini kontrol edin.";
+    case "EVZ20010":
+      return "Verification code hatali.";
+    case "EVZ20013":
+      return "Cihaz baska bir Hik-Connect hesabina eklenmis.";
+    default:
+      return `${fallback} (errorCode=${errorCode || "yok"})`;
+  }
+}
+
+function* enumerateJsonNodes(node) {
+  if (node == null) {
+    return;
+  }
+
+  yield node;
+
+  if (Array.isArray(node)) {
+    for (const item of node) {
+      yield* enumerateJsonNodes(item);
+    }
+    return;
+  }
+
+  if (typeof node === "object") {
+    for (const value of Object.values(node)) {
+      yield* enumerateJsonNodes(value);
+    }
+  }
+}
+
+function firstInnerErrorCode(data) {
+  for (const node of enumerateJsonNodes(data)) {
+    if (node && typeof node === "object" && typeof node.errorCode === "string" && node.errorCode && node.errorCode !== "0") {
+      return node.errorCode;
+    }
+  }
+
+  return "";
+}
+
+function extractDeviceId(data) {
+  for (const node of enumerateJsonNodes(data)) {
+    if (node && typeof node === "object" && typeof node.deviceId === "string" && node.deviceId.trim()) {
+      return node.deviceId.trim();
+    }
+  }
+
+  return "";
+}
+
+function parseAreas(data) {
+  const areas = [];
+  for (const node of enumerateJsonNodes(data.data)) {
+    if (
+      node &&
+      typeof node === "object" &&
+      node.areaID != null &&
+      node.areaName != null &&
+      String(node.areaID).trim() &&
+      node.areaName
+    ) {
+      areas.push({ areaId: String(node.areaID), areaName: String(node.areaName) });
+    }
+  }
+
+  return areas;
+}
+
+function parseCameraChannels(data) {
+  const channels = [];
+  for (const node of enumerateJsonNodes(data.data)) {
+    if (Array.isArray(node)) {
+      continue;
+    }
+
+    if (node && typeof node === "object" && Array.isArray(node.cameraChannel)) {
+      for (const channel of node.cameraChannel) {
+        if (!channel || typeof channel !== "object") {
+          continue;
+        }
+
+        const id = channel.id || channel.channelID || channel.channelId;
+        if (!id) {
+          continue;
+        }
+
+        const areaIds = [];
+        for (const child of enumerateJsonNodes(channel)) {
+          if (!child || typeof child !== "object") {
+            continue;
+          }
+
+          if (typeof child.areaID === "string" && child.areaID) {
+            areaIds.push(child.areaID);
+          }
+
+          if (child.areaID != null && child.areaID !== "") {
+            areaIds.push(String(child.areaID));
+          }
+
+          if (child.areaId != null && child.areaId !== "") {
+            areaIds.push(String(child.areaId));
+          }
+        }
+
+        channels.push({
+          id: String(id),
+          areaIds: [...new Set(areaIds)],
+        });
+      }
+    }
+  }
+
+  return channels;
+}
+
+async function getAreas() {
+  const data = await postOpenApi("/api/hccgw/resource/v1/areas/get", {});
+  const errorCode = String(data.errorCode || data.code || "");
+  if (errorCode !== "0") {
+    throw new Error(friendlyOpenApiError(errorCode, data.errorMsg || data.msg || "Alan listesi alinamadi."));
+  }
+  const innerError = firstInnerErrorCode(data.data);
+  if (innerError) {
+    throw new Error(friendlyOpenApiError(innerError, "Alan listesi ic hata dondu."));
+  }
+  return parseAreas(data);
+}
+
+async function ensureArea(areaName) {
+  let areas = await getAreas();
+  const existing = areas.find((item) => item.areaName.toLowerCase() === areaName.toLowerCase());
+  if (existing) {
+    return existing;
+  }
+
+  const addData = await postOpenApi("/api/hccgw/resource/v1/areas/add", {
+    parentAreaID: "-1",
+    areaName,
+  });
+
+  const addErrorCode = String(addData.errorCode || addData.code || "");
+  if (addErrorCode !== "0") {
+    throw new Error(friendlyOpenApiError(addErrorCode, addData.errorMsg || addData.msg || "Alan olusturulamadi."));
+  }
+
+  areas = await getAreas();
+  const created = areas.find((item) => item.areaName.toLowerCase() === areaName.toLowerCase());
+  if (!created) {
+    throw new Error(`Alan olusturuldu ancak tekrar okunamadi. areaName=${areaName}`);
+  }
+
+  return created;
+}
+
+async function getDeviceDetail(shortSerial) {
+  const data = await postOpenApi("/api/hccgw/resource/v1/devicedetail/get", {
+    deviceSerialNo: shortSerial,
+  });
+
+  const errorCode = String(data.errorCode || data.code || "");
+  if (errorCode !== "0") {
+    return {
+      exists: false,
+      errorCode,
+      errorMessage: friendlyOpenApiError(errorCode, data.errorMsg || data.msg || "Cihaz detayi alinamadi."),
+      deviceId: "",
+      cameraChannels: [],
+    };
+  }
+
+  return {
+    exists:
+      Boolean(extractDeviceId(data.data)) ||
+      Boolean(parseCameraChannels(data).length),
+    errorCode: "0",
+    errorMessage: "",
+    deviceId: extractDeviceId(data.data),
+    cameraChannels: parseCameraChannels(data),
+  };
+}
+
+async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias, areaId }) {
+  const existingDetail = await getDeviceDetail(shortSerial);
+  let deviceAdded = false;
+  let deviceId = existingDetail.deviceId;
+  let deviceStatusMessage = "";
+
+  if (!existingDetail.exists) {
+    const data = await postOpenApi("/api/hccgw/resource/v1/devices/add", {
+      deviceCategory: "encodingDevice",
+      deviceInfo: {
+        name: alias,
+        ezvizSerialNo: shortSerial,
+        ezvizVerifyCode: verificationCode,
+        userName: "",
+        password: "",
+        streamSecretKey: "",
+      },
+      importToArea: {
+        areaID: areaId,
+        enable: "1",
+      },
+      timeZone: {
+        id: "26",
+        applyToDevice: "1",
+      },
+    });
+
+    const errorCode = String(data.errorCode || data.code || "");
+    const succeeded = Number(data.data?.succeeded || 0);
+    const failed = Number(data.data?.failed || 0);
+    deviceId = extractDeviceId(data.data);
+
+    if (errorCode !== "0" || failed !== 0 || succeeded !== 1 || !deviceId) {
+      const effectiveErrorCode = firstInnerErrorCode(data.data) || errorCode;
+      throw new Error(friendlyOpenApiError(effectiveErrorCode, data.errorMsg || data.msg || "Cihaz Team hesabina eklenemedi."));
+    }
+
+    deviceAdded = true;
+    deviceStatusMessage = "Cihaz eklendi.";
+  } else {
+    deviceStatusMessage = "Cihaz zaten Team hesabinda vardi; tekrar eklenmedi.";
+  }
+
+  const detail = deviceAdded ? await getDeviceDetail(shortSerial) : existingDetail;
+  const channels = detail.cameraChannels || [];
+  if (channels.length === 0) {
+    throw new Error("devicedetail/get yanitinda cameraChannel listesi bulunamadi.");
+  }
+
+  let importedChannelCount = 0;
+  let channelStatusMessage = "";
+
+  if (deviceAdded) {
+    channelStatusMessage =
+      "Cihaz importToArea enable=1 ile eklendi; portalda manuel Import Now gerekmiyor.";
+  } else {
+    const missingChannels = channels.filter(
+      (channel) => !channel.areaIds.some((item) => item.toLowerCase() === areaId.toLowerCase())
+    );
+
+    for (const channel of missingChannels) {
+      const data = await postOpenApi("/api/hccgw/resource/v1/areas/resources/add", {
+        areaID: areaId,
+        devChannel: [
+          {
+            resourceName: alias,
+            resourceType: "camera",
+            channelID: channel.id,
+          },
+        ],
+      });
+
+      const errorCode = String(data.errorCode || data.code || "");
+      if (errorCode !== "0") {
+        throw new Error(friendlyOpenApiError(errorCode, data.errorMsg || data.msg || "Kanal alana aktarilamadi."));
+      }
+
+      const innerError = firstInnerErrorCode(data.data);
+      if (innerError) {
+        throw new Error(friendlyOpenApiError(innerError, "Kanal alana aktarimi ic hata dondu."));
+      }
+
+      importedChannelCount += 1;
+    }
+
+    channelStatusMessage =
+      importedChannelCount > 0
+        ? "Kanal alana aktarildi."
+        : "Tum kamera kanallari secili alandaydi; tekrar import yapilmadi.";
+  }
+
+  return {
+    deviceId: deviceId || detail.deviceId || "",
+    deviceAdded,
+    importedChannelCount,
+    totalChannelCount: channels.length,
+    deviceStatusMessage,
+    channelStatusMessage,
+  };
 }
 
 async function requestLiveAddress({
@@ -116,7 +1089,7 @@ async function requestLiveAddress({
 
     try {
       parsed = JSON.parse(rawText);
-    } catch (err) {
+    } catch {
       attempts.push({
         path: candidatePath,
         status: response.status,
@@ -160,10 +1133,7 @@ async function requestLiveAddress({
   };
 
   if (protocol === 2) {
-    const encryptionBlocked = attempts.some(
-      (attempt) => attempt.errorCode === "EVZ60019"
-    );
-
+    const encryptionBlocked = attempts.some((attempt) => attempt.errorCode === "EVZ60019");
     if (encryptionBlocked) {
       err.details.error =
         "HLS adresi alinamadi. Kamera tarafinda stream encryption acik gorunuyor. Dokumana gore HLS/RTMP icin yayin sifrelemesi kapali olmali.";
@@ -230,7 +1200,7 @@ function buildLocalProxyBase(req, resourceId, deviceSerial, quality) {
   return `${origin}/api/hls/manifest?${params.toString()}`;
 }
 
-function rewriteManifest(content, manifestUrl, req, resourceId, deviceSerial, quality) {
+function rewriteManifest(content, manifestUrl, resourceId, deviceSerial, quality) {
   const lines = content.split(/\r?\n/);
 
   return lines
@@ -266,41 +1236,194 @@ function rewriteManifest(content, manifestUrl, req, resourceId, deviceSerial, qu
     .join("\n");
 }
 
-// Token'i al (gerekirse yenile)
-async function getToken() {
-  const now = Math.floor(Date.now() / 1000);
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  // Token halen gecerliyse (60 saniye pay birakarak) tekrar istek atma
-  if (tokenCache.accessToken && tokenCache.expireTime - now > 60) {
-    return tokenCache;
-  }
+async function runProvisioningTask(task, input) {
+  const normalizedUser = (input.userName || "admin").trim() || "admin";
+  const normalizedIp = input.cameraIp.trim();
+  const sdkPort = Number(input.sdkPort || 8000);
+  const enableDhcp = Boolean(input.enableDhcp);
+  const areaName = (input.areaName || "").trim();
 
-  const response = await fetch(
-    `${INITIAL_SERVER}/api/hccgw/platform/v1/token/get`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ appKey: APP_KEY, secretKey: APP_SECRET }),
+  let activeCameraIp = normalizedIp;
+
+  updateTaskStage(task, "Erisim", "Calisiyor", "Kameraya erisim ve aktivasyon durumu kontrol ediliyor.");
+  const activateStatusResponse = await readActivateStatus(normalizedIp);
+  let isInactive = false;
+
+  if (activateStatusResponse.status === 403) {
+    const subStatusCode = extractSubStatusCode(activateStatusResponse.body);
+    if (subStatusCode.toLowerCase() === "notactivated") {
+      isInactive = true;
+      updateTaskStage(task, "Erisim", "Tamam", "Kamera inactive olarak algilandi.");
+    } else {
+      throw new Error(
+        `Kamera erisimi basarisiz. HTTP 403. subStatusCode=${subStatusCode || "-"}`
+      );
     }
-  );
-
-  const data = await response.json();
-
-  if (data.errorCode !== "0") {
+  } else if (activateStatusResponse.status >= 200 && activateStatusResponse.status < 300) {
+    const activateStatus = parseActivateStatus(activateStatusResponse.body);
+    isInactive = activateStatus.isInactive;
+    updateTaskStage(
+      task,
+      "Erisim",
+      "Tamam",
+      isInactive ? "Kamera inactive olarak algilandi." : "Kamera aktif."
+    );
+  } else {
     throw new Error(
-      `Token alinamadi. errorCode: ${data.errorCode}, cevap: ${JSON.stringify(
-        data
+      `Kamera erisimi basarisiz. HTTP ${activateStatusResponse.status}. ${compactResponseText(
+        activateStatusResponse.body
       )}`
     );
   }
 
-  tokenCache = {
-    accessToken: data.data.accessToken,
-    areaDomain: data.data.areaDomain, // ör: https://isgp.hikcentralconnect.com
-    expireTime: data.data.expireTime,
-  };
+  if (isInactive) {
+    updateTaskStage(task, "Aktivasyon", "Calisiyor", "HCNetSDK ile kamera aktive ediliyor.");
+    const activationResult = await activateCameraWithSdk(normalizedIp, sdkPort, input.password);
+    if (!activationResult.success) {
+      throw new Error(
+        `NET_DVR_ActivateDevice basarisiz. NET_DVR_GetLastError=${activationResult.errorCode}, Message=${activationResult.errorMessage || "-"}`
+      );
+    }
 
-  return tokenCache;
+    updateTaskStage(task, "Aktivasyon", "Tamam", "Kamera aktive edildi.");
+  } else {
+    updateTaskStage(task, "Aktivasyon", "Atlandi", "Kamera zaten aktif.");
+  }
+
+  updateTaskStage(task, "Cihaz Bilgileri", "Calisiyor", "DeviceInfo, ag bilgileri ve EZVIZ durumu okunuyor.");
+  const deviceInfo = isInactive
+    ? await waitForDeviceInfo(activeCameraIp, normalizedUser, input.password, 90_000)
+    : parseDeviceInfo(await requestIsapiXml(activeCameraIp, "/ISAPI/System/deviceInfo", normalizedUser, input.password));
+
+  const networkXml = await requestIsapiXml(
+    activeCameraIp,
+    "/ISAPI/System/Network/interfaces",
+    normalizedUser,
+    input.password
+  );
+  const ezvizXml = await requestIsapiXml(
+    activeCameraIp,
+    "/ISAPI/System/Network/EZVIZ",
+    normalizedUser,
+    input.password
+  );
+  let networkInterfaces = parseNetworkInterfaces(networkXml);
+  const initialEzvizStatus = parseEzvizStatus(ezvizXml);
+  updateTaskStage(task, "Cihaz Bilgileri", "Tamam", `Model=${deviceInfo.model || "-"}, Seri=${deviceInfo.shortSerial || "-"}`);
+
+  updateTaskStage(task, "Ag Ayarlari", "Calisiyor", "Gateway ve DNS ayarlari guncelleniyor.");
+  const updatedNetworkXml = updateNetworkXml(networkXml, {
+    gatewayOverride: input.gatewayOverride || "",
+    dns1: "8.8.8.8",
+    dns2: "1.1.1.1",
+    enableDhcp,
+  });
+  await putIsapiXml(
+    activeCameraIp,
+    "/ISAPI/System/Network/interfaces",
+    normalizedUser,
+    input.password,
+    updatedNetworkXml
+  );
+
+  if (enableDhcp) {
+    const foundIp = await limitedSubnetScan({
+      originalIpAddress: activeCameraIp,
+      userName: normalizedUser,
+      password: input.password,
+      expectedShortSerial: deviceInfo.shortSerial,
+      expectedMacAddress: deviceInfo.macAddress,
+    });
+
+    if (foundIp) {
+      activeCameraIp = foundIp;
+    }
+  }
+
+  const refreshedNetworkXml = await requestIsapiXml(
+    activeCameraIp,
+    "/ISAPI/System/Network/interfaces",
+    normalizedUser,
+    input.password
+  );
+  networkInterfaces = parseNetworkInterfaces(refreshedNetworkXml);
+  updateTaskStage(task, "Ag Ayarlari", "Tamam", `Guncel IP=${activeCameraIp}`);
+
+  updateTaskStage(task, "Hik-Connect Ayari", "Calisiyor", "EZVIZ/Hik-Connect ayari yapiliyor.");
+  const verificationCode = createVerificationCode(12);
+  const enableEzvizXml = `<?xml version="1.0" encoding="UTF-8"?>
+<EZVIZ version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
+  <enabled>true</enabled>
+  <verificationCode>${escapeXml(verificationCode)}</verificationCode>
+</EZVIZ>`;
+  await putIsapiXml(
+    activeCameraIp,
+    "/ISAPI/System/Network/EZVIZ",
+    normalizedUser,
+    input.password,
+    enableEzvizXml
+  );
+
+  const ezvizDeadline = Date.now() + 120_000;
+  let finalEzvizStatus = initialEzvizStatus;
+  while (Date.now() < ezvizDeadline) {
+    await delay(5000);
+    const currentXml = await requestIsapiXml(
+      activeCameraIp,
+      "/ISAPI/System/Network/EZVIZ",
+      normalizedUser,
+      input.password
+    );
+    finalEzvizStatus = parseEzvizStatus(currentXml);
+    if (finalEzvizStatus.registerStatus === true) {
+      break;
+    }
+  }
+
+  if (finalEzvizStatus.registerStatus !== true) {
+    throw new Error(
+      "registerStatus iki dakika icinde true olmadi. Gateway ve DNS baglantisini kontrol edin."
+    );
+  }
+  updateTaskStage(task, "Hik-Connect Ayari", "Tamam", "registerStatus=true oldu.");
+
+  updateTaskStage(task, "Team Hesabina Ekleme", "Calisiyor", "Alan bulunuyor/olusturuluyor ve cihaz Team hesabina ekleniyor.");
+  const effectiveAreaName = areaName || `CAM-${deviceInfo.shortSerial}`;
+  const area = await ensureArea(effectiveAreaName);
+  const alias = `CAM-${deviceInfo.shortSerial}`;
+  const teamResult = await addDeviceAndImportChannels({
+    shortSerial: deviceInfo.shortSerial,
+    verificationCode,
+    alias,
+    areaId: area.areaId,
+  });
+  updateTaskStage(task, "Team Hesabina Ekleme", "Tamam", teamResult.deviceStatusMessage);
+  updateTaskStage(task, "Kanal Aktarimi", "Tamam", teamResult.channelStatusMessage);
+
+  updateTaskStage(task, "Tamamlandi", "Tamam", "Kurulum tamamlandi.");
+  markTaskSucceeded(task, {
+    cameraIp: activeCameraIp,
+    model: deviceInfo.model,
+    macAddress: deviceInfo.macAddress,
+    serialNumber: deviceInfo.serialNumber,
+    shortSerial: deviceInfo.shortSerial,
+    subSerialNumber: deviceInfo.subSerialNumber,
+    firmwareVersion: deviceInfo.firmwareVersion,
+    areaId: area.areaId,
+    areaName: area.areaName,
+    deviceId: teamResult.deviceId,
+    alias,
+    ezvizEnabled: true,
+    registerStatus: true,
+    deviceAdded: teamResult.deviceAdded,
+    importedChannelCount: teamResult.importedChannelCount,
+    totalChannelCount: teamResult.totalChannelCount,
+    networkInterfaces,
+  });
 }
 
 app.get("/api/health", async (req, res) => {
@@ -330,7 +1453,7 @@ app.get("/api/health", async (req, res) => {
       ok: false,
       configured: true,
       initialServer: INITIAL_SERVER,
-      error: err.message,
+      error: sanitizeMessage(err.message),
       sdkInstalled: isSdkInstalled(),
     });
   }
@@ -350,44 +1473,39 @@ app.get("/api/sdk-config", async (req, res) => {
       note: "JSDecoder SDK dosyalarini proje altindaki /sdk klasorune koyun.",
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: sanitizeMessage(err.message) });
   }
 });
 
-// Kamera listesini getir
 app.get("/api/cameras", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
   try {
     const { accessToken, areaDomain } = await getToken();
-
-    const response = await fetch(
-      `${areaDomain}/api/hccgw/resource/v1/areas/cameras/get`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Token: accessToken,
-        },
-        body: JSON.stringify({
-          pageIndex: "1",
-          pageSize: "50",
-          filter: { areaID: "-1", includeSubArea: "1" },
-        }),
-      }
-    );
+    const response = await fetch(`${areaDomain}/api/hccgw/resource/v1/areas/cameras/get`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: accessToken,
+      },
+      body: JSON.stringify({
+        pageIndex: "1",
+        pageSize: "50",
+        filter: { areaID: "-1", includeSubArea: "1" },
+      }),
+    });
 
     const data = await response.json();
-
-    if (data.errorCode !== "0") {
+    if (String(data.errorCode || data.code || "") !== "0") {
       return res.status(502).json({
-        error: `Hikvision hata dondu. errorCode: ${data.errorCode}`,
-        raw: data,
+        error: `Hikvision hata dondu. ${friendlyOpenApiError(
+          String(data.errorCode || data.code || ""),
+          data.errorMsg || data.msg || "Kamera listesi alinamadi."
+        )}`,
       });
     }
 
-    // Frontend'in isine yarayacak sade bir liste dondur
-    const cameras = (data.data.camera || []).map((cam) => ({
+    const cameras = (data.data?.camera || []).map((cam) => ({
       name: cam.name,
       online: cam.online === "1",
       resourceId: cam.id,
@@ -398,23 +1516,22 @@ app.get("/api/cameras", async (req, res) => {
 
     res.json({ cameras });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: sanitizeMessage(err.message) });
   }
 });
 
-// Secilen kameranin canli yayin linkini getir
 app.get("/api/stream", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
   const { resourceId, deviceSerial } = req.query;
   const code = (req.query.code || "").toString().trim();
-  const protocol = Number(req.query.protocol || 2); // 1: EZOPEN, 2: HLS, 3: RTMP
-  const quality = Number(req.query.quality || 1); // 1: HD, 2: Fluent
+  const protocol = Number(req.query.protocol || 2);
+  const quality = Number(req.query.quality || 1);
 
   if (!resourceId || !deviceSerial) {
-    return res
-      .status(400)
-      .json({ error: "resourceId ve deviceSerial parametreleri zorunlu." });
+    return res.status(400).json({
+      error: "resourceId ve deviceSerial parametreleri zorunlu.",
+    });
   }
 
   try {
@@ -441,7 +1558,7 @@ app.get("/api/stream", async (req, res) => {
       raw: stream.raw,
     });
   } catch (err) {
-    res.status(502).json(err.details || { error: err.message });
+    res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
   }
 });
 
@@ -452,9 +1569,9 @@ app.get("/api/hls/manifest", async (req, res) => {
   const quality = Number(req.query.quality || 1);
 
   if (!resourceId || !deviceSerial) {
-    return res
-      .status(400)
-      .json({ error: "resourceId ve deviceSerial parametreleri zorunlu." });
+    return res.status(400).json({
+      error: "resourceId ve deviceSerial parametreleri zorunlu.",
+    });
   }
 
   try {
@@ -483,14 +1600,13 @@ app.get("/api/hls/manifest", async (req, res) => {
       rewriteManifest(
         manifest,
         stream.url,
-        req,
         resourceId.toString(),
         deviceSerial.toString(),
         quality
       )
     );
   } catch (err) {
-    res.status(502).json(err.details || { error: err.message });
+    res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
   }
 });
 
@@ -513,16 +1629,65 @@ app.get("/api/hls/chunk", async (req, res) => {
     }
 
     const contentType =
-      upstreamResponse.headers.get("content-type") ||
-      "application/octet-stream";
+      upstreamResponse.headers.get("content-type") || "application/octet-stream";
     const arrayBuffer = await upstreamResponse.arrayBuffer();
 
     res.setHeader("Content-Type", contentType);
     res.setHeader("Cache-Control", "no-store");
     res.send(Buffer.from(arrayBuffer));
   } catch (err) {
-    res.status(502).json({ error: err.message });
+    res.status(502).json({ error: sanitizeMessage(err.message) });
   }
+});
+
+app.post("/api/provision/start", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const input = {
+    cameraIp: String(req.body.cameraIp || "").trim(),
+    userName: String(req.body.userName || "admin").trim() || "admin",
+    password: String(req.body.password || ""),
+    areaName: String(req.body.areaName || "").trim(),
+    gatewayOverride: String(req.body.gatewayOverride || "").trim(),
+    sdkPort: Number(req.body.sdkPort || 8000),
+    enableDhcp: Boolean(req.body.enableDhcp),
+  };
+
+  if (!input.cameraIp) {
+    return res.status(400).json({ error: "cameraIp zorunlu." });
+  }
+
+  if (!input.password) {
+    return res.status(400).json({ error: "password zorunlu." });
+  }
+
+  const task = createProvisioningTask(input);
+  runProvisioningTask(task, input).catch((error) => {
+    markTaskFailed(task, error);
+  });
+
+  res.status(202).json({ taskId: task.taskId });
+});
+
+app.get("/api/provision/tasks/:taskId", (req, res) => {
+  const task = provisioningTasks.get(req.params.taskId);
+  if (!task) {
+    return res.status(404).json({ error: "Task bulunamadi." });
+  }
+
+  res.json({
+    taskId: task.taskId,
+    status: task.status,
+    createdAt: task.createdAt,
+    updatedAt: task.updatedAt,
+    stages: task.stages,
+    result: task.result,
+    error: task.error,
+  });
+});
+
+app.get("/camera-setup", (req, res) => {
+  res.sendFile(path.join(__dirname, "provisioning.html"));
 });
 
 app.get("/", (req, res) => {

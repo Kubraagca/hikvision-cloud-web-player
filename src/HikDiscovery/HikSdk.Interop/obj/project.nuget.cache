@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "7lKRL0LgKp0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kubra\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.28\\microsoft.netcore.app.ref.8.0.28.nupkg.sha512",
+    "C:\\Users\\Kubra\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.28\\microsoft.windowsdesktop.app.ref.8.0.28.nupkg.sha512",
+    "C:\\Users\\Kubra\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.28\\microsoft.aspnetcore.app.ref.8.0.28.nupkg.sha512"
+  ],
+  "logs": []
+}

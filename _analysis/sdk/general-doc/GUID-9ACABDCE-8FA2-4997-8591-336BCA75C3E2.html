@@ -1,0 +1,261 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Search for Logs" /><meta name="abstract" content="You can search for the device logs (including alarm, exception, operation, event, and so on) by time or type, and get the searched log information." /><meta name="description" content="You can search for the device logs (including alarm, exception, operation, event, and so on) by time or type, and get the searched log information." /><meta name="DC.Relation" scheme="URI" content="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2" /><meta name="DC.Language" content="en-US" /><title>Search for Logs</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Search for Logs</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">You can search for the device logs (including alarm, exception, operation,
+        event, and so on) by time or type, and get the searched log information.</p>
+
+<div class="section prereq p" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-5A367DE6-4280-4556-B695-E60759D04333">
+            <ul class="ul" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__UL_HXZ_1TM_V2B">
+                <li class="li" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-149DE07A-CCE8-4CA3-8EBA-46E8E163D855">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs.">NET_DVR_Init</a> to initialize the programming
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-E6E9D779-04FC-406F-9741-B1D34C8F551C">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-F9EC9793-33BB-465D-AE55-4FE98A3F6B43">
+                <div class="fig fignone" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__FIG_ZH2_3CZ_52B">
+                    
+                    <img class="image" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__IMAGE_XP3_QD4_TJB" src="GUID-30A62E85-4C2E-48AC-855D-60A155451594-high.png" height="945" />
+                <span class="figcap">Figure 1 Programming Flow of
+                        Searching for Logs</span></div>
+
+            </p><ol class="ol steps" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-B1A72293-AA21-43AC-94E8-DCC6ED2B55FA"><li class="li step stepexpand" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-EBCF2F28-B2AD-40D8-BF06-7EDF59AA6EE0">
+                <span class="ph cmd">Call <a class="xref" href="GUID-6DA97BAE-1355-4BC1-8619-F47D4B9136B3.html#GUID-6DA97BAE-1355-4BC1-8619-F47D4B9136B3" title="Search for log files.">NET_DVR_FindDVRLog_V50</a> to start searching for logs.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-F9DFA912-10E6-496E-AEA8-B74AD9856B8A"><span class="notetitle">Note:</span> 
+                        <p class="p">You can also call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-C8551A67-9DFE-4783-803B-21B4F3C696A4.html#GUID-C8551A67-9DFE-4783-803B-21B4F3C696A4" title="Search log information.">/ISAPI/ContentMgmt/logSearch?format=json</a> by <span class="ph synph">POST</span> method and set <span class="keyword parmname">lpInputParam</span> to <a class="xref" href="GUID-9E4F9833-E695-4926-9444-F535E652BE58.html#GUID-9E4F9833-E695-4926-9444-F535E652BE58" title="JSON message about condition information of log search">JSON_SearchCondition</a> to search for log files. The search
+                            results are returned in the message <a class="xref" href="GUID-6B777F7A-CCD7-49C1-A8B3-E105FFACC8B9.html#GUID-6B777F7A-CCD7-49C1-A8B3-E105FFACC8B9" title="JSON Message about log search results">JSON_MatchList</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-1BB3B4C1-D71B-45FB-983F-65DD28C23081">
+                <span class="ph cmd">Call <a class="xref" href="GUID-3E19AE07-9424-48E5-9122-D4EF65494A72.html#GUID-3E19AE07-9424-48E5-9122-D4EF65494A72" title="Get the searched log files one by one.">NET_DVR_FindNextLog_V50</a> to get searched log information item by
+                    item.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-285CAF5A-734F-47AD-98E3-5C8F1BBA6730">
+                <span class="ph cmd">Call <a class="xref" href="GUID-AE080A14-1ECF-414E-B31D-A7D08C0F2A88.html#GUID-AE080A14-1ECF-414E-B31D-A7D08C0F2A88" title="Stop searching for logs and release log search resources.">NET_DVR_FindLogClose_V30</a> to stop searching and release log search
+                    resource.</span>
+            </li>
+</ol>
+
+        <div class="example" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-521F8820-E5EE-4174-9722-E729D5372222"><h2 class="title sectiontitle">Sample Code of Searching for Logs</h2>
+            
+            <pre class="pre codeblock">#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include "Windows.h"
+#include "HCNetSDK.h"
+using namespace std;
+void main() {
+//---------------------------------------
+//Initialize
+NET_DVR_Init();
+//Set connection time and reconnection time
+NET_DVR_SetConnectTime(2000, 1);
+NET_DVR_SetReconnect(10000, true);
+
+//---------------------------------------
+//Log in to device
+LONG lUserID;
+
+//Login parameters, including device IP address, user name, password, andso on
+NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
+struLoginInfo.bUseAsynLogin = 0; //Synchronous login mode
+strcpy(struLoginInfo.sDeviceAddress, "192.0.0.64"); //IP address
+struLoginInfo.wPort = 80; //HTTP port
+strcpy(struLoginInfo.sUserName, "admin"); //User name
+strcpy(struLoginInfo.sPassword, "abcd1234"); //Password
+
+//Device information, output parameters
+NET_DVR_DEVICEINFO_V40 struDeviceInfoV40 = {0};
+lUserID = NET_DVR_Login_V40(&amp;struLoginInfo, &amp;struDeviceInfoV40);
+if (lUserID &lt; 0)
+{
+printf("Login failed, error code: %d\n", NET_DVR_GetLastError());
+NET_DVR_Cleanup();
+return;
+}
+
+NET_DVR_FIND_LOG_COND struFindLogCond = { 0 };
+struFindLogCond.dwMainType = 0;
+struFindLogCond.dwSubType = 0;
+struFindLogCond.dwSelectMode = 0;
+struFindLogCond.bOnlySmart = FALSE;
+
+struFindLogCond.struStartTime.wYear = 2019;
+struFindLogCond.struStartTime.byMonth = 11;
+struFindLogCond.struStartTime.byDay = 2;
+struFindLogCond.struStartTime.byHour = 9;
+struFindLogCond.struStartTime.byMinute = 0;
+struFindLogCond.struStartTime.bySecond = 0;
+//struFindLogCond.struStartTime.byISO8601 = 0;
+//struFindLogCond.struStartTime.cTimeDifferenceH = 0;
+//struFindLogCond.struStartTime.cTimeDifferenceM = 0;
+
+struFindLogCond.struEndTime.wYear = 2019;
+struFindLogCond.struEndTime.byMonth = 11;
+struFindLogCond.struEndTime.byDay = 3;
+struFindLogCond.struEndTime.byHour = 9;
+struFindLogCond.struEndTime.byMinute = 0;
+struFindLogCond.struEndTime.bySecond = 0;
+//struFindLogCond.struEndTime.byISO8601 = 0;
+//struFindLogCond.struEndTime.cTimeDifferenceH = 0;
+//struFindLogCond.struEndTime.cTimeDifferenceM = 0;
+
+//Search for logs
+LONG lLogHandle = NET_DVR_FindDVRLog_V50(lUserID, &amp;struFindLogCond);
+if (lLogHandle &lt; 0)
+{
+    printf("find log fail, last error %d \n", NET_DVR_GetLastError());
+	return;
+}
+
+NET_DVR_LOG_V50 struLogInfo = {0};
+while(true)
+{
+	LONG lRet = NET_DVR_FindNextLog_V50(lLogHandle, &amp;struLogInfo);
+	if (lRet == NET_DVR_FILE_SUCCESS)
+	{
+		printf("log:%04d-%02d-%02d %02d:%02d:%02d\n", struLogInfo.struLogTime.wYear, struLogInfo.struLogTime.byMonth, struLogInfo.struLogTime.byDay,\
+		                                              struLogInfo.struLogTime.byHour, struLogInfo.struLogTime.byMinute, struLogInfo.struLogTime.bySecond,);		
+	}
+	else if (lRet == NET_DVR_ISFINDING)
+	{
+	    printf("finding \n");
+	    Sleep(5);
+		continue;
+	}
+	else if ((lRet == NET_DVR_NOMOREFILE) || (lRet == NET_DVR_FILE_NOFIND))
+	{
+	    printf("find ending \n");
+	    break;
+	}
+	else
+	{
+	    printf("find log fail for illegal get file state \n");
+		break;
+	}
+}
+
+//Stop searching for logs
+if (lLogHandle &gt;= 0)
+{
+    NET_DVR_FindLogClose_V30(lLogHandle);
+}
+
+//Log out
+NET_DVR_Logout(lUserID);
+
+//Release resources
+NET_DVR_Cleanup();
+return;
+}</pre>
+
+        </div>
+
+<div class="section postreq" id="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2__GUID-513A63D9-400D-452D-9F6A-18E1375B2C4A">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices.">NET_DVR_Logout</a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended.">NET_DVR_Cleanup</a> to log out and release all resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li class="active"><span class="topicref">Search for Logs</span></li><li><span class="topicref"><a href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html">Configure Log Storage Mode</a></span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

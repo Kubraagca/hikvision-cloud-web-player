@@ -1,0 +1,282 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Search Video Files by Time" /><meta name="abstract" content="You can set time and select the recording type configured in recording schedule to search the video files by time or by type. You can also call an API to view the distribution of all video files on the calendar to narrow the search range before searching by time." /><meta name="description" content="You can set time and select the recording type configured in recording schedule to search the video files by time or by type. You can also call an API to view the distribution of all video files on the calendar to narrow the search range before searching by time." /><meta name="DC.Relation" scheme="URI" content="GUID-6FAE0C5E-4857-42B1-8299-006108042CEC.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704" /><meta name="DC.Language" content="en-US" /><title>Search Video Files by Time</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Search Video Files by Time</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">You can set time and select the recording type configured in recording
+        schedule to search the video files by time or by type. You can also call an API to view the
+        distribution of all video files on the calendar to narrow the search range before searching
+        by time.</p>
+
+        <div class="section prereq p" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-41F1DE06-7C38-4702-B76E-7217C56BF9F2">
+            <ul class="ul" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__UL_RDV_3KQ_52B">
+                <li class="li" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-29A33865-76E3-4E6D-A3E0-096875E4CEE4">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs.">NET_DVR_Init</a> to initialize the
+                        development environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-C0132726-8651-4CBF-895E-7996D2D5CB9B">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to the
+                        device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-D77D1F16-E26A-46F3-9E34-9ED62E5836CB">
+                <div class="fig fignone" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__FIG_HPT_SGM_HBB">
+                    
+                    <img class="image" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__IMAGE_HTT_RMG_VBB" src="GUID-D4FBB66E-3311-4E81-8115-10A0DED5BB95-high.png" height="1417" />
+                <span class="figcap">Figure 1 Programming Flow of
+                        Searching Video Files by Time</span></div>
+
+            </p><ol class="ol steps" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-F75A05E6-6C24-435F-91D0-5E2C0AC9901A"><li class="li step stepexpand" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-800CCE7A-D28A-4EDE-9F09-5D8F405F4CF8"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E.html#GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E" title="Get device configuration information in batch (with sending data).">NET_DVR_GetDeviceConfig</a> with <span class="keyword cmdname">NET_DVR_GET_MONTHLY_RECORD_DISTRIBUTION</span> (command No.:
+                    6164) and set input parameter pointer (<span class="keyword parmname">lpInBuffer</span>) to the structure <a class="xref" href="GUID-1F1B8C11-32FE-449B-979B-974252364CC3.html#GUID-1F1B8C11-32FE-449B-979B-974252364CC3" title="Condition structure for searching videos by calendar.">NET_DVR_MRD_SEARCH_PARAM</a> for viewing the distribution
+                    of all video files on the calendar.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-A6CA74CE-5891-44E5-AE22-0EABD2577908"><span class="notetitle">Note:</span> 
+                        <p class="p">Viewing video distribution on calendar is not supported when
+                            login via ISAPI protocol.</p>
+
+                    </div>
+
+                </div>
+                <div class="itemgroup stepresult">
+                    <p class="p">The video distribution is returned in the structure <a class="xref" href="GUID-61666C42-1CF2-419B-9DE5-BFBDDCC1D777.html#GUID-61666C42-1CF2-419B-9DE5-BFBDDCC1D777" title="Result structure for searching videos by calendar.">NET_DVR_MRD_SEARCH_RESULT</a> by output parameter
+                        pointer (<span class="keyword parmname">lpOutBuffer</span>).</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-7D389BA4-1AC6-4A9B-A90A-802B268E2045">
+                <span class="ph cmd">Call <a class="xref" href="GUID-D24BB91B-B2E7-4EF2-9E6E-E13468DF3346.html#GUID-D24BB91B-B2E7-4EF2-9E6E-E13468DF3346" title="Search for video files by file type or by time.">NET_DVR_FindFile_V50</a> to set time and
+                    recording type for search.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-E7B89834-64F8-4756-8A9A-B2187D5E3717"><span class="notetitle">Note:</span> 
+                        <p class="p">When login via ISAPI protocol, only the continuously recorded
+                            videos can be searched.</p>
+
+                    </div>
+
+                </div>
+                <div class="itemgroup stepresult">
+                    <p class="p">The time periods with video are marked by blue blocks on the time
+                        bar.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-B996A447-3159-4F45-89AC-CD78537CED8F">
+                <span class="ph cmd">Call <a class="xref" href="GUID-18BF8AD9-64C8-4D11-8527-4907DCA64DDA.html#GUID-18BF8AD9-64C8-4D11-8527-4907DCA64DDA" title="Get video files one by one after searching by time.">NET_DVR_FindNextFile_V50</a> to get the file
+                    information (such as file name, file size, start and end time, and so on) item
+                    by item.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-BE039823-C1D3-4959-B7B6-86994192B315">
+                <span class="ph cmd">Call <a class="xref" href="GUID-2CBD8F86-9EF7-43EC-A658-491F820F2398.html#GUID-2CBD8F86-9EF7-43EC-A658-491F820F2398" title="Stop searching for files and release resources.">NET_DVR_FindClose_V30</a> to stop searching
+                    when searching ended or exception.</span>
+            </li>
+</ol>
+
+<div class="example" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-B5230478-F477-4D25-AE48-F5CBFFCC77BE"><h2 class="title sectiontitle">Sample Code of Searching Video
+                Files</h2>
+            
+            <pre class="pre codeblock">#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include "Windows.h"
+#include "HCNetSDK.h"
+using namespace std;
+void main() {
+  //---------------------------------------
+  // Initialize
+  NET_DVR_Init();
+  //Set connection time and reconnection time
+  NET_DVR_SetConnectTime(2000, 1);
+  NET_DVR_SetReconnect(10000, true);
+
+  //---------------------------------------
+  // Log in to device
+  LONG lUserID;
+
+  //Login parameters, including device IP address, user name, password, and so on.
+  NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
+  struLoginInfo.bUseAsynLogin = 0; //Synchronous login mode
+  strcpy(struLoginInfo.sDeviceAddress, "192.0.0.64"); //IP address
+  struLoginInfo.wPort = 8000; //Service port
+  strcpy(struLoginInfo.sUserName, "admin"); //User name
+  strcpy(struLoginInfo.sPassword, "abcd1234"); //Password
+  
+  //Device information, output parameters
+  NET_DVR_DEVICEINFO_V40 struDeviceInfoV40 = {0};
+
+  lUserID = NET_DVR_Login_V40(&amp;struLoginInfo, &amp;struDeviceInfoV40);
+  if (lUserID &lt; 0)
+  {
+      printf("Login failed, error code: %d\n", NET_DVR_GetLastError());
+      NET_DVR_Cleanup();
+      return;
+  }
+  
+  NET_DVR_FILECOND_V40 struFileCond={0};
+  struFileCond.dwFileType = 0xFF;
+  struFileCond.lChannel = 1;
+  struFileCond.dwIsLocked = 0xFF;
+  struFileCond.dwUseCardNo = 0;
+  struFileCond.struStartTime.dwYear   = 2011;
+  struFileCond.struStartTime.dwMonth  = 3;
+  struFileCond.struStartTime.dwDay    = 1;
+  struFileCond.struStartTime.dwHour   = 10;
+  struFileCond.struStartTime.dwMinute = 6;
+  struFileCond.struStartTime.dwSecond =50;
+  struFileCond.struStopTime.dwYear    = 2011;
+  struFileCond.struStopTime.dwMonth   = 3;
+  struFileCond.struStopTime.dwDay     = 1;
+  struFileCond.struStopTime.dwHour    = 11;
+  struFileCond.struStopTime.dwMinute  = 7;
+  struFileCond.struStopTime.dwSecond  = 0;
+
+  //---------------------------------------
+  //Search video files
+  int lFindHandle = NET_DVR_FindFile_V40(lUserID, &amp;struFileCond);
+  if(lFindHandle &lt; 0)
+  {
+      printf("find file fail,last error %d\n",NET_DVR_GetLastError());
+      return;
+  }
+  NET_DVR_FINDDATA_V40 struFileData;
+  while(true)
+  {
+      int result = NET_DVR_FindNextFile_V40(lFindHandle, &amp;struFileData);
+      if(result == NET_DVR_ISFINDING)
+      {
+          continue;
+      }
+      else if(result == NET_DVR_FILE_SUCCESS)
+      {
+          char strFileName[256] = {0};
+          sprintf(strFileName, "./%s", struFileData.sFileName);
+          saveRecordFile(lUserID, struFileData.sFileName,  strFileName);
+          break;
+      }
+	  else if(result == NET_DVR_FILE_NOFIND || result == NET_DVR_NOMOREFILE)
+      {	
+          break;
+      }
+	  else
+	  {
+	      printf("find file fail for illegal get file state");
+          break;
+	  }
+  }
+
+  //Stop searching
+  if(lFindHandle &gt;= 0)
+  {
+      NET_DVR_FindClose_V30(lFindHandle);
+  }	
+  
+  //Log out
+  NET_DVR_Logout(lUserID);
+  //Release SDK resources
+  NET_DVR_Cleanup();
+  return;
+}</pre>
+
+        </div>
+
+<div class="section postreq" id="GUID-4948B4B0-206F-47DE-ACEB-9597731AE704__GUID-52E9775C-4DAD-4191-B012-C7EBDA47731A">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices.">NET_DVR_Logout</a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended.">NET_DVR_Cleanup</a> to log out and release
+                resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-50BB0F3E-3252-4A7D-B99A-77FBE82B6356.html">File and Storage Management</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-0B1C71B8-BB5F-4DB8-B4E0-F6090DA1B124.html">Disk Quota</a></span></li><li><span class="topicref"><a href="GUID-A7221FB0-90FB-46C2-AF4A-9DAAFC360D8F.html">Download Video Files</a></span></li><li><span class="topicref"><a href="GUID-AF1A6462-1C19-4C4B-90D3-AB9AA13B1BA7.html">HDD Management</a></span></li><li><span class="topicref"><a href="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58.html">SSD Management</a></span></li><li><span class="topicref"><a href="GUID-0576E46C-D158-41FD-BEE2-37CA604B6F62.html">Upload Files</a></span></li><li><span class="topicref"><a href="GUID-6FAE0C5E-4857-42B1-8299-006108042CEC.html">File Search</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Search Video Files by Time</span></li><li><span class="topicref"><a href="GUID-C39C1A33-A11B-4278-B869-577CB74155E6.html">Search Video Files by Event</a></span></li><li><span class="topicref"><a href="GUID-04CF4A7C-B72D-4CB2-83CA-5C2B3DA93D80.html">Search Video Files by VCA Event</a></span></li><li><span class="topicref"><a href="GUID-1C5D9B4E-9FEA-4121-A122-DBCA3BC29D66.html">Search Video Files by Tag</a></span></li><li><span class="topicref"><a href="GUID-DBA3CB8B-8C6A-4E62-B548-F4C107EA90DF.html">Search for Pictures</a></span></li><li><span class="topicref"><a href="GUID-CD4720B5-F6C4-4E64-8486-66C5CF6FE4FD.html">Perform Picture Dual-VCA</a></span></li></ul></li><li><span class="topicref"><a href="GUID-31B07BA9-2D14-4725-A9D3-8AB9C0CA3356.html">Working Mode Configuration</a></span></li><li><span class="topicref"><a href="GUID-00287159-A13B-4E85-AF3F-D80EB5EF7ED1.html">Other File Operations</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

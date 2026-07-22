@@ -1,0 +1,966 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Basic PTZ Parameters Function API Get PTZ control capability Call NET_DVR_STDXMLConfig to transmit the request URI: GET /ISAPI/PTZCtrl/channels/&lt;ID&gt;/capabilities , and the capability is returned in ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="PTZ Configuration" /><meta name="DC.Relation" scheme="URI" content="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85" /><meta name="DC.Language" content="en-US" /><title>PTZ Configuration</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">PTZ Configuration</h1>
+
+<div class="body conbody">
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-59B5EBBC-B180-47F9-B1B9-1E864BFDBF02"><h2 class="title sectiontitle">Basic PTZ Parameters</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__TABLE_MFC_BHT_5KB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e30">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e36">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e30 ">
+                                <p class="p">Get PTZ control capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e36 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-AEC3808E-ED26-4EBA-889C-095B3F22E4CF.html#GUID-AEC3808E-ED26-4EBA-889C-095B3F22E4CF" title="Get the PTZ control capabilities.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/capabilities</a>, and the capability is returned
+                                    in the message <a class="xref" href="GUID-77085394-8ED2-4F01-8AD5-6FF3667E17BD.html#GUID-77085394-8ED2-4F01-8AD5-6FF3667E17BD" title="XML message about PTZ channel capability">XML_PTZChanelCap</a> by the output parameter pointer
+                                        (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e30 ">
+                                <p class="p">Get zoom/focus coordinate parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e36 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI: GET
+                                        <a class="xref" href="GUID-A3648EDF-F0E4-4F69-AB23-354A95F53086.html#GUID-A3648EDF-F0E4-4F69-AB23-354A95F53086" title="Operations about zoom and focus coordinates configuration for zoom camera module.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/zoomFocus</a>, and the zoom/focus coordinates
+                                    parameters are returned in the message <a class="xref" href="GUID-4B9384F6-5BCA-4248-BEA9-46917DCBAFB8.html#GUID-4B9384F6-5BCA-4248-BEA9-46917DCBAFB8" title="ZoomFocus message in XML format">XML_ZoomFocus</a> by the output parameter pointer
+                                        (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e30 ">
+                                <p class="p">Set zoom/focus coordinate parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e36 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-A3648EDF-F0E4-4F69-AB23-354A95F53086.html#GUID-A3648EDF-F0E4-4F69-AB23-354A95F53086" title="Operations about zoom and focus coordinates configuration for zoom camera module.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/zoomFocus</a> and set the input parameter
+                                    pointer (<span class="keyword parmname">lpInputParam</span>) to the
+                                    message <a class="xref" href="GUID-4B9384F6-5BCA-4248-BEA9-46917DCBAFB8.html#GUID-4B9384F6-5BCA-4248-BEA9-46917DCBAFB8" title="ZoomFocus message in XML format">XML_ZoomFocus</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e30 ">
+                                <p class="p">Maximum Tilt Angle</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e36 ">
+                                <ul class="ul" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__UL_IFN_2GV_THB">
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-FF57C91D-FE15-426A-ADCF-80DF681253D8">
+                                        <p class="p">Get configuration capability of maximum tilt angle:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-610416E7-192D-473F-83EE-C9D7E3673C8B.html#GUID-610416E7-192D-473F-83EE-C9D7E3673C8B" title="Get the max. tilt-angle capability.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/maxelevation/capabilities</a>, and the capability is
+                                            returned in the message <a class="xref" href="GUID-3A0466F9-D200-4982-AE93-7EC93E3AF6BB.html#GUID-3A0466F9-D200-4982-AE93-7EC93E3AF6BB" title="MaxElevation capability message in XML format">XML_Cap_MaxElevation</a> by the output parameter
+                                            pointer (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-C0EF77DA-E8C3-4A10-B9A8-D73AB0F103E7">
+                                        <p class="p">Get parameters of maximum tilt angle:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: GET <a class="xref" href="GUID-1D4D98C4-BC62-48AA-B26A-1C453165E042.html#GUID-1D4D98C4-BC62-48AA-B26A-1C453165E042" title="Get or set the max. tilt-angle parameters.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/maxelevation</a>, and the max. tilt-angle
+                                            parameters are returned in the message <a class="xref" href="GUID-533403AA-76B4-47B6-93A9-BF7CB46CAE45.html#GUID-533403AA-76B4-47B6-93A9-BF7CB46CAE45" title="MaxElevation message in XML format">XML_MaxElevation</a> by the output parameter
+                                            pointer (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-A3FFD3A1-A758-402C-B3AF-647F520C41A7">
+                                        <p class="p">Set parameters of maximum tilt angle:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">PUT</span>
+                                            <a class="xref" href="GUID-1D4D98C4-BC62-48AA-B26A-1C453165E042.html#GUID-1D4D98C4-BC62-48AA-B26A-1C453165E042" title="Get or set the max. tilt-angle parameters.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/maxelevation</a> and set the input
+                                            parameter pointer (<span class="keyword parmname">lpInputParam</span>) to the message <a class="xref" href="GUID-533403AA-76B4-47B6-93A9-BF7CB46CAE45.html#GUID-533403AA-76B4-47B6-93A9-BF7CB46CAE45" title="MaxElevation message in XML format">XML_MaxElevation</a>.</p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-5FDA4557-85BE-46AC-92F0-229B24953509"><h2 class="title sectiontitle">Other PTZ Parameters</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__TABLE_WCR_5HT_5KB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e310">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e316">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e310 ">
+                                <p class="p">Get PTZ OSD parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e316 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-25CE3995-5239-4AC4-9038-A0B2E144600D.html#GUID-25CE3995-5239-4AC4-9038-A0B2E144600D" title="Get or set the on-screen display parameters of the PTZ status.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/PTZOSDDisplay</a>, and the on-screen display
+                                    parameters of the PTZ status are returned in the message <a class="xref" href="GUID-C404A402-9D82-40D9-8584-F1ED63B45229.html#GUID-C404A402-9D82-40D9-8584-F1ED63B45229" title="PTZOSDDisplay message in XML format">XML_PTZOSDDisplay</a> by the output parameter pointer
+                                        (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e310 ">
+                                <p class="p">Set PTZ OSD</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e316 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-25CE3995-5239-4AC4-9038-A0B2E144600D.html#GUID-25CE3995-5239-4AC4-9038-A0B2E144600D" title="Get or set the on-screen display parameters of the PTZ status.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/PTZOSDDisplay</a> and set the input parameter
+                                    pointer (<span class="keyword parmname">lpInputParam</span>) to the
+                                    message <a class="xref" href="GUID-C404A402-9D82-40D9-8584-F1ED63B45229.html#GUID-C404A402-9D82-40D9-8584-F1ED63B45229" title="PTZOSDDisplay message in XML format">XML_PTZOSDDisplay</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-12C300AB-9FDD-4B24-AEF6-D513239DB380"><h2 class="title sectiontitle">PTZ Auxiliaries Control</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__TABLE_J2G_ZHT_5KB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e431">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e437">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e431 ">
+                                <p class="p">Get single PTZ auxiliary status</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e437 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-C30BB765-28E2-4CC0-B60A-0592EC137EDD.html#GUID-C30BB765-28E2-4CC0-B60A-0592EC137EDD" title="Get or set the specified PTZ auxiliary status.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/auxcontrols/&lt;ID&gt;</a>, and the auxiliary status
+                                    information is returned in the message <a class="xref" href="GUID-EB0A2127-047B-4794-8290-A77A7518A17E.html#GUID-EB0A2127-047B-4794-8290-A77A7518A17E" title="PTZAux message in XML format">XML_PTZAux</a> by the output parameter pointer
+                                        (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e431 ">
+                                <p class="p">Set single PTZ auxiliary status</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e437 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-C30BB765-28E2-4CC0-B60A-0592EC137EDD.html#GUID-C30BB765-28E2-4CC0-B60A-0592EC137EDD" title="Get or set the specified PTZ auxiliary status.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/auxcontrols/&lt;ID&gt;</a> and set the input parameter
+                                    pointer (<span class="keyword parmname">lpInputParam</span>) to the
+                                    message <a class="xref" href="GUID-EB0A2127-047B-4794-8290-A77A7518A17E.html#GUID-EB0A2127-047B-4794-8290-A77A7518A17E" title="PTZAux message in XML format">XML_PTZAux</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-3718D0E4-8196-4C78-833E-58811BA216C2"><h2 class="title sectiontitle">E-PTZ Parameters</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__TABLE_MGJ_13T_5KB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e552">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e558">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e552 ">
+                                <p class="p">Get e-PTZ parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e558 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-B5F0D0D4-18EB-4AC6-946C-BE7D0F4E1D23.html#GUID-B5F0D0D4-18EB-4AC6-946C-BE7D0F4E1D23" title="Get or set the e-PTZ configuration.">/ISAPI/Image/channels/&lt;ID&gt;/EPTZ</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-7B3DAFD8-A5ED-4EAA-8D25-2EDD578DA2ED.html#GUID-7B3DAFD8-A5ED-4EAA-8D25-2EDD578DA2ED" title="EPTZ message in XML format">XML_EPTZ</a> by the output parameter
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e552 ">
+                                <p class="p">Set or set e-PTZ parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e558 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-B5F0D0D4-18EB-4AC6-946C-BE7D0F4E1D23.html#GUID-B5F0D0D4-18EB-4AC6-946C-BE7D0F4E1D23" title="Get or set the e-PTZ configuration.">/ISAPI/Image/channels/&lt;ID&gt;/EPTZ</a> and set the input parameter
+                                        <span class="keyword parmname">lpInputParam</span> to the
+                                    message <a class="xref" href="GUID-7B3DAFD8-A5ED-4EAA-8D25-2EDD578DA2ED.html#GUID-7B3DAFD8-A5ED-4EAA-8D25-2EDD578DA2ED" title="EPTZ message in XML format">XML_EPTZ</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e552 ">
+                                <p class="p">Get capability of switching e-PTZ mode</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e558 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-8DD1379C-6566-47D4-9E75-72C2ACC381EF.html#GUID-8DD1379C-6566-47D4-9E75-72C2ACC381EF" title="Get the capability of switching e-PTZ mode.">/ISAPI/Image/channels/&lt;ID&gt;/EPTZ/mode/capabilities?format=json</a>.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-4768457B-55DF-4E72-B53A-11F880F6BB39.html#GUID-4768457B-55DF-4E72-B53A-11F880F6BB39" title="EPTZModeCap capability message in JSON format">JSON_EPTZModeCap</a> by the output parameter
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e552 ">
+                                <p class="p">Get parameters of switching e-PTZ mode</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e558 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-74796446-CE12-46BF-B65F-50F16BAE83F7.html#GUID-74796446-CE12-46BF-B65F-50F16BAE83F7" title="Get or set the configuration for switching e-PTZ mode.">/ISAPI/Image/channels/&lt;ID&gt;/EPTZ/mode?format=json</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-A9BD8CB3-E684-40F1-A88C-F98C8D1E8F53.html#GUID-A9BD8CB3-E684-40F1-A88C-F98C8D1E8F53" title="EPTZMode message in JSON format">JSON_EPTZMode</a> by the output parameter
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e552 ">
+                                <p class="p">Set parameters of switching e-PTZ mode</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e558 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-74796446-CE12-46BF-B65F-50F16BAE83F7.html#GUID-74796446-CE12-46BF-B65F-50F16BAE83F7" title="Get or set the configuration for switching e-PTZ mode.">/ISAPI/Image/channels/&lt;ID&gt;/EPTZ/mode?format=json</a> and set <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-A9BD8CB3-E684-40F1-A88C-F98C8D1E8F53.html#GUID-A9BD8CB3-E684-40F1-A88C-F98C8D1E8F53" title="EPTZMode message in JSON format">JSON_EPTZMode</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-7E40D0C6-EA34-4353-9155-596700B1C849"><h2 class="title sectiontitle">Moving Object Tracking</h2>
+            
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-2EA4E92C-0FDD-4487-A8AB-40841C1CEBCB">
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__TABLE_K2F_T5K_5LB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e812">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e818">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e812 ">
+                                <p class="p">Get moving object tracking status</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e818 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-D51E6FAD-9873-4F40-BE62-1B87FBE4F903.html#GUID-D51E6FAD-9873-4F40-BE62-1B87FBE4F903" title="Get or set moving object tracking status.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/moveAutoTracking?format=json</a>.</p>
+
+                                <p class="p">The status is returned in the message <a class="xref" href="GUID-401EFFDA-278A-4721-A4F2-0D61B7111C34.html#GUID-401EFFDA-278A-4721-A4F2-0D61B7111C34" title="JSON message about status of moving object tracking">JSON_MoveAutoTracking</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e812 ">
+                                <p class="p">Set moving object tracking status</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e818 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-D51E6FAD-9873-4F40-BE62-1B87FBE4F903.html#GUID-D51E6FAD-9873-4F40-BE62-1B87FBE4F903" title="Get or set moving object tracking status.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/moveAutoTracking?format=json</a> and set <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-401EFFDA-278A-4721-A4F2-0D61B7111C34.html#GUID-401EFFDA-278A-4721-A4F2-0D61B7111C34" title="JSON message about status of moving object tracking">JSON_MoveAutoTracking</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-BD36680E-0326-4056-9F97-2979EF261A90"><h2 class="title sectiontitle">Linked Tracking Capture</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__TABLE_ZKN_J5K_5LB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e936">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e942">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e936 ">
+                                <p class="p">Get capability of linked tracking capture</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e942 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-D293ED75-E127-419E-904B-B271FE33AC5A.html#GUID-D293ED75-E127-419E-904B-B271FE33AC5A" title="Get capability of configuring advanced parameters of linked tracking capture.">/ISAPI/MasterSlaveTracking/linkedTracking/capabilities?format=json</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e936 ">
+                                <p class="p">Get linked tracking capture parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e942 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-A2E17F2B-F558-42DD-A98F-6ABAA7D1D05E.html#GUID-A2E17F2B-F558-42DD-A98F-6ABAA7D1D05E" title="Get or set the advanced parameters of linked tracking capture.">/ISAPI/MasterSlaveTracking/linkedTracking?format=json</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-F3EE186A-CF7E-4580-BAB7-9BF4C23EDE8C.html#GUID-F3EE186A-CF7E-4580-BAB7-9BF4C23EDE8C" title="JSON message about advanced parameters of linked tracking capture">JSON_LinkedTracking</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e936 ">
+                                <p class="p">Set linked tracking capture parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e942 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-A2E17F2B-F558-42DD-A98F-6ABAA7D1D05E.html#GUID-A2E17F2B-F558-42DD-A98F-6ABAA7D1D05E" title="Get or set the advanced parameters of linked tracking capture.">/ISAPI/MasterSlaveTracking/linkedTracking?format=json</a> and set <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-F3EE186A-CF7E-4580-BAB7-9BF4C23EDE8C.html#GUID-F3EE186A-CF7E-4580-BAB7-9BF4C23EDE8C" title="JSON message about advanced parameters of linked tracking capture">JSON_LinkedTracking</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-2CAD09A4-9349-42DE-A269-A3520395461A"><h2 class="title sectiontitle">Gyroscope Calibration</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-80CB23B0-A65C-47C1-A4FC-571A6925673E" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e1092">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e1098">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1092 ">
+                                <p class="p">Get gyroscope attitude calibration</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1098 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-FEA77AA9-67ED-4367-8675-D540E4C2ED11.html#GUID-FEA77AA9-67ED-4367-8675-D540E4C2ED11" title="Get the gyroscope calibration capability.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/gyroVerify/capabilities?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1092 ">
+                                <p class="p">Set gyroscope attitude calibration parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1098 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-734F164D-61C8-4A0A-AB53-3C6DAF46FA64.html#GUID-734F164D-61C8-4A0A-AB53-3C6DAF46FA64" title="Set the gyroscope calibration parameters.">/ISAPI/PTZCtrl/channels/&lt;ID&gt;/gyroVerify?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-9ABAAB6B-3937-4F9B-B47D-E8BD0666BFBC"><h2 class="title sectiontitle">GPS Calibration</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__TABLE_KQN_KT3_TLB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d157045e1191">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d157045e1197">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Get capability of verifying GPS calibration</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-5F8D8F77-BBD0-4D0F-AB45-AE0AB8AD0430.html#GUID-5F8D8F77-BBD0-4D0F-AB45-AE0AB8AD0430" title="Get the capability of verifying GPS calibration.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points/capabilities?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Get GPS calibration configuration capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-D264E4B9-00E9-4C68-836C-52E0A007651E.html#GUID-D264E4B9-00E9-4C68-836C-52E0A007651E" title="Get GPS calibration configuration capability.">/ISAPI/System/GPSCalibratation/channels/&lt;ID&gt;/capabilities?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Configure a single GPS calibration point.</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <ul class="ul" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__UL_S1D_BX3_TLB">
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-94B4259C-0ADC-4029-8D46-252FB78CC999">
+                                        <p class="p">Get parameters of a single GPS calibration
+                                            point:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-AF126AA7-BF87-4580-99A3-88D64DCB6DFC.html#GUID-AF126AA7-BF87-4580-99A3-88D64DCB6DFC" title="Get, set or delete configuration parameters of a single GPS calibration point.">/ISAPI/System/GPSCalibratation/channels/&lt;ID&gt;/points/&lt;PID&gt;?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-899D0C31-3BF1-4C75-ABD7-828537055437">
+                                        <p class="p">Set a single GPS calibration point:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">PUT</span>
+                                            <a class="xref" href="GUID-AF126AA7-BF87-4580-99A3-88D64DCB6DFC.html#GUID-AF126AA7-BF87-4580-99A3-88D64DCB6DFC" title="Get, set or delete configuration parameters of a single GPS calibration point.">/ISAPI/System/GPSCalibratation/channels/&lt;ID&gt;/points/&lt;PID&gt;?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-4667ADDE-9A48-49EC-A562-952465D6568E">
+                                        <p class="p">Delete a single GPS calibration point:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">DELETE</span>
+                                            <a class="xref" href="GUID-AF126AA7-BF87-4580-99A3-88D64DCB6DFC.html#GUID-AF126AA7-BF87-4580-99A3-88D64DCB6DFC" title="Get, set or delete configuration parameters of a single GPS calibration point.">/ISAPI/System/GPSCalibratation/channels/&lt;ID&gt;/points/&lt;PID&gt;?format=json</a></p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Configure multiple GPS calibration points</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <ul class="ul" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__UL_G2G_HX3_TLB">
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-264568A9-CBBB-4C68-89F5-765535B121D3">
+                                        <p class="p">Get parameters of multiple GPS calibration
+                                            points in a batch:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-2CEB00A9-0E15-4F7C-AD99-E4280878B4CB.html#GUID-2CEB00A9-0E15-4F7C-AD99-E4280878B4CB" title="Get, set or delete configuration parameters of multiple GPS calibration points in a batch.">/ISAPI/System/GPSCalibratation/channels/&lt;ID&gt;/points?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-2144BE90-79BD-4916-B830-567AEA440284">
+                                        <p class="p">Set multiple GPS calibration points in a
+                                            batch:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">PUT</span>
+                                            <a class="xref" href="GUID-2CEB00A9-0E15-4F7C-AD99-E4280878B4CB.html#GUID-2CEB00A9-0E15-4F7C-AD99-E4280878B4CB" title="Get, set or delete configuration parameters of multiple GPS calibration points in a batch.">/ISAPI/System/GPSCalibratation/channels/&lt;ID&gt;/points?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-E41A9F25-529E-4D90-A693-6C80F2D20DE2">
+                                        <p class="p">Delete multiple GPS calibration points in a
+                                            batch</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">DELETE</span>
+                                            <a class="xref" href="GUID-2CEB00A9-0E15-4F7C-AD99-E4280878B4CB.html#GUID-2CEB00A9-0E15-4F7C-AD99-E4280878B4CB" title="Get, set or delete configuration parameters of multiple GPS calibration points in a batch.">/ISAPI/System/GPSCalibratation/channels/&lt;ID&gt;/points?format=json</a></p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Enable GPS calibration</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-1F1005F7-4AB9-45FB-A8E9-7C81BD8B03FA.html#GUID-1F1005F7-4AB9-45FB-A8E9-7C81BD8B03FA" title="Enable GPS calibration.">/ISAPI/System/GPSPTZCalibratation/channels/&lt;ID&gt;/calibratation?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Get capability of verifying GPS calibration</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-5F8D8F77-BBD0-4D0F-AB45-AE0AB8AD0430.html#GUID-5F8D8F77-BBD0-4D0F-AB45-AE0AB8AD0430" title="Get the capability of verifying GPS calibration.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points/capabilities?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Configure multiple verification points</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <ul class="ul" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__UL_NRL_L53_TLB">
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-DD5A2246-909E-4B89-B3A0-8B4A701C088E">
+                                        <p class="p">Add a verification points:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">POST</span>
+                                            <a class="xref" href="GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6.html#GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6" title="Get, set, or delete multiple verification points in a batch, or add a verification point.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-B51180A2-D2C2-4EFE-A19F-CB6CFBC916CC">
+                                        <p class="p">Get information of multiple verification
+                                            points:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6.html#GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6" title="Get, set, or delete multiple verification points in a batch, or add a verification point.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-4F059932-5C02-4C42-B829-BECC764DDF0E">
+                                        <p class="p">Set multiple verification points:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">PUT</span>
+                                            <a class="xref" href="GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6.html#GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6" title="Get, set, or delete multiple verification points in a batch, or add a verification point.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-C8F92AB9-78EC-4A46-9BBB-1B33713F3823">
+                                        <p class="p">Delete multiple verification points:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">DELETE</span>
+                                            <a class="xref" href="GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6.html#GUID-C0BEF406-811D-46CF-BC7A-E49E0495EAB6" title="Get, set, or delete multiple verification points in a batch, or add a verification point.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points?format=json</a></p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Configure one specified verification point</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <ul class="ul" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__UL_WDG_GV3_TLB">
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-A6516D5B-828A-47CA-98D7-D004B2494785">
+                                        <p class="p">Get information of one specified verification
+                                            point:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">GET</span>
+                                            <a class="xref" href="GUID-A612B5A2-9671-4304-816F-30834425BA35.html#GUID-A612B5A2-9671-4304-816F-30834425BA35" title="Get, set, or delete a specified verification point.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points/&lt;ID&gt;?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-BD31EC5D-9E76-489A-B77B-A172B0BFF744">
+                                        <p class="p">Set information of one specified
+                                            verification point:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">PUT</span>
+                                            <a class="xref" href="GUID-A612B5A2-9671-4304-816F-30834425BA35.html#GUID-A612B5A2-9671-4304-816F-30834425BA35" title="Get, set, or delete a specified verification point.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points/&lt;ID&gt;?format=json</a></p>
+
+                                    </li>
+
+                                    <li class="li" id="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85__GUID-DACB8EA5-0E97-4386-BC95-C8852217E0FE">
+                                        <p class="p">Delete one specified verification point:</p>
+
+                                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request
+                                            URI: <span class="ph synph">DELETE</span>
+                                            <a class="xref" href="GUID-A612B5A2-9671-4304-816F-30834425BA35.html#GUID-A612B5A2-9671-4304-816F-30834425BA35" title="Get, set, or delete a specified verification point.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points/&lt;ID&gt;?format=json</a></p>
+
+                                    </li>
+
+                                </ul>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Get GPS calibration verification results in a
+                                    batch</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-8754C60B-C28E-48B6-A1CB-4A1691B34D08.html#GUID-8754C60B-C28E-48B6-A1CB-4A1691B34D08" title="Get the verification results of GPS calibration in a batch according to channel No.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/points/resultInfo?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d157045e1191 ">
+                                <p class="p">Get or set parameters of displaying GPS calibration
+                                    verification result</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d157045e1197 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI:
+                                        <span class="ph synph">GET</span> or <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-E0177ED6-2C22-4D55-A5AE-E096F50DA337.html#GUID-E0177ED6-2C22-4D55-A5AE-E096F50DA337" title="Get or set the parameters of displaying GPS calibration verification result.">/ISAPI/System/GPSVerification/channels/&lt;ID&gt;/display?format=json</a></p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html">Video and Audio</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492.html">Start Live View</a></span></li><li><span class="topicref"><a href="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1.html">Start Live View Based on ISAPI Protocol</a></span></li><li><span class="topicref"><a href="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A.html">Perform PTZ Control</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">PTZ Configuration</span></li></ul></li><li><span class="topicref"><a href="GUID-F6375406-A6C9-4B67-A4E1-7A10A453E635.html">Search for Recording Start and End Time by Channel</a></span></li><li><span class="topicref"><a href="GUID-486489B8-E670-46C3-B8EA-E6FC5CCDF760.html">Start Playback</a></span></li><li><span class="topicref"><a href="GUID-2F93B07A-00F0-4D57-A159-4CD852A2EFA0.html">Two-Way Audio</a></span></li><li><span class="topicref"><a href="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473.html">Stream Encoding</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

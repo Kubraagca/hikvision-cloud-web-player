@@ -1,0 +1,180 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_DVR_GetFileByTime_V40" /><meta name="abstract" content="Download video files by time." /><meta name="description" content="Download video files by time." /><meta name="DC.Relation" scheme="URI" content="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A" /><meta name="DC.Language" content="en-US" /><title>NET_DVR_GetFileByTime_V40</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_DVR_GetFileByTime_V40</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Download video files by time.</p>
+
+<div class="section" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-3CB10381-F6B8-454E-ACED-042755F630DD"><h2 class="title sectiontitle">API Definition</h2>
+            
+            <pre class="pre codeblock">LONG NET_DVR_GetFileByTime_V40(
+  LONG                  <span class="keyword parmname">lUserID</span>,
+  char                  *<span class="keyword parmname">sSavedFileName</span>,
+  <var class="keyword varname">LPNET_DVR_PLAYCOND</var>    <span class="keyword parmname">pDownloadCond</span>
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-CD88A593-71D2-46D4-A97E-B408BFD3F859"><h2 class="title sectiontitle">Parameters</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-A6F4D3A9-09EF-43E4-BEAE-3403F5E13EB8"><!-- --></a>lUserID</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Value returned by <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login)."><span class="keyword apiname">NET_DVR_Login_V40</span></a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-40919AE8-66F3-431F-9538-B3B1070D4044"><!-- --></a>sSavedFileName </dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Local saving path of downloaded files, it should be a absolute path
+                            (including file name).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-A87FDE02-F149-49CA-A5CA-8F80A23B267E"><!-- --></a>pDownloadCond</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Downloading condition, see details in the structure
+                                <a class="xref" href="GUID-996CEEA2-B1A9-48E1-9DE5-58CBEF992F13.html#GUID-996CEEA2-B1A9-48E1-9DE5-58CBEF992F13">NET_DVR_PLAYCOND</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-C94BEA82-6F96-4C8F-80B0-27F20AD86330"><h2 class="title sectiontitle">Return Values</h2>
+            
+            <p class="p">Return <samp class="ph systemoutput">-1</samp> for failure, and return other
+                values as the parameters of <a class="xref" href="GUID-01B71F47-25B4-4FCD-84AA-4D5F7F4A0D3A.html#GUID-01B71F47-25B4-4FCD-84AA-4D5F7F4A0D3A" title="Stop downloading video files."><span class="keyword apiname">NET_DVR_StopGetFile</span></a>.</p>
+
+            <p class="p">If <samp class="ph systemoutput">-1</samp> is returned, you can call <a class="xref" href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html#GUID-14773B75-3782-443F-ACB8-C40146725A9B" title="Return the error code of the last operation."><span class="keyword apiname">NET_DVR_GetLastError</span></a> to get the error code.</p>
+
+            <p class="p">The error codes may be returned by this API are shown as the follows: 0,
+                1, 3, 5, 7, 8, 9, 10, 14, 17, 34, 41, 43, 44, 47, 72, and 73. See error descriptions
+                in <a class="xref" href="GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238.html#GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238" title="The errors that may occur during the device network SDK integration are listed here for reference. You can search for the error descriptions according to the error codes or names returned by a specific API (NET_DVR_GetLastError or NET_DVR_GetErrorMsg).">Device Network SDK Errors</a>.</p>
+
+        </div>
+
+        <div class="section" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-17A6C812-998E-4498-97EF-A7851D9B8ED2"><h2 class="title sectiontitle">Remarks</h2>
+            
+            <ul class="ul" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__UL_WWY_NDJ_3BB">
+                <li class="li" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-3C974305-47A7-4FFF-800C-5CDC93D2710E">
+                    <p class="p">This API only specifies the video files to download, so after calling this
+                        API, you must call <a class="xref" href="GUID-2773F067-8039-4D5E-882B-753136BC19EF.html#GUID-2773F067-8039-4D5E-882B-753136BC19EF" title="Control playback or video file downloading."><span class="keyword apiname">NET_DVR_PlayBackControl_V40</span></a> with
+                        the command of NET_DVR_PLAYSTART to start downloading.</p>
+
+                </li>
+
+                <li class="li" id="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A__GUID-33A4F285-AAD8-4929-9018-98E6CA2D906F">
+                    <p class="p">If the size of saved video file is larger than the maximum
+                        limitation (by default, it is 1024 MB), the video will be automatically
+                        separated into multiple video segments and save as multiple files. The
+                        naming rule is to add a numeric identifier based on the original file name
+                        for each file segment (i.e., *_1.mp4, *_2.mp4). You can also call <a class="xref" href="GUID-CA76A5BB-42FD-42E5-8AAF-9EE269F769CC.html#GUID-CA76A5BB-42FD-42E5-8AAF-9EE269F769CC" title="Get the HCNetSDK's local configuration parameters."><span class="keyword apiname">NET_DVR_GetSDKLocalCfg</span></a> and <a class="xref" href="GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120.html#GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120" title="Set the local parameters."><span class="keyword apiname">NET_DVR_SetSDKLocalCfg</span></a> (configuration type:
+                        NET_DVR_LOCAL_CFG_TYPE_GENERAL) to get and set the separation mode and
+                        maximum limitation.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-E5578DD0-DAFF-4583-A609-B29AA8D4F8B6.html">NET_DVR_GetDownloadState</a></span></li><li><span class="topicref"><a href="GUID-D9A299E3-8413-46E3-8BC5-2E43729E5009.html">NET_DVR_GetFileByName</a></span></li><li class="active"><span class="topicref">NET_DVR_GetFileByTime_V40</span></li><li><span class="topicref"><a href="GUID-010BD978-0358-493A-8054-766CC806CC4A.html">NET_DVR_GetUploadResult</a></span></li><li><span class="topicref"><a href="GUID-40B94D36-648A-4455-B6F1-B4038FD13CB3.html">NET_DVR_GetUploadState</a></span></li><li><span class="topicref"><a href="GUID-C1BC563E-07E3-49A5-B247-FD785477479B.html">NET_DVR_StartDownload</a></span></li><li><span class="topicref"><a href="GUID-F4408FAD-0FA2-4FE3-AE60-8C724C982E4A.html">NET_DVR_StopDownload</a></span></li><li><span class="topicref"><a href="GUID-01B71F47-25B4-4FCD-84AA-4D5F7F4A0D3A.html">NET_DVR_StopGetFile</a></span></li><li><span class="topicref"><a href="GUID-B7E409CB-937C-4F31-9609-74720D82B843.html">NET_DVR_UploadClose</a></span></li><li><span class="topicref"><a href="GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8.html">NET_DVR_UploadFile_V40</a></span></li><li><span class="topicref"><a href="GUID-BA410CE7-2515-48AC-AB2D-8776BD5D61C8.html">NET_DVR_UploadSend</a></span></li></ul></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

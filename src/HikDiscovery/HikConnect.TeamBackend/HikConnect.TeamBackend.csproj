@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>hikconnect-team-backend-b1f8d8c6-6d8f-4d48-8c43-5e4e4b7e7c45</UserSecretsId>
+  </PropertyGroup>
+
+</Project>

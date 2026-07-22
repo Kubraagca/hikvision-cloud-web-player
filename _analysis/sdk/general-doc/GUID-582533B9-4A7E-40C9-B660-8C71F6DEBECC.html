@@ -1,0 +1,249 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Configure Double Verification" /><meta name="abstract" content="Double verification helps to protect the critical video files of NVR/DVR by limiting playback and download. The basic concept is that two users should always be required to start playback and download. For example, when a normal user A (operator or guest) wants to play back the video of a channel which requires double verification, he/she should ask a double verification user to enter the correct user name and password for double verification." /><meta name="description" content="Double verification helps to protect the critical video files of NVR/DVR by limiting playback and download. The basic concept is that two users should always be required to start playback and download. For example, when a normal user A (operator or guest) wants to play back the video of a channel which requires double verification, he/she should ask a double verification user to enter the correct user name and password for double verification." /><meta name="DC.Relation" scheme="URI" content="GUID-9AB5DE09-F0A6-4C3E-AF6B-E224632ECAC2.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC" /><meta name="DC.Language" content="en-US" /><title>Configure Double Verification</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Configure Double Verification</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">Double verification helps to protect the critical video files of NVR/DVR by
+        limiting playback and download. The basic concept is that two users should always be
+        required to start playback and download. For example, when a normal user A (operator or
+        guest) wants to play back the video of a channel which requires double verification, he/she
+        should ask a double verification user to enter the correct user name and password for double
+        verification.</p>
+
+<div class="section prereq p" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-75E499DA-78C9-45A5-BC4A-C287BAC0F8F3">
+            <ul class="ul" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__UL_GRT_VRT_S2B">
+                <li class="li" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-290BD592-E261-4631-8BEC-3C0E12F27DD1">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs."><span class="keyword apiname">NET_DVR_Init</span></a> to initialize the development
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-2F561C40-6EDF-4AE7-AE45-A6A8BACA2321">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login)."><span class="keyword apiname">NET_DVR_Login_V40</span></a> to log in to device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-C34AA4DA-2701-46DF-A6B7-6FBD437DD99E">
+                <div class="fig fignone" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__FIG_VKC_TJT_LGB">
+                    
+                    <img class="image" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__IMAGE_LZC_WJT_LGB" src="GUID-399BE1A9-D3DF-4780-8B52-AFABD6BEDA2E-high.png" height="2362" />
+                <span class="figcap">Figure 1 Programming Flow of Configuring Double Verification</span></div>
+
+                <div class="note note" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-509025C7-0B8A-4BBD-9975-7590C76C333E"><span class="notetitle">Note:</span> 
+                    <ul class="ul" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__UL_OB1_24M_LGB">
+                        <li class="li" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-BFE64FFD-B4A6-4BF1-9395-040CD5763FDA">
+                            <p class="p">Only the admin user can configure double
+                                verification.</p>
+
+                        </li>
+
+                        <li class="li" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-3701BB47-BFE1-4E8E-AA4B-DE6853523B83">
+                            <p class="p">For admin user, double verification is not required.</p>
+
+                        </li>
+
+                        <li class="li" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-791E8235-4774-4C78-8B72-6984A10EF189">
+                            <p class="p">The double verification user name and password is only for double
+                                verification, and cannot be used for login.</p>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </p><ol class="ol steps" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-102C51CA-48FF-47D7-B9CF-63E7BB04673A"><li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-CCF59D9E-8FA2-44FD-8DB2-573BC48E8519"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-E4FEA21E-3382-4943-A753-2BF39A623237.html#GUID-E4FEA21E-3382-4943-A753-2BF39A623237" title="Get the security capability of the device.">/ISAPI/Security/capabilities</a> for getting the device security capability to check whether
+                    the double verification function is supported.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The device security capability is returned by the output parameter pointer
+                            <span class="keyword parmname">lpOutBuffer</span> in message <a class="xref" href="GUID-CCC2D076-F53E-44DD-89D0-FA0F74924250.html#GUID-CCC2D076-F53E-44DD-89D0-FA0F74924250" title="SecurityCap capability message in XML format">XML_SecurityCap</a>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-4A382EC2-E8E0-45B1-8DCD-8858590CCC07">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-EC0C210B-7586-4B82-B6B9-153AD5DE64BD.html#GUID-EC0C210B-7586-4B82-B6B9-153AD5DE64BD" title="Get the capability of double verification enabling configuration.">/ISAPI/Security/doubleVerification?format=json</a> for enabling the double verification.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-19076713-2A24-4FD7-9786-FA1B96B8107A"><span class="notetitle">Note:</span> 
+                        <p class="p">Before enabling double verification, you can check whether double
+                            verification is enabled by calling <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the URL:
+                                <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-EC0C210B-7586-4B82-B6B9-153AD5DE64BD.html#GUID-EC0C210B-7586-4B82-B6B9-153AD5DE64BD" title="Get the capability of double verification enabling configuration.">/ISAPI/Security/doubleVerification?format=json</a>.</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-876DA29F-41DA-4E1A-B147-EDC23345040C"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-E507D6AD-6AD4-459C-8500-B719BC975CEF.html#GUID-E507D6AD-6AD4-459C-8500-B719BC975CEF" title="Get the double verification configuration capability.">/ISAPI/Security/doubleVerification/users/capabilities?format=json</a> for getting the capability of double verification user
+                    configuration.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-887027CE-E92B-4EE2-912E-D83E75B79394">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">POST</span>
+                    <a class="xref" href="GUID-911935D9-1D02-4177-8CD1-85E7A36008CD.html#GUID-911935D9-1D02-4177-8CD1-85E7A36008CD" title="Get all double verification users and add a double verification user.">/ISAPI/Security/doubleVerification/users?format=json</a> for adding a double verification user.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-78A0AE0C-C68B-4FC5-9B50-13572D833BC2"><span class="notetitle">Note:</span> 
+                        <p class="p">Before adding a double verification user, you can get all verification
+                            users by calling the <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the
+                            request URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-911935D9-1D02-4177-8CD1-85E7A36008CD.html#GUID-911935D9-1D02-4177-8CD1-85E7A36008CD" title="Get all double verification users and add a double verification user.">/ISAPI/Security/doubleVerification/users?format=json</a>.</p>
+
+                    </div>
+
+                </div>
+                <div class="itemgroup stepresult">
+                    <p class="p">The ID of added double verification user is returned in <a class="xref" href="GUID-08A355E3-CFB6-447B-BA91-9E6B803D6324.html#GUID-08A355E3-CFB6-447B-BA91-9E6B803D6324" title="id message in JSON format">JSON_id</a>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-B88D4ABB-132D-4C92-A354-0592611C700A">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-994A9ABE-967C-4317-A0F8-88E9514A2D61.html#GUID-994A9ABE-967C-4317-A0F8-88E9514A2D61" title="Operations about a specified double verification user.">/ISAPI/Security/doubleVerification/users/&lt;ID&gt;?format=json</a> for editing a specified double verification user.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-FAD5B3AF-0F83-4A2E-A2FE-9178A576520F"><span class="notetitle">Note:</span> 
+                        <p class="p">Before editing the double verification user, you can get the user
+                            information by calling <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the
+                            request URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-994A9ABE-967C-4317-A0F8-88E9514A2D61.html#GUID-994A9ABE-967C-4317-A0F8-88E9514A2D61" title="Operations about a specified double verification user.">/ISAPI/Security/doubleVerification/users/&lt;ID&gt;?format=json</a>.</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-3798D955-3BAB-4C6D-AC99-B2889944AFBD"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">DELETE</span>
+                    <a class="xref" href="GUID-994A9ABE-967C-4317-A0F8-88E9514A2D61.html#GUID-994A9ABE-967C-4317-A0F8-88E9514A2D61" title="Operations about a specified double verification user.">/ISAPI/Security/doubleVerification/users/&lt;ID&gt;?format=json</a> for deleting a specified double verification user.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-A7C0181F-E5D7-4199-AA75-F09E32584F32"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-D8EF6743-D6DD-4415-B8C7-DA8C714CC407.html#GUID-D8EF6743-D6DD-4415-B8C7-DA8C714CC407" title="Get the capability of permission configuration for double verification user.">/ISAPI/Security/doubleVerification/UsersPermission/capabilities?format=json</a> for getting the capability of permission configuration for
+                    double verification users.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-2EE175EF-24EE-471D-A221-7380D640FEBE">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the request URL:
+                        <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-8AE16D5B-EAE6-49A6-89C9-D7D3B3248BAD.html#GUID-8AE16D5B-EAE6-49A6-89C9-D7D3B3248BAD" title="Get and set the permission of double verification user.">/ISAPI/Security/doubleVerification/UsersPermission/&lt;ID&gt;?format=json</a> for setting the permission of a specified double
+                    verification user.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-CE5E1792-241F-4850-9B6A-402BCAB57E72"><span class="notetitle">Note:</span> 
+                        <p class="p">Before setting the permission of a double verification user, you can get
+                            the permission parameters by calling <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through the
+                            request URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-8AE16D5B-EAE6-49A6-89C9-D7D3B3248BAD.html#GUID-8AE16D5B-EAE6-49A6-89C9-D7D3B3248BAD" title="Get and set the permission of double verification user.">/ISAPI/Security/doubleVerification/UsersPermission/&lt;ID&gt;?format=json</a>.</p>
+
+                    </div>
+
+                </div>
+            </li>
+</ol>
+
+<div class="section postreq" id="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC__GUID-85F5E9A2-A2E4-40CC-B03A-4BCB31216209">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices."><span class="keyword apiname">NET_DVR_Logout</span></a>
+                and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended."><span class="keyword apiname">NET_DVR_Cleanup</span></a>
+                to log out off the device and release the resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-9AB5DE09-F0A6-4C3E-AF6B-E224632ECAC2.html">Security Service</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Configure Double Verification</span></li><li><span class="topicref"><a href="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5.html">Encrypt Stream</a></span></li><li><span class="topicref"><a href="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html">Encrypt Stream Transmission Link</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

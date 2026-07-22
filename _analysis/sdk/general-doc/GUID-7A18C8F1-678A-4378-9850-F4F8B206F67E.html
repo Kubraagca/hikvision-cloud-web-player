@@ -1,0 +1,125 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Encrypt TLS Link" /><meta name="abstract" content="When the streaming mode is SDK over TLS, that is, the stream of private protocol communication is transmitted on the link based on TLS, you can encrypt the TLS link to ensure the security of stream transmission." /><meta name="description" content="When the streaming mode is SDK over TLS, that is, the stream of private protocol communication is transmitted on the link based on TLS, you can encrypt the TLS link to ensure the security of stream transmission." /><meta name="DC.Relation" scheme="URI" content="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E" /><meta name="DC.Language" content="en-US" /><title>Encrypt TLS Link</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Encrypt TLS Link</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">When the streaming mode is SDK over TLS, that is, the stream of private
+        protocol communication is transmitted on the link based on TLS, you can encrypt the TLS link
+        to ensure the security of stream transmission.</p>
+
+<ol class="ol steps" id="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E__GUID-19D48393-B8F7-4F66-8655-7D5DFA58CE9D"><li class="li step stepexpand" id="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E__GUID-4D022019-D6F7-4274-A408-CE1529AB81B8">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the
+                    request URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-BF5940AF-E1C5-43F2-8D96-4A49CEE9A3E0.html#GUID-BF5940AF-E1C5-43F2-8D96-4A49CEE9A3E0" title="Get device protocol capability.">/ISAPI/Security/adminAccesses/capabilities</a>
+                    for getting the device protocol capability (<a class="xref" href="GUID-57C0B531-90FA-407F-9926-A00FD4ED9CE4.html#GUID-57C0B531-90FA-407F-9926-A00FD4ED9CE4" title="AdminAccessProtocol capability message in XML format">XML_Cap_AdminAccessProtocolList</a>) to check if encrypting TLS link is
+                    supported by device.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">If supported, the node &lt;<span class="keyword parmname">streamOverTls</span>&gt; is returned in the capability and its
+                        value is "true".</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E__GUID-122C08E1-B328-489F-AEBF-AA4DEB0B1AC7">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the
+                    request URL: <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-A62055A2-21DA-4A40-BB96-8574442455DA.html#GUID-A62055A2-21DA-4A40-BB96-8574442455DA" title="Get or set the parameters of a specific protocol that supported by device.">/ISAPI/Security/adminAccesses/&lt;ID&gt;</a> or
+                        <a class="xref" href="GUID-15A3303B-431B-4156-B5ED-B90897850E1E.html#GUID-15A3303B-431B-4156-B5ED-B90897850E1E" title="Get or set parameters of all protocols supported by device.">/ISAPI/Security/adminAccesses</a> and set the
+                        &lt;<span class="keyword parmname">streamOverTls</span>&gt; value to "true" for
+                    enabling TLS link encryption during live view of a device or multiple
+                    devices.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E__GUID-96F54CE7-6C9F-4263-8039-ABC517D36FC4">
+                <span class="ph cmd">Call <a class="xref" href="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C.html#GUID-E0445E09-4F30-4802-9BDA-859A69783D2C" title="Start live view.">NET_DVR_RealPlay_V40</a> or <a class="xref" href="GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B.html#GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B" title="Start playback by time.">NET_DVR_PlayBackByTime_V50</a>/<a class="xref" href="GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B.html#GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B" title="Playback by file.">NET_DVR_PlayBackByName</a> to automatically enable TLS link
+                    encryption without setting any parameters during live view or playback.</span>
+            </li>
+</ol>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-9AB5DE09-F0A6-4C3E-AF6B-E224632ECAC2.html">Security Service</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC.html">Configure Double Verification</a></span></li><li><span class="topicref"><a href="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5.html">Encrypt Stream</a></span></li><li><span class="topicref"><a href="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html">Encrypt Stream Transmission Link</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B.html">(Optional) Verify Device</a></span></li><li><span class="topicref"><a href="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0.html">Encrypt HTTPS Link</a></span></li><li class="active"><span class="topicref">Encrypt TLS Link</span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

@@ -1,0 +1,344 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_SDK_LOCAL_CFG_TYPE" /><meta name="abstract" content="Enumerate the local configuration types of device network SDK." /><meta name="description" content="Enumerate the local configuration types of device network SDK." /><meta name="DC.Relation" scheme="URI" content="GUID-763D9DC9-B161-47F9-AFAF-0E663F28FD2A.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588" /><meta name="DC.Language" content="en-US" /><title>NET_SDK_LOCAL_CFG_TYPE</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_SDK_LOCAL_CFG_TYPE</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Enumerate the local configuration types of device network SDK.</p>
+
+<div class="section" id="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-C05525A3-140B-4EEC-BA10-D7AE68C6A3E5"><h2 class="title sectiontitle">Enumeration Definition</h2>
+            
+            <pre class="pre codeblock">enum{
+  NET_SDK_LOCAL_CFG_TYPE_TCP_PORT_BIND       =0,
+  NET_SDK_LOCAL_CFG_TYPE_UDP_PORT_BIND       =1,
+  NET_SDK_LOCAL_CFG_TYPE_MEM_POOL            =2,
+  NET_SDK_LOCAL_CFG_TYPE_MODULE_RECV_TIMEOUT =3,
+  NET_SDK_LOCAL_CFG_TYPE_ABILITY_PARSE       =4,
+  NET_SDK_LOCAL_CFG_TYPE_TALK_MODE           =5,
+  NET_SDK_LOCAL_CFG_TYPE_PROTECT_KEY         =6
+  NET_SDK_LOCAL_CFG_TYPE_CFG_VERSION         =7
+  NET_SDK_LOCAL_CFG_TYPE_RTSP_PARAMS         =8
+  NET_SDK_LOCAL_CFG_TYPE_SIMXML_LOGIN        =9
+  NET_SDK_LOCAL_CFG_TYPE_CHECK_DEV           =10,
+  NET_SDK_LOCAL_CFG_TYPE_SECURITY            =11
+  NET_SDK_LOCAL_CFG_TYPE_EZVIZLIB_PATH       =12
+  NET_SDK_LOCAL_CFG_TYPE_CHAR_ENCODE         =13,
+  NET_SDK_LOCAL_CFG_TYPE_PROXYS              =14
+  NET_DVR_LOCAL_CFG_TYPE_LOG                 =15,
+  NET_DVR_LOCAL_CFG_TYPE_STREAM_CALLBACK     =16
+  NET_DVR_LOCAL_CFG_TYPE_GENERAL             =17,
+  NET_DVR_LOCAL_CFG_TYPE_PTZ                 =18,
+  NET_DVR_LOCAL_CFG_MESSAGE_CALLBACK_V51     =19
+  NET_SDK_LOCAL_CFG_CERTIFICATION            =20,
+  NET_SDK_LOCAL_CFG_PORT_MULTIPLEX           =21,
+  NET_SDK_LOCAL_CFG_ASYNC                    =22
+}NET_SDK_LOCAL_CFG_TYPE</pre>
+
+        </div>
+
+        <div class="section" id="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-56B1668A-9B13-4183-B442-2F4C55C1A808"><h2 class="title sectiontitle">Members</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-87CCB07C-0283-4353-ACAC-810CAAD807A5"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_TCP_PORT_BIND</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Local binding configuration of TCP port, see details in
+                                <a class="xref" href="GUID-C58CD0E5-2971-4B7D-92D0-69F90EB18568.html#GUID-C58CD0E5-2971-4B7D-92D0-69F90EB18568" title="Local binding configuration structure of TCP port.">NET_DVR_LOCAL_TCP_PORT_BIND_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-A9536A7F-1CE4-407B-967A-2ECB57E2B641"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_UDP_PORT_BIND</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Binding configuration of local UDP port, see details in <a class="xref" href="GUID-F3AB3C8D-9BDD-41D9-B1DA-4D00A8F6E76A.html#GUID-F3AB3C8D-9BDD-41D9-B1DA-4D00A8F6E76A" title="Local binding configuration structure of UDP port.">NET_DVR_LOCAL_UDP_PORT_BIND_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-5BBA6B34-2489-4520-843E-9F7C99B4FF35"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_MEM_POOL</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Local configuration of storage pool, see details in <a class="xref" href="GUID-539D4904-2528-4474-A13B-0D2F7B7E40F5.html#GUID-539D4904-2528-4474-A13B-0D2F7B7E40F5" title="Local configuration structure of storage pool.">NET_DVR_LOCAL_MEM_POOL_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-E93A24AF-8F76-45FD-8E5E-14E08E5E4268"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_MODULE_RECV_TIMEOUT</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Timeout configuration by module, see details in <a class="xref" href="GUID-A9BE5057-3878-4E1D-8774-8A5B3DE8AAB9.html#GUID-A9BE5057-3878-4E1D-8774-8A5B3DE8AAB9" title="Structure about timeout configuration by module.">NET_DVR_LOCAL_MODULE_RECV_TIMEOUT_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-1F7F902F-EA79-40AF-9991-FA242BF44DAB"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_ABILITY_PARSE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Capability analysis library configuration, see details in
+                                <a class="xref" href="GUID-D333152C-7AD5-47A0-BD1A-DA744506C482.html#GUID-D333152C-7AD5-47A0-BD1A-DA744506C482" title="Structure about capability of analysis library configuration.">NET_DVR_LOCAL_ABILITY_PARSE_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-619317E1-78F9-4FE8-B08C-34ED02D5CEB7"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_TALK_MODE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Two-way audio configuration, see details in <a class="xref" href="GUID-0BBCD466-6393-42AE-80D5-52BFDF5710D5.html#GUID-0BBCD466-6393-42AE-80D5-52BFDF5710D5" title="Two-way audio configuration structure.">NET_DVR_LOCAL_TALK_MODE_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-5D4D2B37-2977-4577-AC1D-7E55808E162E"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_PROTECT_KEY</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Key configuration, see details in <a class="xref" href="GUID-B0F4F208-741F-4C77-95E2-91F237F7253F.html#GUID-B0F4F208-741F-4C77-95E2-91F237F7253F">NET_DVR_LOCAL_PROTECT_KEY_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-A5A340DA-51BA-4971-9F66-CFACF879D437"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_CFG_VERSION</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Check the device compatibility when setting parameters.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-0650012A-2AD5-46DB-88A7-1DE8DADBC54E"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_RTSP_PARAMS</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">RTSP parameters, see details in <a class="xref" href="GUID-3BF2EA13-6794-4CDE-8240-20A640BA37BB.html#GUID-3BF2EA13-6794-4CDE-8240-20A640BA37BB">NET_DVR_RTSP_PARAMS_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-F37E18A2-2BF6-4751-AB17-2591ED28AB59"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_SIMXML_LOGIN</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Parameters of using stimulation capability to complement
+                            fields, see details in <a class="xref" href="GUID-E1EE0899-D676-4404-B0D8-14EC6CCE454F.html#GUID-E1EE0899-D676-4404-B0D8-14EC6CCE454F">NET_DVR_SIMXML_LOGIN</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-C2439CB8-3800-4BB4-B426-E5A19B2F8C77"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_CHECK_DEV</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Heartbeat time interval, see details in <a class="xref" href="GUID-CE93CDA9-2CE4-4910-B5EC-C322CC67C9D9.html#GUID-CE93CDA9-2CE4-4910-B5EC-C322CC67C9D9" title="Heartbeat time interval configuration structure.">NET_DVR_LOCAL_CHECK_DEV</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-B84EF2BC-E177-475B-AFCC-D1C2252EA2FB"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_SECURITY</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">SDK security parameters.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-74C8C1B5-6537-47C0-846C-BBC4480D468D"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_EZVIZLIB_PATH</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Communication library address of EZVIZ cloud.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-DD7ECD41-6DB8-4EE2-AD0C-2AE82C11AC0B"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_CHAR_ENCODE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Encoding format conversion configuration, see details in
+                                <a class="xref" href="GUID-ABAFD7F2-459D-40B2-A001-20039BBD4C8E.html#GUID-ABAFD7F2-459D-40B2-A001-20039BBD4C8E" title="Structure about encoding format conversion configuration.">NET_DVR_LOCAL_BYTE_ENCODE_CONVERT</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-242A60D9-3D48-4FB2-8306-A07E1BE857ED"><!-- --></a>NET_SDK_LOCAL_CFG_TYPE_PROXYS</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Proxy types.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-1153052E-5EDE-42BB-865C-9D6E25C104C5"><!-- --></a>NET_DVR_LOCAL_CFG_TYPE_LOG</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Log parameters, see details in <a class="xref" href="GUID-E7237948-5118-4C91-8485-1A6432641732.html#GUID-E7237948-5118-4C91-8485-1A6432641732" title="Log configuration structure.">NET_DVR_LOCAL_LOG_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-C1F3D107-FEF4-4213-921F-51CBBC8CBFED"><!-- --></a>NET_DVR_LOCAL_CFG_TYPE_STREAM_CALLBACK</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Stream callback parameters, see details in <a class="xref" href="GUID-71F72E18-66E7-48DE-A298-BAAC7AC07F8F.html#GUID-71F72E18-66E7-48DE-A298-BAAC7AC07F8F">NET_DVR_LOCAL_STREAM_CALLBACK_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-984CDEA5-33C2-49C9-BFCF-DF4A88C93BB8"><!-- --></a>NET_DVR_LOCAL_CFG_TYPE_GENERAL</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">General parameters, see details in <a class="xref" href="GUID-B8063DA7-41B9-4D05-8E7F-370A0153BAD8.html#GUID-B8063DA7-41B9-4D05-8E7F-370A0153BAD8" title="General configurations structure.">NET_DVR_LOCAL_GENERAL_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-44FBE74C-AF9A-47BC-B412-2A70E93A9E6F"><!-- --></a>NET_DVR_LOCAL_CFG_TYPE_PTZ</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">PTZ interaction parameters, see details in <a class="xref" href="GUID-77D945C4-FA8A-45D7-BEA0-4DA54DD6B7D0.html#GUID-77D945C4-FA8A-45D7-BEA0-4DA54DD6B7D0" title="PTZ interaction configuration structure.">NET_DVR_LOCAL_CFG_TYPE_PTZ</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-EFCAC380-358F-44B8-AA60-B5924E6ADA3F"><!-- --></a>NET_DVR_LOCAL_CFG_MESSAGE_CALLBACK_V51</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Local parameters of alarm callback, see details in <a class="xref" href="GUID-9B95793C-ED92-4059-B7FA-D571842B15E8.html#GUID-9B95793C-ED92-4059-B7FA-D571842B15E8" title="Alarm Callback Configuration Parameters">NET_DVR_MESSAGE_CALLBACK_PARAM_V51</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-2DC80272-DB84-4FCC-835F-4BD5648CE3FF"><!-- --></a>NET_SDK_LOCAL_CFG_CERTIFICATION</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Certificate parameters, see details in <a class="xref" href="GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833.html#GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833" title="Cettificate configuration parameter structure">NET_DVR_LOCAL_CERTIFICATION</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-3C9D8556-DC43-43B8-A636-48CE6A117E41"><!-- --></a>NET_SDK_LOCAL_CFG_PORT_MULTIPLEX</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Port multiplier parameters, see details in <a class="xref" href="GUID-3831B7BE-A396-4B93-AC3A-C225825BF49E.html#GUID-3831B7BE-A396-4B93-AC3A-C225825BF49E" title="Configuration parameter structure of port multiplier.">NET_DVR_LOCAL_PORT_MULTI_CFG</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588__GUID-43248FDC-52EF-45B4-AF27-418D2A6E4576"><!-- --></a>NET_SDK_LOCAL_CFG_ASYNC</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Asynchronous mode parameters, see details in <a class="xref" href="GUID-6CD546BB-E41B-4E9F-BD32-4F6B58BDCF5C.html#GUID-6CD546BB-E41B-4E9F-BD32-4F6B58BDCF5C">NET_DVR_LOCAL_ASYNC_CFG</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-763D9DC9-B161-47F9-AFAF-0E663F28FD2A.html">Enumeration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-B0DF0669-08D5-47B1-AAAC-BC491E68EABE.html">BITRATE_ENCODE_INDEX</a></span></li><li><span class="topicref"><a href="GUID-515AE0E5-6AE5-4AEF-A2BD-A8CB1EB9A54A.html">COUNTRY_INDEX</a></span></li><li><span class="topicref"><a href="GUID-DBF4EBF4-7600-4A29-A55F-D64802838E9E.html">CR_INDEX</a></span></li><li><span class="topicref"><a href="GUID-B41799DB-4A7A-481D-ACFC-07DF0BD605D0.html">FIRE_ALARM</a></span></li><li><span class="topicref"><a href="GUID-ABAFC736-C0F9-4305-9C3E-57A789BEA2C2.html">NET_DVR_CHARSET_ENUM</a></span></li><li><span class="topicref"><a href="GUID-41D74A0A-E410-4BCF-9567-B2E25FC1FFA0.html">NET_SDK_CALLBACK_STATUS_NORMAL</a></span></li><li><span class="topicref"><a href="GUID-203D27A4-050E-4D53-A07C-DD9BABFBD69C.html">NET_DVR_LINK_KIND</a></span></li><li class="active"><span class="topicref">NET_SDK_LOCAL_CFG_TYPE</span></li><li><span class="topicref"><a href="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA.html">NET_SDK_DOWNLOAD_TYPE</a></span></li><li><span class="topicref"><a href="GUID-576C3694-A8D3-44A4-B23B-46D3AA8F3AC1.html">NET_SDK_UPLOAD_TYPE</a></span></li><li><span class="topicref"><a href="GUID-3243BDAD-E3CE-4BCC-B78C-11BC5386878C.html">PRIDATA_RENDER</a></span></li><li><span class="topicref"><a href="GUID-D288A094-7CE9-46C1-92FA-09B89DD6FF1E.html">STREAM_TYPE_E</a></span></li><li><span class="topicref"><a href="GUID-B807213F-FD44-417C-A640-D4479212B89A.html">TEM_FLAG</a></span></li><li><span class="topicref"><a href="GUID-68C7CFE6-1C84-48E6-AEB1-2C120766A8B6.html">VCA_PLATE_COLOR</a></span></li><li><span class="topicref"><a href="GUID-9F4CD40E-5576-4572-951A-05DA88AF5682.html">VLR_VEHICLE_CLASS</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

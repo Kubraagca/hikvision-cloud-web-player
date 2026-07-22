@@ -1,0 +1,412 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Table 1 Device Basic Parameters Function API Get device basic parameters Call NET_DVR_GetDVRConfig with &#34;NET_DVR_GET_DEVICECFG_V50&#34; (command No.: 3801). The device basic parameters are returned in the ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Basic Settings" /><meta name="DC.Relation" scheme="URI" content="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743" /><meta name="DC.Language" content="en-US" /><title>Basic Settings</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Basic Settings</h1>
+
+<div class="body conbody">
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743__TABLE_FJD_MKP_XLB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1 Device Basic Parameters</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d682886e28">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d682886e34">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e28 ">
+                            <p class="p">Get device basic parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e34 ">
+                            <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with "NET_DVR_GET_DEVICECFG_V50" (command No.:
+                                3801).</p>
+
+                            <p class="p">The device basic parameters are returned in the
+                                structure <a class="xref" href="GUID-BF4FD139-6C88-487C-9A56-1DB81C304433.html#GUID-BF4FD139-6C88-487C-9A56-1DB81C304433">NET_DVR_DEVICECFG_V50</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e28 ">
+                            <p class="p">Set device basic parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e34 ">
+                            <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with "NET_DVR_SET_DEVICECFG_V50" (command No.:
+                                3802) and set <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-BF4FD139-6C88-487C-9A56-1DB81C304433.html#GUID-BF4FD139-6C88-487C-9A56-1DB81C304433">NET_DVR_DEVICECFG_V50</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743__TABLE_WLM_1KP_XLB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 2 Device Language</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d682886e123">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d682886e129">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e123 ">
+                            <p class="p">Get device language configuration capability</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e129 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit<a class="xref" href="GUID-2C4DB88C-E04D-41EE-88FF-A1F0E4CE0E75.html#GUID-2C4DB88C-E04D-41EE-88FF-A1F0E4CE0E75" title="Get the capability of device language configuration.">/ISAPI/System/DeviceLanguage/capabilities</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The capability is returned in the message <a class="xref" href="GUID-58A9E65D-6F55-4206-99D4-28E7518EAE25.html#GUID-58A9E65D-6F55-4206-99D4-28E7518EAE25" title="DeviceLanguage capability message in XML format">XML_Cap_DeviceLanguage</a> by the output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e123 ">
+                            <p class="p">Get device language</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e129 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-013D9D49-73CE-4E34-85DC-2B9DBB8154CC.html#GUID-013D9D49-73CE-4E34-85DC-2B9DBB8154CC" title="Operations about device language configuration.">/ISAPI/System/DeviceLanguage</a> with <span class="ph synph">GET</span> method.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e123 ">
+                            <p class="p">Set device language</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e129 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-013D9D49-73CE-4E34-85DC-2B9DBB8154CC.html#GUID-013D9D49-73CE-4E34-85DC-2B9DBB8154CC" title="Operations about device language configuration.">/ISAPI/System/DeviceLanguage</a> with <span class="ph synph">PUT</span> method and
+                                set <span class="keyword parmname">lpInputParam</span> to the message
+                                    <a class="xref" href="GUID-61F36496-F280-4896-A765-E02172710BF1.html#GUID-61F36496-F280-4896-A765-E02172710BF1" title="DeviceLanguage message in XML format">XML_DeviceLanguage</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743__TABLE_PGP_1MP_XLB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 3 Configuration Files</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d682886e276">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d682886e282">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e276 ">
+                            <p class="p">Securely import configuration files to device</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e282 ">
+                            <p class="p">Call <a class="xref" href="GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8.html#GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8" title="Upload file.">NET_DVR_UploadFile_V40</a>, set
+                                the file type <span class="keyword parmname">dwUploadType</span> to
+                                "UPLOAD_SECURITY_CFG_FILE", and set <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-11B3F760-9DE1-42CA-9358-AC4981615C4F.html#GUID-11B3F760-9DE1-42CA-9358-AC4981615C4F" title="Input parameter structure of importing/exporting configuration file">NET_DVR_SECURITY_CFG_FILE_COND</a>.</p>
+
+                            <p class="p">The device basic parameters are returned in the
+                                structure <a class="xref" href="GUID-BF4FD139-6C88-487C-9A56-1DB81C304433.html#GUID-BF4FD139-6C88-487C-9A56-1DB81C304433">NET_DVR_DEVICECFG_V50</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            <div class="note note" id="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743__GUID-F24D8A52-9EAD-47F8-B5DA-8B5CD3F2149F"><span class="notetitle">Note:</span> 
+                                <p class="p">You can check whether the device supports importing
+                                    calibration file by calling API <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a> with <span class="ph synph">GET</span> method.
+                                    When the node <span class="keyword parmname">isSupportCalibrationFile</span> exists and its value is
+                                    true in the returned device capability (<a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a>), it indicates the function is
+                                    supported.</p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e276 ">
+                            <p class="p">Get configuration files importing progress</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e282 ">
+                            <p class="p">Call <a class="xref" href="GUID-40B94D36-648A-4455-B6F1-B4038FD13CB3.html#GUID-40B94D36-648A-4455-B6F1-B4038FD13CB3" title="Get the file uploading progress and status.">NET_DVR_GetUploadState</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e276 ">
+                            <p class="p">Stop importing configuration files</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e282 ">
+                            <p class="p">Call <a class="xref" href="GUID-B7E409CB-937C-4F31-9609-74720D82B843.html#GUID-B7E409CB-937C-4F31-9609-74720D82B843" title="Stop uploading files.">NET_DVR_UploadClose</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743__TABLE_IK1_CPP_XLB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 4 Camera Software Service</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d682886e432">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d682886e438">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e432 ">
+                            <p class="p">Get configuration capability of software service</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e438 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-573CF122-C4DE-4B6F-8724-2C0990347B3B.html#GUID-573CF122-C4DE-4B6F-8724-2C0990347B3B" title="Get the configuration capability of software service.">/ISAPI/System/Software/channels/&lt;ID&gt;/capabilities</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The configuration capability is returned in the message
+                                    <a class="xref" href="GUID-500CF084-66AB-4EF7-83C9-57921089A706.html#GUID-500CF084-66AB-4EF7-83C9-57921089A706" title="SoftwareService capability message in XML format">XML_Cap_SoftwareService</a> by <span class="keyword parmname">IpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e432 ">
+                            <p class="p">Get software service parameter</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e438 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-FBC04D9A-3FCE-4174-B914-9C03FC09D53C.html#GUID-FBC04D9A-3FCE-4174-B914-9C03FC09D53C" title="Operation about software service configuration.">/ISAPI/System/Software/channels/&lt;ID&gt;</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The configuration parameter is returned in the message
+                                    <a class="xref" href="GUID-A3720D48-8041-46D2-AF5A-D438C0241D20.html#GUID-A3720D48-8041-46D2-AF5A-D438C0241D20" title="SoftwareService message in XML format">XML_SoftwareService</a> by <span class="keyword parmname">IpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e432 ">
+                            <p class="p">Set software service parameter</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e438 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-FBC04D9A-3FCE-4174-B914-9C03FC09D53C.html#GUID-FBC04D9A-3FCE-4174-B914-9C03FC09D53C" title="Operation about software service configuration.">/ISAPI/System/Software/channels/&lt;ID&gt;</a> with <span class="ph synph">PUT</span> method and
+                                set <span class="keyword parmname">IpInputParam</span> to the message
+                                    <a class="xref" href="GUID-A3720D48-8041-46D2-AF5A-D438C0241D20.html#GUID-A3720D48-8041-46D2-AF5A-D438C0241D20" title="SoftwareService message in XML format">XML_SoftwareService</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743__TABLE_IP4_YXK_DNB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 5 Device Attribute Code</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d682886e598">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d682886e604">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d682886e598 ">
+                            <p class="p">Get device attribute code</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d682886e604 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-43743902-3796-41C7-8862-B1FC7EDF8DC3.html#GUID-43743902-3796-41C7-8862-B1FC7EDF8DC3" title="Get the device attribute code.">/ISAPI/System/deviceInfo/characteristicCode?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The parameters are returned in the message <a class="xref" href="GUID-88E102B6-0BA6-4E2B-B834-E3B72178C9D4.html#GUID-88E102B6-0BA6-4E2B-B834-E3B72178C9D4" title="JSON message about device attribute code">JSON_Characteristic</a> by <span class="keyword parmname">IpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li><span class="topicref"><a href="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2.html">Search for Logs</a></span></li><li><span class="topicref"><a href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html">Configure Log Storage Mode</a></span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697.html">Automatic Maintenance</a></span></li><li><span class="topicref"><a href="GUID-F703A174-8D62-4240-B68F-61994DB95C83.html">Basic Maintenance</a></span></li><li class="active"><span class="topicref">Basic Settings</span></li><li><span class="topicref"><a href="GUID-406B75B5-6C79-474C-A456-0333498574DB.html">Device Calibration</a></span></li><li><span class="topicref"><a href="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B.html">Configure Camera Correction</a></span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

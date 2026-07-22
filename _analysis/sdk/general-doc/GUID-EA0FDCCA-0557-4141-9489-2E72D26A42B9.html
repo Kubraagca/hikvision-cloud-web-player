@@ -1,0 +1,357 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Peripherals Configuration Capability Peripherals Configuration Capability Call NET_DVR_GetSTDAbility , set dwAbilityType to &#34;NET_DVR_GET_EXTERNALDEVICE_CAPABILITIES&#34; (value: 3722) and set lpCondBuffer ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Peripherals Settings" /><meta name="DC.Relation" scheme="URI" content="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9" /><meta name="DC.Language" content="en-US" /><title>Peripherals Settings</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Peripherals Settings</h1>
+
+<div class="body conbody">
+        <div class="section" id="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9__GUID-67A37722-6AF0-43B8-833E-6A2C8DB58646"><h2 class="title sectiontitle">Peripherals Configuration Capability</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9__TABLE_GZM_VYC_3LB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Peripherals Configuration Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a>, set
+                                        <span class="keyword parmname">dwAbilityType</span> to
+                                    "NET_DVR_GET_EXTERNALDEVICE_CAPABILITIES" (value: 3722) and set
+                                        <span class="keyword parmname">lpCondBuffer</span> of structure
+                                        <a class="xref" href="GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597.html#GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597">NET_DVR_STD_ABILITY</a> to a 4-byte channel No. for
+                                    getting peripherals configuration capability.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-A70DECD8-955B-4923-B4B8-0029E4A253DE.html#GUID-A70DECD8-955B-4923-B4B8-0029E4A253DE" title="XML message about external device configuration capability">XML_Cap_ExternalDevice</a></p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9__GUID-DA9BFA2A-06C9-4242-AB63-89F2A879B0E1"><h2 class="title sectiontitle">Built-in Supplement Light</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9__TABLE_CCD_B5N_QJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">Configuration Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a>, set <span class="keyword parmname">dwAbilityType</span> to
+                                    "NET_DVR_GET_SUPPLEMENTLIGHT_CAPABILITIES" (value: 3727) and set
+                                        <span class="keyword parmname">lpCondBuffer</span> of structure
+                                        <a class="xref" href="GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597.html#GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597">NET_DVR_STD_ABILITY</a> to a 4-byte channel No. for
+                                    getting configuration capability of built-in supplement
+                                    light.</p>
+
+                                <p class="p">The configuration capability is returned in the
+                                    message <a class="xref" href="GUID-95401305-FB8E-48B0-93B3-DCB6DF3C67A3.html#GUID-95401305-FB8E-48B0-93B3-DCB6DF3C67A3" title="SupplementLight capability message in XML format">XML_Cap_SupplementLight</a> by <span class="keyword parmname">lpOutBuffer</span> of structure <a class="xref" href="GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597.html#GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597">NET_DVR_STD_ABILITY</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="33.33333333333333%">
+                                <p class="p">Configuration Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with
+                                    "NET_DVR_GET_SUPPLEMENTLIGHT" (command No.: 3728) and set
+                                        <span class="keyword parmname">lpCondBuffer</span> of structure
+                                        <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83">NET_DVR_STD_CONFIG</a> to a 4-byte supplement No. for
+                                    getting parameters of built-in supplement light.</p>
+
+                                <p class="p">The configuration parameters are returned in the
+                                    structure <a class="xref" href="GUID-4DEA2F15-8D91-478E-848F-F0B52969CCD5.html#GUID-4DEA2F15-8D91-478E-848F-F0B52969CCD5" title="Configuration parameter structure of supplement light">NET_DVR_BUILTIN_SUPPLEMENTLIGHT</a> by <span class="keyword parmname">lpOutBuffer</span> of structure <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83">NET_DVR_STD_CONFIG</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html#GUID-19B97F95-5F55-48EF-9450-AC33661876D2" title="Set the device parameters.">NET_DVR_SetSTDConfig</a> with
+                                    "NET_DVR_SET_SUPPLEMENTLIGHT" (command No.: 3729), set<span class="keyword parmname">lpCondBuffer</span> and <span class="keyword parmname">lpInBuffer</span> of structure <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83">NET_DVR_STD_CONFIG</a> to a 4-byte supplement No. and
+                                        <a class="xref" href="GUID-4DEA2F15-8D91-478E-848F-F0B52969CCD5.html#GUID-4DEA2F15-8D91-478E-848F-F0B52969CCD5" title="Configuration parameter structure of supplement light">NET_DVR_BUILTIN_SUPPLEMENTLIGHT</a>, respectively, for setting
+                                    parameters of built-in supplement light.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9__GUID-B3CAACF9-E9ED-440C-BD56-D3E2AA38DE9B"><h2 class="title sectiontitle">POS (Point of Sale)</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9__TABLE_NJP_W5N_QJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%">
+                                <p class="p">POS Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a>, set <span class="keyword parmname">dwAbilityType</span> to "DEVICE_ABILITY_INFO" (value:
+                                    0x011), and set <span class="keyword parmname">pInBuf</span> to the
+                                    message <a class="xref" href="GUID-18FB25F5-9379-49A4-86C5-6F5BBA0BCA31.html#GUID-18FB25F5-9379-49A4-86C5-6F5BBA0BCA31" title="Input description message for getting POS capability">XML_Desc_POSAbility</a> for getting POS capability.</p>
+
+                                <p class="p">The POS capability is returned in the message <a class="xref" href="GUID-B71FC8EE-A6F3-4B31-BF4E-1C3662C099D5.html#GUID-B71FC8EE-A6F3-4B31-BF4E-1C3662C099D5" title="XML message about POS capability">XML_POSAbility</a> by <span class="keyword parmname">pOutBuf</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="33.33333333333333%">
+                                <p class="p">Filter Rule of POS Information</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with "NET_DVR_GET_POS_FILTER_CFG" (command
+                                    No.: 6148) and set <span class="keyword parmname">lChannel</span> to the rule ID
+                                    (which starts from 1) for getting filter rule of POS
+                                    information.</p>
+
+                                <p class="p">The filter rule parameters are returned in the
+                                    structure <a class="xref" href="GUID-75C4B628-4767-48EB-8789-4DA94C831051.html#GUID-75C4B628-4767-48EB-8789-4DA94C831051">NET_DVR_POS_FILTER_CFG</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with "NET_DVR_SET_POS_FILTER_CFG" (command
+                                    No.: 6149), set <span class="keyword parmname">lChannel</span> to the rule ID
+                                    (which starts from 1), and set <span class="keyword parmname">lpInBuffer</span> to <a class="xref" href="GUID-75C4B628-4767-48EB-8789-4DA94C831051.html#GUID-75C4B628-4767-48EB-8789-4DA94C831051">NET_DVR_POS_FILTER_CFG</a> for setting filter rule of POS
+                                    information.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="33.33333333333333%">
+                                <p class="p">Connection Mode of DVR and POS</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with "NET_DVR_GET_CONNECT_POS_CFG" (command
+                                    No.: 6150) and set <span class="keyword parmname">lChannel</span> to the rule ID
+                                    (which starts from 1) for getting connection mode of DVR and
+                                    POS.</p>
+
+                                <p class="p">The connection mode parameters are returned in the
+                                    structure <a class="xref" href="GUID-981D6B60-A60F-4C44-B9F4-C5C5A008A589.html#GUID-981D6B60-A60F-4C44-B9F4-C5C5A008A589" title="Structure about POS connection configuration.">NET_DVR_CONNECT_POS_CFG</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with "NET_DVR_SET_CONNECT_POS_CFG" (command
+                                    No.: 6151), set <span class="keyword parmname">lChannel</span> to the rule ID
+                                    (which starts from 1), and set <span class="keyword parmname">lpInBuffer</span> to <a class="xref" href="GUID-981D6B60-A60F-4C44-B9F4-C5C5A008A589.html#GUID-981D6B60-A60F-4C44-B9F4-C5C5A008A589" title="Structure about POS connection configuration.">NET_DVR_CONNECT_POS_CFG</a> for setting connection mode of DVR and
+                                    POS.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="33.33333333333333%">
+                                <p class="p">Linkage between Filter Rule and Channel</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E.html#GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E" title="Get device configuration information in batch (with sending data).">NET_DVR_GetDeviceConfig</a> with "NET_DVR_GET_CHAN_FILTER_CFG" (command
+                                    No.: 6152), set <span class="keyword parmname">dwCount</span> to 1, and set
+                                        <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-31E8699D-174C-4266-B168-A13BC01AC028.html#GUID-31E8699D-174C-4266-B168-A13BC01AC028" title="Channel No. and group No. information structure.">NET_DVR_CHANNEL_GROUP</a> for getting linkage information between
+                                    filter rule and channel.</p>
+
+                                <p class="p">The linkage information is returned in the structure <a class="xref" href="GUID-3BC1BD5B-965E-477D-BD88-17426E575074.html#GUID-3BC1BD5B-965E-477D-BD88-17426E575074" title="Structure about linking POS rules and channels">NET_DVR_CHAN_FILTER_CFG</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF.html#GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF" title="Set device parameters in batch (sending data is supported).">NET_DVR_SetDeviceConfig</a> with "NET_DVR_SET_CHAN_FILTER_CFG" (command
+                                    No.: 6153), set <span class="keyword parmname">dwCount</span> to 1, set
+                                        <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-31E8699D-174C-4266-B168-A13BC01AC028.html#GUID-31E8699D-174C-4266-B168-A13BC01AC028" title="Channel No. and group No. information structure.">NET_DVR_CHANNEL_GROUP</a>, and set
+                                        <span class="keyword parmname">lpInParamBuffer</span> to the structure <a class="xref" href="GUID-3BC1BD5B-965E-477D-BD88-17426E575074.html#GUID-3BC1BD5B-965E-477D-BD88-17426E575074" title="Structure about linking POS rules and channels">NET_DVR_CHAN_FILTER_CFG</a> for setting the linkage between filter rule
+                                    and channel.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="33.33333333333333%">
+                                <p class="p">Hidden Configuration of POS Information</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a> and set <span class="keyword parmname">dwAbilityType</span> to
+                                    "NET_DVR_GET_HIDDEN_INFORMATION_CAPABILITIES" (value: 3608) for
+                                    getting hidden configuration capability of POS information.</p>
+
+                                <p class="p">The configuration capability is returned in the
+                                    message <a class="xref" href="GUID-A70A05E5-03D2-400A-9694-8021F466C4D1.html#GUID-A70A05E5-03D2-400A-9694-8021F466C4D1" title="XML message about hidden configuration capability of POS information">XML_Cap_HiddenInformation</a> by <span class="keyword parmname">lpOutBuffer</span> of structure <a class="xref" href="GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597.html#GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597">NET_DVR_STD_ABILITY</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with
+                                    "NET_DVR_GET_HIDDEN_INFORMATION" (command No.: 6721) to get
+                                    hidden parameters of POS information.</p>
+
+                                <p class="p">The hidden parameters are returned in the structure
+                                        <a class="xref" href="GUID-3F958C1A-AA80-41E6-AEFA-B776D1384278.html#GUID-3F958C1A-AA80-41E6-AEFA-B776D1384278" title="Structure about hidden parameter configuration">NET_DVR_HIDDEN_INFORMATION_CFG</a> by <span class="keyword parmname">lpOutBuffer</span> of structure <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83">NET_DVR_STD_CONFIG</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="66.66666666666666%">
+                                <p class="p">Call <a class="xref" href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html#GUID-19B97F95-5F55-48EF-9450-AC33661876D2" title="Set the device parameters.">NET_DVR_SetSTDConfig</a> with
+                                    "NET_DVR_SET_HIDDEN_INFORMATION" (command No.: 6722), set
+                                        <span class="keyword parmname">lpInBuffer</span> of structure
+                                        <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83">NET_DVR_STD_CONFIG</a> to <a class="xref" href="GUID-3F958C1A-AA80-41E6-AEFA-B776D1384278.html#GUID-3F958C1A-AA80-41E6-AEFA-B776D1384278" title="Structure about hidden parameter configuration">NET_DVR_HIDDEN_INFORMATION_CFG</a> for setting hidden parameters of POS
+                                    information.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0.html">Channel Settings</a></span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li><span class="topicref"><a href="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014.html">Video/Image Settings</a></span></li><li><span class="topicref"><a href="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html">Network Settings</a></span></li><li class="active"><span class="topicref">Peripherals Settings</span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

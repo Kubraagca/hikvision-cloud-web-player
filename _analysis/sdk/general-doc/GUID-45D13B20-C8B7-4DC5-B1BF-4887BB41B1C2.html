@@ -1,0 +1,164 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Configure Log Storage Mode" /><meta name="abstract" content="You can save the log files in default mode or custom mode. In the default mode, each HDD can save up to 64 MB log files, and the storage space will automatically be overwritten when the space usage reaches 64 MB. In the custom mode, it is available to specify HDDs to save log files." /><meta name="description" content="You can save the log files in default mode or custom mode. In the default mode, each HDD can save up to 64 MB log files, and the storage space will automatically be overwritten when the space usage reaches 64 MB. In the custom mode, it is available to specify HDDs to save log files." /><meta name="DC.Relation" scheme="URI" content="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2" /><meta name="DC.Language" content="en-US" /><title>Configure Log Storage Mode</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Configure Log Storage Mode</h1>
+
+    
+<div class="body taskbody"><p class="shortdesc">You can save the log files in default mode or custom mode. In the default
+        mode, each HDD can save up to 64 MB log files, and the storage space will automatically be
+        overwritten when the space usage reaches 64 MB. In the custom mode, it is available to
+        specify HDDs to save log files.</p>
+
+        <div class="section prereq p" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-E70F59C7-7788-4383-B833-3D44976F04BF">
+            <ul class="ul" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__UL_Y2S_N3H_V3B">
+                <li class="li" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-0830E6CD-7031-4CBA-B0C2-80D02CA65D66">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs.">NET_DVR_Init</a> to initialize the development
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-2F60C875-32F7-449B-88B6-630266AD6AC4">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-55583AE0-FA8D-4D85-8BDE-F858EF49F1B2">
+                <div class="fig fignone" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__FIG_FYG_HYS_DKB">
+                    
+                    <img class="image" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__IMAGE_VJ1_DZS_DKB" src="GUID-EAA40540-EEF1-46E3-8EB6-A2E9B76EA511-high.png" width="2000" />
+                <span class="figcap">Figure 1 Programming Flow of
+                        Configuring Log Storage Mode</span></div>
+
+            </p><ol class="ol steps" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-39E2EA01-0CD6-450B-8E08-D9E3842DF545"><li class="li step stepexpand" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-FD4E616B-DB66-42B4-95A8-CC7CEEBF130F"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI: <a class="xref" href="GUID-131875A1-C300-442E-827C-FA14D1CDFE61.html#GUID-131875A1-C300-442E-827C-FA14D1CDFE61" title="Get configuration capability of log storage.">/ISAPI/ContentMgmt/Storage/extension/capabilities</a> by <span class="ph synph">GET</span> method to get the
+                    capability of log storage strategy for reference.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The capability is returned in the message <a class="xref" href="GUID-D02F638D-4A22-45E7-9FB8-1996686D1F6D.html#GUID-D02F638D-4A22-45E7-9FB8-1996686D1F6D" title="XML message about storage strategy capability.">XML_Cap_storageExtension</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-F547CA49-8AC2-4B5F-8369-5671BC20438D">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI <a class="xref" href="GUID-217F41B5-5578-4E7B-A126-1227DC19345B.html#GUID-217F41B5-5578-4E7B-A126-1227DC19345B" title="Get or set parameters of storage strategy.">/ISAPI/ContentMgmt/Storage/extension</a> by <span class="ph synph">PUT</span> method, and set the node
+                        &lt;<span class="keyword parmname">logStorageMode</span>&gt; as "system" (system default
+                    mode) or  "custom" (custom mode) in the message <a class="xref" href="GUID-9BC176E2-DF4A-46D2-B929-7F6F40F360A6.html#GUID-9BC176E2-DF4A-46D2-B929-7F6F40F360A6" title="XML message about storage strategy.">XML_storageExtension</a>.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-334F029E-8AB6-4677-A47E-888AC0628271"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI: <a class="xref" href="GUID-74A8F907-C5B1-4AE9-B2BF-3F8603607C0A.html#GUID-74A8F907-C5B1-4AE9-B2BF-3F8603607C0A" title="Get HDD management capability.">/ISAPI/ContentMgmt/Storage/hdd/capabilities</a> by <span class="ph synph">GET</span> method to get the HDD
+                    management capability.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The capability is returned in the message <a class="xref" href="GUID-8CF597F4-8D06-4F44-A37F-F7A20BABFA22.html#GUID-8CF597F4-8D06-4F44-A37F-F7A20BABFA22" title="hddList capability message in XML format">XML_Cap_hddList</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-D7EABAE2-8D6B-4F6A-8495-161B606F5B7B"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI: <a class="xref" href="GUID-3E6FF28E-0136-4040-81D6-C75802BA2451.html#GUID-3E6FF28E-0136-4040-81D6-C75802BA2451" title="Get configuration parameters of all HDDs.">/ISAPI/ContentMgmt/Storage/hdd</a> by <span class="ph synph">GET</span> method to get
+                    configuration parameters of all HDDs.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The parameters are returned in the message <a class="xref" href="GUID-E7AB4271-8F50-488F-8BAE-B862A9CF9ED3.html#GUID-E7AB4271-8F50-488F-8BAE-B862A9CF9ED3" title="XML message about HDD list parameters">XML_hddList</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-14A73F1A-3DA9-4610-A116-06A1E491CF26">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URI: <a class="xref" href="GUID-414E3FFC-52D5-4BED-8E1C-37E2BF774F8B.html#GUID-414E3FFC-52D5-4BED-8E1C-37E2BF774F8B" title="Configure preverification for log HDDs.">/ISAPI/ContentMgmt/Storage/hdd/&lt;ID&gt;/logProTest?format=json</a> by <span class="ph synph">PUT</span> method to configure
+                    preverification for log HDDs.</span>
+            </li>
+</ol>
+
+        <div class="section postreq" id="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2__GUID-54239E9B-F2D4-4A0B-90CF-DC77B94569D6">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices.">NET_DVR_Logout</a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended.">NET_DVR_Cleanup</a> to log out of the device and release all
+                resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li><span class="topicref"><a href="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2.html">Search for Logs</a></span></li><li class="active"><span class="topicref">Configure Log Storage Mode</span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

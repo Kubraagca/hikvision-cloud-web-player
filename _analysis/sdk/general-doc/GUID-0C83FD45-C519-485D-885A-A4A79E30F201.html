@@ -1,0 +1,195 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Get Network Capability Set Call NET_DVR_STDXMLConfig to pass through the request URL: GET /ISAPI/System/Network/capabilities . And the capability is returned in the message XML_NetworkCap by the ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Network Settings" /><meta name="DC.Relation" scheme="URI" content="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html" /><meta name="DC.Relation" scheme="URI" content="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF.html" /><meta name="DC.Relation" scheme="URI" content="GUID-96255498-3AEB-4447-B310-03D6A8227839.html" /><meta name="DC.Relation" scheme="URI" content="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A.html" /><meta name="DC.Relation" scheme="URI" content="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4.html" /><meta name="DC.Relation" scheme="URI" content="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC.html" /><meta name="DC.Relation" scheme="URI" content="GUID-4F4A40F2-D35F-4C6F-9B8D-D7FC019580C5.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-0C83FD45-C519-485D-885A-A4A79E30F201" /><meta name="DC.Language" content="en-US" /><title>Network Settings</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-0C83FD45-C519-485D-885A-A4A79E30F201" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Network Settings</h1>
+
+<div class="body conbody">
+        <dl class="dl">
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-14640842-1D4B-4EB6-9ED8-D760DD93B88A"><!-- --></a>Get Network Capability Set</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                            <span class="ph synph">GET</span>
+                        <a class="xref" href="GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F.html#GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F" title="Get the network capability.">/ISAPI/System/Network/capabilities</a>. And the capability is returned in the
+                        message <a class="xref" href="GUID-62A83405-10A1-4956-8E53-1267242B4514.html#GUID-62A83405-10A1-4956-8E53-1267242B4514" title="NetworkCap capability message in XML format">XML_NetworkCap</a> by the output parameter pointer (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-7AF3F53A-1F62-4D1E-94B3-31751C9BEF20"><!-- --></a>Get Network Application Capability</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a>, set the capability type (<span class="keyword parmname">dwAbilityType</span>) to "DEVICE_NETAPP_ABILITY" (macro
+                        definition value: 0x00d), and set the input buffer pointer (<span class="keyword parmname">pInBuf</span>) to the message <a class="xref" href="GUID-C0DD35F1-D5D6-4A8B-AFA1-D0A67980CE51.html#GUID-C0DD35F1-D5D6-4A8B-AFA1-D0A67980CE51" title="Input description message for getting network application capability.">XML_Desc_NetAppAbility</a>. The network
+                        application capability is returned in the message <a class="xref" href="GUID-D58967AB-D7C4-4409-BFEF-1C778CA1B27E.html#GUID-D58967AB-D7C4-4409-BFEF-1C778CA1B27E" title="NetAppAbility capability message in XML format">XML_NetAppAbility</a> by the output buffer
+                        pointer (<span class="keyword parmname">pOutBuf</span>).</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-D7DC3FDD-AEE0-4F2C-8643-696AD9940E12"><!-- --></a>Get Network Parameters</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_GET_NETCFG_V50</span> (command No.: 1015), the network
+                        parameters are returned in the structure <a class="xref" href="GUID-CEBF2F67-D14A-44DB-A3A4-81CC5B27D67F.html#GUID-CEBF2F67-D14A-44DB-A3A4-81CC5B27D67F">NET_DVR_NETCFG_V50</a>.</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-FFCF7032-271D-47FD-A3D4-6FB451525F92"><!-- --></a>Set Network Parameters</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_SET_NETCFG_V50</span> (command No.: 1016), and set the input
+                        parameter pointer <span class="keyword parmname">lpInBuffer</span> to the
+                        structure <a class="xref" href="GUID-CEBF2F67-D14A-44DB-A3A4-81CC5B27D67F.html#GUID-CEBF2F67-D14A-44DB-A3A4-81CC5B27D67F">NET_DVR_NETCFG_V50</a>.</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-8F2DDD6C-CEA6-463D-9DBB-179723026FC9"><!-- --></a>Get Parameters of Alarm Receiving Center</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_GET_ALARMHOST_NETCFG_V50</span>
+                        (command No.: 2224), and the parameters are returned in the structure <a class="xref" href="GUID-CEFF1D98-928A-469A-99C0-10699101CD59.html#GUID-CEFF1D98-928A-469A-99C0-10699101CD59" title="Structure about parameters of alarm receiving center.">NET_DVR_ALARMHOST_NETCFG_V50</a>.</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-A390B40A-D675-459A-933E-F0A914964EA0"><!-- --></a>Set Parameters of Alarm Receiving Center</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_SET_ALARMHOST_NETCFG_V50</span>
+                        (command No.: 2225) and set the input parameter pointer
+                            <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-CEFF1D98-928A-469A-99C0-10699101CD59.html#GUID-CEFF1D98-928A-469A-99C0-10699101CD59" title="Structure about parameters of alarm receiving center.">NET_DVR_ALARMHOST_NETCFG_V50</a>.</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-AADD199A-CBD5-4DE2-97D1-7996CCD11726"><!-- --></a>Import Network Certificate</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8.html#GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8" title="Upload file.">NET_DVR_UploadFile_V40</a>, set the file type (<span class="keyword parmname">dwUploadType</span>) to "UPLOAD_CERT_FILE", and set the input
+                        parameter (<span class="keyword parmname">lpInBuffer</span>) to the structure
+                            <a class="xref" href="GUID-134349CF-19E9-44ED-8ED0-8EDA3E4FEC0E.html#GUID-134349CF-19E9-44ED-8ED0-8EDA3E4FEC0E" title="Certificate parameter structure.">NET_DVR_CERT_PARAM</a>.</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-896A135D-15F7-4E1E-9D6B-E9168387C2FC"><!-- --></a>Remotely Get Connection Socket IP</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                            <span class="ph synph">GET</span>
+                        <a class="xref" href="GUID-CD612816-E7A9-48C5-995D-4E4B19E2DAF8.html#GUID-CD612816-E7A9-48C5-995D-4E4B19E2DAF8" title="Get the socket IP of current connection.">/ISAPI/System/Network/socketIP</a>. And the
+                        socket IP information is returned in the message <a class="xref" href="GUID-FA50E53A-1892-4A67-B08B-73ECEA81A55C.html#GUID-FA50E53A-1892-4A67-B08B-73ECEA81A55C" title="SocketIP message in XML format">XML_SocketIP</a> by the output parameter
+                        pointer (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                    <div class="note note" id="GUID-0C83FD45-C519-485D-885A-A4A79E30F201__GUID-BC1AB846-3061-477C-9B99-363D942C84C5"><span class="notetitle">Note:</span> 
+                        <p class="p">To check if getting socket IP is supported by device, you can
+                            call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a> and set the <span class="keyword parmname">dwAbilityType</span> to "NET_DVR_GET_SYSTEM_CAPABILITIES" to
+                            get the device capability (<a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a>). If supports, the
+                            node &lt;<span class="keyword parmname">isSupportGetLinkSocketIP</span>&gt;
+                            will be returned.</p>
+
+                    </div>
+
+                </dd>
+
+            
+        </dl>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0.html">Channel Settings</a></span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li><span class="topicref"><a href="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014.html">Video/Image Settings</a></span></li><li class="active"><span class="topicref">Network Settings</span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF.html">Address Filter</a></span></li><li><span class="topicref"><a href="GUID-96255498-3AEB-4447-B310-03D6A8227839.html">Network Access</a></span></li><li><span class="topicref"><a href="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A.html">Network Interface</a></span></li><li><span class="topicref"><a href="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4.html">Network Service</a></span></li><li><span class="topicref"><a href="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC.html">Wireless Network</a></span></li><li><span class="topicref"><a href="GUID-4F4A40F2-D35F-4C6F-9B8D-D7FC019580C5.html">Multicast</a></span></li></ul></li><li><span class="topicref"><a href="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9.html">Peripherals Settings</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

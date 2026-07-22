@@ -1,0 +1,238 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Stream Encoding" /><meta name="abstract" content="The following APIs and request URLs are used for configuring encoding parameters of video and audio stream." /><meta name="description" content="The following APIs and request URLs are used for configuring encoding parameters of video and audio stream." /><meta name="DC.Relation" scheme="URI" content="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473" /><meta name="DC.Language" content="en-US" /><title>Stream Encoding</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Stream Encoding</h1>
+
+    
+<div class="body conbody"><p class="shortdesc">The following APIs and request URLs are used for configuring encoding parameters of
+        video and audio stream.</p>
+
+        <div class="note note" id="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-3A3C7706-01AB-424E-8D85-FEA3A384E243"><span class="notetitle">Note:</span> 
+            <p class="p">The whole stream encoding capability (<a class="xref" href="GUID-8AB9305A-C1B1-4B9C-948A-EFA34CE7D893.html#GUID-8AB9305A-C1B1-4B9C-948A-EFA34CE7D893" title="AudioVideoCompressInfo capability message in XML format">XML_Cap_AudioVideoCompressInfo</a>) of device should be
+                obtained by calling <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a>, setting capability type (<span class="keyword parmname">dwAbilityType</span>) to
+                "DEVICE_ENCODE_ALL_ABILITY_V20" (macro definition value: 0x008), and setting input
+                buffer (<span class="keyword parmname">pInBuf</span>) to <a class="xref" href="GUID-ABD383B8-3134-4978-9980-47869D7595E9.html#GUID-ABD383B8-3134-4978-9980-47869D7595E9" title="Input description message for getting video and audio encoding capability.">XML_Desc_AudioVideoCompressInfo</a>.</p>
+
+        </div>
+
+        <div class="section" id="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-B6E6F835-4D46-4421-A16E-5AD88D0AD89D"><h2 class="title sectiontitle">Multi-Stream Encoding Parameter</h2>
+            
+            <dl class="dl">
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-CFB4F29A-0BB4-435D-926E-E4A5555F2DC1"><!-- --></a>Get multi-stream encoding parameters</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E.html#GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E" title="Get device configuration information in batch (with sending data).">NET_DVR_GetDeviceConfig</a> with
+                                <span class="keyword cmdname">NET_DVR_GET_MULTI_STREAM_COMPRESSIONCFG</span> (command
+                            No.: 3216) and set condition buffer (<span class="keyword parmname">lpInBuffer</span>) to
+                            the structure <a class="xref" href="GUID-83A12ECC-E00D-40D3-9266-793E1F105594.html#GUID-83A12ECC-E00D-40D3-9266-793E1F105594" title="Condition structure of multi-stream encoding parameter configuration.">NET_DVR_MULTI_STREAM_COMPRESSIONCFG_COND</a>. The
+                            parameters are returned in the structure <a class="xref" href="GUID-ED71AC2E-353A-4D06-85D9-DFDDCCB44E51.html#GUID-ED71AC2E-353A-4D06-85D9-DFDDCCB44E51" title="Encoding parameter structure of multi-stream.">NET_DVR_MULTI_STREAM_COMPRESSIONCFG</a> by output
+                            buffer (<span class="keyword parmname">lpOutBuffer</span>).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-CF930B69-8743-4A86-9456-40CCF1E7C181"><!-- --></a>Set multi-stream encoding parameters</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF.html#GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF" title="Set device parameters in batch (sending data is supported).">NET_DVR_SetDeviceConfig</a> with
+                                <span class="keyword cmdname">NET_DVR_SET_MULTI_STREAM_COMPRESSIONCFG</span> (command
+                            No.: 3217), set condition buffer (<span class="keyword parmname">lpInBuffer</span>) to
+                            the structure <a class="xref" href="GUID-83A12ECC-E00D-40D3-9266-793E1F105594.html#GUID-83A12ECC-E00D-40D3-9266-793E1F105594" title="Condition structure of multi-stream encoding parameter configuration.">NET_DVR_MULTI_STREAM_COMPRESSIONCFG_COND</a>, and
+                            set input parameter buffer (lpInParamBuffer) to the structure <a class="xref" href="GUID-ED71AC2E-353A-4D06-85D9-DFDDCCB44E51.html#GUID-ED71AC2E-353A-4D06-85D9-DFDDCCB44E51" title="Encoding parameter structure of multi-stream.">NET_DVR_MULTI_STREAM_COMPRESSIONCFG</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-FCF4BF31-7B15-423E-9ADC-0AE25185E352"><h2 class="title sectiontitle">Channel Encoding Parameter</h2>
+            
+            <dl class="dl">
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-245D9549-EEE7-45DF-9275-7918CCFBCD6E"><!-- --></a>Get stream encoding capability by channel</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                                <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-3384D29B-9CBD-43AE-A131-F3BD87021EE2.html#GUID-3384D29B-9CBD-43AE-A131-F3BD87021EE2" title="Get encoding capability of a specific channel.">/ISAPI/Streaming/channels/&lt;ID&gt;/capabilities</a>, set the
+                            input parameter pointer <span class="keyword parmname">lpInBuffer</span> to
+                            NULL. And the capability is returned by output parameter pointer
+                                <span class="keyword parmname">lpOutBuffer</span> in the message <a class="xref" href="GUID-4F6F9561-3B65-48E0-9B34-2FB355575A14.html#GUID-4F6F9561-3B65-48E0-9B34-2FB355575A14" title="StreamingChannel capability message in XML format">XML_Cap_StreamingChannel</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-22FE3E3A-120F-49C8-9B78-83357F280184"><!-- --></a>Get encoding parameters of one channel</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_GET_COMPRESSCFG_V30</span> (command No.: 1040). The
+                            encoding parameters are returned in the structure <a class="xref" href="GUID-C996E1F1-3A16-494D-9C91-C03FBAE3C330.html#GUID-C996E1F1-3A16-494D-9C91-C03FBAE3C330" title="Channel encoding parameter structure">NET_DVR_COMPRESSIONCFG_V30</a> by the output buffer (<span class="keyword parmname">lpOutBuffer</span>).</p>
+
+                    </dd>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                                <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-A28C99F0-EEBA-4981-AEB7-9A51982C1977.html#GUID-A28C99F0-EEBA-4981-AEB7-9A51982C1977" title="Operations about the encoding configurations of a specific channel.">/ISAPI/Streaming/channels/&lt;ID&gt;</a>, set the input
+                            parameter pointer <span class="keyword parmname">lpInBuffer</span> to NULL.
+                            And the encoding parameters are returned by output parameter pointer
+                                <span class="keyword parmname">lpOutBuffer</span> in the message <a class="xref" href="GUID-3FB4B845-C6EF-4F31-8D10-9F51EFACAE2B.html#GUID-3FB4B845-C6EF-4F31-8D10-9F51EFACAE2B" title="StreamingChannel message in XML format">XML_StreamingChannel</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-D80CBA68-7174-44C0-A4A4-FFE46D9A6233"><!-- --></a>Set encoding parameters of one channel</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_SET_COMPRESSCFG_V30</span> (command No.:
+                            1041) and set the input buffer (<span class="keyword parmname">lpInBuffer</span>).</p>
+
+                    </dd>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                                <span class="ph synph">PUT</span>
+                            <a class="xref" href="GUID-A28C99F0-EEBA-4981-AEB7-9A51982C1977.html#GUID-A28C99F0-EEBA-4981-AEB7-9A51982C1977" title="Operations about the encoding configurations of a specific channel.">/ISAPI/Streaming/channels/&lt;ID&gt;</a>, and set the input
+                            parameter pointer <span class="keyword parmname">lpInBuffer</span> to <a class="xref" href="GUID-3FB4B845-C6EF-4F31-8D10-9F51EFACAE2B.html#GUID-3FB4B845-C6EF-4F31-8D10-9F51EFACAE2B" title="StreamingChannel message in XML format">XML_StreamingChannel</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-03F47543-4C32-4D33-93FB-EC42FE019E60"><h2 class="title sectiontitle">Audio Encoding Parameter</h2>
+            
+            <dl class="dl">
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-C20FB894-F786-4AC7-9529-199FC4845A1E"><!-- --></a>Get audio encoding parameters</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with
+                                <span class="keyword cmdname">NET_DVR_GET_COMPRESSCFG_AUD</span> (command No.: 1058).
+                            The parameters are returned in the structure <a class="xref" href="GUID-483B8D6F-780D-47D3-9B03-17634B6B43F1.html#GUID-483B8D6F-780D-47D3-9B03-17634B6B43F1" title="Audio parameter structure of two-way audio.">NET_DVR_COMPRESSION_AUDIO</a> by output buffer
+                                (<span class="keyword parmname">lpOutBuffer</span>).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-A0F872B9-096A-426E-8A81-DB919D018CEF"><!-- --></a>Set audio encoding parameters</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with
+                                <span class="keyword cmdname">NET_DVR_SET_COMPRESSCFG_AUD</span> (command No.: 1059)
+                            and set input buffer (<span class="keyword parmname">lpInBuffer</span>) to the structure
+                                <a class="xref" href="GUID-483B8D6F-780D-47D3-9B03-17634B6B43F1.html#GUID-483B8D6F-780D-47D3-9B03-17634B6B43F1" title="Audio parameter structure of two-way audio.">NET_DVR_COMPRESSION_AUDIO</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473__GUID-AE9B65F0-1621-4B22-846A-9DF3246E12EF"><!-- --></a>Get current audio encoding progress</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-2896BD15-6970-4502-9683-694B008D0463.html#GUID-2896BD15-6970-4502-9683-694B008D0463" title="Get the effective audio encoding parameters of two-way audio.">NET_DVR_GetCurrentAudioCompress_V50</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html">Video and Audio</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492.html">Start Live View</a></span></li><li><span class="topicref"><a href="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1.html">Start Live View Based on ISAPI Protocol</a></span></li><li><span class="topicref"><a href="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A.html">Perform PTZ Control</a></span></li><li><span class="topicref"><a href="GUID-F6375406-A6C9-4B67-A4E1-7A10A453E635.html">Search for Recording Start and End Time by Channel</a></span></li><li><span class="topicref"><a href="GUID-486489B8-E670-46C3-B8EA-E6FC5CCDF760.html">Start Playback</a></span></li><li><span class="topicref"><a href="GUID-2F93B07A-00F0-4D57-A159-4CD852A2EFA0.html">Two-Way Audio</a></span></li><li class="active"><span class="topicref">Stream Encoding</span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

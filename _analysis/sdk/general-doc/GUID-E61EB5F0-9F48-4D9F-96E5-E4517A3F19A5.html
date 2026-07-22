@@ -1,0 +1,141 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Encrypt Stream" /><meta name="abstract" content="To improve the security of real-time or history stream from devices and comply with the laws and regulations of some parts of international markets, we have provided the stream encryption function based on AES algorithm to encrypt the stream." /><meta name="description" content="To improve the security of real-time or history stream from devices and comply with the laws and regulations of some parts of international markets, we have provided the stream encryption function based on AES algorithm to encrypt the stream." /><meta name="DC.Relation" scheme="URI" content="GUID-9AB5DE09-F0A6-4C3E-AF6B-E224632ECAC2.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5" /><meta name="DC.Language" content="en-US" /><title>Encrypt Stream</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Encrypt Stream</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">To improve the security of real-time or history stream from devices and
+        comply with the laws and regulations of some parts of international markets, we have
+        provided the stream encryption function based on AES algorithm to encrypt the
+        stream.</p>
+
+<p class="li stepsection" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-460BFEE3-25C2-4741-A5C7-2351B7BDE1F4">
+                <div class="fig fignone" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__FIG_V1S_XK3_2QB">
+                    
+                    <img class="image" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__IMAGE_W1S_XK3_2QB" src="GUID-941C5D6B-EC5F-410F-B838-8F953A015F98-high.png" height="1850" />
+                <span class="figcap">Figure 1 API Calling Flow of Encrypting Stream</span></div>
+
+                <div class="note note" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-2849586C-EC7F-41DF-A6AB-69EA8C1B15D4"><span class="notetitle">Note:</span> 
+                    <p class="p">If the stream is encrypted but the decryption key is not
+                        configured or an incorrect decryption key is configured, the display image
+                        will be black.</p>
+
+                </div>
+
+            </p><ol class="ol steps" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-30B2DEF6-2DEA-4B20-933B-D007BD00E079"><li class="li step stepexpand" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-07B7C4CE-8988-42AD-A35B-51670B080991"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-240D08DD-4B11-45AB-8208-98942A0DB03B.html#GUID-240D08DD-4B11-45AB-8208-98942A0DB03B" title="Get encryption status of device stream.">NET_DVR_InquestGetEncryptState</a> to get the steam encryption status of the device for reference.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-58AED1B6-8D13-403C-B3A6-63DF34BF57E6"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with the command "NET_DVR_GET_AES_KEY" (command No.: 6113) to get the current
+                    stream encryption key of AES algorithm of the device for reference.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-EC146D87-9D7E-4743-9E69-F5E2C1F047CC"><span class="notetitle">Note:</span> 
+                        <p class="p">The encryption key information is returned in the structure
+                                <a class="xref" href="GUID-C8BFA740-1A4C-41CD-9EF3-8D71FADCDE4C.html#GUID-C8BFA740-1A4C-41CD-9EF3-8D71FADCDE4C" title="Encryption key information structure of AES algorithm">NET_DVR_AES_KEY_INFO</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-37AC4FE7-DCC7-49CE-A0D8-508447B58915">
+                <span class="ph cmd">Call <a class="xref" href="GUID-11D20238-1477-4754-B41A-D787AF1ABD19.html#GUID-11D20238-1477-4754-B41A-D787AF1ABD19" title="Set encryption key for encrypting stream.">NET_DVR_InquestSetSecretKey</a> to set the stream encryption key of the device.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-A6C3810A-E3E6-482F-B722-D12198D00D7D">
+                <span class="ph cmd">Call <a class="xref" href="GUID-E07CEE1B-1527-42BD-BE9A-BCF9B5FBBC70.html#GUID-E07CEE1B-1527-42BD-BE9A-BCF9B5FBBC70" title="Enable stream encryption.">NET_DVR_InquestStreamEncrypt</a> to enable stream encryption.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-B7CE23E4-C21F-4F66-9D5D-DA8A847CFA71">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F72C9471-79D4-4A98-9D19-9BD3B0FBE6B9.html#GUID-F72C9471-79D4-4A98-9D19-9BD3B0FBE6B9" title="Set the key for the Device Network SDK users to decrypt the stream.">NET_DVR_SetSDKSecretKey</a> to set the key for decrypting the stream.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5__GUID-149F1D56-925C-4562-B7BC-5DF78BE8A2FA">
+                <span class="ph cmd">Get real-time or history stream. Refer to <a class="xref" href="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492.html#GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492" title="You can set stream parameters and remotely get the live stream for decoding and live view by calling SDK API based on private protocol. And forcing to generate I frame or refresh frame is also available for improving the stream delay problem.">Start Live View</a> or <a class="xref" href="GUID-486489B8-E670-46C3-B8EA-E6FC5CCDF760.html#GUID-486489B8-E670-46C3-B8EA-E6FC5CCDF760" title="After searching the video files (optional), you can remotely play the video files stored in the device by time or by file to view the previously occurred events as needed.">Start Playback</a> for details.</span>
+            </li>
+</ol>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-9AB5DE09-F0A6-4C3E-AF6B-E224632ECAC2.html">Security Service</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC.html">Configure Double Verification</a></span></li><li class="active"><span class="topicref">Encrypt Stream</span></li><li><span class="topicref"><a href="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html">Encrypt Stream Transmission Link</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

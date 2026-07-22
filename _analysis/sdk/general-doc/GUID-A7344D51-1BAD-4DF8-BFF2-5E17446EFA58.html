@@ -1,0 +1,394 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="SSD Management" /><meta name="abstract" content="The SSD (solid state driver) is used for storage. Here introduces the URIs to implement the functions of SSD file system format, file system upgrade, SSD firmware upgrade, SSD S.M.A.R.T (self-monitoring, analysis, and reporting technology) detection, and so on." /><meta name="description" content="The SSD (solid state driver) is used for storage. Here introduces the URIs to implement the functions of SSD file system format, file system upgrade, SSD firmware upgrade, SSD S.M.A.R.T (self-monitoring, analysis, and reporting technology) detection, and so on." /><meta name="DC.Relation" scheme="URI" content="GUID-50BB0F3E-3252-4A7D-B99A-77FBE82B6356.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58" /><meta name="DC.Language" content="en-US" /><title>SSD Management</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">SSD Management</h1>
+
+
+<div class="body conbody"><p class="shortdesc">The SSD (solid state driver) is used for storage. Here introduces the URIs
+        to implement the functions of SSD file system format, file system upgrade, SSD firmware
+        upgrade, SSD S.M.A.R.T (self-monitoring, analysis, and reporting technology) detection, and
+        so on.</p>
+
+        <div class="section" id="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58__GUID-EC941D2F-68B5-4446-A147-C0DAD0B7A4EF"><h2 class="title sectiontitle">SSD File System</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58__TABLE_KJG_JNF_SJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d699294e33">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d699294e39">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e33 ">
+                                <p class="p">Format SSD file system</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e39 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-A3E0EF5B-076C-419D-B3C6-7F0ACB3F7442.html#GUID-A3E0EF5B-076C-419D-B3C6-7F0ACB3F7442" title="Format SSD file system.">/ISAPI/System/SSDFileSystem/format?format=json</a> by <span class="ph synph">PUT</span>
+                                    method.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e33 ">
+                                <p class="p">Search for formatting progress of SSD file system</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e39 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-A43FBB92-20FF-4DCC-B444-CD7444D24B0A.html#GUID-A43FBB92-20FF-4DCC-B444-CD7444D24B0A" title="Search for the progress of SSD file system formatting.">/ISAPI/System/SSDFileSystem/format/status?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The progress information is returned in the message <a class="xref" href="GUID-B5977D4E-E1CB-41DD-89CA-B124EA3DE174.html#GUID-B5977D4E-E1CB-41DD-89CA-B124EA3DE174" title="JSON message about progress of SSD file system formatting">JSON_SSDFormatStatus</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e33 ">
+                                <p class="p">Get upgrade status of SSD file system</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e39 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-268CDAFF-0AB1-407B-AB15-C140625F7B18.html#GUID-268CDAFF-0AB1-407B-AB15-C140625F7B18" title="Get the upgrade status of SSD file system or upgrade the SSD file system. The device will automatically reboot after upgrade.">/ISAPI/System/SSDFileSystem/upgrade?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The status is returned in the message <a class="xref" href="GUID-B27832AC-971D-4631-BB84-C73BCDC2EACB.html#GUID-B27832AC-971D-4631-BB84-C73BCDC2EACB" title="JSON message about upgrade status of SSD file system">JSON_SSDUpgrade</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e33 ">
+                                <p class="p">Upgrade SSD file system</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e39 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-268CDAFF-0AB1-407B-AB15-C140625F7B18.html#GUID-268CDAFF-0AB1-407B-AB15-C140625F7B18" title="Get the upgrade status of SSD file system or upgrade the SSD file system. The device will automatically reboot after upgrade.">/ISAPI/System/SSDFileSystem/upgrade?format=json</a> by <span class="ph synph">PUT</span>
+                                    method.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e33 ">
+                                <p class="p">Search for upgrade progress of SSD file system</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e39 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-F36A6A9D-07BA-472C-BFA8-BB7D0C8C116D.html#GUID-F36A6A9D-07BA-472C-BFA8-BB7D0C8C116D" title="Search for the upgrade progress of SSD file system.">/ISAPI/System/SSDFileSystem/upgrade/status?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The progress information is returned in the message <a class="xref" href="GUID-2CC4D412-6B84-48C8-8699-834F0A710E8C.html#GUID-2CC4D412-6B84-48C8-8699-834F0A710E8C" title="JSON message about progress of SSD file system upgrade">JSON_SSDUpgradeStatus</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e33 ">
+                                <p class="p">Search for SSD storage quotas</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e39 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-624CE923-36DE-43E8-A149-272AF1E3A930.html#GUID-624CE923-36DE-43E8-A149-272AF1E3A930" title="Search for SSD storage quotas.">/ISAPI/System/SSDFileSystem/capacity?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The storage quotas information is returned in the message <a class="xref" href="GUID-2E989F3B-955B-4980-8A2E-BB786F95306C.html#GUID-2E989F3B-955B-4980-8A2E-BB786F95306C" title="JSON message about SSD storage quotas">JSON_SSDCapacity</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58__GUID-8AAE4C01-92E8-4245-822C-86D796404DB5"><h2 class="title sectiontitle">SSD Configuration</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58__TABLE_Q2L_2HC_HMB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d699294e315">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d699294e321">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e315 ">
+                                <p class="p">Get SSD management capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e321 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-F25A490D-05DF-4BD2-ADA1-72AA7C643A3D.html#GUID-F25A490D-05DF-4BD2-ADA1-72AA7C643A3D" title="Get the SSD management capability.">/ISAPI/ContentMgmt/Storage/ssd/&lt;ID&gt;/capabilities?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The capacity is returned in the message <a class="xref" href="GUID-F59B8AC4-391E-4A4A-9F30-B002102A2C1E.html#GUID-F59B8AC4-391E-4A4A-9F30-B002102A2C1E" title="JSON message about SSD management capability">JSON_Cap_SSD</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e315 ">
+                                <p class="p">Upgrade SSD firmware</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e321 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-A43FBB92-20FF-4DCC-B444-CD7444D24B0A.html#GUID-A43FBB92-20FF-4DCC-B444-CD7444D24B0A" title="Search for the progress of SSD file system formatting.">/ISAPI/System/SSDFileSystem/format/status?format=json</a> by <span class="ph synph">POST</span>
+                                    method.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e315 ">
+                                <p class="p">Get SSD firmware upgrade progress</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e321 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-268CDAFF-0AB1-407B-AB15-C140625F7B18.html#GUID-268CDAFF-0AB1-407B-AB15-C140625F7B18" title="Get the upgrade status of SSD file system or upgrade the SSD file system. The device will automatically reboot after upgrade.">/ISAPI/System/SSDFileSystem/upgrade?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e315 ">
+                                <p class="p">Get a single SSD information</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e321 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-A5631EB1-F944-4306-B503-530624D509A4.html#GUID-A5631EB1-F944-4306-B503-530624D509A4" title="Get the specified SSD information.">/ISAPI/ContentMgmt/Storage/ssd/&lt;ID&gt;</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The SSD information is returned in the message <a class="xref" href="GUID-189F3B52-DEFF-4704-B8EA-59505EC07CF7.html#GUID-189F3B52-DEFF-4704-B8EA-59505EC07CF7" title="JSON message about a SSD information">XML_ssd</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e315 ">
+                                <p class="p">Get all SSDs information</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e321 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-437D9862-4780-45EB-9066-3B0A31661906.html#GUID-437D9862-4780-45EB-9066-3B0A31661906" title="Get the information of all SSDs.">/ISAPI/ContentMgmt/Storage/ssd</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The SSD information is returned in the message <a class="xref" href="GUID-242EF5FC-D734-42F7-91AC-9B3D1E2BD676.html#GUID-242EF5FC-D734-42F7-91AC-9B3D1E2BD676" title="JSON message about information of all SSDs">XML_ssdList</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58__GUID-8F6339D4-637F-4575-AEC7-4E8D940712D0"><h2 class="title sectiontitle">SSD S.M.A.R.T. Detection</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58__TABLE_N3M_H3C_HMB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d699294e551">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d699294e557">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e551 ">
+                                <p class="p">Run SSD S.M.A.R.T detection</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e557 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-2C728DCD-1DBF-48B5-9E53-88E2AD304B41.html#GUID-2C728DCD-1DBF-48B5-9E53-88E2AD304B41" title="Run SSD S.M.A.R.T (self-monitoring, analysis, and reporting technology) detection.">/ISAPI/ContentMgmt/Storage/ssd/&lt;ID&gt;/SMARTTest/start</a> by <span class="ph synph">PUT</span> method and
+                                    set <span class="keyword parmname">lpInputParam </span> to <a class="xref" href="GUID-272F5AF8-DE15-4B76-9D16-B66626A651CA.html#GUID-272F5AF8-DE15-4B76-9D16-B66626A651CA" title="XML message about SSD S.M.A.R.T detection parameters">XML_SSDSMARTTest</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d699294e551 ">
+                                <p class="p">Get SSD S.M.A.R.T detection status</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d699294e557 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-8C39FB71-3720-460C-9B55-3950ACEC0037.html#GUID-8C39FB71-3720-460C-9B55-3950ACEC0037" title="Get the SSD S.M.A.R.T (self-monitoring, analysis, and reporting technology) detection status.">/ISAPI/ContentMgmt/Storage/ssd/&lt;ID&gt;/SMARTTest/status</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The status is returned in the message <a class="xref" href="GUID-4E57246F-6AA4-4C0C-A321-89F4CBD361DE.html#GUID-4E57246F-6AA4-4C0C-A321-89F4CBD361DE" title="JSON message about SSD S.M.A.R.T detection status">XML_SSD_SmartTestStatus</a> by <span class="keyword parmname"> lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-50BB0F3E-3252-4A7D-B99A-77FBE82B6356.html">File and Storage Management</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-0B1C71B8-BB5F-4DB8-B4E0-F6090DA1B124.html">Disk Quota</a></span></li><li><span class="topicref"><a href="GUID-A7221FB0-90FB-46C2-AF4A-9DAAFC360D8F.html">Download Video Files</a></span></li><li><span class="topicref"><a href="GUID-AF1A6462-1C19-4C4B-90D3-AB9AA13B1BA7.html">HDD Management</a></span></li><li class="active"><span class="topicref">SSD Management</span></li><li><span class="topicref"><a href="GUID-0576E46C-D158-41FD-BEE2-37CA604B6F62.html">Upload Files</a></span></li><li><span class="topicref"><a href="GUID-6FAE0C5E-4857-42B1-8299-006108042CEC.html">File Search</a></span></li><li><span class="topicref"><a href="GUID-31B07BA9-2D14-4725-A9D3-8AB9C0CA3356.html">Working Mode Configuration</a></span></li><li><span class="topicref"><a href="GUID-00287159-A13B-4E85-AF3F-D80EB5EF7ED1.html">Other File Operations</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

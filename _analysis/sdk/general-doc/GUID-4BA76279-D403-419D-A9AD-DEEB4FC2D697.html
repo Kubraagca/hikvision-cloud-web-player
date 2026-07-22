@@ -1,0 +1,172 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Function API Get configuration capability of automatic maintenance Call NET_DVR_STDXMLConfig to transmit /ISAPI/System/autoMaintenance/capabilities?format=json with GET method. The configuration ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Automatic Maintenance" /><meta name="DC.Relation" scheme="URI" content="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697" /><meta name="DC.Language" content="en-US" /><title>Automatic Maintenance</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Automatic Maintenance</h1>
+
+<div class="body conbody">
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697__TABLE_FJD_MKP_XLB" class="table" frame="border" border="1" rules="all">
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d283538e25">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d283538e31">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d283538e25 ">
+                            <p class="p">Get configuration capability of automatic maintenance</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d283538e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-4DCD3953-AE6F-48C5-9500-7AD594FA16AC.html#GUID-4DCD3953-AE6F-48C5-9500-7AD594FA16AC" title="Get the capability of automatic maintenance configuration.">/ISAPI/System/autoMaintenance/capabilities?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The configuration capability is returned in the message
+                                    <a class="xref" href="GUID-8BA5D876-65FF-491B-98BC-F59C8674CEBC.html#GUID-8BA5D876-65FF-491B-98BC-F59C8674CEBC" title="AutoMaintenanceCap message in JSON format">JSON_AutoMaintenanceCap</a> by <span class="keyword parmname">IpOutputParam</span>.</p>
+
+                            <div class="note note" id="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697__GUID-0179A1D5-405D-45C9-87A4-203D7B7743D1"><span class="notetitle">Note:</span> 
+                                <p class="p">To check whether the device supports automatic
+                                    maintenance, you can call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a> with <span class="ph synph">GET</span> method
+                                    to get the device capability (<a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a>). If supports, the node
+                                        &lt;<span class="keyword parmname">isSupportAutoMaintenance</span>&gt; will be returned
+                                    and its value is true.</p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d283538e25 ">
+                            <p class="p">Get automatic maintenance parameter</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d283538e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-94714C31-14D1-42D6-B641-3887BE6420D8.html#GUID-94714C31-14D1-42D6-B641-3887BE6420D8" title="Get automatic maintenance configuration parameters.">/ISAPI/System/autoMaintenance?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The configuration parameter is returned in the message
+                                    <a class="xref" href="GUID-0CD33188-598A-4B44-9836-B48A997E0A15.html#GUID-0CD33188-598A-4B44-9836-B48A997E0A15" title="AutoMaintenance message in JSON format">JSON_AutoMaintenance</a> by <span class="keyword parmname">IpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d283538e25 ">Set automatic maintenance parameters</td>
+
+                        <td class="entry" valign="top" width="60%" headers="d283538e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-94714C31-14D1-42D6-B641-3887BE6420D8.html#GUID-94714C31-14D1-42D6-B641-3887BE6420D8" title="Get automatic maintenance configuration parameters.">/ISAPI/System/autoMaintenance?format=json</a> with <span class="ph synph">PUT</span> method and
+                                set <span class="keyword parmname">IpInputParam</span> to the message
+                                    <a class="xref" href="GUID-0CD33188-598A-4B44-9836-B48A997E0A15.html#GUID-0CD33188-598A-4B44-9836-B48A997E0A15" title="AutoMaintenance message in JSON format">JSON_AutoMaintenance</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li><span class="topicref"><a href="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2.html">Search for Logs</a></span></li><li><span class="topicref"><a href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html">Configure Log Storage Mode</a></span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Automatic Maintenance</span></li><li><span class="topicref"><a href="GUID-F703A174-8D62-4240-B68F-61994DB95C83.html">Basic Maintenance</a></span></li><li><span class="topicref"><a href="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743.html">Basic Settings</a></span></li><li><span class="topicref"><a href="GUID-406B75B5-6C79-474C-A456-0333498574DB.html">Device Calibration</a></span></li><li><span class="topicref"><a href="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B.html">Configure Camera Correction</a></span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

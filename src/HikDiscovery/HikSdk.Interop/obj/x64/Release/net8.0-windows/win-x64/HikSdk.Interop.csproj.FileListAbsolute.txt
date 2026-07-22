@@ -1,0 +1,12 @@
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\bin\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.deps.json
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\bin\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.dll
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\bin\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.pdb
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.AssemblyInfoInputs.cache
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.AssemblyInfo.cs
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.csproj.CoreCompileInputs.cache
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.sourcelink.json
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.dll
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\refint\HikSdk.Interop.dll
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\HikSdk.Interop.pdb
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.Interop\obj\x64\Release\net8.0-windows\win-x64\ref\HikSdk.Interop.dll

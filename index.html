@@ -52,6 +52,7 @@
   }
 
   button,
+  a.button-link,
   select {
     border: 1px solid var(--border);
     background: white;
@@ -63,6 +64,12 @@
 
   button {
     cursor: pointer;
+  }
+
+  a.button-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
   }
 
   main {
@@ -216,7 +223,10 @@
     <h1>Hikvision Cloud Izleme Paneli</h1>
     <div class="sub">Kameralari listele ve Hikvision JSDecoder SDK ile cloud canli yayina hazirla.</div>
   </div>
-  <button id="refresh-btn">Listeyi yenile</button>
+  <div style="display:flex; gap:10px; align-items:center;">
+    <a class="button-link" href="/camera-setup">Kamera Kurulum</a>
+    <button id="refresh-btn">Listeyi yenile</button>
+  </div>
 </header>
 
 <main>

@@ -1,0 +1,201 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Function API Get configuration capability of current storage working mode Call NET_DVR_STDXMLConfig to transmit /ISAPI/ContentMgmt/Storage/capabilities by GET method. The capability is returned in the ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Working Mode Configuration" /><meta name="DC.Relation" scheme="URI" content="GUID-50BB0F3E-3252-4A7D-B99A-77FBE82B6356.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-31B07BA9-2D14-4725-A9D3-8AB9C0CA3356" /><meta name="DC.Language" content="en-US" /><title>Working Mode Configuration</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-31B07BA9-2D14-4725-A9D3-8AB9C0CA3356" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Working Mode Configuration</h1>
+
+<div class="body conbody">
+        <div class="section" id="GUID-31B07BA9-2D14-4725-A9D3-8AB9C0CA3356__GUID-785CB20B-17F7-4DEB-8578-3564F3D30AE1">
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-31B07BA9-2D14-4725-A9D3-8AB9C0CA3356__TABLE_KJG_JNF_SJB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d169817e27">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d169817e33">
+                                <p class="p">API</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d169817e27 ">
+                                <p class="p">Get configuration capability of current storage working mode</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d169817e33 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-AEA4E755-334B-4001-B98D-3683EB1384E8.html#GUID-AEA4E755-334B-4001-B98D-3683EB1384E8" title="Get the configuration capability of current storage working mode.">/ISAPI/ContentMgmt/Storage/capabilities</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-D2540DA7-513B-4A57-AE79-025A4BEDFDEB.html#GUID-D2540DA7-513B-4A57-AE79-025A4BEDFDEB" title="XML message about configuration capability of storage working mode">XML_Cap_storage</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d169817e27 ">
+                                <p class="p">Get current working mode of storage.</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d169817e33 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-E50E65CC-767D-4FBA-8CDC-05D3174721B7.html#GUID-E50E65CC-767D-4FBA-8CDC-05D3174721B7" title="Get or set the current working mode of storage.">/ISAPI/ContentMgmt/storage</a> by <span class="ph synph">PUT</span>
+                                    method.</p>
+
+                                <p class="p">The information is returned in the message <a class="xref" href="GUID-D3DF98ED-5AB1-4A51-A15F-AFDE9C4D2360.html#GUID-D3DF98ED-5AB1-4A51-A15F-AFDE9C4D2360" title="XML message about storage working mode">XML_storage</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d169817e27 ">
+                                <p class="p">Set current working mode of storage.</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d169817e33 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-E50E65CC-767D-4FBA-8CDC-05D3174721B7.html#GUID-E50E65CC-767D-4FBA-8CDC-05D3174721B7" title="Get or set the current working mode of storage.">/ISAPI/ContentMgmt/storage</a> by <span class="ph synph">PUT</span> method
+                                    and set <span class="keyword parmname">lpInputParam </span> to <a class="xref" href="GUID-D3DF98ED-5AB1-4A51-A15F-AFDE9C4D2360.html#GUID-D3DF98ED-5AB1-4A51-A15F-AFDE9C4D2360" title="XML message about storage working mode">XML_storage</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d169817e27 ">
+                                <p class="p">Start disk data reconstruction</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d169817e33 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-6A5CDA61-04A0-41BC-845C-3679D67DD765.html#GUID-6A5CDA61-04A0-41BC-845C-3679D67DD765" title="Start disk data reconstruction.">/ISAPI/ContentMgmt/Storage/dataReconstruction?format=json</a> by <span class="ph synph">PUT</span> method
+                                    and set <span class="keyword parmname">lpInputParam </span> to <a class="xref" href="GUID-B4E9C479-21DC-4D12-861F-64E0E857960C.html#GUID-B4E9C479-21DC-4D12-861F-64E0E857960C" title="JSON message about disk data reconstruction parameters">JSON_DataReconstruction</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d169817e27 ">
+                                <p class="p">Get disk data reconstruction progress</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d169817e33 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-F00AC42E-3E44-4433-9026-FBC29C22AB0E.html#GUID-F00AC42E-3E44-4433-9026-FBC29C22AB0E" title="Get the disk data reconstruction progress.">/ISAPI/ContentMgmt/Storage/dataReconstruction/progress?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The progress is returned in the message <a class="xref" href="GUID-24D140BB-D6C2-4624-A508-8C762AB156E3.html#GUID-24D140BB-D6C2-4624-A508-8C762AB156E3" title="JSON message about disk data reconstruction progress">JSON_Reconstruction_ProgressLists</a> by <span class="keyword parmname">
+                                        lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-50BB0F3E-3252-4A7D-B99A-77FBE82B6356.html">File and Storage Management</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-0B1C71B8-BB5F-4DB8-B4E0-F6090DA1B124.html">Disk Quota</a></span></li><li><span class="topicref"><a href="GUID-A7221FB0-90FB-46C2-AF4A-9DAAFC360D8F.html">Download Video Files</a></span></li><li><span class="topicref"><a href="GUID-AF1A6462-1C19-4C4B-90D3-AB9AA13B1BA7.html">HDD Management</a></span></li><li><span class="topicref"><a href="GUID-A7344D51-1BAD-4DF8-BFF2-5E17446EFA58.html">SSD Management</a></span></li><li><span class="topicref"><a href="GUID-0576E46C-D158-41FD-BEE2-37CA604B6F62.html">Upload Files</a></span></li><li><span class="topicref"><a href="GUID-6FAE0C5E-4857-42B1-8299-006108042CEC.html">File Search</a></span></li><li class="active"><span class="topicref">Working Mode Configuration</span></li><li><span class="topicref"><a href="GUID-00287159-A13B-4E85-AF3F-D80EB5EF7ED1.html">Other File Operations</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

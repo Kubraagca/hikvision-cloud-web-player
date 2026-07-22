@@ -1,0 +1,10 @@
+[2026-07-22 14:49:37.359][INF] The COM:HCCoreBase ver is 6.1.4.15, 2020_03_05. Async:1.
+[2026-07-22 14:49:37.359][INF] The COM:Core ver is 6.1.9.4, 2022_04_12. Async:1.
+[2026-07-22 14:49:37.359][INF] This HCNetSDK ver is 6.1.9.4 Ver 2022_04_12.
+[2026-07-22 14:49:37.365][INF] Login dev 192.168.1.64:8000.
+[2026-07-22 14:49:37.365][INF] dwTotalNum[2048]
+[2026-07-22 14:49:37.386][INF] Private connect 192.168.1.64:8000 sock=6688 this=0x3ea57b14 cmd=0x10000 port=49838
+[2026-07-22 14:49:37.387][INF] LogonDev1 in[192.168.1.64:8000]
+[2026-07-22 14:49:38.045][INF] COM_Logout[0][1]
+[2026-07-22 14:49:38.045][DBG] CUserMgr::UnRegisterHeartProxy[0]
+[2026-07-22 14:49:38.059][INF] Private connect 192.168.1.64:8000 sock=6736 this=0x3ea57b14 cmd=0x10100 port=49843

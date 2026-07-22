@@ -1,0 +1,191 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_DVR_RealPlay_V40" /><meta name="abstract" content="Start live view." /><meta name="description" content="Start live view." /><meta name="DC.Relation" scheme="URI" content="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C" /><meta name="DC.Language" content="en-US" /><title>NET_DVR_RealPlay_V40</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_DVR_RealPlay_V40</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Start live view.</p>
+
+<div class="section" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-D9DE56CB-CEFE-4DE4-A494-AC07B324DB6A"><h2 class="title sectiontitle">API Definition</h2>
+            
+            <pre class="pre codeblock">LONG <var class="keyword varname">NET_DVR_RealPlay_V40</var>(
+  LONG                     <span class="keyword parmname">lUserID</span>,
+  <var class="keyword varname">NET_DVR_PREVIEWINFO</var>      <span class="keyword parmname">lpPreviewInfo</span>,
+  REALDATACALLBACK         <span class="keyword parmname">fRealDataCallBack_V30</span>,
+  void                     *<span class="keyword parmname">pUser</span>
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-C4D64193-5FDD-4767-87E5-A8A6D204B2D0"><h2 class="title sectiontitle">Parameters</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-97268665-6536-46F3-9F54-9EDEEC826FEA"><!-- --></a>lUserID</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Value returned by <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-A474AF17-34B5-4289-B283-DBA235E360B6"><!-- --></a>lpPreviewInfo</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Live view parameters, see the definitions in the
+                            structure <a class="xref" href="GUID-D2E33E5A-F147-45CD-9535-97F9209921AA.html#GUID-D2E33E5A-F147-45CD-9535-97F9209921AA">NET_DVR_PREVIEWINFO</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-6D6D81E0-66B6-483E-AEE9-210A5F1F7BFE"><!-- --></a>fRealDataCallBack_V30</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Stream data callback function, see details in <a class="xref" href="GUID-E0A8F575-D607-4281-ACA3-12C3BE7A5273.html#GUID-E0A8F575-D607-4281-ACA3-12C3BE7A5273" title="Stream data callback function.">REALDATACALLBACK</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-4E99B65B-6D54-4B9E-8A93-F93C30F2CFAF"><!-- --></a>pUser</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] User data.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-984BB362-FC6C-422F-8D05-D31DCEDC0F21"><h2 class="title sectiontitle">Return Values</h2>
+            
+            <p class="p">Return <samp class="ph systemoutput">-1</samp> for failure, and returns other
+                values as the handle parameters of <a class="xref" href="GUID-90584BC9-6474-4D2F-8746-B161DA499673.html#GUID-90584BC9-6474-4D2F-8746-B161DA499673" title="Stop live view.">NET_DVR_StopRealPlay</a>.</p>
+
+            <p class="p">If <samp class="ph systemoutput">-1</samp> is returned, you can call <a class="xref" href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html#GUID-14773B75-3782-443F-ACB8-C40146725A9B" title="Return the error code of the last operation.">NET_DVR_GetLastError</a> to get the error
+                code.</p>
+
+        </div>
+
+        <div class="section" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-A11F23F3-7AAD-4E28-A080-E0CE2B5D5669"><h2 class="title sectiontitle">Remarks</h2>
+            
+            <ul class="ul" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-425DCF18-671C-4E71-A376-AC3BFC3E6C14">
+                <li class="li" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-10866867-2F92-496E-9BDB-CE312E837538">
+                    <p class="p">The callback function in this API can be set as null, so the
+                        callback function will not call back the stream data to user. But the user
+                        can still call <a class="xref" href="GUID-F7FF8C02-2A6E-468C-9760-B1DC5F86E04C.html#GUID-F7FF8C02-2A6E-468C-9760-B1DC5F86E04C" title="Set a callback function for getting the real-time stream data.">NET_DVR_SetRealDataCallBack</a> or <a class="xref" href="GUID-D1D5EC42-F84E-4F59-B8A5-9FB6690502A6.html#GUID-D1D5EC42-F84E-4F59-B8A5-9FB6690502A6" title="Register a callback function for getting the standard real-time stream data.">NET_DVR_SetStandardDataCallBack</a> to
+                        register a callback function to get the stream data.</p>
+
+                </li>
+
+                <li class="li" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-50356500-BBEF-44F9-9442-FB4D0A0D3A98">
+                    <p class="p">When the platform or system is offline, the device will keep the
+                        streaming connection for 10 seconds.</p>
+
+                </li>
+
+                <li class="li" id="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C__GUID-A520BD3D-7C96-41E8-94B6-90CC7647EF75">
+                    <p class="p">For developing in Linux system, the live view API will import
+                        valid window handle and you should call <a class="xref" href="GUID-F288F745-5AC4-412C-B87D-28FD103DDCA0.html#GUID-F288F745-5AC4-412C-B87D-28FD103DDCA0" title="Send the window change notification to PlayCtrl LibrarySDK when the size of display window changed (only applicable for Linux system).">NET_DVR_ChangeWndResolution</a> to notify
+                        the PlayCtrl Library SDK to get the window size before changing the window
+                        size during live view. For developing in Window system, the window size is
+                        self-adaptive without calling any other API.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-F288F745-5AC4-412C-B87D-28FD103DDCA0.html">NET_DVR_ChangeWndResolution</a></span></li><li><span class="topicref"><a href="GUID-2896BD15-6970-4502-9683-694B008D0463.html">NET_DVR_GetCurrentAudioCompress_V50</a></span></li><li><span class="topicref"><a href="GUID-B22E500C-B68F-4554-BD20-47F24FA3B12D.html">NET_DVR_PTZControl</a></span></li><li><span class="topicref"><a href="GUID-8161ADBD-7259-4DB2-AD22-B2BB3F22CCFC.html">NET_DVR_PTZCruise</a></span></li><li><span class="topicref"><a href="GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395.html">NET_DVR_PTZPreset</a></span></li><li class="active"><span class="topicref">NET_DVR_RealPlay_V40</span></li><li><span class="topicref"><a href="GUID-BADD19B9-E5B0-4C9B-9226-F46ED83B3F96.html">NET_DVR_RealPlaySpecial</a></span></li><li><span class="topicref"><a href="GUID-F7FF8C02-2A6E-468C-9760-B1DC5F86E04C.html">NET_DVR_SetRealDataCallBack</a></span></li><li><span class="topicref"><a href="GUID-D1D5EC42-F84E-4F59-B8A5-9FB6690502A6.html">NET_DVR_SetStandardDataCallBack</a></span></li><li><span class="topicref"><a href="GUID-90584BC9-6474-4D2F-8746-B161DA499673.html">NET_DVR_StopRealPlay</a></span></li></ul></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

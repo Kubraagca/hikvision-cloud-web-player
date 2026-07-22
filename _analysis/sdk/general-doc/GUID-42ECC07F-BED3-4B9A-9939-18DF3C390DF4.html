@@ -1,0 +1,317 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="fStdDataCallBack" /><meta name="abstract" content="Standard stream data callback function." /><meta name="description" content="Standard stream data callback function." /><meta name="DC.Relation" scheme="URI" content="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4" /><meta name="DC.Language" content="en-US" /><title>fStdDataCallBack</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">fStdDataCallBack</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Standard stream data callback function.</p>
+
+<div class="section" id="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-224CA3BA-36F6-4133-8F64-3EC6EBE97CC3"><h2 class="title sectiontitle">Callback Function Definition</h2>
+            
+            <pre class="pre codeblock">typedef void(CALLBACK *fStdDataCallBack)(
+  LONG      lRealHandle,
+  DWORD     dwDataType,
+  BYTE      *pBuffer,
+  DWORD     dwBufSize,
+  DWORD     *dwser
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-0671F65F-7523-4B2C-A659-AC3FF19558A7"><h2 class="title sectiontitle">Parameters</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-B54A495E-42E8-4F5C-9BE8-C871A777916F"><!-- --></a>lRealHandle</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Current live view handle.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-9170EDD8-055C-405C-9536-056FA40EB4F8"><!-- --></a>dwDataType</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Data type, see details in the following table.</p>
+
+                        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__TABLE_VT3_WYD_HBB" class="table" frame="border" border="1" rules="all">
+                                
+                                
+                                
+                                <thead class="thead" align="left">
+                                    <tr>
+                                        <th class="entry" valign="top" width="28.75318066157761%" id="d242164e68">
+                                            <p class="p">Type Macro Definition</p>
+
+                                        </th>
+
+                                        <th class="entry" valign="top" width="25.44529262086514%" id="d242164e74">
+                                            <p class="p">Value</p>
+
+                                        </th>
+
+                                        <th class="entry" valign="top" width="45.80152671755726%" id="d242164e80">
+                                            <p class="p">Description</p>
+
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody class="tbody">
+                                    <tr>
+                                        <td class="entry" valign="top" width="28.75318066157761%" headers="d242164e68 ">
+                                            <p class="p">NET_DVR_SYSHEAD</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="25.44529262086514%" headers="d242164e74 ">
+                                            <p class="p">1</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="45.80152671755726%" headers="d242164e80 ">
+                                            <p class="p">System header data.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="28.75318066157761%" headers="d242164e68 ">
+                                            <p class="p">NET_DVR_STREAMDATA</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="25.44529262086514%" headers="d242164e74 ">
+                                            <p class="p">2</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="45.80152671755726%" headers="d242164e80 ">
+                                            <p class="p">Stream data (including video &amp; audio
+                                                stream, or video stream).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="28.75318066157761%" headers="d242164e68 ">
+                                            <p class="p">NET_DVR_STD_VIDEODATA</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="25.44529262086514%" headers="d242164e74 ">
+                                            <p class="p">4</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="45.80152671755726%" headers="d242164e80 ">
+                                            <p class="p">Standard video stream data (standard 264,
+                                                MPEG4).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="28.75318066157761%" headers="d242164e68 ">
+                                            <p class="p">NET_DVR_STD_AUDIODATA</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="25.44529262086514%" headers="d242164e74 ">
+                                            <p class="p">5</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="45.80152671755726%" headers="d242164e80 ">
+                                            <p class="p">Standard audio stream data (G722 audio
+                                                data).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="28.75318066157761%" headers="d242164e68 ">
+                                            <p class="p">NET_DVR_PRIVATE_DATA</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="25.44529262086514%" headers="d242164e74 ">
+                                            <p class="p">112</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="45.80152671755726%" headers="d242164e80 ">
+                                            <p class="p">Private data, including VCA
+                                                information.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="28.75318066157761%" headers="d242164e68 ">
+                                            <p class="p">Others</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="25.44529262086514%" headers="d242164e74 ">
+                                            <p class="p">0x00-G711U Audio, 0x04-G723 Audio,
+                                                0x08-G711A Audio, 0x0b-PCM16 Audio, 0x0e-Mpeg(MP2L2)
+                                                Audio, 0x12-G729 Audio, 0x1A-MJPEG Audio, 0x68-AAC
+                                                Audio, and so on.</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="45.80152671755726%" headers="d242164e80 ">
+                                            <p class="p">pyload type in standard RTP, no
+                                                transformation. The data of all types should be
+                                                imported to player SDK when decoding and displaying
+                                                stream.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-503717A7-4E9A-4974-9F00-67881D83E2B3"><!-- --></a>pBuffer</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Pointer of buffer to save data.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-80572471-5A4D-4059-B113-601A0E4E1342"><!-- --></a>dwBufSize</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Buffer size.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-E340D581-6456-4481-BD08-FF14C3B56E2A"><!-- --></a>dwUser</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] User data.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-42ECC07F-BED3-4B9A-9939-18DF3C390DF4__GUID-F769B16C-81F2-41FE-B0A9-B33BC6A59349"><h2 class="title sectiontitle">Remarks</h2>
+            
+            <p class="p">This callback function is not applicable for the operations or API that
+                may take a long time.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-4E0EB5A8-7C54-42B8-AEEA-FDDDCE43AABD.html">CHAR_ENCODE_CONVERT</a></span></li><li><span class="topicref"><a href="GUID-A38532BC-0CEB-457D-A318-EB583D9AC4FE.html">DEV_WORK_STATE_CB</a></span></li><li><span class="topicref"><a href="GUID-CE07B63E-4A20-41FC-8DEF-9FC90EB716B0.html">fExceptionCallBack</a></span></li><li><span class="topicref"><a href="GUID-740E1A0E-13CA-4714-955A-BE224FBB87A2.html">fLoginResultCallBack</a></span></li><li><span class="topicref"><a href="GUID-C99AA272-3401-4886-9B5D-84962E523B47.html">fPlayDataCallBack_V40</a></span></li><li><span class="topicref"><a href="GUID-32037E4C-1BF1-48C1-8545-47CA3CF9378D.html">fRealDataCallBack</a></span></li><li><span class="topicref"><a href="GUID-434D312E-04B5-494B-B622-B29D274CCE7B.html">fRemoteConfigCallback</a></span></li><li class="active"><span class="topicref">fStdDataCallBack</span></li><li><span class="topicref"><a href="GUID-A2EE7658-54DF-4933-94AA-8D4544376DEF.html">fVoiceDataCallBack</a></span></li><li><span class="topicref"><a href="GUID-70F6AE9B-8A77-4EBD-8C09-74FEB3324CD8.html">MSGCallBack</a></span></li><li><span class="topicref"><a href="GUID-E0A8F575-D607-4281-ACA3-12C3BE7A5273.html">REALDATACALLBACK</a></span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>
