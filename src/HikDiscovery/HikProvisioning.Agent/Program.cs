@@ -65,8 +65,15 @@ app.MapPost("/agent/discover", async (DiscoverAgentRequest? request, LocalDiscov
 
 app.MapPost("/agent/provision/start", (ProvisionAgentRequest request, AgentTaskStore taskStore) =>
 {
-    var task = taskStore.Create("fullSetup", request);
+    var task = taskStore.Create("localSetup", request);
     _ = Task.Run(() => RunProvisionAsync(taskStore, task.TaskId, request));
+    return Results.Accepted($"/agent/tasks/{task.TaskId}", new { taskId = task.TaskId });
+});
+
+app.MapPost("/agent/cloud-register/start", (ProvisionAgentRequest request, AgentTaskStore taskStore) =>
+{
+    var task = taskStore.Create("cloudRegister", request);
+    _ = Task.Run(() => RunCloudRegisterAsync(taskStore, task.TaskId, request));
     return Results.Accepted($"/agent/tasks/{task.TaskId}", new { taskId = task.TaskId });
 });
 
@@ -95,7 +102,7 @@ app.Run();
 
 static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, ProvisionAgentRequest request)
 {
-    taskStore.Update(taskId, status: "running", message: "Yerel provisioning gorevi baslatildi.");
+    taskStore.Update(taskId, status: "running", message: "Yerel kamera ayarlari gorevi baslatildi.");
     taskStore.SetStages(taskId,
     [
         new AgentTaskStage("Erisim", "Bekliyor", string.Empty),
@@ -103,11 +110,9 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
         new AgentTaskStage("Giris", "Bekliyor", string.Empty),
         new AgentTaskStage("Ag Ayari", "Bekliyor", string.Empty),
         new AgentTaskStage("Hik-Connect Online", "Bekliyor", string.Empty),
-        new AgentTaskStage("Cihaz Eklendi", "Bekliyor", string.Empty),
-        new AgentTaskStage("Kanal Alana Aktarildi", "Bekliyor", string.Empty),
         new AgentTaskStage("Tamamlandi", "Bekliyor", string.Empty)
     ]);
-    taskStore.UpdateStage(taskId, "Erisim", "Calisiyor", "Yerel agent tam kurulum akisi baslatildi.");
+    taskStore.UpdateStage(taskId, "Erisim", "Calisiyor", "Yerel kamera ayarlari akisi baslatildi.");
 
     try
     {
@@ -221,11 +226,80 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
         }
 
         taskStore.UpdateStage(taskId, "Hik-Connect Online", "Tamam", "registerStatus=true oldu.");
+        taskStore.UpdateStage(taskId, "Tamamlandi", "Tamam", "Yerel kamera ayarlari tamamlandi.");
 
-        taskStore.UpdateStage(taskId, "Cihaz Eklendi", "Calisiyor", "Hik-Connect Team backend istegi gonderiliyor.");
+        taskStore.Complete(taskId, "completed", JsonSerializer.Serialize(new
+        {
+            success = true,
+            mode = "localSetup",
+            device = new
+            {
+                deviceInfo.Model,
+                deviceInfo.SerialNumber,
+                deviceInfo.ShortSerial,
+                deviceInfo.SubSerialNumber,
+                deviceInfo.FirmwareVersion,
+                deviceInfo.MacAddress,
+                CurrentIpAddress = currentIpAddress
+            },
+            network = updatedInterfaces,
+            ezviz = ezvizResult.FinalStatus,
+            verificationCode,
+            message = "Kamera aktif edildi, ag ayarlari uygulandi ve EZVIZ/Hik-Connect aktif edildi."
+        }));
+    }
+    catch (OperationCanceledException)
+    {
+        taskStore.Complete(taskId, "cancelled", "{\"success\":false,\"error\":\"cancelled\"}");
+    }
+    catch (Exception exception)
+    {
+        taskStore.Complete(taskId, "failed", JsonSerializer.Serialize(new { success = false, error = exception.Message }));
+    }
+}
+
+static async Task RunCloudRegisterAsync(AgentTaskStore taskStore, string taskId, ProvisionAgentRequest request)
+{
+    taskStore.Update(taskId, status: "running", message: "Bulut kayit gorevi baslatildi.");
+    taskStore.SetStages(taskId,
+    [
+        new AgentTaskStage("Giris", "Bekliyor", string.Empty),
+        new AgentTaskStage("Hik-Connect Durumu", "Bekliyor", string.Empty),
+        new AgentTaskStage("Cihaz Eklendi", "Bekliyor", string.Empty),
+        new AgentTaskStage("Kanal Alana Aktarildi", "Bekliyor", string.Empty),
+        new AgentTaskStage("Tamamlandi", "Bekliyor", string.Empty)
+    ]);
+
+    try
+    {
+        var token = taskStore.GetCancellation(taskId).Token;
+        var options = new AgentCameraConnectionOptions(
+            request.CameraAddress.Trim(),
+            string.IsNullOrWhiteSpace(request.UserName) ? "admin" : request.UserName.Trim(),
+            request.Password);
+
+        using var client = new AgentCameraIsapiClient(options);
+        taskStore.UpdateStage(taskId, "Giris", "Calisiyor", "deviceInfo okunuyor.");
+        var deviceInfo = await client.GetDeviceInfoAsync(token).ConfigureAwait(false);
+        var ezvizStatus = await client.GetEzvizStatusAsync(token).ConfigureAwait(false);
+        taskStore.UpdateStage(taskId, "Giris", "Tamam", $"Model={deviceInfo.Model}, KisaSeri={deviceInfo.ShortSerial}");
+
+        taskStore.UpdateStage(taskId, "Hik-Connect Durumu", "Calisiyor", "EZVIZ registerStatus kontrol ediliyor.");
+        if (ezvizStatus.RegisterStatus != true)
+        {
+            throw new InvalidOperationException("Kamera henuz Hik-Connect tarafinda online degil. Once yerel ayarlari uygula ve registerStatus=true oldugunu dogrula.");
+        }
+
+        taskStore.UpdateStage(taskId, "Hik-Connect Durumu", "Tamam", "registerStatus=true.");
+
+        var verificationCode = string.IsNullOrWhiteSpace(request.VerificationCode)
+            ? throw new InvalidOperationException("Buluta ekleme icin verification code gerekli. Kameradaki mevcut verification code'u gir.")
+            : request.VerificationCode.Trim();
         var alias = string.IsNullOrWhiteSpace(request.Alias)
             ? $"CAM-{deviceInfo.ShortSerial}"
             : request.Alias.Trim();
+
+        taskStore.UpdateStage(taskId, "Cihaz Eklendi", "Calisiyor", "Hik-Connect Team backend istegi gonderiliyor.");
         using var backendClient = new AgentTeamBackendClient(request.BackendUrl);
         await backendClient.CheckHealthAsync(token).ConfigureAwait(false);
         var backendResult = await backendClient.AddDeviceAsync(
@@ -243,12 +317,12 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
 
         taskStore.UpdateStage(taskId, "Cihaz Eklendi", "Tamam", backendResult.DeviceStatusMessage);
         taskStore.UpdateStage(taskId, "Kanal Alana Aktarildi", "Tamam", backendResult.ChannelStatusMessage);
-        taskStore.UpdateStage(taskId, "Tamamlandi", "Tamam", "Tam kurulum tamamlandi.");
+        taskStore.UpdateStage(taskId, "Tamamlandi", "Tamam", "Bulut kaydi tamamlandi.");
 
         taskStore.Complete(taskId, "completed", JsonSerializer.Serialize(new
         {
             success = true,
-            mode = "provision",
+            mode = "cloudRegister",
             device = new
             {
                 deviceInfo.Model,
@@ -257,10 +331,9 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
                 deviceInfo.SubSerialNumber,
                 deviceInfo.FirmwareVersion,
                 deviceInfo.MacAddress,
-                CurrentIpAddress = currentIpAddress
+                CurrentIpAddress = options.CameraAddress
             },
-            network = updatedInterfaces,
-            ezviz = ezvizResult.FinalStatus,
+            ezviz = ezvizStatus,
             backend = new
             {
                 backendResult.DeviceId,
