@@ -259,33 +259,9 @@
       Kamera ile ayni agdaki Windows bilgisayarda yerel servis calisiyorsa kurulum dogrudan o bilgisayardan yapilir. Bu, tarayicidan dogrudan kamera erisimi yerine onerilen akistir.
       <div class="actions" style="margin-top:10px;">
         <a class="button-link" href="/downloads/local-agent/HikProvisioning.Agent-win-x64.zip">Servisi Indir</a>
-        <button id="agent-health-btn" type="button">Servis Durumu</button>
-        <button id="discover-btn" type="button">Kameralari Tara</button>
+        <a class="button-link" id="open-local-setup-link" href="http://127.0.0.1:47831/camera-setup.html" target="_blank" rel="noreferrer">Yerel Kurulum Ekranini Ac</a>
       </div>
-      <div class="status-box" id="agent-status-box">Yerel servis kontrol edilmedi.</div>
-    </div>
-
-    <div class="discovery-card">
-      <strong>Bulunan Kameralar</strong>
-      <div class="sub" style="margin-top:6px;">Tarama yalnizca yerel servis hazirsa calisir. Kamera secince IP ve kullanici bilgileri forma doldurulur.</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Sec</th>
-              <th>IP</th>
-              <th>Model</th>
-              <th>Seri</th>
-              <th>MAC</th>
-              <th>Durum</th>
-              <th>SDK</th>
-            </tr>
-          </thead>
-          <tbody id="discover-body">
-            <tr><td colspan="7">Henuz tarama yapilmadi.</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="status-box" id="agent-status-box">Canli siteden localhost taramasi tarayici politikalarina takilabilir. Servis kurulduktan sonra yerel kurulum ekranini acmaniz gerekir.</div>
     </div>
 
     <div class="grid">
@@ -380,10 +356,8 @@
   const statusBox = document.getElementById("status-box");
   const stageBody = document.getElementById("stage-body");
   const networkBody = document.getElementById("network-body");
-  const agentHealthBtn = document.getElementById("agent-health-btn");
   const agentStatusBox = document.getElementById("agent-status-box");
-  const discoverBtn = document.getElementById("discover-btn");
-  const discoverBody = document.getElementById("discover-body");
+  const openLocalSetupLink = document.getElementById("open-local-setup-link");
 
   const modelEl = document.getElementById("meta-model");
   const shortSerialEl = document.getElementById("meta-short-serial");
@@ -395,9 +369,7 @@
   let activeTaskId = null;
   let pollTimer = null;
   let activeTaskSource = "server";
-  let localAgentHealthy = false;
   const agentBaseUrl = "http://127.0.0.1:47831";
-  let discoveredDevices = [];
 
   function setStatus(text) {
     statusBox.textContent = text;
@@ -405,38 +377,6 @@
 
   function setAgentStatus(text) {
     agentStatusBox.textContent = text;
-  }
-
-  function renderDiscoveredDevices(devices) {
-    discoveredDevices = Array.isArray(devices) ? devices : [];
-
-    if (!discoveredDevices.length) {
-      discoverBody.innerHTML = "<tr><td colspan='7'>Kamera bulunamadi.</td></tr>";
-      return;
-    }
-
-    discoverBody.innerHTML = discoveredDevices.map((device, index) => `
-      <tr>
-        <td><button class="select-button" type="button" data-device-index="${index}">Sec</button></td>
-        <td>${escapeHtml(device.ipAddress || "-")}</td>
-        <td>${escapeHtml(device.model || "-")}</td>
-        <td>${escapeHtml(device.serialNumber || "-")}</td>
-        <td>${escapeHtml(device.macAddress || "-")}</td>
-        <td><span class="tag">${escapeHtml(device.activationStatus || "-")}</span></td>
-        <td>${device.supportsSdkPort ? "Evet" : "Hayir"}</td>
-      </tr>
-    `).join("");
-  }
-
-  function applyDiscoveredDevice(index) {
-    const device = discoveredDevices[index];
-    if (!device) {
-      return;
-    }
-
-    document.getElementById("camera-ip").value = device.ipAddress || "";
-    document.getElementById("username").value = "admin";
-    setStatus(`Secilen kamera: ${device.ipAddress || "-"} | ${device.model || "-"} | ${device.activationStatus || "-"}`);
   }
 
   function getFormPayload() {
@@ -617,47 +557,9 @@
       .replaceAll("'", "&#39;");
   }
 
-  async function checkAgentHealth() {
-    try {
-      const response = await fetch(`${agentBaseUrl}/agent/health`);
-      const data = await response.json();
-      if (!response.ok || !data.ok) {
-        throw new Error("Yerel servis hazir degil.");
-      }
-
-      localAgentHealthy = !!data.ok;
-      setAgentStatus(
-        `Yerel servis hazir. CLI bulundu: ${data.cli?.found ? "evet" : "hayir"}, HCNetSDK: ${data.cli?.sdkDllFound ? "evet" : "hayir"}`
-      );
-      return true;
-    } catch (err) {
-      localAgentHealthy = false;
-      setAgentStatus(`Yerel servis ulasilamiyor: ${err.message}`);
-      return false;
-    }
-  }
-
-  async function discoverCameras() {
-    const healthOk = await checkAgentHealth();
-    if (!healthOk) {
-      renderDiscoveredDevices([]);
-      throw new Error("Kamera taramasi icin once yerel servis calismali.");
-    }
-
-    setStatus("Yerel servis ile kamera taramasi baslatiliyor...");
-    const response = await fetch(`${agentBaseUrl}/agent/discover`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ scanSeconds: 12, concurrency: 32 })
-    });
-
-    const data = await response.json();
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || "Kamera taramasi basarisiz.");
-    }
-
-    renderDiscoveredDevices(data.devices || []);
-    setStatus(`Tarama tamamlandi. ${Array.isArray(data.devices) ? data.devices.length : 0} aday bulundu.`);
+  function updateLocalSetupLink() {
+    const target = `${agentBaseUrl}/camera-setup.html?backendUrl=${encodeURIComponent(window.location.origin)}&cloudUrl=${encodeURIComponent(window.location.origin)}`;
+    openLocalSetupLink.href = target;
   }
 
   startBtn.addEventListener("click", async () => {
@@ -678,41 +580,8 @@
     renderResult(null);
 
     try {
-      const healthOk = await checkAgentHealth();
-
-      if (healthOk) {
-        activeTaskSource = "agent";
-        setStatus("Kurulum yerel servis uzerinden baslatiliyor...");
-        const response = await fetch(`${agentBaseUrl}/agent/provision/start`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            cameraAddress: payload.cameraIp,
-            userName: payload.userName,
-            password: payload.password,
-            backendUrl: window.location.origin,
-            areaName: payload.areaName,
-            alias: "",
-            gatewayOverride: payload.gatewayOverride,
-            primaryDns: "8.8.8.8",
-            secondaryDns: "1.1.1.1",
-            verificationCode: "",
-            enableDhcp: payload.enableDhcp,
-            sdkPort: payload.sdkPort
-          }),
-        });
-
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || "Yerel servis kurulumu baslatilamadi.");
-        }
-
-        startPolling(data.taskId);
-        return;
-      }
-
       activeTaskSource = "server";
-      setStatus("Yerel servis yok, kurulum sunucu uzerinden baslatiliyor...");
+      setStatus("Canli siteden localhost erisimi tarayici tarafinda kisitli olabilir. Yerel servis gerekiyorsa 'Yerel Kurulum Ekranini Ac' butonunu kullan. Simdi sunucu tarafi akis deneniyor...");
       const response = await fetch("/api/provision/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -739,24 +608,7 @@
     loadTask(activeTaskId).catch((err) => setStatus(err.message));
   });
 
-  agentHealthBtn.addEventListener("click", () => {
-    checkAgentHealth().catch((err) => setAgentStatus(err.message));
-  });
-
-  discoverBtn.addEventListener("click", () => {
-    discoverCameras().catch((err) => setStatus(err.message));
-  });
-
-  discoverBody.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-device-index]");
-    if (!button) {
-      return;
-    }
-
-    applyDiscoveredDevice(Number(button.getAttribute("data-device-index")));
-  });
-
-  checkAgentHealth().catch(() => {});
+  updateLocalSetupLink();
 </script>
 </body>
 </html>

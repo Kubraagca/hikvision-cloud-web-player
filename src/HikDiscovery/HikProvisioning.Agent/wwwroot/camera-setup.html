@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yerel Kamera Kurulum</title>
+<style>
+  :root {
+    --bg: #f1efe8;
+    --panel: #fffaf1;
+    --border: #d8cfc0;
+    --text: #231f1a;
+    --muted: #766c60;
+    --accent: #005f73;
+    --ok: #16a34a;
+    --warn: #b45309;
+    --err: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: Georgia, "Segoe UI", serif;
+    background:
+      radial-gradient(circle at top right, #fff4d6 0, transparent 34%),
+      linear-gradient(180deg, #f8f2e7 0%, #efe5d5 100%);
+  }
+  header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 250, 241, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  h1 { margin: 0; font-size: 20px; }
+  .sub { margin-top: 4px; font-size: 12px; color: var(--muted); }
+  a, button, input { font: inherit; }
+  a.button-link, button {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 9px 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  main {
+    display: grid;
+    grid-template-columns: 430px 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+  @media (max-width: 980px) {
+    main { grid-template-columns: 1fr; }
+  }
+  .panel {
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.72);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 16px 40px rgba(70, 50, 20, 0.08);
+  }
+  .panel h2 { margin: 0 0 14px; font-size: 17px; }
+  .grid { display: grid; gap: 12px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .field input[type="text"], .field input[type="password"], .field input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #fffdf8;
+  }
+  .field.checkbox { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .status-box, .hint-box {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    white-space: pre-wrap;
+  }
+  .status-box { background: rgba(255,255,255,0.58); }
+  .hint-box { background: rgba(0, 95, 115, 0.08); border-color: rgba(0, 95, 115, 0.18); }
+  .table-wrap {
+    max-height: 280px;
+    overflow: auto;
+    margin-top: 10px;
+    border: 1px solid #e8dfd0;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.8);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid #e8dfd0;
+    vertical-align: top;
+  }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .meta-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .meta-card {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .meta-card span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .select-button, .tag {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    padding: 6px 10px;
+  }
+  .tag { font-size: 11px; border-radius: 999px; }
+  .stage-waiting { color: var(--muted); }
+  .stage-running { color: var(--accent); }
+  .stage-done { color: var(--ok); }
+  .stage-skip { color: var(--warn); }
+  .stage-error { color: var(--err); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Yerel Kamera Kurulum</h1>
+    <div class="sub">Bu sayfa yerel agent uzerinden kamera tarama, aktivasyon ve provisioning yapar.</div>
+  </div>
+  <div style="display:flex; gap:10px;">
+    <a class="button-link" id="cloud-panel-link" href="#">Bulut Panele Don</a>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Kurulum Formu</h2>
+    <div class="hint-box">
+      Bu sayfa localhost uzerinden acildigi icin tarayicinin loopback kisitina takilmaz. Kameralari tara, kamerayi sec ve ayni ekrandan kurulumu baslat.
+    </div>
+    <div class="actions" style="margin-top:10px;">
+      <button id="agent-health-btn" type="button">Servis Durumu</button>
+      <button id="discover-btn" type="button">Kameralari Tara</button>
+    </div>
+    <div class="status-box" id="agent-status-box">Yerel servis hazir durumda bekliyor.</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Sec</th>
+            <th>IP</th>
+            <th>Model</th>
+            <th>Seri</th>
+            <th>MAC</th>
+            <th>Durum</th>
+          </tr>
+        </thead>
+        <tbody id="discover-body">
+          <tr><td colspan="6">Henuz tarama yapilmadi.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid" style="margin-top:14px;">
+      <div class="field">
+        <label for="backend-url">Bulut Backend URL</label>
+        <input id="backend-url" type="text" />
+      </div>
+      <div class="field">
+        <label for="camera-ip">Kamera IP</label>
+        <input id="camera-ip" type="text" value="192.168.1.64" />
+      </div>
+      <div class="field">
+        <label for="username">Kullanici Adi</label>
+        <input id="username" type="text" value="admin" />
+      </div>
+      <div class="field">
+        <label for="password">Parola</label>
+        <input id="password" type="password" />
+      </div>
+      <div class="field">
+        <label for="area-name">Area Adi</label>
+        <input id="area-name" type="text" placeholder="Bos birakilirsa CAM-{shortSerial}" />
+      </div>
+      <div class="field">
+        <label for="gateway-override">Gateway Override</label>
+        <input id="gateway-override" type="text" placeholder="Bos ise mevcut cihaz XML'inden gelir" />
+      </div>
+      <div class="field">
+        <label for="sdk-port">SDK Port</label>
+        <input id="sdk-port" type="number" value="8000" min="1" max="65535" />
+      </div>
+      <label class="field checkbox">
+        <input id="enable-dhcp" type="checkbox" />
+        DHCP etkinlestir ve IP degisirse kamerayi ayni /24 aginda yeniden bul
+      </label>
+    </div>
+
+    <div class="actions">
+      <button id="start-btn" class="primary">Kurulumu Baslat</button>
+      <button id="reload-btn">Durumu Yenile</button>
+    </div>
+    <div class="status-box" id="status-box">Hazir.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Asamalar ve Sonuc</h2>
+    <table>
+      <thead>
+        <tr><th>Asama</th><th>Durum</th><th>Detay</th></tr>
+      </thead>
+      <tbody id="stage-body">
+        <tr><td colspan="3">Kurulum baslatilmadi.</td></tr>
+      </tbody>
+    </table>
+
+    <div style="height:14px"></div>
+
+    <div class="meta-grid">
+      <div class="meta-card"><span>Model</span><strong id="meta-model">-</strong></div>
+      <div class="meta-card"><span>Kisa Seri</span><strong id="meta-short-serial">-</strong></div>
+      <div class="meta-card"><span>MAC</span><strong id="meta-mac">-</strong></div>
+      <div class="meta-card"><span>Guncel IP</span><strong id="meta-ip">-</strong></div>
+      <div class="meta-card"><span>Area</span><strong id="meta-area">-</strong></div>
+      <div class="meta-card"><span>Device ID</span><strong id="meta-device-id">-</strong></div>
+    </div>
+
+    <div style="height:14px"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Arayuz</th>
+          <th>IP</th>
+          <th>Subnet</th>
+          <th>Gateway</th>
+          <th>DNS1</th>
+          <th>DNS2</th>
+          <th>DHCP</th>
+        </tr>
+      </thead>
+      <tbody id="network-body">
+        <tr><td colspan="7">Ag bilgisi henuz yok.</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<script>
+  const agentStatusBox = document.getElementById("agent-status-box");
+  const statusBox = document.getElementById("status-box");
+  const discoverBody = document.getElementById("discover-body");
+  const stageBody = document.getElementById("stage-body");
+  const networkBody = document.getElementById("network-body");
+  const backendUrlInput = document.getElementById("backend-url");
+  const cloudPanelLink = document.getElementById("cloud-panel-link");
+  const modelEl = document.getElementById("meta-model");
+  const shortSerialEl = document.getElementById("meta-short-serial");
+  const macEl = document.getElementById("meta-mac");
+  const ipEl = document.getElementById("meta-ip");
+  const areaEl = document.getElementById("meta-area");
+  const deviceIdEl = document.getElementById("meta-device-id");
+
+  let activeTaskId = null;
+  let pollTimer = null;
+  let discoveredDevices = [];
+
+  const qs = new URLSearchParams(window.location.search);
+  const backendUrl = qs.get("backendUrl") || qs.get("backend") || "https://hikvision-cloud-web-player.onrender.com";
+  const cloudUrl = qs.get("cloudUrl") || backendUrl;
+  backendUrlInput.value = backendUrl;
+  cloudPanelLink.href = cloudUrl.includes("/camera-setup") ? cloudUrl : `${cloudUrl.replace(/\/$/, "")}/camera-setup`;
+
+  function setAgentStatus(text) { agentStatusBox.textContent = text; }
+  function setStatus(text) { statusBox.textContent = text; }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function stageClass(status) {
+    switch ((status || "").toLowerCase()) {
+      case "tamam": return "stage-done";
+      case "completed": return "stage-done";
+      case "calisiyor": return "stage-running";
+      case "running": return "stage-running";
+      case "atlandi": return "stage-skip";
+      case "failed": return "stage-error";
+      case "hata": return "stage-error";
+      default: return "stage-waiting";
+    }
+  }
+
+  function renderStages(stages) {
+    if (!stages || !stages.length) {
+      stageBody.innerHTML = "<tr><td colspan='3'>Asama bilgisi yok.</td></tr>";
+      return;
+    }
+    stageBody.innerHTML = stages.map((stage) => `
+      <tr>
+        <td>${escapeHtml(stage.name || "-")}</td>
+        <td class="${stageClass(stage.status)}">${escapeHtml(stage.status || "-")}</td>
+        <td>${escapeHtml(stage.detail || stage.message || "-")}</td>
+      </tr>`).join("");
+  }
+
+  function renderNetwork(interfaces) {
+    if (!interfaces || !interfaces.length) {
+      networkBody.innerHTML = "<tr><td colspan='7'>Ag bilgisi henuz yok.</td></tr>";
+      return;
+    }
+    networkBody.innerHTML = interfaces.map((item) => `
+      <tr>
+        <td>${escapeHtml(item.id || "-")}</td>
+        <td>${escapeHtml(item.ipAddress || "-")}</td>
+        <td>${escapeHtml(item.subnetMask || "-")}</td>
+        <td>${escapeHtml(item.gateway || "-")}</td>
+        <td>${escapeHtml(item.primaryDns || "-")}</td>
+        <td>${escapeHtml(item.secondaryDns || "-")}</td>
+        <td>${escapeHtml(item.dhcpMode || "-")}</td>
+      </tr>`).join("");
+  }
+
+  function renderResult(result) {
+    modelEl.textContent = result?.model || "-";
+    shortSerialEl.textContent = result?.shortSerial || "-";
+    macEl.textContent = result?.macAddress || "-";
+    ipEl.textContent = result?.cameraIp || "-";
+    areaEl.textContent = result?.areaName ? `${result.areaName} (${result.areaId || "-"})` : "-";
+    deviceIdEl.textContent = result?.deviceId || "-";
+    renderNetwork(result?.networkInterfaces || []);
+  }
+
+  function renderDiscoveredDevices(devices) {
+    discoveredDevices = Array.isArray(devices) ? devices : [];
+    if (!discoveredDevices.length) {
+      discoverBody.innerHTML = "<tr><td colspan='6'>Kamera bulunamadi.</td></tr>";
+      return;
+    }
+    discoverBody.innerHTML = discoveredDevices.map((device, index) => `
+      <tr>
+        <td><button class="select-button" type="button" data-index="${index}">Sec</button></td>
+        <td>${escapeHtml(device.ipAddress || "-")}</td>
+        <td>${escapeHtml(device.model || "-")}</td>
+        <td>${escapeHtml(device.serialNumber || "-")}</td>
+        <td>${escapeHtml(device.macAddress || "-")}</td>
+        <td><span class="tag">${escapeHtml(device.activationStatus || "-")}</span></td>
+      </tr>`).join("");
+  }
+
+  function applyDevice(index) {
+    const device = discoveredDevices[index];
+    if (!device) return;
+    document.getElementById("camera-ip").value = device.ipAddress || "";
+    document.getElementById("username").value = "admin";
+    setStatus(`Secilen kamera: ${device.ipAddress || "-"} | ${device.model || "-"} | ${device.activationStatus || "-"}`);
+  }
+
+  async function checkHealth() {
+    const response = await fetch("/agent/health");
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || "Yerel servis hazir degil.");
+    }
+    setAgentStatus(`Yerel servis hazir. CLI: ${data.cli?.found ? "evet" : "hayir"}, HCNetSDK: ${data.cli?.sdkDllFound ? "evet" : "hayir"}`);
+  }
+
+  async function discover() {
+    setStatus("Kamera taramasi baslatiliyor...");
+    const response = await fetch("/agent/discover", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scanSeconds: 12, concurrency: 32 })
+    });
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || "Tarama basarisiz.");
+    }
+    renderDiscoveredDevices(data.devices || []);
+    setStatus(`Tarama tamamlandi. ${Array.isArray(data.devices) ? data.devices.length : 0} aday bulundu.`);
+  }
+
+  function parseResultJson(text) {
+    try { return text ? JSON.parse(text) : null; } catch { return null; }
+  }
+
+  async function loadTask(taskId) {
+    const response = await fetch(`/agent/tasks/${encodeURIComponent(taskId)}`);
+    const task = await response.json();
+    if (!response.ok) {
+      throw new Error(task.error || "Task okunamadi.");
+    }
+
+    const payload = parseResultJson(task.resultJson);
+    renderStages([
+      {
+        name: "Yerel Kurulum",
+        status: task.status,
+        detail: payload?.error || task.message || "-"
+      }
+    ]);
+
+    if (payload?.device || payload?.backend) {
+      renderResult({
+        model: payload?.device?.Model || "-",
+        shortSerial: payload?.device?.ShortSerial || "-",
+        macAddress: payload?.device?.MacAddress || "-",
+        cameraIp: payload?.device?.CurrentIpAddress || task.cameraAddress || "-",
+        areaName: payload?.backend?.AreaName || "-",
+        areaId: payload?.backend?.AreaId || "-",
+        deviceId: payload?.backend?.DeviceId || "-",
+        networkInterfaces: payload?.network || []
+      });
+    }
+
+    if ((task.status || "").toLowerCase() === "completed") {
+      clearPolling();
+      setStatus("Kurulum tamamlandi.");
+    } else if ((task.status || "").toLowerCase() === "failed") {
+      clearPolling();
+      setStatus(`Kurulum basarisiz: ${payload?.error || task.message || "Bilinmeyen hata"}`);
+    } else {
+      setStatus(`Kurulum suruyor. Son guncelleme: ${new Date(task.updatedAtUtc).toLocaleTimeString("tr-TR")}`);
+    }
+  }
+
+  function clearPolling() {
+    if (pollTimer) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  function startPolling(taskId) {
+    activeTaskId = taskId;
+    clearPolling();
+    loadTask(taskId).catch((err) => setStatus(err.message));
+    pollTimer = setInterval(() => {
+      loadTask(taskId).catch((err) => setStatus(err.message));
+    }, 1500);
+  }
+
+  function getPayload() {
+    return {
+      cameraAddress: document.getElementById("camera-ip").value.trim(),
+      userName: document.getElementById("username").value.trim() || "admin",
+      password: document.getElementById("password").value,
+      backendUrl: backendUrlInput.value.trim(),
+      areaName: document.getElementById("area-name").value.trim(),
+      alias: "",
+      gatewayOverride: document.getElementById("gateway-override").value.trim(),
+      primaryDns: "8.8.8.8",
+      secondaryDns: "1.1.1.1",
+      verificationCode: "",
+      enableDhcp: document.getElementById("enable-dhcp").checked,
+      sdkPort: Number(document.getElementById("sdk-port").value || 8000)
+    };
+  }
+
+  document.getElementById("agent-health-btn").addEventListener("click", () => {
+    checkHealth().catch((err) => setAgentStatus(err.message));
+  });
+
+  document.getElementById("discover-btn").addEventListener("click", () => {
+    discover().catch((err) => setStatus(err.message));
+  });
+
+  discoverBody.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-index]");
+    if (!button) return;
+    applyDevice(Number(button.getAttribute("data-index")));
+  });
+
+  document.getElementById("start-btn").addEventListener("click", async () => {
+    const payload = getPayload();
+    if (!payload.cameraAddress) {
+      setStatus("Kamera IP zorunlu.");
+      return;
+    }
+    if (!payload.password) {
+      setStatus("Parola zorunlu.");
+      return;
+    }
+
+    setStatus("Kurulum baslatiliyor...");
+    renderResult(null);
+    try {
+      const response = await fetch("/agent/provision/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Kurulum baslatilamadi.");
+      }
+      startPolling(data.taskId);
+    } catch (err) {
+      setStatus(err.message);
+    }
+  });
+
+  document.getElementById("reload-btn").addEventListener("click", () => {
+    if (!activeTaskId) {
+      setStatus("Aktif task yok.");
+      return;
+    }
+    loadTask(activeTaskId).catch((err) => setStatus(err.message));
+  });
+
+  checkHealth().catch((err) => setAgentStatus(err.message));
+</script>
+</body>
+</html>

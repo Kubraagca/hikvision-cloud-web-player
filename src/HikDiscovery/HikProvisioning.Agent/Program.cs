@@ -16,6 +16,11 @@ builder.Services.AddSingleton<AgentTaskStore>();
 
 var app = builder.Build();
 app.UseCors();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.MapGet("/", () => Results.Redirect("/camera-setup.html"));
+app.MapGet("/camera-setup", () => Results.Redirect("/camera-setup.html"));
 
 app.MapGet("/agent/health", () => Results.Ok(new
 {
