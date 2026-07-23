@@ -935,7 +935,14 @@ function parseCameraChannels(data) {
 }
 
 async function getAreas() {
-  const data = await postOpenApi("/api/hccgw/resource/v1/areas/get", {});
+  const data = await postOpenApi("/api/hccgw/resource/v1/areas/get", {
+    pageIndex: 1,
+    pageSize: 500,
+    filter: {
+      parentAreaID: "-1",
+      includeSubArea: 1,
+    },
+  });
   const errorCode = String(data.errorCode || data.code || "");
   if (errorCode !== "0") {
     throw new Error(friendlyOpenApiError(errorCode, data.errorMsg || data.msg || "Alan listesi alinamadi."));

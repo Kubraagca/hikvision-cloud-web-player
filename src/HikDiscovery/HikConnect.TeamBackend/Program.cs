@@ -277,9 +277,20 @@ internal sealed class HikConnectGatewayService
 
     private async Task<IReadOnlyList<AreaInfo>> GetAreasAsync(CancellationToken cancellationToken)
     {
+        var payload = new JsonObject
+        {
+            ["pageIndex"] = 1,
+            ["pageSize"] = 500,
+            ["filter"] = new JsonObject
+            {
+                ["parentAreaID"] = "-1",
+                ["includeSubArea"] = 1
+            }
+        };
+
         var response = await _client.PostWithTokenRetryAsync(
             "/api/hccgw/resource/v1/areas/get",
-            new JsonObject(),
+            payload,
             cancellationToken);
 
         HikConnectResponseParser.EnsureSuccess(response, "areas/get");
