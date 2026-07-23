@@ -140,15 +140,9 @@ public sealed class IsapiClient : IDisposable
                 ? InferGateway(gatewayOverride, model.IpAddress, model.Gateway)
                 : gatewayOverride.Trim();
 
-            SetValue(interfaceElement, "DefaultGateway", effectiveGateway);
-            SetValue(interfaceElement, "defaultGateway", effectiveGateway);
-            SetValue(interfaceElement, "ipv4DefaultGateway", effectiveGateway);
-            SetValue(interfaceElement, "PrimaryDNS", dns1);
-            SetValue(interfaceElement, "primaryDNS", dns1);
-            SetValue(interfaceElement, "dnsServer1IpAddr", dns1);
-            SetValue(interfaceElement, "SecondaryDNS", dns2);
-            SetValue(interfaceElement, "secondaryDNS", dns2);
-            SetValue(interfaceElement, "dnsServer2IpAddr", dns2);
+            UpdateNetworkAddress(interfaceElement, effectiveGateway, "DefaultGateway", "defaultGateway", "ipv4DefaultGateway");
+            UpdateNetworkAddress(interfaceElement, dns1, "PrimaryDNS", "primaryDNS", "dnsServer1IpAddr", "DNS1");
+            UpdateNetworkAddress(interfaceElement, dns2, "SecondaryDNS", "secondaryDNS", "dnsServer2IpAddr", "DNS2");
 
             if (enableDhcp)
             {
@@ -416,9 +410,9 @@ public sealed class IsapiClient : IDisposable
         var id = FirstNonEmpty(element, "id", "interfaceId", "name", "portNo");
         var ipAddress = FirstNonEmpty(element, "ipAddress", "ipv4Address", "IPAddress");
         var subnetMask = FirstNonEmpty(element, "subnetMask", "ipv4SubnetMask");
-        var gateway = FirstNonEmpty(element, "DefaultGateway", "defaultGateway", "ipv4DefaultGateway");
-        var primaryDns = FirstNonEmpty(element, "PrimaryDNS", "primaryDNS", "dnsServer1IpAddr", "DNS1");
-        var secondaryDns = FirstNonEmpty(element, "SecondaryDNS", "secondaryDNS", "dnsServer2IpAddr", "DNS2");
+        var gateway = ReadNetworkAddress(element, "DefaultGateway", "defaultGateway", "ipv4DefaultGateway");
+        var primaryDns = ReadNetworkAddress(element, "PrimaryDNS", "primaryDNS", "dnsServer1IpAddr", "DNS1");
+        var secondaryDns = ReadNetworkAddress(element, "SecondaryDNS", "secondaryDNS", "dnsServer2IpAddr", "DNS2");
         var dhcpMode = FirstNonEmpty(element, "addressingType", "ipAddressingType", "dhcp", "DHCP");
 
         return new NetworkInterfaceModel(
@@ -465,6 +459,51 @@ public sealed class IsapiClient : IDisposable
         foreach (var element in root.DescendantsAndSelf().Where(item => item.Name.LocalName.Equals(localName, StringComparison.OrdinalIgnoreCase)))
         {
             element.Value = value;
+        }
+    }
+
+    private static string ReadNetworkAddress(XElement root, params string[] localNames)
+    {
+        foreach (var localName in localNames)
+        {
+            foreach (var element in root.DescendantsAndSelf().Where(item => item.Name.LocalName.Equals(localName, StringComparison.OrdinalIgnoreCase)))
+            {
+                var nestedValue = FirstNonEmpty(element, "ipAddress", "ipv4Address", "address");
+                if (!string.IsNullOrWhiteSpace(nestedValue))
+                {
+                    return nestedValue;
+                }
+
+                var value = element.Value.Trim();
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    return value;
+                }
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private static void UpdateNetworkAddress(XElement root, string value, params string[] localNames)
+    {
+        foreach (var localName in localNames)
+        {
+            foreach (var element in root.DescendantsAndSelf().Where(item => item.Name.LocalName.Equals(localName, StringComparison.OrdinalIgnoreCase)))
+            {
+                var ipAddressNode = element.Elements().FirstOrDefault(item =>
+                    item.Name.LocalName.Equals("ipAddress", StringComparison.OrdinalIgnoreCase) ||
+                    item.Name.LocalName.Equals("ipv4Address", StringComparison.OrdinalIgnoreCase) ||
+                    item.Name.LocalName.Equals("address", StringComparison.OrdinalIgnoreCase));
+
+                if (ipAddressNode is not null)
+                {
+                    ipAddressNode.Value = value;
+                    continue;
+                }
+
+                element.Value = value;
+            }
         }
     }
 

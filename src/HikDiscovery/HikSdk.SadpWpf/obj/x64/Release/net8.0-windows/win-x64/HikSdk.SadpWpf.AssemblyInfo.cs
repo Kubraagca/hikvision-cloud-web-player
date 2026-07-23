@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HikSdk.SadpWpf")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+528da560b573f3a54fb5341fc9368c2ef9be3982")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd611ca12b5c233d52683337ac7b01ea73ad2975")]
 [assembly: System.Reflection.AssemblyProductAttribute("HikSdk.SadpWpf")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HikSdk.SadpWpf")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

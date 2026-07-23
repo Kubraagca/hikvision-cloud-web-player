@@ -1,10 +1,7 @@
-[2026-07-23 15:31:14.858][INF] The COM:HCCoreBase ver is 6.1.4.15, 2020_03_05. Async:1.
-[2026-07-23 15:31:14.858][INF] The COM:Core ver is 6.1.9.4, 2022_04_12. Async:1.
-[2026-07-23 15:31:14.858][INF] This HCNetSDK ver is 6.1.9.4 Ver 2022_04_12.
-[2026-07-23 15:31:14.858][INF] Login dev 192.168.1.64:8000.
-[2026-07-23 15:31:14.858][INF] dwTotalNum[2048]
-[2026-07-23 15:31:14.874][INF] Private connect 192.168.1.64:8000 sock=8640 this=0xaa271fb4 cmd=0x10000 port=56832
-[2026-07-23 15:31:14.874][INF] LogonDev1 in[192.168.1.64:8000]
-[2026-07-23 15:31:15.155][INF] COM_Logout[0][1]
-[2026-07-23 15:31:15.156][DBG] CUserMgr::UnRegisterHeartProxy[0]
-[2026-07-23 15:31:15.161][INF] Private connect 192.168.1.64:8000 sock=8476 this=0xaa271fb4 cmd=0x10100 port=56833
+[2026-07-23 15:39:43.953][INF] The COM:HCCoreBase ver is 6.1.4.15, 2020_03_05. Async:1.
+[2026-07-23 15:39:43.953][INF] The COM:Core ver is 6.1.9.4, 2022_04_12. Async:1.
+[2026-07-23 15:39:43.953][INF] This HCNetSDK ver is 6.1.9.4 Ver 2022_04_12.
+[2026-07-23 15:39:43.973][DBG] CComBase::Load, Load szDllPath[C:/Users/Kubra/Desktop/kamera/src/HikDiscovery/HikSdk.SadpWpf/bin/x64/Release/net8.0-windows/win-x64/HCNetSDKCom/HCGeneralCfgMgr.dll] SUCC
+[2026-07-23 15:39:43.974][INF] dwTotalNum[2048]
+[2026-07-23 15:39:43.975][INF] AbilityAnalyze---Init-- start
+[2026-07-23 15:39:43.998][INF] The COM:HCGeneralCfgMgr ver is 6.1.9.4, 2022_04_12.

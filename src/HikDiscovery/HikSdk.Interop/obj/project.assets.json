@@ -2,9 +2,7 @@
   "version": 4,
   "targets": {
     "net8.0-windows": {},
-    "net8.0-windows/win-x64": {},
-    "net9.0-windows": {},
-    "net9.0-windows/win-x64": {}
+    "net9.0-windows": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
@@ -12,7 +10,7 @@
     "net9.0-windows": []
   },
   "packageFolders": {
-    "C:\\Users\\CodexSandboxOffline\\.nuget\\packages\\": {},
+    "C:\\Users\\Kubra\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -21,7 +19,7 @@
       "projectUniqueName": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
       "projectName": "HikSdk.Interop",
       "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
-      "packagesPath": "C:\\Users\\CodexSandboxOffline\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\Kubra\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
@@ -122,34 +120,6 @@
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
       }
-    },
-    "runtimes": {
-      "win-x64": {
-        "#import": []
-      }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı."
-    },
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı."
-    },
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı."
-    },
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Paket güvenlik açığı verileri alınırken hata oluştu: https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor."
-    }
-  ]
+  }
 }
