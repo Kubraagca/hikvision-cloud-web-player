@@ -153,4 +153,4 @@ C:\Users\CodexSandboxOffline\.codex\.sandbox\cwd\77ac9b9176df73fb\src\HikDiscove
 C:\Users\CodexSandboxOffline\.codex\.sandbox\cwd\77ac9b9176df73fb\src\HikDiscovery\HikProvisioning.Agent\obj\x64\Release\net9.0-windows\HikProvisioning.Agent.csproj.AssemblyReference.cache
 C:\Users\CodexSandboxOffline\.codex\.sandbox\cwd\77ac9b9176df73fb\src\HikDiscovery\HikProvisioning.Agent\obj\x64\Release\net9.0-windows\compressed\uej3av6c7c-{0}-fv1z2rd0f6-fv1z2rd0f6.gz
 C:\Users\CodexSandboxOffline\.codex\.sandbox\cwd\77ac9b9176df73fb\src\HikDiscovery\HikProvisioning.Agent\obj\x64\Release\net9.0-windows\HikProvi.EE811EC6.Up2Date
-C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikProvisioning.Agent\obj\x64\Release\net9.0-windows\compressed\uej3av6c7c-{0}-mlfapqa924-mlfapqa924.gz
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikProvisioning.Agent\obj\x64\Release\net9.0-windows\compressed\uej3av6c7c-{0}-mnuebkjz6a-mnuebkjz6a.gz

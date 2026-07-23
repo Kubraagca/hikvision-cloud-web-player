@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HikProvisioning.Agent")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1893622caba24684aa1a9694a7c06e04bdbd77f6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e60b4d52789c752b5bd01cc3c04d563f20941643")]
 [assembly: System.Reflection.AssemblyProductAttribute("HikProvisioning.Agent")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HikProvisioning.Agent")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
