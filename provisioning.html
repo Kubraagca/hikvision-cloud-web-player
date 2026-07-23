@@ -152,6 +152,44 @@
     font-size: 13px;
   }
 
+  .discovery-card {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.64);
+    border: 1px solid var(--border);
+  }
+
+  .table-wrap {
+    max-height: 260px;
+    overflow: auto;
+    margin-top: 10px;
+    border: 1px solid #e8dfd0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .table-wrap table {
+    margin: 0;
+  }
+
+  .select-button {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    border: 1px solid var(--border);
+    background: white;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -222,8 +260,32 @@
       <div class="actions" style="margin-top:10px;">
         <a class="button-link" href="/downloads/local-agent/HikProvisioning.Agent-win-x64.zip">Servisi Indir</a>
         <button id="agent-health-btn" type="button">Servis Durumu</button>
+        <button id="discover-btn" type="button">Kameralari Tara</button>
       </div>
       <div class="status-box" id="agent-status-box">Yerel servis kontrol edilmedi.</div>
+    </div>
+
+    <div class="discovery-card">
+      <strong>Bulunan Kameralar</strong>
+      <div class="sub" style="margin-top:6px;">Tarama yalnizca yerel servis hazirsa calisir. Kamera secince IP ve kullanici bilgileri forma doldurulur.</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sec</th>
+              <th>IP</th>
+              <th>Model</th>
+              <th>Seri</th>
+              <th>MAC</th>
+              <th>Durum</th>
+              <th>SDK</th>
+            </tr>
+          </thead>
+          <tbody id="discover-body">
+            <tr><td colspan="7">Henuz tarama yapilmadi.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="grid">
@@ -320,6 +382,8 @@
   const networkBody = document.getElementById("network-body");
   const agentHealthBtn = document.getElementById("agent-health-btn");
   const agentStatusBox = document.getElementById("agent-status-box");
+  const discoverBtn = document.getElementById("discover-btn");
+  const discoverBody = document.getElementById("discover-body");
 
   const modelEl = document.getElementById("meta-model");
   const shortSerialEl = document.getElementById("meta-short-serial");
@@ -333,6 +397,7 @@
   let activeTaskSource = "server";
   let localAgentHealthy = false;
   const agentBaseUrl = "http://127.0.0.1:47831";
+  let discoveredDevices = [];
 
   function setStatus(text) {
     statusBox.textContent = text;
@@ -340,6 +405,38 @@
 
   function setAgentStatus(text) {
     agentStatusBox.textContent = text;
+  }
+
+  function renderDiscoveredDevices(devices) {
+    discoveredDevices = Array.isArray(devices) ? devices : [];
+
+    if (!discoveredDevices.length) {
+      discoverBody.innerHTML = "<tr><td colspan='7'>Kamera bulunamadi.</td></tr>";
+      return;
+    }
+
+    discoverBody.innerHTML = discoveredDevices.map((device, index) => `
+      <tr>
+        <td><button class="select-button" type="button" data-device-index="${index}">Sec</button></td>
+        <td>${escapeHtml(device.ipAddress || "-")}</td>
+        <td>${escapeHtml(device.model || "-")}</td>
+        <td>${escapeHtml(device.serialNumber || "-")}</td>
+        <td>${escapeHtml(device.macAddress || "-")}</td>
+        <td><span class="tag">${escapeHtml(device.activationStatus || "-")}</span></td>
+        <td>${device.supportsSdkPort ? "Evet" : "Hayir"}</td>
+      </tr>
+    `).join("");
+  }
+
+  function applyDiscoveredDevice(index) {
+    const device = discoveredDevices[index];
+    if (!device) {
+      return;
+    }
+
+    document.getElementById("camera-ip").value = device.ipAddress || "";
+    document.getElementById("username").value = "admin";
+    setStatus(`Secilen kamera: ${device.ipAddress || "-"} | ${device.model || "-"} | ${device.activationStatus || "-"}`);
   }
 
   function getFormPayload() {
@@ -540,6 +637,29 @@
     }
   }
 
+  async function discoverCameras() {
+    const healthOk = await checkAgentHealth();
+    if (!healthOk) {
+      renderDiscoveredDevices([]);
+      throw new Error("Kamera taramasi icin once yerel servis calismali.");
+    }
+
+    setStatus("Yerel servis ile kamera taramasi baslatiliyor...");
+    const response = await fetch(`${agentBaseUrl}/agent/discover`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scanSeconds: 12, concurrency: 32 })
+    });
+
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || "Kamera taramasi basarisiz.");
+    }
+
+    renderDiscoveredDevices(data.devices || []);
+    setStatus(`Tarama tamamlandi. ${Array.isArray(data.devices) ? data.devices.length : 0} aday bulundu.`);
+  }
+
   startBtn.addEventListener("click", async () => {
     const payload = getFormPayload();
     if (!payload.cameraIp) {
@@ -621,6 +741,19 @@
 
   agentHealthBtn.addEventListener("click", () => {
     checkAgentHealth().catch((err) => setAgentStatus(err.message));
+  });
+
+  discoverBtn.addEventListener("click", () => {
+    discoverCameras().catch((err) => setStatus(err.message));
+  });
+
+  discoverBody.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-device-index]");
+    if (!button) {
+      return;
+    }
+
+    applyDiscoveredDevice(Number(button.getAttribute("data-device-index")));
   });
 
   checkAgentHealth().catch(() => {});
