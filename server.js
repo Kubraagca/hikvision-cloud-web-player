@@ -47,6 +47,17 @@ app.use((req, res, next) => {
 app.use(express.static(__dirname));
 app.use(SDK_BASE_PATH, express.static(path.join(__dirname, "sdk")));
 
+const LOCAL_AGENT_ZIP_PATH = path.join(
+  __dirname,
+  "src",
+  "HikDiscovery",
+  "HikProvisioning.Web",
+  "wwwroot",
+  "downloads",
+  "local-agent",
+  "HikProvisioning.Agent-win-x64.zip"
+);
+
 function ensureCredentials(res) {
   if (!APP_KEY || !APP_SECRET) {
     res.status(500).json({
@@ -1818,6 +1829,14 @@ app.get("/api/provision/tasks/:taskId", (req, res) => {
     result: task.result,
     error: task.error,
   });
+});
+
+app.get("/downloads/local-agent/HikProvisioning.Agent-win-x64.zip", (req, res) => {
+  if (!fs.existsSync(LOCAL_AGENT_ZIP_PATH)) {
+    return res.status(404).send("Yerel servis paketi henuz uretilmedi.");
+  }
+
+  res.download(LOCAL_AGENT_ZIP_PATH, "HikProvisioning.Agent-win-x64.zip");
 });
 
 app.get("/camera-setup", (req, res) => {

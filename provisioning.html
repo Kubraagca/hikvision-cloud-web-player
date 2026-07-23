@@ -143,6 +143,15 @@
     white-space: pre-wrap;
   }
 
+  .hint-box {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(0, 95, 115, 0.08);
+    border: 1px solid rgba(0, 95, 115, 0.18);
+    font-size: 13px;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -207,6 +216,16 @@
 <main>
   <section class="panel">
     <h2>Kurulum Formu</h2>
+    <div class="hint-box">
+      <strong>Yerel Servis</strong><br />
+      Kamera ile ayni agdaki Windows bilgisayarda yerel servis calisiyorsa kurulum dogrudan o bilgisayardan yapilir. Bu, tarayicidan dogrudan kamera erisimi yerine onerilen akistir.
+      <div class="actions" style="margin-top:10px;">
+        <a class="button-link" href="/downloads/local-agent/HikProvisioning.Agent-win-x64.zip">Servisi Indir</a>
+        <button id="agent-health-btn" type="button">Servis Durumu</button>
+      </div>
+      <div class="status-box" id="agent-status-box">Yerel servis kontrol edilmedi.</div>
+    </div>
+
     <div class="grid">
       <div class="field">
         <label for="camera-ip">Kamera IP</label>
@@ -299,6 +318,8 @@
   const statusBox = document.getElementById("status-box");
   const stageBody = document.getElementById("stage-body");
   const networkBody = document.getElementById("network-body");
+  const agentHealthBtn = document.getElementById("agent-health-btn");
+  const agentStatusBox = document.getElementById("agent-status-box");
 
   const modelEl = document.getElementById("meta-model");
   const shortSerialEl = document.getElementById("meta-short-serial");
@@ -309,9 +330,16 @@
 
   let activeTaskId = null;
   let pollTimer = null;
+  let activeTaskSource = "server";
+  let localAgentHealthy = false;
+  const agentBaseUrl = "http://127.0.0.1:47831";
 
   function setStatus(text) {
     statusBox.textContent = text;
+  }
+
+  function setAgentStatus(text) {
+    agentStatusBox.textContent = text;
   }
 
   function getFormPayload() {
@@ -381,24 +409,89 @@
   }
 
   async function loadTask(taskId) {
-    const response = await fetch(`/api/provision/tasks/${encodeURIComponent(taskId)}`);
+    const endpoint =
+      activeTaskSource === "agent"
+        ? `${agentBaseUrl}/agent/tasks/${encodeURIComponent(taskId)}`
+        : `/api/provision/tasks/${encodeURIComponent(taskId)}`;
+
+    const response = await fetch(endpoint);
     const data = await response.json();
 
     if (!response.ok) {
       throw new Error(data.error || "Task okunamadi.");
     }
 
-    renderStages(data.stages);
-    renderResult(data.result);
+    if (activeTaskSource === "agent") {
+      renderAgentTask(data);
+    } else {
+      renderStages(data.stages);
+      renderResult(data.result);
+    }
 
     if (data.status === "completed") {
       clearPolling();
-      setStatus("Kurulum tamamlandi. Portalda ek adim gerekmemeli.");
+      setStatus(
+        activeTaskSource === "agent"
+          ? "Yerel servis uzerinden kurulum tamamlandi."
+          : "Kurulum tamamlandi. Portalda ek adim gerekmemeli."
+      );
     } else if (data.status === "failed") {
       clearPolling();
-      setStatus(`Kurulum basarisiz: ${data.error || "Bilinmeyen hata"}`);
+      setStatus(`Kurulum basarisiz: ${data.error || extractAgentError(data) || "Bilinmeyen hata"}`);
     } else {
       setStatus(`Kurulum suruyor. Son guncelleme: ${new Date(data.updatedAt).toLocaleTimeString("tr-TR")}`);
+    }
+  }
+
+  function extractAgentError(task) {
+    try {
+      const payload = task?.resultJson ? JSON.parse(task.resultJson) : null;
+      return payload?.error || "";
+    } catch {
+      return "";
+    }
+  }
+
+  function renderAgentTask(task) {
+    const payload = parseAgentResult(task.resultJson);
+    renderStages([
+      {
+        name: "Yerel Servis",
+        status: mapAgentStatus(task.status),
+        detail: task.message || payload?.error || "Yerel agent gorevi."
+      }
+    ]);
+
+    if (payload?.device || payload?.backend) {
+      renderResult({
+        model: payload?.device?.Model || "-",
+        shortSerial: payload?.device?.ShortSerial || "-",
+        macAddress: payload?.device?.MacAddress || "-",
+        cameraIp: payload?.device?.CurrentIpAddress || task.cameraAddress || "-",
+        areaName: payload?.backend?.AreaName || "-",
+        areaId: payload?.backend?.AreaId || "-",
+        deviceId: payload?.backend?.DeviceId || "-",
+        networkInterfaces: payload?.network || []
+      });
+    }
+  }
+
+  function parseAgentResult(resultJson) {
+    try {
+      return resultJson ? JSON.parse(resultJson) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function mapAgentStatus(status) {
+    switch ((status || "").toLowerCase()) {
+      case "completed": return "Tamam";
+      case "running": return "Calisiyor";
+      case "queued": return "Bekliyor";
+      case "cancelled": return "Iptal";
+      case "failed": return "Hata";
+      default: return status || "Bekliyor";
     }
   }
 
@@ -427,6 +520,26 @@
       .replaceAll("'", "&#39;");
   }
 
+  async function checkAgentHealth() {
+    try {
+      const response = await fetch(`${agentBaseUrl}/agent/health`);
+      const data = await response.json();
+      if (!response.ok || !data.ok) {
+        throw new Error("Yerel servis hazir degil.");
+      }
+
+      localAgentHealthy = !!data.ok;
+      setAgentStatus(
+        `Yerel servis hazir. CLI bulundu: ${data.cli?.found ? "evet" : "hayir"}, HCNetSDK: ${data.cli?.sdkDllFound ? "evet" : "hayir"}`
+      );
+      return true;
+    } catch (err) {
+      localAgentHealthy = false;
+      setAgentStatus(`Yerel servis ulasilamiyor: ${err.message}`);
+      return false;
+    }
+  }
+
   startBtn.addEventListener("click", async () => {
     const payload = getFormPayload();
     if (!payload.cameraIp) {
@@ -445,6 +558,41 @@
     renderResult(null);
 
     try {
+      const healthOk = await checkAgentHealth();
+
+      if (healthOk) {
+        activeTaskSource = "agent";
+        setStatus("Kurulum yerel servis uzerinden baslatiliyor...");
+        const response = await fetch(`${agentBaseUrl}/agent/provision/start`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            cameraAddress: payload.cameraIp,
+            userName: payload.userName,
+            password: payload.password,
+            backendUrl: window.location.origin,
+            areaName: payload.areaName,
+            alias: "",
+            gatewayOverride: payload.gatewayOverride,
+            primaryDns: "8.8.8.8",
+            secondaryDns: "1.1.1.1",
+            verificationCode: "",
+            enableDhcp: payload.enableDhcp,
+            sdkPort: payload.sdkPort
+          }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Yerel servis kurulumu baslatilamadi.");
+        }
+
+        startPolling(data.taskId);
+        return;
+      }
+
+      activeTaskSource = "server";
+      setStatus("Yerel servis yok, kurulum sunucu uzerinden baslatiliyor...");
       const response = await fetch("/api/provision/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -470,6 +618,12 @@
 
     loadTask(activeTaskId).catch((err) => setStatus(err.message));
   });
+
+  agentHealthBtn.addEventListener("click", () => {
+    checkAgentHealth().catch((err) => setAgentStatus(err.message));
+  });
+
+  checkAgentHealth().catch(() => {});
 </script>
 </body>
 </html>
