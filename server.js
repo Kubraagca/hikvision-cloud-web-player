@@ -1539,6 +1539,20 @@ app.get("/api/sdk-config", async (req, res) => {
   }
 });
 
+app.get("/api/team-areas", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  try {
+    const areas = await teamOpenApiService.getAreas();
+    return res.status(200).json({ success: true, areas });
+  } catch (err) {
+    return res.status(502).json({
+      success: false,
+      error: sanitizeMessage(err.message),
+    });
+  }
+});
+
 app.get("/api/cameras", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
@@ -1739,6 +1753,7 @@ app.post("/api/team-devices/add", async (req, res) => {
     verificationCode: String(req.body.verificationCode || "").trim(),
     alias: String(req.body.alias || "").trim(),
     areaName: String(req.body.areaName || "").trim(),
+    areaId: String(req.body.areaId || "").trim(),
   };
 
   if (!input.shortSerial) {
@@ -1775,6 +1790,7 @@ app.post("/api/provisioning/team-register", async (req, res) => {
     verificationCode: String(req.body.verificationCode || "").trim(),
     alias: String(req.body.alias || "").trim(),
     areaName: String(req.body.areaName || "").trim(),
+    areaId: String(req.body.areaId || "").trim(),
     model: String(req.body.model || "").trim(),
     serialNumber: String(req.body.serialNumber || "").trim(),
     subSerialNumber: String(req.body.subSerialNumber || "").trim(),
@@ -1797,6 +1813,7 @@ app.post("/api/provisioning/team-register", async (req, res) => {
       verificationCode: input.verificationCode,
       alias: input.alias,
       areaName: input.areaName,
+      areaId: input.areaId,
     });
 
     return res.status(200).json({
