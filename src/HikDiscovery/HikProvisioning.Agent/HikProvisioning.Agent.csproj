@@ -6,6 +6,31 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
+    <HikSdkRuntimeDir>..\..\..\third_party\hcnetsdk_fixed\EN-HCNetSDKV6.1.9.4_build20220412_win64\lib</HikSdkRuntimeDir>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="HikSdk.Interop">
+      <HintPath>..\HikSdk.Interop\bin\x64\Release\net9.0-windows\HikSdk.Interop.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="$(HikSdkRuntimeDir)\**\*.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+    <Content Include="$(HikSdkRuntimeDir)\LocalXml.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>LocalXml.zip</Link>
+    </Content>
+  </ItemGroup>
 
 </Project>

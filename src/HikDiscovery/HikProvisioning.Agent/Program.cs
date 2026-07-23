@@ -1,6 +1,9 @@
 using System.Diagnostics;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using HikSdk.Interop;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://127.0.0.1:47831");
@@ -13,6 +16,7 @@ builder.Services.AddCors(options =>
             .SetIsOriginAllowed(_ => true));
 });
 builder.Services.AddSingleton<AgentTaskStore>();
+builder.Services.AddSingleton<LocalDiscoveryService>();
 
 var app = builder.Build();
 app.UseCors();
@@ -30,36 +34,53 @@ app.MapGet("/agent/health", () => Results.Ok(new
     cli = CliRunner.GetCliStatus()
 }));
 
-app.MapPost("/agent/discover", async (DiscoverAgentRequest? request, CancellationToken cancellationToken) =>
+app.MapPost("/agent/discover", async (DiscoverAgentRequest? request, LocalDiscoveryService discoveryService, CancellationToken cancellationToken) =>
 {
-    var args = new List<string>
-    {
-        "discover",
-        "--scanSeconds", (request?.ScanSeconds ?? 12).ToString(),
-        "--concurrency", (request?.Concurrency ?? 32).ToString()
-    };
+    var result = await discoveryService.DiscoverAsync(
+        request?.SubnetPrefix,
+        request?.Concurrency ?? 32,
+        request?.ScanSeconds ?? 12,
+        cancellationToken);
 
-    if (!string.IsNullOrWhiteSpace(request?.SubnetPrefix))
+    return Results.Json(new
     {
-        args.Add("--subnetPrefix");
-        args.Add(request.SubnetPrefix.Trim());
-    }
-
-    var result = await CliRunner.RunAsync(args, cancellationToken);
-    return Results.Content(result.OutputJson, "application/json");
+        success = true,
+        method = "agent-network-scan",
+        stage = "discover",
+        timedOut = result.TimedOut,
+        message = result.TimedOut ? "Tarama suresi doldu. Kismi sonuc donuldu." : "Tarama tamamlandi.",
+        devices = result.Devices.Select(device => new
+        {
+            device.IpAddress,
+            device.MacAddress,
+            device.SerialNumber,
+            device.Model,
+            device.ActivationStatus,
+            device.IsHikvision,
+            device.SupportsIsapi,
+            device.SupportsSdkPort
+        })
+    });
 });
 
 app.MapPost("/agent/provision/start", (ProvisionAgentRequest request, AgentTaskStore taskStore) =>
 {
-    var task = taskStore.Create(request);
+    var task = taskStore.Create("fullSetup", request);
     _ = Task.Run(() => RunProvisionAsync(taskStore, task.TaskId, request));
+    return Results.Accepted($"/agent/tasks/{task.TaskId}", new { taskId = task.TaskId });
+});
+
+app.MapPost("/agent/connect/start", (ProvisionAgentRequest request, AgentTaskStore taskStore) =>
+{
+    var task = taskStore.Create("connect", request);
+    _ = Task.Run(() => RunConnectAsync(taskStore, task.TaskId, request));
     return Results.Accepted($"/agent/tasks/{task.TaskId}", new { taskId = task.TaskId });
 });
 
 app.MapGet("/agent/tasks/{taskId}", (string taskId, AgentTaskStore taskStore) =>
 {
     return taskStore.TryGet(taskId, out var task)
-        ? Results.Ok(task)
+        ? Results.Ok(taskStore.ToResponse(task!))
         : Results.NotFound(new { error = "Task bulunamadi." });
 });
 
@@ -75,10 +96,20 @@ app.Run();
 static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, ProvisionAgentRequest request)
 {
     taskStore.Update(taskId, status: "running", message: "Yerel provisioning gorevi baslatildi.");
+    taskStore.SetStages(taskId,
+    [
+        new AgentTaskStage("Erisim", "Bekliyor", string.Empty),
+        new AgentTaskStage("Aktivasyon", "Bekliyor", string.Empty),
+        new AgentTaskStage("Giris", "Bekliyor", string.Empty),
+        new AgentTaskStage("Ag Ayari", "Bekliyor", string.Empty),
+        new AgentTaskStage("Hik-Connect Online", "Bekliyor", string.Empty),
+        new AgentTaskStage("Tamamlandi", "Bekliyor", string.Empty)
+    ]);
+    taskStore.UpdateStage(taskId, "Erisim", "Calisiyor", "CLI tam kurulum akisi baslatildi.");
 
     try
     {
-        using var cts = taskStore.GetCancellation(taskId);
+        var cts = taskStore.GetCancellation(taskId);
         var args = new List<string>
         {
             "provision",
@@ -97,6 +128,7 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
         };
 
         var result = await CliRunner.RunAsync(args, cts.Token);
+        taskStore.UpdateStage(taskId, "Tamamlandi", result.ExitCode == 0 ? "Tamam" : "Hata", result.ExitCode == 0 ? "Tam kurulum tamamlandi." : "Tam kurulum basarisiz.");
         taskStore.Complete(taskId, result.ExitCode == 0 ? "completed" : "failed", result.OutputJson);
     }
     catch (OperationCanceledException)
@@ -107,6 +139,136 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
     {
         taskStore.Complete(taskId, "failed", JsonSerializer.Serialize(new { success = false, error = exception.Message }));
     }
+}
+
+static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, ProvisionAgentRequest request)
+{
+    taskStore.Update(taskId, status: "running", message: "Aktive et ve baglan akisi baslatildi.");
+    taskStore.SetStages(taskId,
+    [
+        new AgentTaskStage("Erisim", "Bekliyor", string.Empty),
+        new AgentTaskStage("Aktivasyon", "Bekliyor", string.Empty),
+        new AgentTaskStage("Giris", "Bekliyor", string.Empty)
+    ]);
+
+    try
+    {
+        var token = taskStore.GetCancellation(taskId).Token;
+        var options = new AgentCameraConnectionOptions(
+            request.CameraAddress.Trim(),
+            string.IsNullOrWhiteSpace(request.UserName) ? "admin" : request.UserName.Trim(),
+            request.Password);
+
+        var currentIpAddress = options.CameraAddress;
+        var activationRequired = false;
+        taskStore.UpdateStage(taskId, "Erisim", "Calisiyor", "Kamera erisimi ve aktivasyon durumu kontrol ediliyor.");
+
+        using var client = new AgentCameraIsapiClient(options);
+        try
+        {
+            var activateStatus = await client.GetActivateStatusAsync(token).ConfigureAwait(false);
+            activationRequired = activateStatus.IsInactive;
+        }
+        catch (AgentCameraIsapiException exception) when (
+            exception.StatusCode == HttpStatusCode.Forbidden &&
+            string.Equals(exception.SubStatusCode, "notActivated", StringComparison.OrdinalIgnoreCase))
+        {
+            activationRequired = true;
+        }
+        catch (AgentCameraIsapiException exception) when (LooksLikeAlreadyActiveActivateStatusFailure(exception))
+        {
+            activationRequired = false;
+        }
+
+        taskStore.UpdateStage(taskId, "Erisim", "Tamam", activationRequired ? "Kamera inactive bulundu." : "Kamera aktif.");
+
+        if (activationRequired)
+        {
+            taskStore.UpdateStage(taskId, "Aktivasyon", "Calisiyor", "HCNetSDK ile ilk aktivasyon yapiliyor.");
+            using var session = new HikSdk.Interop.HikActivationSession();
+            session.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
+            var activationResult = session.ActivateDevice(currentIpAddress, request.SdkPort, options.Password);
+            if (!activationResult.Success)
+            {
+                throw new InvalidOperationException($"NET_DVR_ActivateDevice basarisiz. NET_DVR_GetLastError={activationResult.ErrorCode}, Message={activationResult.ErrorMessage}");
+            }
+
+            taskStore.UpdateStage(taskId, "Aktivasyon", "Tamam", "Kamera aktive edildi.");
+        }
+        else
+        {
+            taskStore.UpdateStage(taskId, "Aktivasyon", "Atlandi", "Kamera zaten aktif.");
+        }
+
+        taskStore.UpdateStage(taskId, "Giris", "Calisiyor", "deviceInfo okunuyor ve SDK login dogrulaniyor.");
+        var deviceInfo = activationRequired
+            ? await client.WaitForDeviceInfoAsync(TimeSpan.FromSeconds(90), TimeSpan.FromSeconds(3), token).ConfigureAwait(false)
+            : await client.GetDeviceInfoAsync(token).ConfigureAwait(false);
+
+        using (var session = new HikSdk.Interop.HikActivationSession())
+        {
+            session.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
+            var loginResult = session.Login(currentIpAddress, request.SdkPort, options.UserName, options.Password);
+            if (!loginResult.Success)
+            {
+                throw new InvalidOperationException($"NET_DVR_Login_V40 basarisiz. NET_DVR_GetLastError={loginResult.ErrorCode}, Message={loginResult.ErrorMessage}");
+            }
+        }
+
+        var networkInterfaces = await client.GetNetworkInterfacesAsync(token).ConfigureAwait(false);
+        AgentEzvizStatusInfo? ezvizStatus = null;
+        try
+        {
+            ezvizStatus = await client.GetEzvizStatusAsync(token).ConfigureAwait(false);
+        }
+        catch
+        {
+        }
+
+        taskStore.UpdateStage(taskId, "Giris", "Tamam", $"Model={deviceInfo.Model}, KisaSeri={deviceInfo.ShortSerial}");
+        taskStore.Complete(taskId, "completed", JsonSerializer.Serialize(new
+        {
+            success = true,
+            mode = "connect",
+            device = new
+            {
+                deviceInfo.Model,
+                deviceInfo.SerialNumber,
+                deviceInfo.ShortSerial,
+                deviceInfo.SubSerialNumber,
+                deviceInfo.FirmwareVersion,
+                deviceInfo.MacAddress,
+                CurrentIpAddress = currentIpAddress
+            },
+            network = networkInterfaces,
+            ezviz = ezvizStatus
+        }));
+    }
+    catch (OperationCanceledException)
+    {
+        taskStore.Complete(taskId, "cancelled", "{\"success\":false,\"error\":\"cancelled\"}");
+    }
+    catch (Exception exception)
+    {
+        taskStore.Complete(taskId, "failed", JsonSerializer.Serialize(new { success = false, error = exception.Message }));
+    }
+}
+
+static bool LooksLikeAlreadyActiveActivateStatusFailure(AgentCameraIsapiException exception)
+{
+    if (exception.StatusCode != HttpStatusCode.Forbidden)
+    {
+        return false;
+    }
+
+    if (string.Equals(exception.SubStatusCode, "notActivated", StringComparison.OrdinalIgnoreCase))
+    {
+        return false;
+    }
+
+    return exception.ResponseBody.Contains("Invalid Operation", StringComparison.OrdinalIgnoreCase) ||
+           exception.ResponseBody.Contains("invalidOperation", StringComparison.OrdinalIgnoreCase) ||
+           exception.ResponseBody.Contains("invalid operation", StringComparison.OrdinalIgnoreCase);
 }
 
 internal static class CliRunner
@@ -200,11 +362,12 @@ internal sealed class AgentTaskStore
     private readonly object _sync = new();
     private readonly Dictionary<string, AgentTaskState> _tasks = new(StringComparer.OrdinalIgnoreCase);
 
-    public AgentTaskState Create(ProvisionAgentRequest request)
+    public AgentTaskState Create(string taskKind, ProvisionAgentRequest request)
     {
         var task = new AgentTaskState
         {
             TaskId = Guid.NewGuid().ToString("n"),
+            TaskKind = taskKind,
             Status = "queued",
             CreatedAtUtc = DateTimeOffset.UtcNow,
             UpdatedAtUtc = DateTimeOffset.UtcNow,
@@ -252,6 +415,7 @@ internal sealed class AgentTaskStore
                 task.ResultJson = resultJson;
                 task.Message = status;
                 task.UpdatedAtUtc = DateTimeOffset.UtcNow;
+                task.Cancellation.Dispose();
             }
         }
     }
@@ -280,19 +444,100 @@ internal sealed class AgentTaskStore
             return true;
         }
     }
+
+    public void SetStages(string taskId, IEnumerable<AgentTaskStage> stages)
+    {
+        lock (_sync)
+        {
+            if (_tasks.TryGetValue(taskId, out var task))
+            {
+                task.Stages = stages.Select(stage => new AgentTaskStage(stage.Name, stage.Status, stage.Detail)).ToList();
+                task.UpdatedAtUtc = DateTimeOffset.UtcNow;
+            }
+        }
+    }
+
+    public void UpdateStage(string taskId, string name, string status, string detail)
+    {
+        lock (_sync)
+        {
+            if (!_tasks.TryGetValue(taskId, out var task))
+            {
+                return;
+            }
+
+            var stage = task.Stages.FirstOrDefault(item => string.Equals(item.Name, name, StringComparison.OrdinalIgnoreCase));
+            if (stage is null)
+            {
+                task.Stages.Add(new AgentTaskStage(name, status, detail));
+            }
+            else
+            {
+                stage.Status = status;
+                stage.Detail = detail;
+            }
+
+            task.UpdatedAtUtc = DateTimeOffset.UtcNow;
+        }
+    }
+
+    public AgentTaskResponse ToResponse(AgentTaskState task)
+    {
+        lock (_sync)
+        {
+            return new AgentTaskResponse(
+                task.TaskId,
+                task.TaskKind,
+                task.Status,
+                task.CreatedAtUtc,
+                task.UpdatedAtUtc,
+                task.CameraAddress,
+                task.Message,
+                task.ResultJson,
+                task.Stages.Select(stage => new AgentTaskStage(stage.Name, stage.Status, stage.Detail)).ToList());
+        }
+    }
 }
 
 internal sealed class AgentTaskState
 {
     public string TaskId { get; set; } = string.Empty;
+    public string TaskKind { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public DateTimeOffset CreatedAtUtc { get; set; }
     public DateTimeOffset UpdatedAtUtc { get; set; }
     public string CameraAddress { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
     public string ResultJson { get; set; } = string.Empty;
+    public List<AgentTaskStage> Stages { get; set; } = [];
+    [JsonIgnore]
     public CancellationTokenSource Cancellation { get; set; } = new();
 }
+
+internal sealed class AgentTaskStage
+{
+    public AgentTaskStage(string name, string status, string detail)
+    {
+        Name = name;
+        Status = status;
+        Detail = detail;
+    }
+
+    public string Name { get; set; }
+    public string Status { get; set; }
+    public string Detail { get; set; }
+}
+
+internal sealed record AgentTaskResponse(
+    string TaskId,
+    string TaskKind,
+    string Status,
+    DateTimeOffset CreatedAtUtc,
+    DateTimeOffset UpdatedAtUtc,
+    string CameraAddress,
+    string Message,
+    string ResultJson,
+    IReadOnlyList<AgentTaskStage> Stages);
 
 internal sealed record DiscoverAgentRequest(int? ScanSeconds, int? Concurrency, string? SubnetPrefix);
 

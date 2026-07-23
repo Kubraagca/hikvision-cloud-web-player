@@ -134,7 +134,11 @@ Notlar:
 Set-Content -LiteralPath $readmePath -Value $readmeContent -Encoding ASCII
 
 Write-Host "ZIP uretiliyor..."
-Compress-Archive -Path (Join-Path $bundleDir "*") -DestinationPath $zipPath -Force
+if (Test-Path $zipPath) {
+    Remove-Item -LiteralPath $zipPath -Force -ErrorAction SilentlyContinue
+}
+tar.exe -a -c -f $zipPath -C $bundleDir .
+if ($LASTEXITCODE -ne 0) { throw "ZIP olusturma basarisiz." }
 
 Write-Host "Tamamlandi:"
 Write-Host "Bundle: $bundleDir"

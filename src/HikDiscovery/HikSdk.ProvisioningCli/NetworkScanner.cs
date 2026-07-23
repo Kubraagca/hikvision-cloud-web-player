@@ -33,8 +33,26 @@ internal sealed class NetworkScanner
         var results = new List<DiscoveredCameraInfo>();
         foreach (var candidate in candidates)
         {
-            var subnetResults = await ScanSubnetAsync(candidate, cancellationToken).ConfigureAwait(false);
-            results.AddRange(subnetResults);
+            if (cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
+
+            try
+            {
+                var priorityResult = await ProbePriorityHostAsync(candidate, cancellationToken).ConfigureAwait(false);
+                if (priorityResult is not null)
+                {
+                    results.Add(priorityResult);
+                }
+
+                var subnetResults = await ScanSubnetAsync(candidate, cancellationToken).ConfigureAwait(false);
+                results.AddRange(subnetResults);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
         }
 
         return results
@@ -72,6 +90,18 @@ internal sealed class NetworkScanner
                 .Select(task => task.Result!)
                 .ToArray();
         }
+    }
+
+    private async Task<DiscoveredCameraInfo?> ProbePriorityHostAsync(SubnetCandidate subnet, CancellationToken cancellationToken)
+    {
+        var lastOctet = subnet.PreferredLastOctet;
+        if (lastOctet < 1 || lastOctet > 254 || lastOctet > subnet.HostCount)
+        {
+            return null;
+        }
+
+        var ipAddress = FromUInt32(subnet.StartAddress + (uint)(lastOctet - 1));
+        return await ProbeHostAsync(ipAddress, cancellationToken).ConfigureAwait(false);
     }
 
     private async Task<DiscoveredCameraInfo?> ProbeHostAsync(string ipAddress, CancellationToken cancellationToken)
@@ -471,5 +501,5 @@ internal sealed class NetworkScanner
     [DllImport("iphlpapi.dll", SetLastError = true)]
     private static extern int SendARP(int destIp, int srcIp, byte[] macAddr, ref int physicalAddrLen);
 
-    private sealed record SubnetCandidate(uint StartAddress, int HostCount);
+    private sealed record SubnetCandidate(uint StartAddress, int HostCount, int PreferredLastOctet = 64);
 }
