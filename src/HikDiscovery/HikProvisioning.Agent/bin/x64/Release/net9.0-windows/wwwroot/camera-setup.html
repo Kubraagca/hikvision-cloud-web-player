@@ -446,6 +446,15 @@
 
   function setAgentStatus(text) { agentStatusBox.textContent = text; }
   function setStatus(text) { statusBox.textContent = text; }
+  function pick(obj, ...keys) {
+    for (const key of keys) {
+      const value = obj?.[key];
+      if (value !== undefined && value !== null && value !== "") {
+        return value;
+      }
+    }
+    return "";
+  }
 
   function escapeHtml(value) {
     return String(value ?? "")
@@ -489,24 +498,26 @@
     }
     networkBody.innerHTML = interfaces.map((item) => `
       <tr>
-        <td>${escapeHtml(item.id || "-")}</td>
-        <td>${escapeHtml(item.ipAddress || "-")}</td>
-        <td>${escapeHtml(item.subnetMask || "-")}</td>
-        <td>${escapeHtml(item.gateway || "-")}</td>
-        <td>${escapeHtml(item.primaryDns || "-")}</td>
-        <td>${escapeHtml(item.secondaryDns || "-")}</td>
-        <td>${escapeHtml(item.dhcpMode || "-")}</td>
+        <td>${escapeHtml(pick(item, "id", "Id") || "-")}</td>
+        <td>${escapeHtml(pick(item, "ipAddress", "IpAddress") || "-")}</td>
+        <td>${escapeHtml(pick(item, "subnetMask", "SubnetMask") || "-")}</td>
+        <td>${escapeHtml(pick(item, "gateway", "Gateway") || "-")}</td>
+        <td>${escapeHtml(pick(item, "primaryDns", "PrimaryDns") || "-")}</td>
+        <td>${escapeHtml(pick(item, "secondaryDns", "SecondaryDns") || "-")}</td>
+        <td>${escapeHtml(pick(item, "dhcpMode", "DhcpMode") || "-")}</td>
       </tr>`).join("");
   }
 
   function renderResult(result) {
-    modelEl.textContent = result?.model || "-";
-    shortSerialEl.textContent = result?.shortSerial || "-";
-    macEl.textContent = result?.macAddress || "-";
-    ipEl.textContent = result?.cameraIp || "-";
-    areaEl.textContent = result?.areaName ? `${result.areaName} (${result.areaId || "-"})` : "-";
-    deviceIdEl.textContent = result?.deviceId || "-";
-    renderNetwork(result?.networkInterfaces || []);
+    modelEl.textContent = pick(result, "model", "Model") || "-";
+    shortSerialEl.textContent = pick(result, "shortSerial", "ShortSerial") || "-";
+    macEl.textContent = pick(result, "macAddress", "MacAddress") || "-";
+    ipEl.textContent = pick(result, "cameraIp", "CurrentIpAddress") || "-";
+    const areaName = pick(result, "areaName", "AreaName");
+    const areaId = pick(result, "areaId", "AreaId");
+    areaEl.textContent = areaName ? `${areaName} (${areaId || "-"})` : "-";
+    deviceIdEl.textContent = pick(result, "deviceId", "DeviceId") || "-";
+    renderNetwork(result?.networkInterfaces || result?.NetworkInterfaces || []);
   }
 
   function renderDiscoveredDevices(devices) {
@@ -518,20 +529,20 @@
     discoverBody.innerHTML = discoveredDevices.map((device, index) => `
       <tr>
         <td><button class="select-button" type="button" data-index="${index}">Sec</button></td>
-        <td>${escapeHtml(device.ipAddress || "-")}</td>
-        <td>${escapeHtml(device.model || "-")}</td>
-        <td>${escapeHtml(device.serialNumber || "-")}</td>
-        <td>${escapeHtml(device.macAddress || "-")}</td>
-        <td><span class="tag">${escapeHtml(device.activationStatus || "-")}</span></td>
+        <td>${escapeHtml(pick(device, "ipAddress", "IpAddress") || "-")}</td>
+        <td>${escapeHtml(pick(device, "model", "Model") || "-")}</td>
+        <td>${escapeHtml(pick(device, "serialNumber", "SerialNumber") || "-")}</td>
+        <td>${escapeHtml(pick(device, "macAddress", "MacAddress") || "-")}</td>
+        <td><span class="tag">${escapeHtml(pick(device, "activationStatus", "ActivationStatus") || "-")}</span></td>
       </tr>`).join("");
   }
 
   function applyDevice(index) {
     const device = discoveredDevices[index];
     if (!device) return;
-    document.getElementById("camera-ip").value = device.ipAddress || "";
+    document.getElementById("camera-ip").value = pick(device, "ipAddress", "IpAddress") || "";
     document.getElementById("username").value = "admin";
-    setStatus(`Secilen kamera: ${device.ipAddress || "-"} | ${device.model || "-"} | ${device.activationStatus || "-"}`);
+    setStatus(`Secilen kamera: ${pick(device, "ipAddress", "IpAddress") || "-"} | ${pick(device, "model", "Model") || "-"} | ${pick(device, "activationStatus", "ActivationStatus") || "-"}`);
   }
 
   async function checkHealth() {
@@ -585,14 +596,14 @@
 
     if (payload?.device || payload?.backend) {
       renderResult({
-        model: payload?.device?.Model || "-",
-        shortSerial: payload?.device?.ShortSerial || "-",
-        macAddress: payload?.device?.MacAddress || "-",
-        cameraIp: payload?.device?.CurrentIpAddress || task.cameraAddress || "-",
-        areaName: payload?.backend?.AreaName || "-",
-        areaId: payload?.backend?.AreaId || "-",
-        deviceId: payload?.backend?.DeviceId || "-",
-        networkInterfaces: payload?.network || []
+        model: pick(payload?.device, "model", "Model") || "-",
+        shortSerial: pick(payload?.device, "shortSerial", "ShortSerial") || "-",
+        macAddress: pick(payload?.device, "macAddress", "MacAddress") || "-",
+        cameraIp: pick(payload?.device, "currentIpAddress", "CurrentIpAddress") || task.cameraAddress || "-",
+        areaName: pick(payload?.backend, "areaName", "AreaName") || "-",
+        areaId: pick(payload?.backend, "areaId", "AreaId") || "-",
+        deviceId: pick(payload?.backend, "deviceId", "DeviceId") || "-",
+        networkInterfaces: payload?.network || payload?.Network || []
       });
     }
 

@@ -9,7 +9,7 @@ internal sealed class LocalDiscoveryService
 {
     private readonly int _concurrency;
     private readonly TimeSpan _requestTimeout;
-    private const int MaxFullSubnetHosts = 160;
+    private const int MaxFullSubnetHosts = 254;
     private static readonly string[] DefaultPriorityIps =
     [
         "192.168.1.64",
@@ -148,7 +148,12 @@ internal sealed class LocalDiscoveryService
         }
 
         var isHikvision = activationProbe.IsHikvision || deviceInfoProbe.IsHikvision || port8000Open;
-        var looksLikeCamera = isHikvision || port554Open || ipAddress.EndsWith(".64", StringComparison.Ordinal);
+        var looksLikeCamera =
+            isHikvision ||
+            port554Open ||
+            port8000Open ||
+            ipAddress.EndsWith(".64", StringComparison.Ordinal) ||
+            ipAddress.EndsWith(".65", StringComparison.Ordinal);
         if (!looksLikeCamera)
         {
             return null;
@@ -579,10 +584,13 @@ internal sealed class LocalDiscoveryService
                 continue;
             }
 
-            var prioritized = $"{parts[0]}.{parts[1]}.{parts[2]}.64";
-            if (seen.Add(prioritized))
+            foreach (var suffix in new[] { "64", "65", "1", "2" })
             {
-                yield return prioritized;
+                var prioritized = $"{parts[0]}.{parts[1]}.{parts[2]}.{suffix}";
+                if (seen.Add(prioritized))
+                {
+                    yield return prioritized;
+                }
             }
         }
     }

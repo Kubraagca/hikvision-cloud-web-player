@@ -6,110 +6,183 @@
 <title>Yerel Kamera Kurulum</title>
 <style>
   :root {
-    --bg: #f1efe8;
-    --panel: #fffaf1;
-    --border: #d8cfc0;
-    --text: #231f1a;
-    --muted: #766c60;
-    --accent: #005f73;
+    --bg: #eef3f8;
+    --panel: #ffffff;
+    --panel-soft: #f7fafc;
+    --border: #d9e2ec;
+    --text: #16202a;
+    --muted: #5b6b7c;
+    --accent: #0f6cbd;
+    --accent-soft: #e8f1fb;
+    --success: #0b8f6a;
+    --warning: #f59e0b;
     --ok: #16a34a;
     --warn: #b45309;
     --err: #dc2626;
+    --shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
     color: var(--text);
-    font-family: Georgia, "Segoe UI", serif;
+    font-family: "Segoe UI", Tahoma, sans-serif;
     background:
-      radial-gradient(circle at top right, #fff4d6 0, transparent 34%),
-      linear-gradient(180deg, #f8f2e7 0%, #efe5d5 100%);
+      radial-gradient(circle at top left, rgba(15,108,189,0.12) 0, transparent 28%),
+      radial-gradient(circle at top right, rgba(11,143,106,0.10) 0, transparent 26%),
+      linear-gradient(180deg, #f7fafc 0%, #edf3f8 100%);
   }
   header {
-    padding: 20px 24px;
+    padding: 20px 24px 18px;
     border-bottom: 1px solid var(--border);
-    background: rgba(255, 250, 241, 0.82);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
   }
-  h1 { margin: 0; font-size: 20px; }
-  .sub { margin-top: 4px; font-size: 12px; color: var(--muted); }
+  h1 { margin: 0; font-size: 28px; font-weight: 700; }
+  .sub { margin-top: 6px; font-size: 14px; color: var(--muted); max-width: 760px; }
   a, button, input { font: inherit; }
   a.button-link, button {
     border: 1px solid var(--border);
     background: white;
     color: var(--text);
-    border-radius: 8px;
-    padding: 9px 12px;
+    border-radius: 10px;
+    padding: 10px 14px;
     text-decoration: none;
     cursor: pointer;
+    transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease, background .14s ease;
+  }
+  a.button-link:hover, button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    border-color: #bfd0e1;
   }
   main {
-    display: grid;
-    grid-template-columns: 430px 1fr;
-    gap: 18px;
     padding: 18px;
   }
-  @media (max-width: 980px) {
-    main { grid-template-columns: 1fr; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(420px, 560px) minmax(480px, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  .lower-grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: minmax(540px, 1.3fr) minmax(360px, 0.9fr);
+    gap: 18px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) {
+    .hero-grid, .lower-grid { grid-template-columns: 1fr; }
   }
   .panel {
     border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.92);
     border-radius: 16px;
     padding: 18px;
-    box-shadow: 0 16px 40px rgba(70, 50, 20, 0.08);
+    box-shadow: var(--shadow);
   }
-  .panel h2 { margin: 0 0 14px; font-size: 17px; }
+  .panel h2 { margin: 0 0 14px; font-size: 24px; font-weight: 700; }
+  .section-title {
+    margin: 0 0 14px;
+    font-size: 20px;
+    font-weight: 700;
+  }
   .grid { display: grid; gap: 12px; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 720px) {
+    .form-grid { grid-template-columns: 1fr; }
+  }
   .field label {
     display: block;
     font-size: 12px;
+    font-weight: 600;
     color: var(--muted);
     margin-bottom: 6px;
   }
   .field input[type="text"], .field input[type="password"], .field input[type="number"] {
     width: 100%;
-    padding: 10px 12px;
+    padding: 12px 13px;
     border-radius: 10px;
     border: 1px solid var(--border);
-    background: #fffdf8;
+    background: #fbfdff;
+    color: var(--text);
+  }
+  .field input:focus {
+    outline: none;
+    border-color: #8db5de;
+    box-shadow: 0 0 0 4px rgba(15,108,189,0.12);
   }
   .field.checkbox { display: flex; align-items: center; gap: 10px; font-size: 14px; }
   .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-  .primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .primary { background: var(--warning); color: white; border-color: var(--warning); }
+  .accent { background: var(--accent); color: white; border-color: var(--accent); }
+  .success { background: var(--success); color: white; border-color: var(--success); }
   .status-box, .hint-box {
     margin-top: 14px;
     padding: 12px;
     border-radius: 12px;
     border: 1px solid var(--border);
-    font-size: 13px;
+    font-size: 14px;
     white-space: pre-wrap;
   }
-  .status-box { background: rgba(255,255,255,0.58); }
-  .hint-box { background: rgba(0, 95, 115, 0.08); border-color: rgba(0, 95, 115, 0.18); }
+  .status-box { background: rgba(255,255,255,0.7); }
+  .hint-box { background: var(--accent-soft); border-color: #c6d9ef; color: #20496f; }
+  .split-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  @media (max-width: 720px) {
+    .split-card { grid-template-columns: 1fr; }
+  }
+  .mini-card {
+    border: 1px solid var(--border);
+    background: var(--panel-soft);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .mini-card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+  }
   .table-wrap {
-    max-height: 280px;
+    max-height: 360px;
     overflow: auto;
     margin-top: 10px;
-    border: 1px solid #e8dfd0;
+    border: 1px solid var(--border);
     border-radius: 10px;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.95);
   }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td {
     text-align: left;
-    padding: 10px 8px;
-    border-bottom: 1px solid #e8dfd0;
+    padding: 11px 9px;
+    border-bottom: 1px solid #e8edf3;
     vertical-align: top;
   }
-  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  th {
+    position: sticky;
+    top: 0;
+    background: #f7fafc;
+    z-index: 1;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
   .meta-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .meta-card {
     border: 1px solid var(--border);
-    background: rgba(255,255,255,0.5);
+    background: var(--panel-soft);
     border-radius: 12px;
     padding: 12px;
   }
@@ -127,12 +200,42 @@
     background: white;
     padding: 6px 10px;
   }
-  .tag { font-size: 11px; border-radius: 999px; }
+  .tag {
+    font-size: 11px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+  }
   .stage-waiting { color: var(--muted); }
   .stage-running { color: var(--accent); }
   .stage-done { color: var(--ok); }
   .stage-skip { color: var(--warn); }
   .stage-error { color: var(--err); }
+  .status-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f7fafc;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .panel-sub {
+    margin-top: -2px;
+    margin-bottom: 14px;
+    color: var(--muted);
+    font-size: 13px;
+  }
 </style>
 </head>
 <body>
@@ -147,119 +250,172 @@
 </header>
 
 <main>
-  <section class="panel">
-    <h2>Kamera Baglantisi</h2>
-    <div class="hint-box">
-      Bu sayfa localhost uzerinden acildigi icin tarayicinin loopback kisitina takilmaz. Kameralari tara, kamerayi sec ve ayni ekrandan kurulumu baslat.
-    </div>
-    <div class="actions" style="margin-top:10px;">
-      <button id="agent-health-btn" type="button">Servis Durumu</button>
-      <button id="discover-btn" type="button">Kameralari Tara</button>
-    </div>
-    <div class="status-box" id="agent-status-box">Yerel servis hazir durumda bekliyor.</div>
+  <section class="hero-grid">
+    <section class="panel">
+      <h2>Kamera Baglantisi</h2>
+      <div class="panel-sub">Cihazi bul, sec, aktive et ve sonra kurulum ayarlarini tek ekranda yonet.</div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Sec</th>
-            <th>IP</th>
-            <th>Model</th>
-            <th>Seri</th>
-            <th>MAC</th>
-            <th>Durum</th>
-          </tr>
-        </thead>
-        <tbody id="discover-body">
-          <tr><td colspan="6">Henuz tarama yapilmadi.</td></tr>
-        </tbody>
-      </table>
-    </div>
+      <div class="split-card">
+        <div class="mini-card">
+          <h3>Yerel Servis</h3>
+          <div class="actions" style="margin-top:0;">
+            <button id="agent-health-btn" type="button" class="accent">Servis Durumu</button>
+            <button id="discover-btn" type="button">Kameralari Tara</button>
+          </div>
+          <div class="status-box" id="agent-status-box">Yerel servis hazir durumda bekliyor.</div>
+        </div>
+        <div class="mini-card">
+          <h3>Tarama Notu</h3>
+          <div class="hint-box" style="margin-top:0;">
+            Tool once yaygin .64 / .65 adreslerini, sonra fiziksel yerel agdaki IP araliklarini tarar. Listeden kamerayi sectiginde IP alani otomatik dolar.
+          </div>
+        </div>
+      </div>
 
-    <div class="grid" style="margin-top:14px;">
-      <div class="field">
-        <label for="backend-url">Bulut Backend URL</label>
-        <input id="backend-url" type="text" />
+      <div class="form-grid" style="margin-top:14px;">
+        <div class="field">
+          <label for="camera-ip">Kamera IP</label>
+          <input id="camera-ip" type="text" value="192.168.1.64" />
+        </div>
+        <div class="field">
+          <label for="sdk-port">SDK Port</label>
+          <input id="sdk-port" type="number" value="8000" min="1" max="65535" />
+        </div>
+        <div class="field">
+          <label for="username">Kullanici Adi</label>
+          <input id="username" type="text" value="admin" />
+        </div>
+        <div class="field">
+          <label for="password">Parola</label>
+          <input id="password" type="password" />
+        </div>
       </div>
-      <div class="field">
-        <label for="camera-ip">Kamera IP</label>
-        <input id="camera-ip" type="text" value="192.168.1.64" />
+
+      <div class="actions">
+        <button id="connect-btn" type="button" class="success">Aktive Et ve Baglan</button>
+        <button id="start-btn" class="primary" type="button">Bastan Sona Kurulum</button>
+        <button id="cancel-btn" type="button">Iptal</button>
+        <button id="reload-btn" type="button">Durumu Yenile</button>
       </div>
-      <div class="field">
-        <label for="username">Kullanici Adi</label>
-        <input id="username" type="text" value="admin" />
+
+      <div class="status-box" id="status-box">Hazir.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Secilen Kamera</h2>
+      <div class="panel-sub">Baglandigin kameranin kimlik, ag ve backend sonuc bilgileri burada gosterilir.</div>
+
+      <div class="meta-grid">
+        <div class="meta-card"><span>Model</span><strong id="meta-model">-</strong></div>
+        <div class="meta-card"><span>Kisa Seri</span><strong id="meta-short-serial">-</strong></div>
+        <div class="meta-card"><span>MAC</span><strong id="meta-mac">-</strong></div>
+        <div class="meta-card"><span>Guncel IP</span><strong id="meta-ip">-</strong></div>
+        <div class="meta-card"><span>Area</span><strong id="meta-area">-</strong></div>
+        <div class="meta-card"><span>Device ID</span><strong id="meta-device-id">-</strong></div>
       </div>
-      <div class="field">
-        <label for="password">Parola</label>
-        <input id="password" type="password" />
+
+      <div class="status-line">
+        <div class="pill">Seçim: listeden kamera sec</div>
+        <div class="pill">Adim: once baglan, sonra tam kurulum</div>
       </div>
-      <div class="field">
-        <label for="area-name">Area Adi</label>
-        <input id="area-name" type="text" placeholder="Bos birakilirsa CAM-{shortSerial}" />
+    </section>
+  </section>
+
+  <section class="lower-grid">
+    <section class="panel">
+      <div class="section-title">Bulunan Kameralar</div>
+      <div class="panel-sub">Kamera listesi burada. Bir satirdaki <strong>Sec</strong> dugmesi formdaki IP alanini doldurur.</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sec</th>
+              <th>IP</th>
+              <th>Model</th>
+              <th>Seri</th>
+              <th>MAC</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody id="discover-body">
+            <tr><td colspan="6">Henuz tarama yapilmadi.</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="field">
-        <label for="gateway-override">Gateway Override</label>
-        <input id="gateway-override" type="text" placeholder="Bos ise mevcut cihaz XML'inden gelir" />
+    </section>
+
+    <section class="panel">
+      <div class="section-title">Kurulum Ayarlari</div>
+      <div class="form-grid">
+        <div class="field">
+          <label for="backend-url">Bulut Backend URL</label>
+          <input id="backend-url" type="text" />
+        </div>
+        <div class="field">
+          <label for="area-name">Area Adi</label>
+          <input id="area-name" type="text" placeholder="Bos birakilirsa CAM-{shortSerial}" />
+        </div>
+        <div class="field">
+          <label for="gateway-override">Gateway Override</label>
+          <input id="gateway-override" type="text" placeholder="Bos ise mevcut cihaz XML'inden gelir" />
+        </div>
+        <div class="field">
+          <label for="verification-code">Verification Code</label>
+          <input id="verification-code" type="text" placeholder="Bos ise akista olusturulur" />
+        </div>
+        <div class="field">
+          <label for="primary-dns">DNS 1</label>
+          <input id="primary-dns" type="text" value="8.8.8.8" />
+        </div>
+        <div class="field">
+          <label for="secondary-dns">DNS 2</label>
+          <input id="secondary-dns" type="text" value="1.1.1.1" />
+        </div>
+        <div class="field">
+          <label for="alias">Cihaz Adi / Alias</label>
+          <input id="alias" type="text" placeholder="Bos ise CAM-{shortSerial}" />
+        </div>
       </div>
-      <div class="field">
-        <label for="sdk-port">SDK Port</label>
-        <input id="sdk-port" type="number" value="8000" min="1" max="65535" />
-      </div>
-      <label class="field checkbox">
+
+      <label class="field checkbox" style="margin-top:10px;">
         <input id="enable-dhcp" type="checkbox" />
         DHCP etkinlestir ve IP degisirse kamerayi ayni /24 aginda yeniden bul
       </label>
-    </div>
-
-    <div class="actions">
-      <button id="connect-btn" type="button">Aktive Et ve Baglan</button>
-      <button id="start-btn" class="primary" type="button">Bastan Sona Kurulum</button>
-      <button id="cancel-btn" type="button">Iptal</button>
-      <button id="reload-btn" type="button">Durumu Yenile</button>
-    </div>
-    <div class="status-box" id="status-box">Hazir.</div>
+    </section>
   </section>
 
-  <section class="panel">
-    <h2>Asamalar ve Sonuc</h2>
-    <table>
-      <thead>
-        <tr><th>Asama</th><th>Durum</th><th>Detay</th></tr>
-      </thead>
-      <tbody id="stage-body">
-        <tr><td colspan="3">Kurulum baslatilmadi.</td></tr>
-      </tbody>
-    </table>
+  <section class="lower-grid">
+    <section class="panel">
+      <div class="section-title">Kurulum Asamalari</div>
+      <table>
+        <thead>
+          <tr><th>Asama</th><th>Durum</th><th>Detay</th></tr>
+        </thead>
+        <tbody id="stage-body">
+          <tr><td colspan="3">Kurulum baslatilmadi.</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-    <div style="height:14px"></div>
-
-    <div class="meta-grid">
-      <div class="meta-card"><span>Model</span><strong id="meta-model">-</strong></div>
-      <div class="meta-card"><span>Kisa Seri</span><strong id="meta-short-serial">-</strong></div>
-      <div class="meta-card"><span>MAC</span><strong id="meta-mac">-</strong></div>
-      <div class="meta-card"><span>Guncel IP</span><strong id="meta-ip">-</strong></div>
-      <div class="meta-card"><span>Area</span><strong id="meta-area">-</strong></div>
-      <div class="meta-card"><span>Device ID</span><strong id="meta-device-id">-</strong></div>
-    </div>
-
-    <div style="height:14px"></div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Arayuz</th>
-          <th>IP</th>
-          <th>Subnet</th>
-          <th>Gateway</th>
-          <th>DNS1</th>
-          <th>DNS2</th>
-          <th>DHCP</th>
-        </tr>
-      </thead>
-      <tbody id="network-body">
-        <tr><td colspan="7">Ag bilgisi henuz yok.</td></tr>
-      </tbody>
-    </table>
+    <section class="panel">
+      <div class="section-title">Ag Bilgileri</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Arayuz</th>
+            <th>IP</th>
+            <th>Subnet</th>
+            <th>Gateway</th>
+            <th>DNS1</th>
+            <th>DNS2</th>
+            <th>DHCP</th>
+          </tr>
+        </thead>
+        <tbody id="network-body">
+          <tr><td colspan="7">Ag bilgisi henuz yok.</td></tr>
+        </tbody>
+      </table>
+    </section>
   </section>
 </main>
 
@@ -474,11 +630,11 @@
       password: document.getElementById("password").value,
       backendUrl: backendUrlInput.value.trim(),
       areaName: document.getElementById("area-name").value.trim(),
-      alias: "",
+      alias: document.getElementById("alias").value.trim(),
       gatewayOverride: document.getElementById("gateway-override").value.trim(),
-      primaryDns: "8.8.8.8",
-      secondaryDns: "1.1.1.1",
-      verificationCode: "",
+      primaryDns: document.getElementById("primary-dns").value.trim() || "8.8.8.8",
+      secondaryDns: document.getElementById("secondary-dns").value.trim() || "1.1.1.1",
+      verificationCode: document.getElementById("verification-code").value.trim(),
       enableDhcp: document.getElementById("enable-dhcp").checked,
       sdkPort: Number(document.getElementById("sdk-port").value || 8000)
     };

@@ -103,33 +103,174 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
         new AgentTaskStage("Giris", "Bekliyor", string.Empty),
         new AgentTaskStage("Ag Ayari", "Bekliyor", string.Empty),
         new AgentTaskStage("Hik-Connect Online", "Bekliyor", string.Empty),
+        new AgentTaskStage("Cihaz Eklendi", "Bekliyor", string.Empty),
+        new AgentTaskStage("Kanal Alana Aktarildi", "Bekliyor", string.Empty),
         new AgentTaskStage("Tamamlandi", "Bekliyor", string.Empty)
     ]);
-    taskStore.UpdateStage(taskId, "Erisim", "Calisiyor", "CLI tam kurulum akisi baslatildi.");
+    taskStore.UpdateStage(taskId, "Erisim", "Calisiyor", "Yerel agent tam kurulum akisi baslatildi.");
 
     try
     {
-        var cts = taskStore.GetCancellation(taskId);
-        var args = new List<string>
-        {
-            "provision",
-            "--ip", request.CameraAddress,
-            "--userName", request.UserName,
-            "--password", request.Password,
-            "--backendUrl", request.BackendUrl,
-            "--gateway", request.GatewayOverride ?? string.Empty,
-            "--dns1", request.PrimaryDns ?? "8.8.8.8",
-            "--dns2", request.SecondaryDns ?? "1.1.1.1",
-            "--areaName", request.AreaName ?? string.Empty,
-            "--alias", request.Alias ?? string.Empty,
-            "--verificationCode", request.VerificationCode ?? string.Empty,
-            "--sdkPort", request.SdkPort.ToString(),
-            "--enableDhcp", request.EnableDhcp ? "true" : "false"
-        };
+        var token = taskStore.GetCancellation(taskId).Token;
+        var options = new AgentCameraConnectionOptions(
+            request.CameraAddress.Trim(),
+            string.IsNullOrWhiteSpace(request.UserName) ? "admin" : request.UserName.Trim(),
+            request.Password);
 
-        var result = await CliRunner.RunAsync(args, cts.Token);
-        taskStore.UpdateStage(taskId, "Tamamlandi", result.ExitCode == 0 ? "Tamam" : "Hata", result.ExitCode == 0 ? "Tam kurulum tamamlandi." : "Tam kurulum basarisiz.");
-        taskStore.Complete(taskId, result.ExitCode == 0 ? "completed" : "failed", result.OutputJson);
+        var currentIpAddress = options.CameraAddress;
+        var activationRequired = false;
+
+        using var initialClient = new AgentCameraIsapiClient(options);
+        try
+        {
+            var activateStatus = await initialClient.GetActivateStatusAsync(token).ConfigureAwait(false);
+            activationRequired = activateStatus.IsInactive;
+        }
+        catch (AgentCameraIsapiException exception) when (
+            exception.StatusCode == HttpStatusCode.Forbidden &&
+            string.Equals(exception.SubStatusCode, "notActivated", StringComparison.OrdinalIgnoreCase))
+        {
+            activationRequired = true;
+        }
+        catch (AgentCameraIsapiException exception) when (LooksLikeAlreadyActiveActivateStatusFailure(exception))
+        {
+            activationRequired = false;
+        }
+
+        taskStore.UpdateStage(taskId, "Erisim", "Tamam", activationRequired ? "Kamera inactive bulundu." : "Kamera aktif.");
+
+        if (activationRequired)
+        {
+            taskStore.UpdateStage(taskId, "Aktivasyon", "Calisiyor", "HCNetSDK ile kamera aktive ediliyor.");
+            using var session = new HikActivationSession();
+            session.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
+            var activationResult = session.ActivateDevice(currentIpAddress, request.SdkPort, options.Password);
+            if (!activationResult.Success)
+            {
+                throw new InvalidOperationException($"NET_DVR_ActivateDevice basarisiz. NET_DVR_GetLastError={activationResult.ErrorCode}, Message={activationResult.ErrorMessage}");
+            }
+
+            taskStore.UpdateStage(taskId, "Aktivasyon", "Tamam", "Kamera aktive edildi.");
+        }
+        else
+        {
+            taskStore.UpdateStage(taskId, "Aktivasyon", "Atlandi", "Kamera zaten aktif.");
+        }
+
+        taskStore.UpdateStage(taskId, "Giris", "Calisiyor", "deviceInfo okunuyor ve HCNetSDK login dogrulaniyor.");
+        var deviceInfo = activationRequired
+            ? await initialClient.WaitForDeviceInfoAsync(TimeSpan.FromSeconds(90), TimeSpan.FromSeconds(3), token).ConfigureAwait(false)
+            : await initialClient.GetDeviceInfoAsync(token).ConfigureAwait(false);
+
+        using (var session = new HikActivationSession())
+        {
+            session.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
+            var loginResult = session.Login(currentIpAddress, request.SdkPort, options.UserName, options.Password);
+            if (!loginResult.Success)
+            {
+                throw new InvalidOperationException($"NET_DVR_Login_V40 basarisiz. NET_DVR_GetLastError={loginResult.ErrorCode}, Message={loginResult.ErrorMessage}");
+            }
+        }
+
+        taskStore.UpdateStage(taskId, "Giris", "Tamam", $"Model={deviceInfo.Model}, KisaSeri={deviceInfo.ShortSerial}");
+
+        taskStore.UpdateStage(taskId, "Ag Ayari", "Calisiyor", "Ag bilgileri okunuyor ve gateway/DNS guncelleniyor.");
+        var updatedInterfaces = await initialClient.UpdateGatewayDnsAsync(
+            request.GatewayOverride,
+            request.PrimaryDns ?? "8.8.8.8",
+            request.SecondaryDns ?? "1.1.1.1",
+            request.EnableDhcp,
+            token).ConfigureAwait(false);
+
+        if (request.EnableDhcp)
+        {
+            var foundIp = await initialClient.FindCameraIpInSubnetAsync(
+                currentIpAddress,
+                options.UserName,
+                options.Password,
+                deviceInfo.ShortSerial,
+                deviceInfo.MacAddress,
+                token).ConfigureAwait(false);
+
+            if (!string.IsNullOrWhiteSpace(foundIp))
+            {
+                currentIpAddress = foundIp;
+                options = options with { CameraAddress = currentIpAddress };
+                using var updatedClient = new AgentCameraIsapiClient(options);
+                updatedInterfaces = await updatedClient.GetNetworkInterfacesAsync(token).ConfigureAwait(false);
+            }
+        }
+
+        taskStore.UpdateStage(taskId, "Ag Ayari", "Tamam", $"Guncel IP={currentIpAddress}");
+
+        var verificationCode = string.IsNullOrWhiteSpace(request.VerificationCode)
+            ? AgentCameraIsapiClient.CreateVerificationCode(12)
+            : request.VerificationCode.Trim();
+
+        using var activeClient = new AgentCameraIsapiClient(options with { CameraAddress = currentIpAddress });
+        taskStore.UpdateStage(taskId, "Hik-Connect Online", "Calisiyor", "EZVIZ/Hik-Connect etkinlestiriliyor.");
+        var ezvizResult = await activeClient.EnableEzvizAsync(
+            verificationCode,
+            TimeSpan.FromSeconds(5),
+            TimeSpan.FromMinutes(2),
+            token).ConfigureAwait(false);
+
+        if (ezvizResult.TimedOut)
+        {
+            throw new InvalidOperationException("registerStatus iki dakika icinde true olmadi. Gateway ve DNS baglantisini kontrol edin.");
+        }
+
+        taskStore.UpdateStage(taskId, "Hik-Connect Online", "Tamam", "registerStatus=true oldu.");
+
+        taskStore.UpdateStage(taskId, "Cihaz Eklendi", "Calisiyor", "Hik-Connect Team backend istegi gonderiliyor.");
+        var alias = string.IsNullOrWhiteSpace(request.Alias)
+            ? $"CAM-{deviceInfo.ShortSerial}"
+            : request.Alias.Trim();
+        using var backendClient = new AgentTeamBackendClient(request.BackendUrl);
+        await backendClient.CheckHealthAsync(token).ConfigureAwait(false);
+        var backendResult = await backendClient.AddDeviceAsync(
+            new AgentBackendAddDeviceRequest(
+                deviceInfo.ShortSerial,
+                verificationCode,
+                alias,
+                request.AreaName ?? string.Empty),
+            token).ConfigureAwait(false);
+
+        if (!backendResult.Success)
+        {
+            throw new InvalidOperationException(backendResult.Message);
+        }
+
+        taskStore.UpdateStage(taskId, "Cihaz Eklendi", "Tamam", backendResult.DeviceStatusMessage);
+        taskStore.UpdateStage(taskId, "Kanal Alana Aktarildi", "Tamam", backendResult.ChannelStatusMessage);
+        taskStore.UpdateStage(taskId, "Tamamlandi", "Tamam", "Tam kurulum tamamlandi.");
+
+        taskStore.Complete(taskId, "completed", JsonSerializer.Serialize(new
+        {
+            success = true,
+            mode = "provision",
+            device = new
+            {
+                deviceInfo.Model,
+                deviceInfo.SerialNumber,
+                deviceInfo.ShortSerial,
+                deviceInfo.SubSerialNumber,
+                deviceInfo.FirmwareVersion,
+                deviceInfo.MacAddress,
+                CurrentIpAddress = currentIpAddress
+            },
+            network = updatedInterfaces,
+            ezviz = ezvizResult.FinalStatus,
+            backend = new
+            {
+                backendResult.DeviceId,
+                backendResult.AreaId,
+                backendResult.AreaName,
+                backendResult.Alias,
+                backendResult.DeviceStatusMessage,
+                backendResult.ChannelStatusMessage
+            }
+        }));
     }
     catch (OperationCanceledException)
     {
