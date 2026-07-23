@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Hikvision Kamera Provisioning</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HikProvisioning.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="shell">
+        <header class="app-header">
+            <a class="brand" asp-page="/Index">
+                <span class="brand-mark">HK</span>
+                <span>
+                    <strong>Hikvision Kamera Provisioning</strong>
+                    <small>Aktivasyon, Team OpenAPI ve canli izleme tek panelde</small>
+                </span>
+            </a>
+            <nav class="top-nav">
+                <a asp-page="/Index">Izleme</a>
+                <a asp-page="/CameraSetup">Kamera Kurulum</a>
+            </nav>
+        </header>
+        <main role="main" class="page-frame">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

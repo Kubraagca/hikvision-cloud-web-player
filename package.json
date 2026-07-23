@@ -6,7 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
-    "build:linux-helper": "sh ./native/hik_activation_helper_linux/build.sh"
+    "build:linux-helper": "sh ./native/hik_activation_helper_linux/build.sh",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=18.0.0"

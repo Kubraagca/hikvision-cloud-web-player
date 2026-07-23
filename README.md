@@ -16,6 +16,13 @@ Bu surum su akisi kurar:
 7. ISAPI ile `deviceInfo`, ag ayarlari ve `EZVIZ` durumu yonetilir.
 8. `registerStatus=true` olduktan sonra Team OpenAPI ile cihaz eklenir ve kamera kanallari area'ya otomatik aktarilir.
 
+23 Temmuz 2026 itibariyla projede Team OpenAPI'yi ayri bir web akisi olarak kullanan ek ekran da vardir:
+
+9. `/team-device-add` ekraninda kullanici `shortSerial`, `verificationCode`, `alias` ve `areaName` bilgilerini girer.
+10. Frontend sadece bizim backend endpoint'imizi cagirir: `POST /api/team-devices/add`
+11. Backend Team token alma, cihaz ekleme, area bulma/olusturma, `devicedetail/get` ve `areas/resources/add` adimlarini kendi tarafinda yurutur.
+12. Hikvision token, AK, SK, admin parola ve verification code frontend'e veya loglara yazilmaz.
+
 ## JSDecoder SDK notu
 
 Bu projede cloud akisinin Hikvision tarafinda sifreli gelmesi nedeniyle nihai hedef `WASM / JSDecoder SDK` entegrasyonudur.
@@ -51,6 +58,12 @@ Bu dosyalar geldikten sonra frontend tarafi Hikvision'in resmi player akisina ge
 | `HIK_APP_SECRET` | Hikvision / HikCentral Connect AppSecret |
 | `HIK_INITIAL_SERVER` | Ilk token sunucusu. Varsayilan: `https://ieu.hikcentralconnect.com` |
 | `PORT` | Opsiyonel. Varsayilan: `3000` |
+
+Ornek `.env` icin:
+
+```text
+.env.example
+```
 
 ## Linux provisioning notu
 
@@ -108,6 +121,12 @@ Provisioning sayfasi:
 http://localhost:3000/camera-setup
 ```
 
+Team cihaz ekleme sayfasi:
+
+```text
+http://localhost:3000/team-device-add
+```
+
 ## API'ler
 
 ### `GET /api/health`
@@ -154,8 +173,62 @@ Ornek:
 /api/stream?resourceId=xxx&deviceSerial=yyy&quality=1
 ```
 
+### `POST /api/team-devices/add`
+
+Kamerayi Team hesabina ekler, area'yi bulur/olusturur ve eksik kamera kanallarini ilgili area'ya aktarir.
+
+Istek:
+
+```json
+{
+  "shortSerial": "ABCD123456",
+  "verificationCode": "VERIFY123456",
+  "alias": "CAM-ABCD123456",
+  "areaName": "Musteri - Sube 1"
+}
+```
+
+Ornek cevap:
+
+```json
+{
+  "message": "Cihaz Team hesabina eklendi ve kanal import akisi tamamlandi.",
+  "result": {
+    "success": true,
+    "shortSerial": "ABCD123456",
+    "alias": "CAM-ABCD123456",
+    "areaId": "1001",
+    "areaName": "Musteri - Sube 1",
+    "deviceId": "device-123",
+    "deviceAdded": true,
+    "importedChannelCount": 0,
+    "totalChannelCount": 1,
+    "deviceStatusMessage": "Cihaz eklendi.",
+    "channelStatusMessage": "Cihaz importToArea enable=1 ile eklendi; portalda manuel import gerekmiyor."
+  }
+}
+```
+
+Bu akista frontend Hikvision'a dogrudan istek gondermez.
+
+## Testler
+
+Gercek Hikvision API'sine cikmadan mock ile test etmek icin:
+
+```bash
+npm test
+```
+
+Test kapsaminda:
+
+- token alma ve yenileme
+- area yoksa olusturma
+- mevcut cihazda sadece eksik kanallari import etme
+- Hikvision hata kodunu guvenli mesajla yuzeye cikarabilme
+
 ## Notlar
 
-- Bu proje su an bir baslangic iskeleti. Kullanici yonetimi, yetkilendirme, rate limiting ve stream proxy gibi production ihtiyaclari henuz ekli degil.
+- Bu proje su an bir baslangic iskeleti. Kullanici yonetimi, yetkilendirme ve rate limiting gibi production ihtiyaclari henuz ekli degil.
 - Bazi Hikvision ortamlari HLS yerine farkli protokoller donebilir. O durumda `/api/stream` parametreleri veya player tarafi uyarlanmalidir.
 - Uzun sureli kullanim icin stream linkinin suresi dolmadan once otomatik yenilenmesi gerekir.
+- Workspace icinde Postman collection dosyasi bulunmadi. Bu nedenle backend entegrasyonu, repoda zaten kullanilan Team OpenAPI endpoint'leri ve `Hik-Connect for Teams OpenAPI Developer Guide_V2.15.0_20260306.pdf` dosyasinin repo referansina gore duzenlendi.

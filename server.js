@@ -3,6 +3,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
+const { createTeamOpenApiService } = require("./lib/team-openapi-service");
 
 const app = express();
 app.set("trust proxy", true);
@@ -24,6 +25,17 @@ let tokenCache = {
   areaDomain: null,
   expireTime: 0,
 };
+
+const teamOpenApiService = createTeamOpenApiService({
+  appKey: APP_KEY,
+  appSecret: APP_SECRET,
+  initialServer: INITIAL_SERVER,
+  logger: {
+    error(entry) {
+      console.error(JSON.stringify(entry));
+    },
+  },
+});
 
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
@@ -1500,10 +1512,9 @@ app.get("/api/sdk-config", async (req, res) => {
     res.json({
       sdkBasePath: SDK_BASE_PATH,
       areaDomain: token.areaDomain,
-      accessToken: token.accessToken,
       expiresAt: normalizeExpireTime(token.expireTime),
       sdkInstalled: isSdkInstalled(),
-      note: "JSDecoder SDK dosyalarini proje altindaki /sdk klasorune koyun.",
+      note: "Hikvision token frontend'e gonderilmez. JSDecoder benzeri entegrasyonlar backend proxy veya yerel SDK katmani uzerinden ilerlemelidir.",
     });
   } catch (err) {
     res.status(500).json({ error: sanitizeMessage(err.message) });
@@ -1702,6 +1713,42 @@ app.post("/api/provision/start", async (req, res) => {
   res.status(202).json({ taskId: task.taskId });
 });
 
+app.post("/api/team-devices/add", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const input = {
+    shortSerial: String(req.body.shortSerial || "").trim(),
+    verificationCode: String(req.body.verificationCode || "").trim(),
+    alias: String(req.body.alias || "").trim(),
+    areaName: String(req.body.areaName || "").trim(),
+  };
+
+  if (!input.shortSerial) {
+    return res.status(400).json({ error: "shortSerial zorunlu." });
+  }
+
+  if (!input.verificationCode) {
+    return res.status(400).json({ error: "verificationCode zorunlu." });
+  }
+
+  try {
+    const result = await teamOpenApiService.addDeviceToAreaWorkflow(input);
+    return res.status(200).json({
+      message: result.deviceAdded
+        ? "Cihaz Team hesabina eklendi ve kanal import akisi tamamlandi."
+        : "Cihaz zaten vardi; eksik area/kanal iliskileri kontrol edildi.",
+      result: {
+        success: true,
+        ...result,
+      },
+    });
+  } catch (err) {
+    return res.status(502).json({
+      error: sanitizeMessage(err.message),
+    });
+  }
+});
+
 app.get("/api/provision/tasks/:taskId", (req, res) => {
   const task = provisioningTasks.get(req.params.taskId);
   if (!task) {
@@ -1725,6 +1772,10 @@ app.get("/camera-setup", (req, res) => {
 
 app.get("/camera-browser-test", (req, res) => {
   res.sendFile(path.join(__dirname, "browser-network-test.html"));
+});
+
+app.get("/team-device-add", (req, res) => {
+  res.sendFile(path.join(__dirname, "team-device-add.html"));
 });
 
 app.get("/", (req, res) => {

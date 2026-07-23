@@ -1,0 +1,231 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Kamera Izleme";
+}
+
+<section class="hero">
+    <div>
+        <p class="eyebrow">Hikvision Cloud Izleme</p>
+        <h1>Ayni panelden kamerayi ekle, durumu gor ve yayini ac</h1>
+        <p class="hero-copy">
+            HLS proxy akisi korunur. Kamera kurulum adimlari ise backend uzerinden ayni yerel agda calisir; tarayiciya AK/SK, token veya kamera parolasi sizmaz.
+        </p>
+    </div>
+    <div class="hero-actions">
+        <button id="refresh-btn" class="secondary-button" type="button">Listeyi Yenile</button>
+        <a class="primary-button action-link" asp-page="/CameraSetup">Kamera Kurulum</a>
+    </div>
+</section>
+
+<section class="viewer-grid">
+    <aside class="panel-card sidebar-panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Durum</p>
+                <h2>Kamera Listesi</h2>
+            </div>
+        </div>
+
+        <div class="health-card" id="health-box">Baglanti kontrol ediliyor...</div>
+
+        <div class="toolbar-card">
+            <label for="quality-select">Kalite</label>
+            <select id="quality-select">
+                <option value="1">HD</option>
+                <option value="2">Akici</option>
+            </select>
+        </div>
+
+        <div class="health-card">
+            Web oynatma icin backend HLS manifest ve segment proxy kullanir. Kamera izleme akisi kurulum akisindan ayridir.
+        </div>
+
+        <div class="camera-list" id="camera-list"></div>
+        <div class="placeholder-card" id="camera-placeholder">Kameralar yukleniyor...</div>
+    </aside>
+
+    <section class="panel-card player-panel">
+        <div class="player-wrap">
+            <video id="player" controls muted playsinline></video>
+            <div class="status-line">
+                <span id="status-text">Bir kamera secin</span>
+                <span id="expire-text"></span>
+            </div>
+            <div class="result-grid">
+                <div class="info-chip">
+                    <span>Kamera</span>
+                    <strong id="camera-meta">Secim yok</strong>
+                </div>
+                <div class="info-chip">
+                    <span>Protokol</span>
+                    <strong id="protocol-meta">HLS</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.15/hls.min.js"></script>
+    <script>
+        (() => {
+          const listEl = document.getElementById("camera-list");
+          const placeholderEl = document.getElementById("camera-placeholder");
+          const videoEl = document.getElementById("player");
+          const statusEl = document.getElementById("status-text");
+          const expireEl = document.getElementById("expire-text");
+          const healthEl = document.getElementById("health-box");
+          const qualityEl = document.getElementById("quality-select");
+          const cameraMetaEl = document.getElementById("camera-meta");
+          const protocolMetaEl = document.getElementById("protocol-meta");
+          let hls = null;
+          let activeCard = null;
+
+          async function loadHealth() {
+            try {
+              const response = await fetch("/api/health");
+              const data = await response.json();
+              if (!data.ok) {
+                healthEl.innerHTML = `<strong>Durum:</strong> hazir degil<br>${escapeHtml(data.error || "Kimlik bilgileri eksik.")}`;
+                return;
+              }
+
+              healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${escapeHtml(data.areaDomain || "Henuz alinmadi")}<br><strong>Mod:</strong> HLS proxy`;
+            } catch (error) {
+              healthEl.innerHTML = `<strong>Durum:</strong> hata<br>${escapeHtml(error.message || "Baglanti kurulamadı.")}`;
+            }
+          }
+
+          async function loadCameras() {
+            listEl.innerHTML = "";
+            placeholderEl.style.display = "block";
+            placeholderEl.textContent = "Kameralar yukleniyor...";
+
+            try {
+              const response = await fetch("/api/cameras");
+              const data = await response.json();
+              if (!response.ok) {
+                placeholderEl.textContent = data.error || "Kamera listesi alinamadi.";
+                return;
+              }
+
+              if (!data.cameras || data.cameras.length === 0) {
+                placeholderEl.textContent = "Kamera bulunamadi.";
+                return;
+              }
+
+              placeholderEl.style.display = "none";
+
+              data.cameras.forEach((camera) => {
+                const card = document.createElement("button");
+                card.type = "button";
+                card.className = "camera-item";
+                card.innerHTML = `
+                  <span class="status-dot ${camera.online ? "online" : "offline"}"></span>
+                  <span class="camera-copy">
+                    <strong>${escapeHtml(camera.name || "Isimsiz Kamera")}</strong>
+                    <small>${escapeHtml(camera.deviceSerial || "-")}</small>
+                  </span>
+                `;
+                card.addEventListener("click", () => selectCamera(camera, card));
+                listEl.appendChild(card);
+              });
+            } catch (error) {
+              placeholderEl.textContent = error.message || "Kamera listesi okunamadi.";
+            }
+          }
+
+          async function selectCamera(camera, card) {
+            if (activeCard) {
+              activeCard.classList.remove("active");
+            }
+            card.classList.add("active");
+            activeCard = card;
+            cameraMetaEl.textContent = camera.name || "Isimsiz Kamera";
+            statusEl.textContent = `${camera.name || "Kamera"} - yayin adresi aliniyor...`;
+            expireEl.textContent = "";
+
+            if (!camera.deviceSerial) {
+              statusEl.textContent = "Bu kamerada deviceSerial bilgisi yok.";
+              return;
+            }
+
+            try {
+              const params = new URLSearchParams({
+                resourceId: camera.resourceId,
+                deviceSerial: camera.deviceSerial,
+                protocol: "2",
+                quality: qualityEl.value
+              });
+
+              const response = await fetch(`/api/stream?${params}`);
+              const data = await response.json();
+              if (!response.ok) {
+                statusEl.textContent = `Hata: ${data.error || "Yayin alinamadi."}`;
+                return;
+              }
+
+              protocolMetaEl.textContent = data.protocol === 2 ? "HLS" : `Protocol ${data.protocol}`;
+              playHls(data.url);
+              statusEl.textContent = `${camera.name || "Kamera"} - HLS oynatma baslatiliyor.`;
+
+              if (data.expireTime) {
+                expireEl.textContent = `Link gecerlilik: ${new Date(data.expireTime).toLocaleTimeString("tr-TR")}`;
+              }
+            } catch (error) {
+              statusEl.textContent = `Hata: ${error.message || "Yayin acilamadi."}`;
+            }
+          }
+
+          function playHls(url) {
+            if (hls) {
+              hls.destroy();
+              hls = null;
+            }
+
+            videoEl.pause();
+            videoEl.removeAttribute("src");
+            videoEl.load();
+
+            if (window.Hls && Hls.isSupported()) {
+              hls = new Hls();
+              hls.loadSource(url);
+              hls.attachMedia(videoEl);
+              hls.on(Hls.Events.MANIFEST_PARSED, () => videoEl.play().catch(() => {}));
+              hls.on(Hls.Events.ERROR, (_event, data) => {
+                statusEl.textContent = `HLS oynatma hatasi: ${data?.details || "bilinmeyen hata"}`;
+              });
+              return;
+            }
+
+            if (videoEl.canPlayType("application/vnd.apple.mpegurl")) {
+              videoEl.src = url;
+              videoEl.play().catch(() => {});
+              return;
+            }
+
+            statusEl.textContent = "Tarayici HLS oynatmayi desteklemiyor.";
+          }
+
+          function escapeHtml(value) {
+            return String(value ?? "")
+              .replaceAll("&", "&amp;")
+              .replaceAll("<", "&lt;")
+              .replaceAll(">", "&gt;")
+              .replaceAll('"', "&quot;")
+              .replaceAll("'", "&#39;");
+          }
+
+          document.getElementById("refresh-btn").addEventListener("click", loadCameras);
+          qualityEl.addEventListener("change", () => {
+            if (activeCard) {
+              activeCard.click();
+            }
+          });
+
+          loadHealth();
+          loadCameras();
+        })();
+    </script>
+}

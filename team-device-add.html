@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Team Hesabina Kamera Ekle</title>
+<style>
+  :root {
+    --bg: #f1efe8;
+    --panel: #fffaf1;
+    --border: #d8cfc0;
+    --text: #231f1a;
+    --muted: #766c60;
+    --accent: #005f73;
+    --ok: #16a34a;
+    --err: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: Georgia, "Segoe UI", serif;
+    background:
+      radial-gradient(circle at top left, #fff4d6 0, transparent 30%),
+      linear-gradient(180deg, #f8f2e7 0%, #efe5d5 100%);
+  }
+  header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 250, 241, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  h1 { margin: 0; font-size: 20px; }
+  .sub { margin-top: 4px; font-size: 12px; color: var(--muted); }
+  a, button, input { font: inherit; }
+  a.button-link, button {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 9px 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .primary { background: var(--accent); color: white; border-color: var(--accent); }
+  main {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+  .panel {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.72);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 16px 40px rgba(70, 50, 20, 0.08);
+  }
+  .grid { display: grid; gap: 12px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #fffdf8;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .status-box, .result-card {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.58);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    white-space: pre-wrap;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .meta-card {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.5);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .meta-card span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .ok { color: var(--ok); }
+  .err { color: var(--err); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Team Hesabina Kamera Ekle</h1>
+    <div class="sub">Frontend sadece bizim backend'imizi cagirir. AK/SK ve token tarayiciya gelmez.</div>
+  </div>
+  <div style="display:flex; gap:10px;">
+    <a class="button-link" href="/">Izleme Paneli</a>
+    <a class="button-link" href="/camera-setup">Kamera Kurulum</a>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Kayit Formu</h2>
+    <div class="grid">
+      <div class="field">
+        <label for="short-serial">Kisa Seri No</label>
+        <input id="short-serial" type="text" placeholder="subSerialNumber veya kisa seri" />
+      </div>
+      <div class="field">
+        <label for="verification-code">Verification Code</label>
+        <input id="verification-code" type="text" placeholder="12 karakterli cihaz verification code" />
+      </div>
+      <div class="field">
+        <label for="alias">Cihaz Adi / Alias</label>
+        <input id="alias" type="text" placeholder="Bos ise CAM-{shortSerial}" />
+      </div>
+      <div class="field">
+        <label for="area-name">Area Adi</label>
+        <input id="area-name" type="text" placeholder="Bos ise alias kullanilir" />
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="submit-btn" class="primary">Kamerayi Team'e Ekle</button>
+    </div>
+
+    <div class="status-box" id="status-box">Hazir.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Sonuc</h2>
+    <div class="meta-grid">
+      <div class="meta-card"><span>Alias</span><strong id="alias-value">-</strong></div>
+      <div class="meta-card"><span>Kisa Seri</span><strong id="serial-value">-</strong></div>
+      <div class="meta-card"><span>Area</span><strong id="area-value">-</strong></div>
+      <div class="meta-card"><span>Device ID</span><strong id="device-id-value">-</strong></div>
+      <div class="meta-card"><span>Cihaz Durumu</span><strong id="device-status-value">-</strong></div>
+      <div class="meta-card"><span>Kanal Durumu</span><strong id="channel-status-value">-</strong></div>
+    </div>
+    <div class="result-card" id="result-box">Henuz istek gonderilmedi.</div>
+  </section>
+</main>
+
+<script>
+  const statusBox = document.getElementById("status-box");
+  const resultBox = document.getElementById("result-box");
+  const submitBtn = document.getElementById("submit-btn");
+
+  function setStatus(message, isError = false) {
+    statusBox.textContent = message;
+    statusBox.className = `status-box ${isError ? "err" : ""}`;
+  }
+
+  function fillResult(result) {
+    document.getElementById("alias-value").textContent = result?.alias || "-";
+    document.getElementById("serial-value").textContent = result?.shortSerial || "-";
+    document.getElementById("area-value").textContent = result?.areaName ? `${result.areaName} (${result.areaId || "-"})` : "-";
+    document.getElementById("device-id-value").textContent = result?.deviceId || "-";
+    document.getElementById("device-status-value").textContent = result?.deviceStatusMessage || "-";
+    document.getElementById("channel-status-value").textContent = result?.channelStatusMessage || "-";
+    resultBox.textContent = result
+      ? JSON.stringify({
+          success: result.success,
+          deviceAdded: result.deviceAdded,
+          importedChannelCount: result.importedChannelCount,
+          totalChannelCount: result.totalChannelCount
+        }, null, 2)
+      : "Henuz istek gonderilmedi.";
+  }
+
+  submitBtn.addEventListener("click", async () => {
+    const payload = {
+      shortSerial: document.getElementById("short-serial").value.trim(),
+      verificationCode: document.getElementById("verification-code").value.trim(),
+      alias: document.getElementById("alias").value.trim(),
+      areaName: document.getElementById("area-name").value.trim()
+    };
+
+    if (!payload.shortSerial) {
+      setStatus("Kisa seri no zorunlu.", true);
+      return;
+    }
+
+    if (!payload.verificationCode) {
+      setStatus("Verification code zorunlu.", true);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    setStatus("Team kaydi baslatiliyor...");
+    fillResult(null);
+
+    try {
+      const response = await fetch("/api/team-devices/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Team kaydi basarisiz.");
+      }
+
+      fillResult(data.result);
+      setStatus(data.message || "Kamera Team hesabina eklendi.");
+    } catch (error) {
+      setStatus(error.message || "Istek basarisiz.", true);
+      resultBox.textContent = "Islem tamamlanamadi.";
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

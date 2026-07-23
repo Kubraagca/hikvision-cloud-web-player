@@ -1,0 +1,303 @@
+@page
+@model HikProvisioning.Web.Pages.CameraSetupModel
+@{
+    ViewData["Title"] = "Kamera Kurulumu";
+}
+
+<section class="hero hero-tight">
+    <div>
+        <p class="eyebrow">Kamera Kurulum</p>
+        <h1>Tek akista aktivasyon, ag ayari ve Hik-Connect ekleme</h1>
+        <p class="hero-copy">
+            Backend ayni yerel agda calisarak HCNetSDK ile aktivasyonu, ISAPI ile cihaz ayarlarini ve Team OpenAPI ile cihaz eklemeyi tamamlar.
+        </p>
+    </div>
+    <div class="hero-actions">
+        <a class="action-link" asp-page="/Index">Izleme Paneline Don</a>
+    </div>
+</section>
+
+<section class="setup-grid">
+    <article class="panel-card">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Girdi</p>
+                <h2>Kurulum Formu</h2>
+            </div>
+        </div>
+
+        <div class="field-grid">
+            <label class="field">
+                <span>Kamera IP</span>
+                <input id="camera-address" type="text" value="192.168.1.64" />
+            </label>
+            <label class="field">
+                <span>Kullanici Adi</span>
+                <input id="username" type="text" value="admin" />
+            </label>
+            <label class="field">
+                <span>Yeni Admin Parolasi</span>
+                <input id="password" type="password" />
+            </label>
+            <label class="field">
+                <span>Area Adi</span>
+                <input id="area-name" type="text" placeholder="Bos birakilirsa CAM-{shortSerial}" />
+            </label>
+            <label class="field">
+                <span>Gateway Override</span>
+                <input id="gateway-override" type="text" placeholder="Bos ise cihaz XML'inden veya .1 varsayimindan gelir" />
+            </label>
+            <label class="field">
+                <span>SDK Portu</span>
+                <input id="sdk-port" type="number" min="1" max="65535" value="8000" />
+            </label>
+        </div>
+
+        <label class="toggle-field">
+            <input id="enable-dhcp" type="checkbox" />
+            <span>DHCP etkinlestir ve IP degisirse ayni /24 aginda yeniden bul</span>
+        </label>
+
+        <div class="button-row">
+            <button id="start-btn" class="primary-button" type="button">Baştan Sona Kurulum</button>
+            <button id="reload-btn" class="secondary-button" type="button">Durumu Yenile</button>
+        </div>
+
+        <div class="status-banner" id="status-box">Hazir.</div>
+    </article>
+
+    <article class="panel-card">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Durum</p>
+                <h2>Asamalar ve Sonuc</h2>
+            </div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Asama</th>
+                    <th>Durum</th>
+                    <th>Detay</th>
+                </tr>
+            </thead>
+            <tbody id="stage-body">
+                <tr><td colspan="3">Kurulum baslatilmadi.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="result-grid">
+            <div class="info-chip"><span>Model</span><strong id="meta-model">-</strong></div>
+            <div class="info-chip"><span>Kisa Seri</span><strong id="meta-short-serial">-</strong></div>
+            <div class="info-chip"><span>MAC</span><strong id="meta-mac">-</strong></div>
+            <div class="info-chip"><span>Guncel IP</span><strong id="meta-ip">-</strong></div>
+            <div class="info-chip"><span>Area</span><strong id="meta-area">-</strong></div>
+            <div class="info-chip"><span>Device ID</span><strong id="meta-device-id">-</strong></div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Arayuz</th>
+                    <th>IP</th>
+                    <th>Subnet</th>
+                    <th>Gateway</th>
+                    <th>DNS1</th>
+                    <th>DNS2</th>
+                    <th>DHCP</th>
+                </tr>
+            </thead>
+            <tbody id="network-body">
+                <tr><td colspan="7">Ag bilgisi henuz yok.</td></tr>
+            </tbody>
+        </table>
+    </article>
+</section>
+
+@section Scripts {
+    <script>
+        (() => {
+          const startBtn = document.getElementById("start-btn");
+          const reloadBtn = document.getElementById("reload-btn");
+          const statusBox = document.getElementById("status-box");
+          const stageBody = document.getElementById("stage-body");
+          const networkBody = document.getElementById("network-body");
+
+          const modelEl = document.getElementById("meta-model");
+          const shortSerialEl = document.getElementById("meta-short-serial");
+          const macEl = document.getElementById("meta-mac");
+          const ipEl = document.getElementById("meta-ip");
+          const areaEl = document.getElementById("meta-area");
+          const deviceIdEl = document.getElementById("meta-device-id");
+
+          let activeTaskId = null;
+          let pollTimer = null;
+
+          function setStatus(text) {
+            statusBox.textContent = text;
+          }
+
+          function getPayload() {
+            return {
+              cameraAddress: document.getElementById("camera-address").value.trim(),
+              userName: document.getElementById("username").value.trim() || "admin",
+              password: document.getElementById("password").value,
+              areaName: document.getElementById("area-name").value.trim(),
+              gatewayOverride: document.getElementById("gateway-override").value.trim(),
+              sdkPort: Number(document.getElementById("sdk-port").value || 8000),
+              enableDhcp: document.getElementById("enable-dhcp").checked
+            };
+          }
+
+          function stageClass(status) {
+            switch ((status || "").toLowerCase()) {
+              case "calisiyor": return "state-running";
+              case "tamam": return "state-done";
+              case "atlandi": return "state-skip";
+              case "hata": return "state-error";
+              default: return "state-waiting";
+            }
+          }
+
+          function escapeHtml(value) {
+            return String(value ?? "")
+              .replaceAll("&", "&amp;")
+              .replaceAll("<", "&lt;")
+              .replaceAll(">", "&gt;")
+              .replaceAll('"', "&quot;")
+              .replaceAll("'", "&#39;");
+          }
+
+          function renderStages(stages) {
+            if (!stages || stages.length === 0) {
+              stageBody.innerHTML = "<tr><td colspan='3'>Asama bilgisi yok.</td></tr>";
+              return;
+            }
+
+            stageBody.innerHTML = stages.map((stage) => `
+              <tr>
+                <td>${escapeHtml(stage.name || "-")}</td>
+                <td class="${stageClass(stage.status)}">${escapeHtml(stage.status || "-")}</td>
+                <td>${escapeHtml(stage.detail || "-")}</td>
+              </tr>
+            `).join("");
+          }
+
+          function renderNetwork(interfaces) {
+            if (!interfaces || interfaces.length === 0) {
+              networkBody.innerHTML = "<tr><td colspan='7'>Ag bilgisi henuz yok.</td></tr>";
+              return;
+            }
+
+            networkBody.innerHTML = interfaces.map((item) => `
+              <tr>
+                <td>${escapeHtml(item.id || "-")}</td>
+                <td>${escapeHtml(item.ipAddress || "-")}</td>
+                <td>${escapeHtml(item.subnetMask || "-")}</td>
+                <td>${escapeHtml(item.gateway || "-")}</td>
+                <td>${escapeHtml(item.primaryDns || "-")}</td>
+                <td>${escapeHtml(item.secondaryDns || "-")}</td>
+                <td>${escapeHtml(item.dhcpMode || "-")}</td>
+              </tr>
+            `).join("");
+          }
+
+          function renderResult(result) {
+            modelEl.textContent = result?.model || "-";
+            shortSerialEl.textContent = result?.shortSerial || "-";
+            macEl.textContent = result?.macAddress || "-";
+            ipEl.textContent = result?.currentIpAddress || "-";
+            areaEl.textContent = result?.areaName ? `${result.areaName} (${result.areaId || "-"})` : "-";
+            deviceIdEl.textContent = result?.deviceId || "-";
+            renderNetwork(result?.networkInterfaces || []);
+          }
+
+          async function loadTask(taskId) {
+            const response = await fetch(`/api/provision/tasks/${encodeURIComponent(taskId)}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || "Task okunamadi.");
+            }
+
+            renderStages(data.stages);
+            renderResult(data.result);
+
+            if (data.status === "completed") {
+              clearPolling();
+              setStatus("Kurulum tamamlandi. Portalda ek adim gerekmemeli.");
+              startBtn.disabled = false;
+            } else if (data.status === "failed") {
+              clearPolling();
+              setStatus(`Kurulum basarisiz: ${data.error || "Bilinmeyen hata"}`);
+              startBtn.disabled = false;
+            } else {
+              setStatus(`Kurulum suruyor. Son guncelleme: ${new Date(data.updatedAt).toLocaleTimeString("tr-TR")}`);
+            }
+          }
+
+          function clearPolling() {
+            if (pollTimer) {
+              clearInterval(pollTimer);
+              pollTimer = null;
+            }
+          }
+
+          function startPolling(taskId) {
+            clearPolling();
+            activeTaskId = taskId;
+            loadTask(taskId).catch((error) => setStatus(error.message));
+            pollTimer = setInterval(() => {
+              loadTask(taskId).catch((error) => setStatus(error.message));
+            }, 1500);
+          }
+
+          startBtn.addEventListener("click", async () => {
+            const payload = getPayload();
+            if (!payload.cameraAddress) {
+              setStatus("Kamera IP zorunlu.");
+              return;
+            }
+
+            if (!payload.password) {
+              setStatus("Parola zorunlu.");
+              return;
+            }
+
+            startBtn.disabled = true;
+            setStatus("Kurulum baslatiliyor...");
+            renderStages([]);
+            renderNetwork([]);
+            renderResult(null);
+
+            try {
+              const response = await fetch("/api/provision/start", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+              });
+
+              const data = await response.json();
+              if (!response.ok) {
+                throw new Error(data.error || "Kurulum baslatilamadi.");
+              }
+
+              startPolling(data.taskId);
+            } catch (error) {
+              startBtn.disabled = false;
+              setStatus(error.message || "Kurulum baslatilamadi.");
+            }
+          });
+
+          reloadBtn.addEventListener("click", () => {
+            if (!activeTaskId) {
+              setStatus("Aktif task yok.");
+              return;
+            }
+
+            loadTask(activeTaskId).catch((error) => setStatus(error.message));
+          });
+        })();
+    </script>
+}
