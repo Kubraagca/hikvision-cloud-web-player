@@ -1,7 +1,9 @@
 <Solution>
   <Project Path="HikConnect.TeamBackend/HikConnect.TeamBackend.csproj" />
+  <Project Path="HikProvisioning.Agent/HikProvisioning.Agent.csproj" />
   <Project Path="HikProvisioning.Web/HikProvisioning.Web.csproj" />
   <Project Path="HikSdk.Interop/HikSdk.Interop.csproj" />
+  <Project Path="HikSdk.ProvisioningCli/HikSdk.ProvisioningCli.csproj" />
   <Project Path="HikSdk.SadpConsole/HikSdk.SadpConsole.csproj" />
   <Project Path="HikSdk.SadpWpf/HikSdk.SadpWpf.csproj" />
 </Solution>

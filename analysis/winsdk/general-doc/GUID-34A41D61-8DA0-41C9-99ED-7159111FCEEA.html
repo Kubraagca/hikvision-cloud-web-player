@@ -1,0 +1,611 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_SDK_DOWNLOAD_TYPE" /><meta name="abstract" content="Enumerate file types to be downloaded." /><meta name="description" content="Enumerate file types to be downloaded." /><meta name="DC.Relation" scheme="URI" content="GUID-763D9DC9-B161-47F9-AFAF-0E663F28FD2A.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA" /><meta name="DC.Language" content="en-US" /><title>NET_SDK_DOWNLOAD_TYPE</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_SDK_DOWNLOAD_TYPE</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Enumerate file types to be downloaded.</p>
+
+<div class="section" id="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-2C5787F2-25C3-48B9-ACAD-83205A244FCE"><h2 class="title sectiontitle">Enumeration Definition</h2>
+            
+            <pre class="pre codeblock">typedef enum {
+  NET_SDK_DOWNLOAD_CERT                                 = 0,
+  NET_SDK_DOWNLOAD_IPC_CFG_FILE                         = 1,
+  NET_SDK_DOWNLOAD_BASELINE_SCENE_PIC                   = 2, 
+  NET_SDK_DOWNLOAD_VQD_ALARM_PIC                        = 3,
+  NET_SDK_DOWNLOAD_CONFIGURATION_FILE                   = 4,
+  NET_SDK_DOWNLOAD_SCENE_CONFIGURATION_FILE             = 5,
+  NET_SDK_DOWNLOAD_FILE_FORM_DB                         = 6,
+  NET_SDK_DOWNLOAD_TME_FILE                             = 7, 
+  NET_SDK_DOWNLOAD_VEHICLE_BLOCKALLOWLIST_FILE          = 8, 
+  NET_SDK_DOWNLOAD_GUID_FILE                            = 9, 
+  NET_SDK_DOWNLOAD_FILE_FORM_CLOUD                      = 10,   
+  NET_SDK_DOWNLOAD_PICTURE                              = 11,
+  NET_SDK_DOWNLOAD_VIDEO                                = 12,
+  NET_DVR_DOWNLOAD_SCREEN_FILE                          = 13, 
+  NET_SDK_DOWNLOAD_PUBLISH_MATERIAL                     = 14, 
+  NET_SDK_DOWNLOAD_THERMOMETRIC_FILE                    = 15,
+  NET_SDK_DOWNLOAD_LED_CHECK_FILE                       = 16,
+  NET_SDK_DOWNLOAD_VEHICLE_INFORMATION                  = 17,
+  NET_SDK_DOWNLOAD_CERTIFICATE_BLOCKLIST_TEMPLET       = 18, 
+  NET_SDK_DOWNLOAD_LOG_FILE                             = 19,
+  NET_SDK_DOWNLOAD_FILEVOLUME_DATA                      = 20,
+  NET_SDK_DOWNLOAD_FD_DATA                              = 21,
+  NET_SDK_DOWNLOAD_SECURITY_CFG_FILE                    = 22,
+  NET_SDK_DOWNLOAD_PUBLISH_SCHEDULE                     = 23,
+  NET_SDK_DOWNLOAD_RIGHT_CONTROLLER_AUDIO               = 24, 
+  NET_SDK_DOWNLOAD_MODBUS_CFG_FILE                      = 25,
+  NET_SDK_DOWNLOAD_RS485_PROTOCOL_DLL_FILE              = 26,
+  NET_SDK_DOWNLOAD_CLUSTER_MAINTENANCE_LOG              = 27, 
+  NET_SDK_DOWNLOAD_SQL_ARCHIVE_FILE                     = 28,
+  NET_SDK_DOWNLOAD_SUBWIND_STREAM                       = 29,
+  NET_SDK_DOWNLOAD_DEVTYPE_CALIBFILE                    = 30,
+  NET_SDK_DOWNLOAD_HD_CAMERA_CORRECT_TABLE              = 31,
+  NET_SDK_DOWNLOAD_CLIENT_CALIBFILE                     = 32,
+  NET_SDK_DOWNLOAD_FOUE_CAMERAS_PICTURES                = 33,
+  NET_SDK_DOWNLOAD_DOOR_CONTENT                         = 34,
+  NET_SDK_DOWNLOAD_PUBLISH_MATERIAL_THUMBNAIL           = 35,    
+  NET_SDK_DOWNLOAD_PUBLISH_PROGRAM_THUMBNAIL            = 36,
+  NET_SDK_DOWNLOAD_PUBLISH_TEMPLATE_THUMBNAIL           = 37, 
+  NET_SDK_DOWNLOAD_DARK_FIGHTER_X_CORRECT_TABLE_MAIN    = 38,
+  NET_SDK_DOWNLOAD_DARK_FIGHTER_X_CORRECT_TABLE_BACKUP  = 39,
+  NET_SDK_DOWNLOAD_OFFLINE_CAPTURE_INFO_TEMPLATE        = 40,
+  NET_SDK_DOWNLOAD_CAPTURE_DATA                         = 41,
+  NET_SDK_DOWNLOAD_HD_CAMERA_CORRECT_TABLE_FILE         = 42,
+  NET_SDK_DOWNLOAD_CLIENT_CALIBFILE_FILE                = 43,
+  NET_SDK_DOWNLOAD_FOUR_CAMERAS_PICTURES_FILE           = 44,
+  NET_SDK_DOWNLOAD_SCENE_FILE                           = 45,
+  NET_SDK_DOWNLOAD_OPEN_SOURCE_CERT                     = 46,
+  NET_SDK_DOWNLOAD_RATIOSTITCHING_FILE                  = 47,
+  NET_SDK_DOWNLOAD_LENS_PARAM_FILE                      = 48,
+  NET_SDK_DOWNLOAD_SELECT_DEVTYPE_CALIBFILE             = 49
+} NET_SDK_DOWNLOAD_TYPE;</pre>
+
+        </div>
+
+        <div class="section" id="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-34941880-0A14-4B27-969F-FE2D515519C6"><h2 class="title sectiontitle">Enumeration Type</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-A889C822-D982-4E88-AC00-D692970D20E6"><!-- --></a>NET_SDK_DOWNLOAD_CERT</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Certificate.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-7BE8713D-46EE-4F80-B06C-DA5EB8E983BA"><!-- --></a>NET_SDK_DOWNLOAD_IPC_CFG_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Network camera configuration file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-A4320F9B-8DE9-4ABE-8BE0-0BDA84459635"><!-- --></a>NET_SDK_DOWNLOAD_BASELINE_SCENE_PIC</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Base scene picture.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-0B1365C9-DAD5-4639-97FD-7E0CFFAA3DD6"><!-- --></a>NET_SDK_DOWNLOAD_VQD_ALARM_PIC</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">VQD (video quality diagnosis) alarm picture.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-A8FA3F0C-66CA-4DC3-845C-02C4A2907092"><!-- --></a>NET_SDK_DOWNLOAD_CONFIGURATION_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Configuration file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-3733D631-A1F5-49FB-8202-305F528A8A25"><!-- --></a>NET_SDK_DOWNLOAD_SCENE_CONFIGURATION_FILE </dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Scene configuration file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-5FA56524-E1EC-4056-BDAA-931A52278DD5"><!-- --></a>NET_SDK_DOWNLOAD_FILE_FORM_DB</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">File in the image and video library.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-89B20471-90EB-4DDF-9A1E-162ADCFA120E"><!-- --></a>NET_SDK_DOWNLOAD_TME_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Entrance and exit management file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-DD8D641E-F620-4709-B8C7-056FF6AD9ABF"><!-- --></a>NET_SDK_DOWNLOAD_VEHICLE_BLOCKALLOWLIST_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Blocklist and allowlist configuration file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-04651566-E976-40C5-A4A6-6BDBD3B486CA"><!-- --></a>NET_SDK_DOWNLOAD_GUID_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">GUID file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-D6F3437E-5A63-400C-ADA3-8D2BC06741CE"><!-- --></a>NET_SDK_DOWNLOAD_FILE_FORM_CLOUD</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Picture in the cloud storage.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-C876249F-D28C-42BB-B0C0-BCC7B5ECB81C"><!-- --></a>NET_SDK_DOWNLOAD_PICTURE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Picture.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-69356BE7-2DD3-45F8-AE8C-9AB1C33BA363"><!-- --></a>NET_SDK_DOWNLOAD_VIDEO</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Video.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-DBD0CCDB-913F-436B-9182-D978544EC8CF"><!-- --></a>NET_DVR_DOWNLOAD_SCREEN_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Screen server file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-CFA3A436-3838-4EFE-8890-B8F73D80463C"><!-- --></a>NET_SDK_DOWNLOAD_PUBLISH_MATERIAL</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Local material file of information release.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-FC1C3FF3-BF6B-4788-8E20-E7835E47DDD3"><!-- --></a>NET_SDK_DOWNLOAD_THERMOMETRIC_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Thermometry calibration file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-BB71B689-BFA0-474F-9714-CB4E21173EF2"><!-- --></a>NET_SDK_DOWNLOAD_LED_CHECK_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">LED correction file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-7BCA21F5-0153-4E90-9D56-7360C349F5AC"><!-- --></a>NET_SDK_DOWNLOAD_VEHICLE_INFORMATION</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Vehicle information to be exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-45F03C0D-A47B-430E-B5A9-CBF4402AD69C"><!-- --></a>NET_SDK_DOWNLOAD_CERTIFICATE_BLOCKLIST_TEMPLET</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">ID card blocklist template.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-E018011B-CC09-440E-9C66-0B11E0862484"><!-- --></a>NET_SDK_DOWNLOAD_LOG_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Log to be exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-D599578F-F93B-41DB-9321-A1EFE6A009E8"><!-- --></a>NET_SDK_DOWNLOAD_FILEVOLUME_DATA</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">File volume data file, currently it is only supported by CVR (central
+                            video recorder) devices.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-5D7B738A-03FA-4FB0-BA16-3C834F79E7FC"><!-- --></a>NET_SDK_DOWNLOAD_FD_DATA</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Data in a specific face picture library to be exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-56724649-4E2C-4669-98E3-42A6E06388CD"><!-- --></a>NET_SDK_DOWNLOAD_SECURITY_CFG_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Configuration file to be securely exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-1E06CC21-4934-4ACE-96B6-2AEEF4F77EF3"><!-- --></a>NET_SDK_DOWNLOAD_PUBLISH_SCHEDULE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Schedule to be exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-E2D9BED6-AD78-484C-84EF-A9059C04820B"><!-- --></a>NET_SDK_DOWNLOAD_RIGHT_CONTROLLER_AUDIO</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Audio file of the main controller.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-7E6D9D22-08BC-4E55-99EB-2FA4E6FE2884"><!-- --></a>NET_SDK_DOWNLOAD_MODBUS_CFG_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Configuration file of Modbus protocol.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-C347F8FC-8765-4ECC-9EB2-C2710B010F25"><!-- --></a>NET_SDK_DOWNLOAD_RS485_PROTOCOL_DLL_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Dynamic library file of RS-485 protocol.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-D18D6241-8CAB-425B-BCDF-B4A5AC00AFDC"><!-- --></a>NET_SDK_DOWNLOAD_CLUSTER_MAINTENANCE_LOG</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Cluster maintenance log to be exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-031C4BA9-E9EB-4F16-897E-311273A9586C"><!-- --></a>NET_SDK_DOWNLOAD_SQL_ARCHIVE_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Archived record in the database to be exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-1140D679-DB43-4D60-A989-783C098B02A3"><!-- --></a>NET_SDK_DOWNLOAD_SUBWIND_STREAM</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Sub-window stream to be exported.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-2BC25B7E-5D1D-43C8-A9F4-6DCD4550F872"><!-- --></a>NET_SDK_DOWNLOAD_DEVTYPE_CALIBFILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Model calibration file to be exported (*.cal).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-9A921866-D14D-4059-B031-EE95F6B0D60D"><!-- --></a>NET_SDK_DOWNLOAD_HD_CAMERA_CORRECT_TABLE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">24 MP/32 MP correction list to be exported (*.cal).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-2FC886EC-E42E-4100-B7BE-15F793D0540F"><!-- --></a>NET_SDK_DOWNLOAD_CLIENT_CALIBFILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Client calibration file to be exported (*.pto).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-27976F0C-F3FF-4A30-9DEF-23CF6E092C8B"><!-- --></a>NET_SDK_DOWNLOAD_FOUE_CAMERAS_PICTURES</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Four-channel picture package to be exported (.tar).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-5441E314-CABB-4451-8359-1CC82A6A49FC"><!-- --></a>NET_SDK_DOWNLOAD_DOOR_CONTENT</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Door contact information.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-B20E2E39-4DB3-4FDC-8EE3-B1D05FC9FFB8"><!-- --></a>NET_SDK_DOWNLOAD_PUBLISH_MATERIAL_THUMBNAIL</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Thumbnail of local information release material.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-0453590E-25F1-4BA1-8ED8-859052152326"><!-- --></a>NET_SDK_DOWNLOAD_PUBLISH_PROGRAM_THUMBNAIL</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Thumbnail of information release program.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-A6B1FE46-504B-479E-8309-3B982E0371F3"><!-- --></a>NET_SDK_DOWNLOAD_PUBLISH_TEMPLATE_THUMBNAIL</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Thumbnail of information release template.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-B3F0E5F8-82A4-4BDB-909C-7F81F0EBD415"><!-- --></a>NET_SDK_DOWNLOAD_DARK_FIGHTER_X_CORRECT_TABLE_MAIN</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">DarkfighterX correction list file (main partition).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-146A7C6A-16F3-4A35-806B-674A6EB7552D"><!-- --></a>NET_SDK_DOWNLOAD_DARK_FIGHTER_X_CORRECT_TABLE_BACKUP</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">DarkfighterX correction list file (backup partition).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-9C6953FC-BF41-4573-AE36-B78003A77D9E"><!-- --></a>NET_SDK_DOWNLOAD_OFFLINE_CAPTURE_INFO_TEMPLATE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">User list template of collection.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-E2449537-5131-4378-8F32-811F0EB4EDBA"><!-- --></a>NET_SDK_DOWNLOAD_CAPTURE_DATA</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Offline collected data.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-112DEED4-5A22-4E70-BA82-13FB09569A43"><!-- --></a>NET_SDK_DOWNLOAD_HD_CAMERA_CORRECT_TABLE_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">HD camera correction sheet (CAL format).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-64B8A66D-2A0A-4C2B-87BD-5D0DF3F2FC34"><!-- --></a>NET_SDK_DOWNLOAD_CLIENT_CALIBFILE_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">User calibration file (PTO format). </p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-3006BA2B-2C57-4039-913F-231B05721392"><!-- --></a>NET_SDK_DOWNLOAD_FOUR_CAMERAS_PICTURES_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Channel pictures package (TAR format).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-70CE3385-7E1E-4677-9C41-CAB8886CF5C2"><!-- --></a>NET_SDK_DOWNLOAD_SCENE_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Scene file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-B1591F55-BA16-43D2-A09B-60D6F587BA18"><!-- --></a>NET_SDK_DOWNLOAD_OPEN_SOURCE_CERT</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Open source license compliance.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-2BFC119F-083A-4A44-BF18-EC7B358CFBC8"><!-- --></a>NET_SDK_DOWNLOAD_RATIOSTITCHING_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Ratio stitching file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-D663F401-8DB8-4A30-A6AE-65BF4EB17835"><!-- --></a>NET_SDK_DOWNLOAD_LENS_PARAM_FILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Lens parameters file.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA__GUID-B72BEF8D-800C-4F75-BBF5-CAAA1AD49652"><!-- --></a>NET_SDK_DOWNLOAD_SELECT_DEVTYPE_CALIBFILE</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">Calibration file in CAL format.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-763D9DC9-B161-47F9-AFAF-0E663F28FD2A.html">Enumeration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-B0DF0669-08D5-47B1-AAAC-BC491E68EABE.html">BITRATE_ENCODE_INDEX</a></span></li><li><span class="topicref"><a href="GUID-515AE0E5-6AE5-4AEF-A2BD-A8CB1EB9A54A.html">COUNTRY_INDEX</a></span></li><li><span class="topicref"><a href="GUID-DBF4EBF4-7600-4A29-A55F-D64802838E9E.html">CR_INDEX</a></span></li><li><span class="topicref"><a href="GUID-B41799DB-4A7A-481D-ACFC-07DF0BD605D0.html">FIRE_ALARM</a></span></li><li><span class="topicref"><a href="GUID-ABAFC736-C0F9-4305-9C3E-57A789BEA2C2.html">NET_DVR_CHARSET_ENUM</a></span></li><li><span class="topicref"><a href="GUID-41D74A0A-E410-4BCF-9567-B2E25FC1FFA0.html">NET_SDK_CALLBACK_STATUS_NORMAL</a></span></li><li><span class="topicref"><a href="GUID-203D27A4-050E-4D53-A07C-DD9BABFBD69C.html">NET_DVR_LINK_KIND</a></span></li><li><span class="topicref"><a href="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588.html">NET_SDK_LOCAL_CFG_TYPE</a></span></li><li class="active"><span class="topicref">NET_SDK_DOWNLOAD_TYPE</span></li><li><span class="topicref"><a href="GUID-576C3694-A8D3-44A4-B23B-46D3AA8F3AC1.html">NET_SDK_UPLOAD_TYPE</a></span></li><li><span class="topicref"><a href="GUID-3243BDAD-E3CE-4BCC-B78C-11BC5386878C.html">PRIDATA_RENDER</a></span></li><li><span class="topicref"><a href="GUID-D288A094-7CE9-46C1-92FA-09B89DD6FF1E.html">STREAM_TYPE_E</a></span></li><li><span class="topicref"><a href="GUID-B807213F-FD44-417C-A640-D4479212B89A.html">TEM_FLAG</a></span></li><li><span class="topicref"><a href="GUID-68C7CFE6-1C84-48E6-AEB1-2C120766A8B6.html">VCA_PLATE_COLOR</a></span></li><li><span class="topicref"><a href="GUID-9F4CD40E-5576-4572-951A-05DA88AF5682.html">VLR_VEHICLE_CLASS</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

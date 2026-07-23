@@ -1,0 +1,263 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Perform PTZ Control" /><meta name="abstract" content="Perform PTZ control to realize the pan, tilt, and zoom functions of cameras, set the presets for specific monitoring areas to fast switch the camera as needed, and group the user-defined presets as a scanning track for patrol." /><meta name="description" content="Perform PTZ control to realize the pan, tilt, and zoom functions of cameras, set the presets for specific monitoring areas to fast switch the camera as needed, and group the user-defined presets as a scanning track for patrol." /><meta name="DC.Relation" scheme="URI" content="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html" /><meta name="DC.Relation" scheme="URI" content="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A" /><meta name="DC.Language" content="en-US" /><title>Perform PTZ Control</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Perform PTZ Control</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">Perform PTZ control to realize the pan, tilt, and zoom functions of cameras,
+        set the presets for specific monitoring areas to fast switch the camera as needed, and group
+        the user-defined presets as a scanning track for patrol.</p>
+
+        <div class="section prereq p" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-6277DA4F-A127-400D-A40D-F87AE07174A9">
+            <ul class="ul" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__UL_RDV_3KQ_52B">
+                <li class="li" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-43A41C54-4CB4-4890-A951-914E0D72510E">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs."><span class="keyword apiname">NET_DVR_Init</span></a> to initialize the development
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-6141A6FD-4E27-447E-B884-09223A61B34E">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login)."><span class="keyword apiname">NET_DVR_Login_V40</span></a> to log in to the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-5410C36C-0E36-470E-A4BD-40CCDB439603">
+                <div class="fig fignone" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__FIG_FXF_DPW_GBB">
+                    
+                    <img class="image" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__IMAGE_C1Z_SLG_VBB" src="GUID-502B9482-14DA-461E-A781-4D72D3A4565D-high.png" height="1417" />
+                <span class="figcap">Figure 1 Calling Process of
+                        Performing PTZ Control</span></div>
+
+            </p><ol class="ol steps" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-076F3EF1-F624-4C53-BC0E-09E9F79D329B"><li class="li step stepexpand" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-5840B006-E642-4B57-8537-15CB0482D5FB">
+                <span class="ph cmd">Call <a class="xref" href="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C.html#GUID-E0445E09-4F30-4802-9BDA-859A69783D2C" title="Start live view."><span class="keyword apiname">NET_DVR_RealPlay_V40</span></a> to start live view.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-73B2AFFC-2CA9-4E97-9E44-A37CED7396BB"><span class="notetitle">Note:</span> 
+                        <p class="p">For more about starting live view, refer to <a class="xref" href="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492.html#GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492" title="You can set stream parameters and remotely get the live stream for decoding and live view by calling SDK API based on private protocol. And forcing to generate I frame or refresh frame is also available for improving the stream delay problem.">Start Live View</a>.</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-E09911BF-E2C8-4BB4-9343-699B73FFE4EB">
+                <span class="ph cmd">Call <a class="xref" href="GUID-B22E500C-B68F-4554-BD20-47F24FA3B12D.html#GUID-B22E500C-B68F-4554-BD20-47F24FA3B12D" title="Implement PTZ control."><span class="keyword apiname">NET_DVR_PTZControl</span></a> to enable PTZ
+                    control.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-883D8C1C-056D-449A-841B-69C4CBD416EE">
+                <span class="ph cmd">Set the preset(s).</span>
+                <ol type="a" class="ol substeps" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__SUBSTEPS_ATX_DRW_GBB">
+                    <li class="li substep" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-1F9AA2C6-A042-4B1F-A42E-6AF83E69F1A6">
+                        <span class="ph cmd">Control the camera to move to a specific position.</span>
+                    </li>
+
+                    <li class="li substep" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-5EE8E9CE-2DB6-4159-87DC-1C5431C22F1F">
+                        <span class="ph cmd">Call <a class="xref" href="GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395.html#GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395" title="Set and call preset during PTZ control."><span class="keyword apiname">NET_DVR_PTZPreset</span></a> with the command of
+                                <span class="keyword cmdname">SET_PRESET</span> (command No.: 8) to set the position
+                            as a preset.</span>
+                    </li>
+
+                    <li class="li substep" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-716D0ABA-56A6-49B0-A3C1-F25937C27B5E"><strong>Optional: </strong>
+                        <span class="ph cmd">Repeatedly call <a class="xref" href="GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395.html#GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395" title="Set and call preset during PTZ control."><span class="keyword apiname">NET_DVR_PTZPreset</span></a> with the command of
+                                <span class="keyword cmdname">SET_PRESET</span> (command No.: 8) to set multiple
+                            presets.</span>
+                    </li>
+
+                </ol>
+
+            </li>
+<li class="li step stepexpand" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-C8BEB04A-9182-4D59-A505-473ED3A34EAB"><strong>Optional: </strong>
+                <span class="ph cmd">Perform the following operation(s) after setting the presets.</span>
+                
+<table border="1" frame="hsides" rules="rows" cellpadding="4" cellspacing="0" summary="" class="simpletable choicetable choicetableborder" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__CHOICETABLE_KFG_HFD_2FB">
+<thead><tr><th id="d1031605e161-option" valign="bottom" align="left">Option</th>
+<th id="d1031605e161-desc" valign="bottom" align="left">Description</th></tr></thead>
+<tbody>
+                    <tr class="strow chrow">
+                        <td valign="top" headers="d1031605e161-option" id="d1031605e165" class="stentry choption"><strong>
+                            <p class="p">Call Preset</p>
+
+                        </strong></td>
+
+                        <td valign="top" headers="d1031605e161-desc d1031605e165" class="stentry chdesc">
+                            <p class="p">Call <a class="xref" href="GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395.html#GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395" title="Set and call preset during PTZ control."><span class="keyword apiname">NET_DVR_PTZPreset</span></a> with
+                                    <span class="keyword cmdname">GOTO_PREST</span> (command No.: 39) to call the
+                                configured preset.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="strow chrow">
+                        <td valign="top" headers="d1031605e161-option" id="d1031605e191" class="stentry choption"><strong>
+                            <p class="p">Delete Preset</p>
+
+                        </strong></td>
+
+                        <td valign="top" headers="d1031605e161-desc d1031605e191" class="stentry chdesc">
+                            <p class="p">Call <a class="xref" href="GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395.html#GUID-D8DE063E-F4A3-4229-A47F-566AE6D7D395" title="Set and call preset during PTZ control."><span class="keyword apiname">NET_DVR_PTZPreset</span></a> with
+                                    <span class="keyword cmdname">CLE_PREST</span> (command No.: 9) to delete the
+                                preset.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="strow chrow">
+                        <td valign="top" headers="d1031605e161-option" id="d1031605e217" class="stentry choption"><strong>
+                            <p class="p">Get Preset Information</p>
+
+                        </strong></td>
+
+                        <td valign="top" headers="d1031605e161-desc d1031605e217" class="stentry chdesc">
+                            <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information."><span class="keyword apiname">NET_DVR_GetDVRConfig</span></a>
+                                with <span class="keyword cmdname">NET_DVR_GET_PRESET_NAME</span> (command No.: 3383)
+                                to get the preset name and predefined PTZ information, which is
+                                returned by <span class="keyword parmname">lpOutBuffer</span> in <a class="xref" href="GUID-25AC55A3-0E47-43E1-BC57-7B4B65DBF848.html#GUID-25AC55A3-0E47-43E1-BC57-7B4B65DBF848" title="Preset name and predefined PTZ information structure."><var class="keyword varname">NET_DVR_PRESET_NAME</var></a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="strow chrow">
+                        <td valign="top" headers="d1031605e161-option" id="d1031605e254" class="stentry choption"><strong>
+                            <p class="p">Edit Preset Name</p>
+
+                        </strong></td>
+
+                        <td valign="top" headers="d1031605e161-desc d1031605e254" class="stentry chdesc">
+                            <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters."><span class="keyword apiname">NET_DVR_SetDVRConfig</span></a>
+                                with <span class="keyword cmdname">NET_DVR_SET_PRESET_NAME</span> (command No.: 3382)
+                                and set <span class="keyword parmname">lpInBuffer</span> to <a class="xref" href="GUID-25AC55A3-0E47-43E1-BC57-7B4B65DBF848.html#GUID-25AC55A3-0E47-43E1-BC57-7B4B65DBF848" title="Preset name and predefined PTZ information structure."><var class="keyword varname">NET_DVR_PRESET_NAME</var></a> for
+                                editing the preset name.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody></table>
+
+            </li>
+<li class="li step stepexpand" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-2114950A-2C37-467D-AA52-D4490314AE94"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-8161ADBD-7259-4DB2-AD22-B2BB3F22CCFC.html#GUID-8161ADBD-7259-4DB2-AD22-B2BB3F22CCFC" title="Set and start patrol during PTZ control."><span class="keyword apiname">NET_DVR_PTZCruise</span></a> with different commands to add the
+                    configured presets to the patrol, and set the scanning speed between two presets
+                    and the dwell time at a preset.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-91FF5910-BE7E-4431-8A1F-5EA7B71F0D13"><span class="notetitle">Note:</span> 
+                        <p class="p">At least two presets are required to set the patrol.</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-A41772D4-E585-4351-A747-CB374B1F6E57"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-8161ADBD-7259-4DB2-AD22-B2BB3F22CCFC.html#GUID-8161ADBD-7259-4DB2-AD22-B2BB3F22CCFC" title="Set and start patrol during PTZ control."><span class="keyword apiname">NET_DVR_PTZCruise</span></a> with <span class="keyword cmdname">RUN_SFQ</span> (command
+                    No.: 37) or <span class="keyword cmdname">STOP_SEQ</span> (command No.: 38) to start and stop the
+                    configured patrol.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-F4C66C1F-A54A-4F3D-B397-FA27C232C1C8">
+                <span class="ph cmd">Call <a class="xref" href="GUID-90584BC9-6474-4D2F-8746-B161DA499673.html#GUID-90584BC9-6474-4D2F-8746-B161DA499673" title="Stop live view."><span class="keyword apiname">NET_DVR_StopRealPlay</span></a> to stop the live view.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The PTZ control is disabled.</p>
+
+                </div>
+            </li>
+</ol>
+
+<div class="section postreq" id="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A__GUID-3EA247DF-44CA-433A-95FD-D31805181331">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices."><span class="keyword apiname">NET_DVR_Logout</span></a>
+                and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended."><span class="keyword apiname">NET_DVR_Cleanup</span></a>
+                to log out and release the resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html">Video and Audio</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492.html">Start Live View</a></span></li><li><span class="topicref"><a href="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1.html">Start Live View Based on ISAPI Protocol</a></span></li><li class="active"><span class="topicref">Perform PTZ Control</span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-2D95B9C1-C49B-4566-8E72-5B8B35A58A85.html">PTZ Configuration</a></span></li></ul></li><li><span class="topicref"><a href="GUID-F6375406-A6C9-4B67-A4E1-7A10A453E635.html">Search for Recording Start and End Time by Channel</a></span></li><li><span class="topicref"><a href="GUID-486489B8-E670-46C3-B8EA-E6FC5CCDF760.html">Start Playback</a></span></li><li><span class="topicref"><a href="GUID-2F93B07A-00F0-4D57-A159-4CD852A2EFA0.html">Two-Way Audio</a></span></li><li><span class="topicref"><a href="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473.html">Stream Encoding</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

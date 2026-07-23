@@ -1,0 +1,309 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Table 1 Accelerometer Zero Bias Calibration Function API Get device capability to check whether device supports accelerometer zero bias calibration Call NET_DVR_STDXMLConfig to transmit ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Device Calibration" /><meta name="DC.Relation" scheme="URI" content="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-406B75B5-6C79-474C-A456-0333498574DB" /><meta name="DC.Language" content="en-US" /><title>Device Calibration</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-406B75B5-6C79-474C-A456-0333498574DB" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Device Calibration</h1>
+
+<div class="body conbody">
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-406B75B5-6C79-474C-A456-0333498574DB__TABLE_K3K_SJP_XLB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1 Accelerometer Zero Bias Calibration</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d231364e28">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d231364e34">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e28 ">
+                            <p class="p">Get device capability to check whether device supports accelerometer
+                                zero bias calibration</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e34 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The device capability is returned in the message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            <p class="p">If supports, the node &lt;<span class="keyword parmname">isSupportZeroBiasCalibration</span>&gt; is returned in the
+                                message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> and its value is true.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e28 ">
+                            <p class="p">Calibrate accelerometer zero bias</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e34 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-4C9BF3C1-E5D9-4016-BEC1-6C85043FF15C.html#GUID-4C9BF3C1-E5D9-4016-BEC1-6C85043FF15C" title="Calibrate the accelerometer bias.">/ISAPI/System/zeroBiasCalibration/channels/&lt;ID&gt;?format=json</a> by <span class="ph synph">PUT</span> method.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-406B75B5-6C79-474C-A456-0333498574DB__TABLE_AWP_G4P_XLB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 2 Installation Angle Calibration</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d231364e152">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d231364e158">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e152 ">
+                            <p class="p">Get device capability to check whether device supports installation
+                                angle calibration</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e158 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The device capability is returned in the message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            <p class="p">If supports, the node &lt;<span class="keyword parmname">isSupportInstallationAngleCalibration</span>&gt; is
+                                returned in the message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> and its value is true.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e152 ">
+                            <p class="p">Get capability of installation angle calibration</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e158 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-36D3D00C-D959-4351-8439-E0018E5EFC8A.html#GUID-36D3D00C-D959-4351-8439-E0018E5EFC8A" title="Get the capability of installation angle calibration.">/ISAPI/System/installationAngleCalibration/channels/&lt;ID&gt;/capabilities?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e152 ">
+                            <p class="p">Get installation angle calibration status or calibrate installation
+                                angle</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e158 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-269E36E1-C368-45E7-9BCA-B6DF2C811CED.html#GUID-269E36E1-C368-45E7-9BCA-B6DF2C811CED" title="Get the installation angle calibration status or calibrate the installation angle.">/ISAPI/System/installationAngleCalibration/channels/&lt;ID&gt;?format=json</a> with <span class="ph synph">GET</span> or
+                                    <span class="ph synph">PUT</span> method. </p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-406B75B5-6C79-474C-A456-0333498574DB__TABLE_AH2_P4P_XLB" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 3 Laser Optical Axis</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d231364e311">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d231364e317">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e311 ">
+                            <p class="p">Get configuration capability of laser optical axis</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e317 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-B4C2ED17-1965-4C47-BEC6-6D2D86723061.html#GUID-B4C2ED17-1965-4C47-BEC6-6D2D86723061" title="Get the configuration capability of laser optical axis.">/ISAPI/System/laserOpticalAxis/capabilities?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The device capability is returned in the message <a class="xref" href="GUID-84BF547F-4C7C-409D-A6C0-3EBB07C9C3BD.html#GUID-84BF547F-4C7C-409D-A6C0-3EBB07C9C3BD" title="JSON message about capability of configuring laser optical axis">JSON_LaserOpticalAxisCap</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e311 ">
+                            <p class="p">Get laser optical axis parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e317 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-BA49C8B2-4422-4E5E-876F-DB78ECB65AAF.html#GUID-BA49C8B2-4422-4E5E-876F-DB78ECB65AAF" title="Get or set laser optical axis parameters.">/ISAPI/System/laserOpticalAxis?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The parameters are returned in the message <a class="xref" href="GUID-679A3726-3D89-4BBD-AC8A-D00C727ADDF1.html#GUID-679A3726-3D89-4BBD-AC8A-D00C727ADDF1" title="JSON message about laser optical axis parameters.">JSON_LaserOpticalAxis</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e311 ">
+                            <p class="p">Set laser optical axis parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e317 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-BA49C8B2-4422-4E5E-876F-DB78ECB65AAF.html#GUID-BA49C8B2-4422-4E5E-876F-DB78ECB65AAF" title="Get or set laser optical axis parameters.">/ISAPI/System/laserOpticalAxis?format=json</a> with <span class="ph synph">GET</span> or
+                                    <span class="ph synph">PUT</span> methd and set <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-679A3726-3D89-4BBD-AC8A-D00C727ADDF1.html#GUID-679A3726-3D89-4BBD-AC8A-D00C727ADDF1" title="JSON message about laser optical axis parameters.">JSON_LaserOpticalAxis</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d231364e311 ">
+                            <p class="p">Adjust laser optical axis</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d231364e317 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit  <a class="xref" href="GUID-342FAD4F-E5B4-4D54-B4FD-CBC609258B8D.html#GUID-342FAD4F-E5B4-4D54-B4FD-CBC609258B8D" title="Adjust the laser optical axis.">/ISAPI/System/laserOpticalAxis/goto?format=json</a> with <span class="ph synph">PUT</span> method and
+                                set <span class="keyword parmname">lpInputParam</span> to the message
+                                    <a class="xref" href="GUID-72052DBA-0EDC-438E-B32F-52E176AFB17C.html#GUID-72052DBA-0EDC-438E-B32F-52E176AFB17C" title="JSON message about direction of adjusting laser optical axis">JSON_LaserOpticalAxis_direction</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li><span class="topicref"><a href="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2.html">Search for Logs</a></span></li><li><span class="topicref"><a href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html">Configure Log Storage Mode</a></span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697.html">Automatic Maintenance</a></span></li><li><span class="topicref"><a href="GUID-F703A174-8D62-4240-B68F-61994DB95C83.html">Basic Maintenance</a></span></li><li><span class="topicref"><a href="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743.html">Basic Settings</a></span></li><li class="active"><span class="topicref">Device Calibration</span></li><li><span class="topicref"><a href="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B.html">Configure Camera Correction</a></span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

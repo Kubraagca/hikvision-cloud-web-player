@@ -41,6 +41,12 @@ select {
   font: inherit;
 }
 
+code {
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: rgba(35, 31, 26, 0.06);
+}
+
 .shell {
   width: min(1440px, calc(100% - 32px));
   margin: 0 auto;
@@ -232,12 +238,17 @@ select {
 
 .toolbar-card select,
 .field input,
-.field select {
+.field select,
+.text-input {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: #fffdf8;
+}
+
+.text-input {
+  margin: 4px 0 12px;
 }
 
 .camera-list {
@@ -350,6 +361,19 @@ video {
   margin-top: 14px;
 }
 
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 16px;
+  color: var(--text);
+}
+
+.checkbox-row input {
+  width: 18px;
+  height: 18px;
+}
+
 .button-row {
   display: flex;
   gap: 10px;
@@ -376,6 +400,22 @@ video {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
+}
+
+.code-panel {
+  margin: 0;
+  padding: 14px;
+  min-height: 180px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(35, 31, 26, 0.92);
+  color: #f8f2e7;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .state-waiting {

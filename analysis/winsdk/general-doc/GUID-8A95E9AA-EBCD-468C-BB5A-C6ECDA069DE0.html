@@ -1,0 +1,138 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Encrypt HTTPS Link" /><meta name="abstract" content="When the streaming mode is RTP over HTTPS, that is, the stream with RTP container format is transmitted on the link based on HTTPS, you can encrypt the HTTPS link to ensure the security of stream transmission." /><meta name="description" content="When the streaming mode is RTP over HTTPS, that is, the stream with RTP container format is transmitted on the link based on HTTPS, you can encrypt the HTTPS link to ensure the security of stream transmission." /><meta name="DC.Relation" scheme="URI" content="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0" /><meta name="DC.Language" content="en-US" /><title>Encrypt HTTPS Link</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Encrypt HTTPS Link</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">When the streaming mode is RTP over HTTPS, that is, the stream with RTP
+        container format is transmitted on the link based on HTTPS, you can encrypt the HTTPS link
+        to ensure the security of stream transmission.</p>
+
+<ol class="ol steps" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0__GUID-E7E625F9-F76D-4022-9401-65557A96F08C"><li class="li step stepexpand" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0__GUID-DD392330-9FDE-4970-A356-6BE082855690">
+                <span class="ph cmd">Call <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a> and set the
+                    capability type to "DEVICE_SOFTHARDWARE_ABILITY" (macro definition value: 0x001)
+                    for getting the device software and hardware capability (<a class="xref" href="GUID-8EB02935-03B8-423E-A130-6D400C29E032.html#GUID-8EB02935-03B8-423E-A130-6D400C29E032" title="BasicCapability message in XML format">XML_BasicCapability</a>) to check if
+                    encrypting HTTPS link is supported by device.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">If supported, the node &lt;<span class="keyword parmname">RtspoverHttpsSupport</span>&gt; will be returned in the capability
+                        and its value is "1".</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0__GUID-37A8AA48-A05A-478D-8262-5BEB736F3470">
+                <span class="ph cmd">Enable HTTPS link encryption for live view or playback.</span>
+                <ul class="ul choices" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0__CHOICES_TTP_5QC_NHB">
+                    <li class="li choice" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0__GUID-2281C64F-BF2E-4BC3-8D2A-667DF3717E45">
+                        <p class="p">Call <a class="xref" href="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C.html#GUID-E0445E09-4F30-4802-9BDA-859A69783D2C" title="Start live view.">NET_DVR_RealPlay_V40</a> and set
+                                <span class="keyword parmname">dwLinkMode</span> and <span class="keyword parmname">byProtoType</span> of live view parameter structure
+                                (<a class="xref" href="GUID-D2E33E5A-F147-45CD-9535-97F9209921AA.html#GUID-D2E33E5A-F147-45CD-9535-97F9209921AA">NET_DVR_PREVIEWINFO</a>) to "7" and
+                            "1", respectively, for enabling HTTPS link encryption during live
+                            view.</p>
+
+                    </li>
+
+                    <li class="li choice" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0__GUID-47673E40-4F3F-43BD-91D6-CA879F7EE96C">
+                        <p class="p">Call <a class="xref" href="GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B.html#GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B" title="Start playback by time.">NET_DVR_PlayBackByTime_V50</a> or <a class="xref" href="GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B.html#GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B" title="Playback by file.">NET_DVR_PlayBackByName</a> to automatically enable
+                            HTTPS link encryption without setting any parameters during
+                            playback.</p>
+
+                    </li>
+
+                </ul>
+
+            </li>
+<li class="li step stepexpand" id="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0__GUID-4039A229-FC2D-4797-8A02-FAB91FD866C8">
+                <span class="ph cmd">Call <a class="xref" href="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C.html#GUID-E0445E09-4F30-4802-9BDA-859A69783D2C" title="Start live view.">NET_DVR_RealPlay_V40</a> or <a class="xref" href="GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B.html#GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B" title="Start playback by time.">NET_DVR_PlayBackByTime_V50</a>/<a class="xref" href="GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B.html#GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B" title="Playback by file.">NET_DVR_PlayBackByName</a> to automatically
+                    enable HTTPS link encryption without setting any parameters during live view or
+                    playback.</span>
+            </li>
+</ol>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-9AB5DE09-F0A6-4C3E-AF6B-E224632ECAC2.html">Security Service</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC.html">Configure Double Verification</a></span></li><li><span class="topicref"><a href="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5.html">Encrypt Stream</a></span></li><li><span class="topicref"><a href="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html">Encrypt Stream Transmission Link</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B.html">(Optional) Verify Device</a></span></li><li class="active"><span class="topicref">Encrypt HTTPS Link</span></li><li><span class="topicref"><a href="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E.html">Encrypt TLS Link</a></span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

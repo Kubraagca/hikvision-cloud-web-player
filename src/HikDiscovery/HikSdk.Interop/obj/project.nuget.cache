@@ -1,8 +1,42 @@
 {
   "version": 2,
-  "dgSpecHash": "j9C+NA4B7Yg=",
-  "success": true,
+  "dgSpecHash": "qJ0Fi2aK828=",
+  "success": false,
   "projectFilePath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı.",
+      "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "filePath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "targetGraphs": []
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı.",
+      "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "filePath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "targetGraphs": []
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı.",
+      "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "filePath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "targetGraphs": []
+    },
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Paket güvenlik açığı verileri alınırken hata oluştu: https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.",
+      "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

@@ -1,6 +1,9 @@
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using HikSdk.Interop;
 
 namespace HikSdk.SadpWpf;
@@ -8,6 +11,7 @@ namespace HikSdk.SadpWpf;
 public partial class MainWindow : Window
 {
     private readonly ProvisioningRecordStore _recordStore = new();
+    private readonly LocalNetworkCameraDiscoveryService _discoveryService = new();
     private CancellationTokenSource? _operationCts;
 
     public MainWindow()
@@ -19,9 +23,14 @@ public partial class MainWindow : Window
 
     private MainWindowViewModel ViewModel => (MainWindowViewModel)DataContext;
 
+    private async void DiscoverButton_Click(object sender, RoutedEventArgs e)
+    {
+        await RunBusyOperationAsync("Yerel agda kamera taramasi baslatiliyor.", RunDiscoveryAsync, requiresCredentials: false);
+    }
+
     private async void FullSetupButton_Click(object sender, RoutedEventArgs e)
     {
-        await RunBusyOperationAsync("Baştan sona kurulum baslatiliyor.", RunFullSetupAsync);
+        await RunBusyOperationAsync("Bastan sona kurulum baslatiliyor.", RunFullSetupAsync);
     }
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -93,6 +102,34 @@ public partial class MainWindow : Window
             });
     }
 
+    private void DiscoveryGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ViewModel.SelectedDiscoveredCamera is null)
+        {
+            return;
+        }
+
+        ViewModel.CameraAddress = ViewModel.SelectedDiscoveredCamera.IpAddress;
+        ViewModel.CurrentIpAddress = ViewModel.SelectedDiscoveredCamera.IpAddress;
+
+        if (!string.Equals(ViewModel.SelectedDiscoveredCamera.Model, "-", StringComparison.Ordinal))
+        {
+            ViewModel.Model = ViewModel.SelectedDiscoveredCamera.Model;
+        }
+
+        if (!string.Equals(ViewModel.SelectedDiscoveredCamera.SerialNumber, "-", StringComparison.Ordinal))
+        {
+            ViewModel.SerialNumber = ViewModel.SelectedDiscoveredCamera.SerialNumber;
+        }
+
+        if (!string.Equals(ViewModel.SelectedDiscoveredCamera.MacAddress, "-", StringComparison.Ordinal))
+        {
+            ViewModel.MacAddress = ViewModel.SelectedDiscoveredCamera.MacAddress;
+        }
+
+        ViewModel.StatusText = $"Secilen kamera: {ViewModel.SelectedDiscoveredCamera.IpAddress}";
+    }
+
     protected override void OnClosed(EventArgs e)
     {
         _operationCts?.Cancel();
@@ -102,7 +139,7 @@ public partial class MainWindow : Window
 
     private CancellationToken CurrentToken => _operationCts?.Token ?? CancellationToken.None;
 
-    private async Task RunBusyOperationAsync(string startingStatus, Func<IsapiClient, Task> action)
+    private async Task RunBusyOperationAsync(string startingStatus, Func<IsapiClient, Task> action, bool requiresCredentials = true)
     {
         if (ViewModel.IsBusy)
         {
@@ -118,9 +155,16 @@ public partial class MainWindow : Window
             ViewModel.StatusText = startingStatus;
             ViewModel.ErrorText = "Islem devam ediyor.";
 
-            var options = CreateConnectionOptions();
-            using var client = new IsapiClient(options);
-            await action(client);
+            if (requiresCredentials)
+            {
+                var options = CreateConnectionOptions();
+                using var client = new IsapiClient(options, HandleTraceEntry);
+                await action(client);
+            }
+            else
+            {
+                await action(CreateProbeClient());
+            }
         }
         catch (OperationCanceledException)
         {
@@ -137,6 +181,73 @@ public partial class MainWindow : Window
             ViewModel.IsBusy = false;
             _operationCts.Dispose();
             _operationCts = null;
+        }
+    }
+
+    private async Task RunDiscoveryAsync(IsapiClient _)
+    {
+        var rows = await TrySdkDiscoveryAsync();
+        var statusPrefix = "SDK kesfiyle";
+
+        if (rows.Length == 0)
+        {
+            var results = await _discoveryService.DiscoverAsync(CurrentToken);
+            rows = results.Select(model => new DiscoveredCameraRow(model)).ToArray();
+            statusPrefix = "Yerel IP taramasi ile";
+        }
+
+        ViewModel.DiscoveredCameras.SyncFrom(rows);
+
+        if (rows.Length == 0)
+        {
+            ViewModel.StatusText = "Tarama tamamlandi, kamera bulunamadi.";
+            ViewModel.ErrorText = "SDK kesfi sonuc vermedi; yerel IP taramasi da aday bulamadi.";
+            return;
+        }
+
+        ViewModel.SelectedDiscoveredCamera = rows[0];
+        ViewModel.CameraAddress = rows[0].IpAddress;
+        ViewModel.CurrentIpAddress = rows[0].IpAddress;
+        ViewModel.StatusText = $"{statusPrefix} {rows.Length} aday bulundu.";
+        ViewModel.ErrorText = statusPrefix.StartsWith("SDK", StringComparison.Ordinal)
+            ? "Liste HCNetSDK uzerinden dolduruldu."
+            : "SDK kesfi sonuc vermedigi icin yerel IP taramasi kullanildi.";
+    }
+
+    private async Task<DiscoveredCameraRow[]> TrySdkDiscoveryAsync()
+    {
+        using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(CurrentToken);
+        timeoutCts.CancelAfter(TimeSpan.FromSeconds(3));
+
+        try
+        {
+            return await Task.Run(() =>
+            {
+                using var discovery = new SadpDiscoveryService(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
+                var result = discovery.DiscoverAsync(timeoutCts.Token).GetAwaiter().GetResult();
+                if (!result.Success || result.Devices.Count == 0)
+                {
+                    return Array.Empty<DiscoveredCameraRow>();
+                }
+
+                return result.Devices
+                    .Select(device => new DiscoveredCameraRow(
+                        new DiscoveredCameraModel(
+                            device.IpAddress,
+                            device.MacAddress,
+                            device.SerialNumber,
+                            device.Model,
+                            device.ActivationStatus,
+                            IsHikvision: true,
+                            SupportsIsapi: true,
+                            SupportsSdkPort: true,
+                            PingSucceeded: true)))
+                    .ToArray();
+            }, timeoutCts.Token);
+        }
+        catch (OperationCanceledException) when (!CurrentToken.IsCancellationRequested)
+        {
+            return Array.Empty<DiscoveredCameraRow>();
         }
     }
 
@@ -158,112 +269,123 @@ public partial class MainWindow : Window
         var setupContext = await EnsureCameraReadyAsync(client, options);
         var activeClient = client;
         IsapiClient? updatedClient = null;
-
-        var networkInterfaces = await ExecuteStageAsync(
-            "Ag Ayari",
-            "Ag bilgileri okunuyor ve gateway/DNS guncelleniyor.",
-            async () =>
-            {
-                var current = await activeClient.GetNetworkInterfacesAsync(CurrentToken);
-                ApplyNetworkInterfaces(current);
-                return await activeClient.UpdateGatewayDnsAsync(
-                    ViewModel.GatewayOverride,
-                    dns1: "8.8.8.8",
-                    dns2: "1.1.1.1",
-                    enableDhcp: ViewModel.EnableDhcp,
-                    cancellationToken: CurrentToken);
-            });
-
-        ApplyNetworkInterfaces(networkInterfaces);
-
-        if (ViewModel.EnableDhcp)
+        try
         {
-            var foundIp = await ExecuteStageAsync(
+            var networkInterfaces = await ExecuteStageAsync(
                 "Ag Ayari",
-                "DHCP sonrasi yeni IP adresi bulunuyor.",
-                async () => await activeClient.FindCameraIpInSubnetAsync(
-                    setupContext.CurrentIpAddress,
-                    options.UserName,
-                    options.Password,
+                "Ag bilgileri okunuyor ve gateway/DNS guncelleniyor.",
+                async () =>
+                {
+                    var current = await activeClient.GetNetworkInterfacesAsync(CurrentToken);
+                    ApplyNetworkInterfaces(current);
+                    return await activeClient.UpdateGatewayDnsAsync(
+                        ViewModel.GatewayOverride,
+                        dns1: ViewModel.PrimaryDns.Trim(),
+                        dns2: ViewModel.SecondaryDns.Trim(),
+                        enableDhcp: ViewModel.EnableDhcp,
+                        cancellationToken: CurrentToken);
+                });
+
+            ApplyNetworkInterfaces(networkInterfaces);
+            EnsureNetworkSettingsApplied(networkInterfaces);
+
+            if (ViewModel.EnableDhcp)
+            {
+                var foundIp = await ExecuteStageAsync(
+                    "Ag Ayari",
+                    "DHCP sonrasi yeni IP adresi bulunuyor.",
+                    async () => await activeClient.FindCameraIpInSubnetAsync(
+                        setupContext.CurrentIpAddress,
+                        options.UserName,
+                        options.Password,
+                        setupContext.DeviceInfo.ShortSerial,
+                        setupContext.DeviceInfo.MacAddress,
+                        CurrentToken));
+
+                if (!string.IsNullOrWhiteSpace(foundIp))
+                {
+                    ViewModel.CameraAddress = foundIp;
+                    ViewModel.CurrentIpAddress = foundIp;
+                    options = options with { CameraAddress = foundIp };
+                    updatedClient?.Dispose();
+                    updatedClient = new IsapiClient(options, HandleTraceEntry);
+                    activeClient = updatedClient;
+                    networkInterfaces = await activeClient.GetNetworkInterfacesAsync(CurrentToken);
+                    ApplyNetworkInterfaces(networkInterfaces);
+                    EnsureNetworkSettingsApplied(networkInterfaces);
+                }
+            }
+
+            var verificationCode = EnsureVerificationCode();
+            var ezvizResult = await ExecuteStageAsync(
+                "Hik-Connect Online",
+                "Kamera EZVIZ/Hik-Connect tarafinda online bekleniyor.",
+                async () => await activeClient.EnableEzvizAsync(
+                    verificationCode,
+                    pollInterval: TimeSpan.FromSeconds(5),
+                    timeout: TimeSpan.FromMinutes(2),
+                    cancellationToken: CurrentToken));
+
+            ApplyEzvizStatus(ezvizResult.FinalStatus);
+            if (ezvizResult.TimedOut)
+            {
+                throw new InvalidOperationException("registerStatus iki dakika icinde true olmadi. Gateway ve DNS baglantisini kontrol edin.");
+            }
+
+            var alias = string.IsNullOrWhiteSpace(ViewModel.DeviceAlias)
+                ? $"CAM-{setupContext.DeviceInfo.ShortSerial}"
+                : ViewModel.DeviceAlias.Trim();
+            var backendResult = await ExecuteStageAsync(
+                "Cihaz Eklendi",
+                "Hik-Connect for Teams backend baglantisi kontrol ediliyor ve cihaz ekleme istegi gonderiliyor.",
+                async () =>
+                {
+                    using var backendClient = new TeamBackendClient(ViewModel.BackendBaseUrl, HandleTraceEntry);
+                    await backendClient.CheckHealthAsync(CurrentToken);
+                    return await backendClient.AddDeviceAsync(
+                        new BackendAddDeviceRequest(
+                            setupContext.DeviceInfo.ShortSerial,
+                            verificationCode,
+                            alias,
+                            ViewModel.AreaName),
+                        CurrentToken);
+                });
+
+            if (!backendResult.Success)
+            {
+                throw new InvalidOperationException(backendResult.Message);
+            }
+
+            ViewModel.DeviceId = backendResult.DeviceId;
+            ViewModel.AreaId = backendResult.AreaId;
+            CompleteStage("Cihaz Eklendi", "Tamam", backendResult.DeviceStatusMessage);
+            CompleteStage("Kanal Alana Aktarildi", "Tamam", backendResult.ChannelStatusMessage);
+
+            await _recordStore.SaveAsync(
+                new ProvisionedCameraRecord(
+                    backendResult.DeviceId,
                     setupContext.DeviceInfo.ShortSerial,
                     setupContext.DeviceInfo.MacAddress,
-                    CurrentToken));
+                    ViewModel.CurrentIpAddress,
+                    backendResult.Alias,
+                    DateTimeOffset.UtcNow),
+                CurrentToken);
 
-            if (!string.IsNullOrWhiteSpace(foundIp))
-            {
-                ViewModel.CameraAddress = foundIp;
-                ViewModel.CurrentIpAddress = foundIp;
-                options = options with { CameraAddress = foundIp };
-                updatedClient?.Dispose();
-                updatedClient = new IsapiClient(options);
-                activeClient = updatedClient;
-                networkInterfaces = await activeClient.GetNetworkInterfacesAsync(CurrentToken);
-                ApplyNetworkInterfaces(networkInterfaces);
-            }
+            CompleteStage("Tamamlandi", "Basarili", $"deviceId={backendResult.DeviceId}");
+            ViewModel.StatusText = "Bastan sona kurulum tamamlandi.";
+            ViewModel.ErrorText = "Hata yok.";
         }
-
-        var verificationCode = EnsureVerificationCode();
-        var ezvizResult = await ExecuteStageAsync(
-            "Hik-Connect Online",
-            "Kamera EZVIZ/Hik-Connect tarafinda online bekleniyor.",
-            async () => await activeClient.EnableEzvizAsync(
-                verificationCode,
-                pollInterval: TimeSpan.FromSeconds(5),
-                timeout: TimeSpan.FromMinutes(2),
-                cancellationToken: CurrentToken));
-
-        ApplyEzvizStatus(ezvizResult.FinalStatus);
-        if (ezvizResult.TimedOut)
+        finally
         {
-            throw new InvalidOperationException("registerStatus iki dakika icinde true olmadi. Gateway ve DNS baglantisini kontrol edin.");
+            updatedClient?.Dispose();
         }
-
-        var alias = $"CAM-{setupContext.DeviceInfo.ShortSerial}";
-        var backendResult = await ExecuteStageAsync(
-            "Cihaz Eklendi",
-            "Hik-Connect for Teams backend istegi gonderiliyor.",
-            async () =>
-            {
-                using var backendClient = new TeamBackendClient(ViewModel.BackendBaseUrl);
-                return await backendClient.AddDeviceAsync(
-                    new BackendAddDeviceRequest(
-                        setupContext.DeviceInfo.ShortSerial,
-                        verificationCode,
-                        alias,
-                        ViewModel.AreaName),
-                    CurrentToken);
-            });
-
-        if (!backendResult.Success)
-        {
-            throw new InvalidOperationException(backendResult.Message);
-        }
-
-        ViewModel.DeviceId = backendResult.DeviceId;
-        ViewModel.AreaId = backendResult.AreaId;
-        CompleteStage("Cihaz Eklendi", "Tamam", backendResult.DeviceStatusMessage);
-        CompleteStage("Kanal Alana Aktarildi", "Tamam", backendResult.ChannelStatusMessage);
-
-        await _recordStore.SaveAsync(
-            new ProvisionedCameraRecord(
-                backendResult.DeviceId,
-                setupContext.DeviceInfo.ShortSerial,
-                setupContext.DeviceInfo.MacAddress,
-                ViewModel.CurrentIpAddress,
-                backendResult.Alias,
-                DateTimeOffset.UtcNow),
-            CurrentToken);
-
-        CompleteStage("Tamamlandi", "Basarili", $"deviceId={backendResult.DeviceId}");
-        ViewModel.StatusText = "Baştan sona kurulum tamamlandi.";
-        ViewModel.ErrorText = "Hata yok.";
-        updatedClient?.Dispose();
     }
 
     private async Task<ActivationContext> EnsureCameraReadyAsync(IsapiClient client, CameraConnectionOptions options)
     {
         var sdkAddress = ExtractSdkAddress(options.CameraAddress);
         var activationPerformed = false;
+        DeviceInfoModel? preloadedDeviceInfo = null;
 
         if (options.Password.Length > HikConstants.PASSWD_LEN)
         {
@@ -277,17 +399,26 @@ public partial class MainWindow : Window
             {
                 try
                 {
-                    var activateStatus = await client.GetActivateStatusAsync(CurrentToken);
-                    if (activateStatus.IsInactive)
-                    {
-                        activationPerformed = true;
-                    }
+                    preloadedDeviceInfo = await client.GetDeviceInfoAsync(CurrentToken);
+                    activationPerformed = false;
                 }
                 catch (IsapiRequestException exception) when (
                     exception.StatusCode == HttpStatusCode.Forbidden &&
                     string.Equals(exception.SubStatusCode, "notActivated", StringComparison.OrdinalIgnoreCase))
                 {
                     activationPerformed = true;
+                }
+                catch (IsapiRequestException exception) when (exception.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    using var sdkSession = new HikActivationSession();
+                    sdkSession.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
+                    var loginResult = sdkSession.Login(sdkAddress, 8000, options.UserName, options.Password);
+                    if (!loginResult.Success)
+                    {
+                        throw new InvalidOperationException("Admin kullanici adi veya parola dogrulanamadi.");
+                    }
+
+                    activationPerformed = false;
                 }
             });
 
@@ -300,11 +431,12 @@ public partial class MainWindow : Window
                 {
                     using var sdkSession = new HikActivationSession();
                     sdkSession.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
-                    var activationResult = sdkSession.ActivateDevice("192.168.1.64", 8000, options.Password);
+                    var activationResult = sdkSession.ActivateDevice(sdkAddress, 8000, options.Password);
                     if (!activationResult.Success)
                     {
                         throw new InvalidOperationException($"NET_DVR_ActivateDevice basarisiz. NET_DVR_GetLastError={activationResult.ErrorCode}, Message={activationResult.ErrorMessage}");
                     }
+
                     await Task.CompletedTask;
                 });
         }
@@ -322,7 +454,7 @@ public partial class MainWindow : Window
             {
                 var info = activationPerformed
                     ? await client.WaitForDeviceInfoAsync(TimeSpan.FromSeconds(90), TimeSpan.FromSeconds(3), CurrentToken)
-                    : await client.GetDeviceInfoAsync(CurrentToken);
+                    : preloadedDeviceInfo ?? await client.GetDeviceInfoAsync(CurrentToken);
 
                 using var sdkSession = new HikActivationSession();
                 sdkSession.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
@@ -346,6 +478,8 @@ public partial class MainWindow : Window
         {
             ViewModel.VerificationCode = IsapiClient.CreateVerificationCode(12);
         }
+
+        ViewModel.VerificationCode = ViewModel.VerificationCode.Trim();
 
         return ViewModel.VerificationCode;
     }
@@ -384,6 +518,11 @@ public partial class MainWindow : Window
         return Uri.TryCreate(trimmed, UriKind.Absolute, out var uri)
             ? uri.Host
             : trimmed;
+    }
+
+    private static IsapiClient CreateProbeClient()
+    {
+        return new IsapiClient(new CameraConnectionOptions("127.0.0.1", "probe", "probe"));
     }
 
     private void ApplyDeviceInfo(DeviceInfoModel deviceInfo)
@@ -514,6 +653,121 @@ public partial class MainWindow : Window
         }
 
         return sanitized;
+    }
+
+    private void HandleTraceEntry(ApiTraceEntry entry)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            var builder = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(ViewModel.TechnicalLogText) &&
+                !string.Equals(ViewModel.TechnicalLogText, "Teknik istek/yanit kaydi henuz yok.", StringComparison.Ordinal))
+            {
+                builder.AppendLine(ViewModel.TechnicalLogText.TrimEnd());
+                builder.AppendLine();
+            }
+
+            builder.AppendLine($"[{entry.Timestamp:HH:mm:ss}] {entry.Source} {entry.Method} {entry.Url}");
+            if (entry.StatusCode is not null)
+            {
+                builder.AppendLine($"HTTP: {entry.StatusCode}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(entry.RequestBody))
+            {
+                builder.AppendLine("Request:");
+                builder.AppendLine(SanitizeTraceContent(entry.RequestBody));
+            }
+
+            if (!string.IsNullOrWhiteSpace(entry.ResponseBody))
+            {
+                builder.AppendLine("Response:");
+                builder.AppendLine(SanitizeTraceContent(entry.ResponseBody));
+            }
+
+            ViewModel.TechnicalLogText = LimitTechnicalLog(builder.ToString());
+        });
+    }
+
+    private string SanitizeTraceContent(string value)
+    {
+        var sanitized = SanitizeError(value);
+        sanitized = Regex.Replace(sanitized, "(<password>)(.*?)(</password>)", "$1***$3", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        sanitized = Regex.Replace(sanitized, "(\"password\"\\s*:\\s*\")(.*?)(\")", "$1***$3", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        sanitized = Regex.Replace(sanitized, "(\"token\"\\s*:\\s*\")(.*?)(\")", "$1***$3", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        return sanitized;
+    }
+
+    private static string LimitTechnicalLog(string text)
+    {
+        const int maxLength = 16000;
+        return text.Length <= maxLength ? text : text[^maxLength..];
+    }
+
+    private void EnsureNetworkSettingsApplied(IReadOnlyList<NetworkInterfaceModel> networkInterfaces)
+    {
+        var first = networkInterfaces.FirstOrDefault(item => !string.IsNullOrWhiteSpace(item.IpAddress) && item.IpAddress != "-");
+        if (first is null)
+        {
+            throw new InvalidOperationException("Ag ayarlari guncellendi ancak geri okunan arayuz bilgisi bulunamadi.");
+        }
+
+        var expectedDns1 = ViewModel.PrimaryDns.Trim();
+        var expectedDns2 = ViewModel.SecondaryDns.Trim();
+        var expectedGateway = string.IsNullOrWhiteSpace(ViewModel.GatewayOverride)
+            ? InferExpectedGateway(first.IpAddress)
+            : ViewModel.GatewayOverride.Trim();
+
+        var actualGateway = ExtractFirstIpv4(first.Gateway);
+        var actualDns1 = ExtractFirstIpv4(first.PrimaryDns);
+        var actualDns2 = ExtractFirstIpv4(first.SecondaryDns);
+
+        if (!string.IsNullOrWhiteSpace(expectedGateway) &&
+            !string.Equals(actualGateway, expectedGateway, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"Gateway uygulanmadi. Beklenen={expectedGateway}, okunan={first.Gateway}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(expectedDns1) &&
+            !string.Equals(actualDns1, expectedDns1, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"DNS1 uygulanmadi. Beklenen={expectedDns1}, okunan={first.PrimaryDns}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(expectedDns2) &&
+            !string.Equals(actualDns2, expectedDns2, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"DNS2 uygulanmadi. Beklenen={expectedDns2}, okunan={first.SecondaryDns}");
+        }
+    }
+
+    private static string InferExpectedGateway(string ipAddress)
+    {
+        var match = Regex.Match(ipAddress ?? string.Empty, @"\b(\d{1,3}\.\d{1,3}\.\d{1,3})\.\d{1,3}\b");
+        return match.Success ? $"{match.Groups[1].Value}.1" : string.Empty;
+    }
+
+    private static string ExtractFirstIpv4(string value)
+    {
+        var match = Regex.Match(value ?? string.Empty, @"\b\d{1,3}(?:\.\d{1,3}){3}\b");
+        return match.Success ? match.Value : string.Empty;
+    }
+
+    private static bool LooksLikeAlreadyActiveActivateStatusFailure(IsapiRequestException exception)
+    {
+        if (exception.StatusCode != HttpStatusCode.Forbidden)
+        {
+            return false;
+        }
+
+        if (string.Equals(exception.SubStatusCode, "notActivated", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        return exception.ResponseBody.Contains("Invalid Operation", StringComparison.OrdinalIgnoreCase) ||
+               exception.ResponseBody.Contains("invalidOperation", StringComparison.OrdinalIgnoreCase) ||
+               exception.ResponseBody.Contains("invalid operation", StringComparison.OrdinalIgnoreCase);
     }
 
     private sealed record ActivationContext(DeviceInfoModel DeviceInfo, string CurrentIpAddress, bool ActivationPerformed);

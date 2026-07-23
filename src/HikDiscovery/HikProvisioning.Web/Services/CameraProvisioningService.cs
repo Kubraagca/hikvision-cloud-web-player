@@ -27,7 +27,7 @@ public sealed class CameraProvisioningService
     public ProvisioningTaskState StartProvisioning(ProvisioningRequest request, CancellationToken cancellationToken)
     {
         var state = _taskStore.Create(request);
-        _ = Task.Run(() => RunProvisioningAsync(state, cancellationToken), CancellationToken.None);
+        _ = Task.Run(() => RunProvisioningAsync(state, state.Cancellation.Token), CancellationToken.None);
         return state;
     }
 
@@ -168,6 +168,10 @@ public sealed class CameraProvisioningService
                 deviceInfo.MacAddress,
                 currentIpAddress,
                 updatedInterfaces));
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            task.Cancel();
         }
         catch (Exception exception)
         {

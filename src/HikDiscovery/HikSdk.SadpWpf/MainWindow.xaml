@@ -5,263 +5,442 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Hikvision Kamera Provisioning"
-        Height="860"
-        Width="1320"
+        Height="840"
+        Width="1280"
         MinHeight="720"
-        MinWidth="1100">
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        MinWidth="1080"
+        Background="#F4F6F8">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="18">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Border Padding="16"
-                Background="#F7F7F2"
-                CornerRadius="10">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.2*" />
+                    <ColumnDefinition Width="1.3*" />
                     <ColumnDefinition Width="0.9*" />
-                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Padding="18"
+                        Background="White"
+                        CornerRadius="14"
+                        BorderBrush="#D9E0E7"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                    <TextBlock Grid.ColumnSpan="2"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="#16202A"
+                               Text="Kamera Baglantisi" />
+
+                    <StackPanel Grid.Row="1" Margin="0,16,12,0">
+                        <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Kamera IP" />
+                        <TextBox Margin="0,6,0,0"
+                                 Padding="10,8"
+                                 Text="{Binding CameraAddress, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <Border Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="12,16,0,0"
+                            Padding="12,10"
+                            Background="#F8FAFC"
+                            BorderBrush="#D9E0E7"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                        <StackPanel>
+                            <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Tarama Davranisi" />
+                            <TextBlock Margin="0,6,0,0"
+                                       Foreground="#64748B"
+                                       TextWrapping="Wrap"
+                                       Text="On ek girmeniz gerekmiyor. Tool once varsayilan .64 adreslerini, sonra ayni yerel agdaki IPv4 araliklarini otomatik tarar." />
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Grid.Row="2" Margin="0,14,12,0">
+                        <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Kullanici Adi" />
+                        <TextBox Margin="0,6,0,0"
+                                 Padding="10,8"
+                                 Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="12,14,0,0">
+                        <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Parola" />
+                        <PasswordBox x:Name="PasswordInput"
+                                     Margin="0,6,0,0"
+                                     Padding="10,8" />
+                    </StackPanel>
+
+                    <WrapPanel Grid.Row="3"
+                               Grid.ColumnSpan="2"
+                               Margin="0,18,0,0">
+                        <Button Width="150"
+                                Height="38"
+                                Margin="0,0,10,0"
+                                Background="#0F6CBD"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Click="DiscoverButton_Click"
+                                Content="Cihazlari Tara" />
+                        <Button Width="170"
+                                Height="38"
+                                Margin="0,0,10,0"
+                                Background="#0B8F6A"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Click="ConnectButton_Click"
+                                Content="Aktive Et ve Baglan" />
+                        <Button Width="180"
+                                Height="38"
+                                Margin="0,0,10,0"
+                                Background="#F59E0B"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Click="FullSetupButton_Click"
+                                Content="Bastan Sona Kurulum" />
+                        <Button Width="90"
+                                Height="38"
+                                Background="#E5E7EB"
+                                Foreground="#1F2937"
+                                BorderThickness="0"
+                                Click="CancelButton_Click"
+                                Content="Iptal" />
+                    </WrapPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Margin="16,0,0,0"
+                        Padding="18"
+                        Background="White"
+                        CornerRadius="14"
+                        BorderBrush="#D9E0E7"
+                        BorderThickness="1"
+                        VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                    <TextBlock FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="#16202A"
+                               Text="Secilen Kamera" />
+
+                    <TextBlock Grid.Row="1"
+                               Margin="0,18,0,0"
+                               Foreground="#6B7280"
+                               Text="Model" />
+                    <TextBlock Grid.Row="1"
+                               Margin="0,38,0,0"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Text="{Binding Model}" />
+
+                    <TextBlock Grid.Row="2"
+                               Margin="0,18,0,0"
+                               Foreground="#6B7280"
+                               Text="Seri / MAC" />
+                    <TextBlock Grid.Row="2"
+                               Margin="0,38,0,0"
+                               Text="{Binding SerialNumber}" />
+                    <TextBlock Grid.Row="2"
+                               Margin="0,60,0,0"
+                               Text="{Binding MacAddress}" />
+
+                    <TextBlock Grid.Row="3"
+                               Margin="0,18,0,0"
+                               Foreground="#6B7280"
+                               Text="Guncel IP" />
+                    <TextBlock Grid.Row="3"
+                               Margin="0,38,0,0"
+                               Text="{Binding CurrentIpAddress}" />
+
+                    <TextBlock Grid.Row="4"
+                               Margin="0,18,0,0"
+                               Foreground="#6B7280"
+                               Text="Cihaz ID" />
+                    <TextBlock Grid.Row="4"
+                               Margin="0,38,0,0"
+                               Text="{Binding DeviceId}"
+                               TextWrapping="Wrap" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0" Margin="0,0,16,0">
-                    <TextBlock FontWeight="SemiBold" Text="Kamera Adresi" />
-                    <TextBox Margin="0,6,0,0"
-                             Text="{Binding CameraAddress, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                <Border Padding="16"
+                        Background="White"
+                        CornerRadius="14"
+                        BorderBrush="#D9E0E7"
+                        BorderThickness="1"
+                        VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="1" Margin="0,0,16,0">
-                    <TextBlock FontWeight="SemiBold" Text="Kullanici Adi" />
-                    <TextBox Margin="0,6,0,0"
-                             Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                    <TextBlock FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#16202A"
+                               Text="Bulunan Kameralar" />
+                    <DataGrid Grid.Row="1"
+                              Margin="0,14,0,0"
+                              ItemsSource="{Binding DiscoveredCameras}"
+                              SelectedItem="{Binding SelectedDiscoveredCamera, Mode=TwoWay}"
+                              SelectionChanged="DiscoveryGrid_SelectionChanged"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="IP" Binding="{Binding IpAddress}" Width="1*" />
+                            <DataGridTextColumn Header="MAC" Binding="{Binding MacAddress}" Width="1.15*" />
+                            <DataGridTextColumn Header="Seri" Binding="{Binding SerialNumber}" Width="1.25*" />
+                            <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="1.1*" />
+                            <DataGridTextColumn Header="Durum" Binding="{Binding ActivationStatus}" Width="0.8*" />
+                            <DataGridTextColumn Header="8000" Binding="{Binding SupportsSdkPort}" Width="0.55*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    </Grid>
+                </Border>
 
-                <StackPanel Grid.Column="2" Margin="0,0,16,0">
-                    <TextBlock FontWeight="SemiBold" Text="Parola" />
-                    <PasswordBox x:Name="PasswordInput" Margin="0,6,0,0" />
-                </StackPanel>
+                <Grid Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="3">
-                    <TextBlock FontWeight="SemiBold" Text="Backend Base URL" />
-                    <TextBox Margin="0,6,0,0"
-                             Text="{Binding BackendBaseUrl, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                <Border Padding="16"
+                        Background="White"
+                        CornerRadius="14"
+                        BorderBrush="#D9E0E7"
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,14,16,0">
-                    <TextBlock FontWeight="SemiBold" Text="Area Adi" />
-                    <TextBox Margin="0,6,0,0"
-                             Text="{Binding AreaName, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                        <TextBlock FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#16202A"
+                                   Text="Kurulum Ayarlari" />
 
-                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,14,16,0">
-                    <TextBlock FontWeight="SemiBold" Text="Gateway Override" />
-                    <TextBox Margin="0,6,0,0"
-                             Text="{Binding GatewayOverride, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                        <Grid Grid.Row="1" Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,14,16,0" VerticalAlignment="Bottom">
-                    <CheckBox Content="DHCP Etkinlestir"
-                              IsChecked="{Binding EnableDhcp}" />
-                </StackPanel>
+                            <StackPanel Margin="0,0,10,0">
+                                <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Backend URL" />
+                                <TextBox Margin="0,6,0,0"
+                                         Padding="10,8"
+                                         Text="{Binding BackendBaseUrl, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="3" Margin="0,14,0,0" VerticalAlignment="Bottom">
-                    <TextBlock Text="SDK aktivasyon hedefi: 192.168.1.64:8000" />
-                </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Area Adi" />
+                                <TextBox Margin="0,6,0,0"
+                                         Padding="10,8"
+                                         Text="{Binding AreaName, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
 
-                <WrapPanel Grid.Row="2"
-                           Grid.ColumnSpan="4"
-                           Margin="0,18,0,0"
-                           ItemHeight="34"
-                           ItemWidth="170">
-                    <Button Width="190"
-                            Height="34"
-                            Margin="0,0,12,0"
-                            Click="FullSetupButton_Click"
-                            Content="Bastan Sona Kurulum" />
-                    <Button Width="100"
-                            Height="34"
-                            Margin="0,0,12,0"
-                            Click="CancelButton_Click"
-                            Content="Iptal" />
-                    <Button Width="150"
-                            Height="34"
-                            Margin="0,0,12,0"
-                            Click="ConnectButton_Click"
-                            Content="Aktive Et ve Baglan" />
-                    <Button Width="160"
-                            Height="34"
-                            Margin="0,0,12,0"
-                            Click="LoadNetworkButton_Click"
-                            Content="Ag Bilgilerini Getir" />
-                    <Button Width="180"
-                            Height="34"
-                            Margin="0,0,12,0"
-                            Click="GenerateCodeButton_Click"
-                            Content="Verification Code Uret" />
-                    <Button Width="150"
-                            Height="34"
-                            Margin="0,0,12,0"
-                            Click="RefreshEzvizButton_Click"
-                            Content="EZVIZ Yenile" />
-                    <Button Width="210"
-                            Height="34"
-                            Click="EnableEzvizButton_Click"
-                            Content="Hik-Connect Etkinlestir" />
-                </WrapPanel>
+                        <Grid Grid.Row="2" Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Margin="0,0,10,0">
+                                <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Gateway Override" />
+                                <TextBox Margin="0,6,0,0"
+                                         Padding="10,8"
+                                         Text="{Binding GatewayOverride, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="Verification Code" />
+                                <TextBox Margin="0,6,0,0"
+                                         Padding="10,8"
+                                         Text="{Binding VerificationCode, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="DHCP etkinlestir"
+                                          IsChecked="{Binding EnableDhcp}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Grid.Row="3" Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Margin="0,0,10,0">
+                                <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="DNS 1" />
+                                <TextBox Margin="0,6,0,0"
+                                         Padding="10,8"
+                                         Text="{Binding PrimaryDns, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Margin="0,12,0,0" FontWeight="SemiBold" Foreground="#405060" Text="Cihaz Adi / Alias" />
+                                <TextBox Margin="0,6,0,0"
+                                         Padding="10,8"
+                                         Text="{Binding DeviceAlias, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock FontWeight="SemiBold" Foreground="#405060" Text="DNS 2" />
+                                <TextBox Margin="0,6,0,0"
+                                         Padding="10,8"
+                                         Text="{Binding SecondaryDns, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Margin="0,12,0,0"
+                                           Foreground="#64748B"
+                                           TextWrapping="Wrap"
+                                           Text="Area, verification code ve alias backend devices/add isteginde kullanilir." />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            Margin="0,16,0,0"
+                            Padding="16"
+                            Background="White"
+                            CornerRadius="14"
+                            BorderBrush="#D9E0E7"
+                            BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                        <TextBlock FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#16202A"
+                                   Text="Kurulum Asamalari" />
+                        <DataGrid Grid.Row="1"
+                                  Margin="0,14,0,0"
+                                  ItemsSource="{Binding Stages}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  CanUserAddRows="False"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Asama" Binding="{Binding Name}" Width="1*" />
+                                <DataGridTextColumn Header="Durum" Binding="{Binding Status}" Width="0.75*" />
+                                <DataGridTextColumn Header="Detay" Binding="{Binding Detail}" Width="1.6*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="2"
+                            Margin="0,16,0,0"
+                            Padding="16"
+                            Background="White"
+                            CornerRadius="14"
+                            BorderBrush="#D9E0E7"
+                            BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                        <TextBlock FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#16202A"
+                                   Text="Ag Bilgileri" />
+                        <DataGrid Grid.Row="1"
+                                  Margin="0,14,0,0"
+                                  ItemsSource="{Binding NetworkInterfaces}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  CanUserAddRows="False"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="IP" Binding="{Binding IpAddress}" Width="1.1*" />
+                                <DataGridTextColumn Header="Gateway" Binding="{Binding Gateway}" Width="1*" />
+                                <DataGridTextColumn Header="DNS1" Binding="{Binding PrimaryDns}" Width="0.95*" />
+                                <DataGridTextColumn Header="DHCP" Binding="{Binding DhcpMode}" Width="0.7*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        </Grid>
+                    </Border>
+                </Grid>
             </Grid>
-        </Border>
 
-        <Grid Grid.Row="1" Margin="0,16,0,16">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-
-            <Border Margin="0,0,12,0" Padding="14" Background="#EEF4EA" CornerRadius="10">
+            <Border Grid.Row="2"
+                    Margin="0,18,0,0"
+                    Padding="16"
+                    Background="White"
+                    CornerRadius="14"
+                    BorderBrush="#D9E0E7"
+                    BorderThickness="1">
                 <StackPanel>
-                    <TextBlock FontWeight="SemiBold" Text="Model" />
-                    <TextBlock Margin="0,8,0,0" Text="{Binding Model}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Column="1" Margin="0,0,12,0" Padding="14" Background="#EEF4EA" CornerRadius="10">
-                <StackPanel>
-                    <TextBlock FontWeight="SemiBold" Text="Tam Seri" />
-                    <TextBlock Margin="0,8,0,0" Text="{Binding SerialNumber}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Column="2" Margin="0,0,12,0" Padding="14" Background="#EEF4EA" CornerRadius="10">
-                <StackPanel>
-                    <TextBlock FontWeight="SemiBold" Text="Kisa Seri" />
-                    <TextBlock Margin="0,8,0,0" Text="{Binding ShortSerial}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Column="3" Margin="0,0,12,0" Padding="14" Background="#EEF4EA" CornerRadius="10">
-                <StackPanel>
-                    <TextBlock FontWeight="SemiBold" Text="Sub Serial" />
-                    <TextBlock Margin="0,8,0,0" Text="{Binding SubSerialNumber}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Column="4" Margin="0,0,12,0" Padding="14" Background="#EEF4EA" CornerRadius="10">
-                <StackPanel>
-                    <TextBlock FontWeight="SemiBold" Text="Firmware / MAC" />
-                    <TextBlock Margin="0,8,0,0" Text="{Binding FirmwareVersion}" TextWrapping="Wrap" />
-                    <TextBlock Margin="0,6,0,0" Text="{Binding MacAddress}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Column="5" Padding="14" Background="#FFF4E6" CornerRadius="10">
-                <StackPanel>
-                    <TextBlock FontWeight="SemiBold" Text="EZVIZ / Device ID" />
-                    <TextBlock Margin="0,8,0,0" Text="{Binding EzvizEnabledText}" />
-                    <TextBlock Margin="0,6,0,0" Text="{Binding RegisterStatusText}" />
-                    <TextBlock Margin="0,6,0,0" Text="{Binding DeviceId}" TextWrapping="Wrap" />
+                    <TextBlock FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#16202A"
+                               Text="Durum" />
+                    <TextBlock Margin="0,10,0,0"
+                               Text="{Binding StatusText}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Margin="0,8,0,0"
+                               Foreground="#B42318"
+                               Text="{Binding ErrorText}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Margin="0,18,0,0"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#16202A"
+                               Text="Teknik Kayit" />
+                    <TextBox Margin="0,10,0,0"
+                             MinHeight="220"
+                             MaxHeight="360"
+                             Padding="10"
+                             VerticalScrollBarVisibility="Auto"
+                             HorizontalScrollBarVisibility="Auto"
+                             AcceptsReturn="True"
+                             AcceptsTab="True"
+                             IsReadOnly="True"
+                             TextWrapping="NoWrap"
+                             FontFamily="Consolas"
+                             Text="{Binding TechnicalLogText}" />
                 </StackPanel>
             </Border>
         </Grid>
-
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.6*" />
-                <ColumnDefinition Width="1.1*" />
-            </Grid.ColumnDefinitions>
-
-            <Border Margin="0,0,12,0"
-                    Padding="12"
-                    Background="#F6F8FB"
-                    CornerRadius="10">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <TextBlock FontWeight="SemiBold" Text="Ag Bilgileri" />
-                    <DataGrid Grid.Row="1"
-                              Margin="0,12,0,0"
-                              ItemsSource="{Binding NetworkInterfaces}"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True"
-                              CanUserAddRows="False"
-                              HeadersVisibility="Column">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Arayuz" Binding="{Binding Id}" Width="0.8*" />
-                            <DataGridTextColumn Header="IP" Binding="{Binding IpAddress}" Width="1.1*" />
-                            <DataGridTextColumn Header="Subnet" Binding="{Binding SubnetMask}" Width="1.1*" />
-                            <DataGridTextColumn Header="Gateway" Binding="{Binding Gateway}" Width="1.1*" />
-                            <DataGridTextColumn Header="DNS1" Binding="{Binding PrimaryDns}" Width="1*" />
-                            <DataGridTextColumn Header="DNS2" Binding="{Binding SecondaryDns}" Width="1*" />
-                            <DataGridTextColumn Header="DHCP" Binding="{Binding DhcpMode}" Width="0.8*" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </Border>
-
-            <Border Grid.Column="1"
-                    Padding="12"
-                    Background="#F6F8FB"
-                    CornerRadius="10">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <TextBlock FontWeight="SemiBold" Text="Kurulum Asamalari" />
-                    <DataGrid Grid.Row="1"
-                              Margin="0,12,0,0"
-                              ItemsSource="{Binding Stages}"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True"
-                              CanUserAddRows="False"
-                              HeadersVisibility="Column">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Asama" Binding="{Binding Name}" Width="1.2*" />
-                            <DataGridTextColumn Header="Durum" Binding="{Binding Status}" Width="0.8*" />
-                            <DataGridTextColumn Header="Detay" Binding="{Binding Detail}" Width="1.8*" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <StackPanel Grid.Row="2" Margin="0,12,0,0">
-                        <TextBlock FontWeight="SemiBold" Text="Verification Code" />
-                        <TextBox Margin="0,6,0,0"
-                                 Text="{Binding VerificationCode, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Margin="0,10,0,0" Text="Secilen Area ID" />
-                        <TextBlock Margin="0,6,0,0" Text="{Binding AreaId}" />
-                        <TextBlock Margin="0,10,0,0" Text="Guncel IP" />
-                        <TextBlock Margin="0,6,0,0" Text="{Binding CurrentIpAddress}" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </Grid>
-
-        <Border Grid.Row="3"
-                Margin="0,16,0,0"
-                Padding="14"
-                Background="#F5F5F5"
-                CornerRadius="10">
-            <StackPanel>
-                <TextBlock FontWeight="SemiBold" Text="Durum" />
-                <TextBlock Margin="0,8,0,0" Text="{Binding StatusText}" TextWrapping="Wrap" />
-                <TextBlock Margin="0,8,0,0" Text="{Binding ErrorText}" TextWrapping="Wrap" />
-            </StackPanel>
-        </Border>
-    </Grid>
+    </ScrollViewer>
 </Window>

@@ -23,6 +23,14 @@ Bu surum su akisi kurar:
 11. Backend Team token alma, cihaz ekleme, area bulma/olusturma, `devicedetail/get` ve `areas/resources/add` adimlarini kendi tarafinda yurutur.
 12. Hikvision token, AK, SK, admin parola ve verification code frontend'e veya loglara yazilmaz.
 
+24 Temmuz 2026 oncesi yerel kurulum yardimcisi olarak Windows x64 icin indirilebilir bir agent paketi de hazirlandi:
+
+13. `/LocalAgent` sayfasi tarayicidan `http://127.0.0.1:47831` uzerindeki yerel agent ile konusur.
+14. Agent, kamerayla ayni yerel agdaki Windows bilgisayarda calisir; kamera aktivasyon ve ISAPI provisioning islerini yerelde yapar.
+15. Team OpenAPI AK/SK ve token akisi backend'de kalir; yerel agent sadece bizim backend endpoint'imizi cagirir.
+16. Paketleme script'i: `scripts/Publish-LocalAgent.ps1`
+17. Uretilen zip yolu: `src/HikDiscovery/HikProvisioning.Web/wwwroot/downloads/local-agent/HikProvisioning.Agent-win-x64.zip`
+
 ## JSDecoder SDK notu
 
 Bu projede cloud akisinin Hikvision tarafinda sifreli gelmesi nedeniyle nihai hedef `WASM / JSDecoder SDK` entegrasyonudur.
@@ -125,6 +133,24 @@ Team cihaz ekleme sayfasi:
 
 ```text
 http://localhost:3000/team-device-add
+```
+
+Yerel agent sayfasi:
+
+```text
+http://localhost:3000/LocalAgent
+```
+
+Yerel agent paketini uretmek icin:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/Publish-LocalAgent.ps1
+```
+
+Agent paketini calistirmak icin:
+
+```text
+artifacts/local-agent/bundle/HikProvisioning.Agent-win-x64/start-agent.cmd
 ```
 
 ## API'ler

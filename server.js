@@ -1749,6 +1749,60 @@ app.post("/api/team-devices/add", async (req, res) => {
   }
 });
 
+app.post("/api/provisioning/team-register", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const input = {
+    shortSerial: String(req.body.shortSerial || "").trim(),
+    verificationCode: String(req.body.verificationCode || "").trim(),
+    alias: String(req.body.alias || "").trim(),
+    areaName: String(req.body.areaName || "").trim(),
+    model: String(req.body.model || "").trim(),
+    serialNumber: String(req.body.serialNumber || "").trim(),
+    subSerialNumber: String(req.body.subSerialNumber || "").trim(),
+    firmwareVersion: String(req.body.firmwareVersion || "").trim(),
+    macAddress: String(req.body.macAddress || "").trim(),
+    currentIpAddress: String(req.body.currentIpAddress || "").trim(),
+  };
+
+  if (!input.shortSerial) {
+    return res.status(400).json({ error: "shortSerial zorunlu." });
+  }
+
+  if (!input.verificationCode) {
+    return res.status(400).json({ error: "verificationCode zorunlu." });
+  }
+
+  try {
+    const result = await teamOpenApiService.addDeviceToAreaWorkflow({
+      shortSerial: input.shortSerial,
+      verificationCode: input.verificationCode,
+      alias: input.alias,
+      areaName: input.areaName,
+    });
+
+    return res.status(200).json({
+      message: result.deviceAdded
+        ? "Provisioning verisi alindi; cihaz Team hesabina eklendi."
+        : "Provisioning verisi alindi; cihaz zaten vardi ve area/kanal iliskisi kontrol edildi.",
+      result: {
+        success: true,
+        ...result,
+        model: input.model,
+        serialNumber: input.serialNumber,
+        subSerialNumber: input.subSerialNumber,
+        firmwareVersion: input.firmwareVersion,
+        macAddress: input.macAddress,
+        currentIpAddress: input.currentIpAddress,
+      },
+    });
+  } catch (err) {
+    return res.status(502).json({
+      error: sanitizeMessage(err.message),
+    });
+  }
+});
+
 app.get("/api/provision/tasks/:taskId", (req, res) => {
   const task = provisioningTasks.get(req.params.taskId);
   if (!task) {

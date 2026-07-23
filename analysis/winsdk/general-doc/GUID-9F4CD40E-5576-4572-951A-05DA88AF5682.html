@@ -1,0 +1,342 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="VLR_VEHICLE_CLASS" /><meta name="abstract" content="Enumerate the vehicle parent brands." /><meta name="description" content="Enumerate the vehicle parent brands." /><meta name="DC.Relation" scheme="URI" content="GUID-763D9DC9-B161-47F9-AFAF-0E663F28FD2A.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-9F4CD40E-5576-4572-951A-05DA88AF5682" /><meta name="DC.Language" content="en-US" /><title>VLR_VEHICLE_CLASS</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-9F4CD40E-5576-4572-951A-05DA88AF5682" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">VLR_VEHICLE_CLASS</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Enumerate the vehicle parent brands.</p>
+
+<div class="section" id="GUID-9F4CD40E-5576-4572-951A-05DA88AF5682__GUID-727569D7-E0B4-493D-98C5-F2354AF75CDB"><h2 class="title sectiontitle">Enumeration Definition</h2>
+            
+            <pre class="pre codeblock">typedef enum _VLR_VEHICLE_CLASS{
+  VLR_OTHER            = 0,   //Other
+  VLR_VOLKSWAGEN       = 1,   //Volkswagen
+  VLR_BUICK            = 2,   //Buick
+  VLR_BMW              = 3,   //BMW
+  VLR_HONDA            = 4,   //Honda
+  VLR_PEUGEOT          = 5,   //Peugeot
+  VLR_TOYOTA           = 6,   //Toyota
+  VLR_FORD             = 7,   //Ford
+  VLR_NISSAN           = 8,   //Nissan
+  VLR_AUDI             = 9,   //Audi
+  VLR_MAZDA            = 10,  //Mazda
+  VLR_CHEVROLET        = 11,  //Chevrolet
+  VLR_CITROEN          = 12,  //Citroen
+  VLR_HYUNDAI          = 13,  //Hyundai
+  VLR_CHERY            = 14,  //Chery
+  VLR_KIA              = 15,  //Kia
+  VLR_ROEWE            = 16,  //Roewe
+  VLR_MITSUBISHI       = 17,  //Mitsubishi
+  VLR_SKODA            = 18,  //Skoda
+  VLR_GEELY            = 19,  //Geely
+  VLR_ZHONGHUA         = 20,  //Zhonghua
+  VLR_VOLVO            = 21,  //Volvo
+  VLR_LEXUS            = 22,  //Lexus
+  VLR_FIAT             = 23,  //Fiat
+  VLR_EMGRAND          = 24,  //Emgrand (Geely)
+  VLR_DONGFENG         = 25,  //Dongfeng
+  VLR_BYD              = 26,  //BYD
+  VLR_SUZUKI           = 27,  //Suzuki
+  VLR_JINBEI           = 28,  //Jinbei
+  VLR_HAIMA            = 29,  //Haima
+  VLR_SGMW             = 30,  //SGMW
+  VLR_JAC              = 31,  //JAC
+  VLR_SUBARU           = 32,  //Subaru
+  VLR_ENGLON           = 33,  //Englon (Geely)
+  VLR_GREATWALL        = 34,  //Great Wall
+  VLR_HAFEI            = 35,  //Hafei
+  VLR_ISUZU            = 36,  //Isuzu
+  VLR_SOUEAST          = 37,  //Soueast 
+  VLR_CHANA            = 38,  //Changan 
+  VLR_FOTON            = 39,  //Foton
+  VLR_XIALI            = 40,  //Xiali (FAW)
+  VLR_BENZ             = 41,  //Benz
+  VLR_FAW              = 42,  //FAW
+  VLR_NAVECO           = 43,  //Iveco
+  VLR_LIFAN            = 44,  //Lifan
+  VLR_BESTURN          = 45,  //FAW Besturn (FAW)
+  VLR_CROWN            = 46,  //Crown (Toyota)
+  VLR_RENAULT          = 47,  //Renault
+  VLR_JMC              = 48,  //JMC
+  VLR_MG               = 49,  //MG
+  VLR_KAMA             = 50,  //Kama
+  VLR_ZOTYE            = 51,  //Zotye
+  VLR_CHANGHE          = 52,  //Changhe
+  VLR_XMKINGLONG       = 53,  //Xiamen King Long (Golden Dragon)
+  VLR_HUIZHONG         = 54,  //Shanghai Huizhong
+  VLR_SZKINGLONG       = 55,  //Suzhou Jinlong
+  VLR_HIGER            = 56,  //Higer
+  VLR_YUTONG           = 57,  //Yutong
+  VLR_CNHTC            = 58,  //CNHTC
+  VLR_BEIBEN           = 59,  //Beiben Truck
+  VLR_XINGMA           = 60,  //Hualing Xingma
+  VLR_YUEJIN           = 61,  //Yuejin
+  VLR_HUANGHAI         = 62,  //Huanghai
+  VLR_OLDWALL          = 63,  //Great Wall (Old Version)
+  VLR_CHANACOMMERCIAL  = 64,  //Chang'an Business
+  VLR_PORSCHE          = 65,  //Porsche
+  VLR_CADILLAC         = 66,  //Cadillac
+  VLR_INFINITI         = 67,  //Infiniti
+  VLR_GLEAGLE          = 68,  //Gleagle (Geely)
+  VLR_JEEP             = 69,  //Jeep
+  VLR_LANDROVER        = 70,  //Land Rover
+  VLR_CHANGFENG        = 71,  //Changfeng 
+  VLR_BENNI            = 72,  //Chang'an Benni
+  VLR_ERA              = 73,  //Foton Forland
+  VLR_TAURUS           = 74,  //Chana Tauri Star (Chang'an Business)
+  VLR_EADO             = 75,  //Chang'an Yidong
+  VLR_SHANQI           = 76,  //Shanqi
+  VLR_HONGYAN          = 77,  //Hongyan Auto (SAIC IVECO HONGYAN)
+  VLR_DRAGON           = 78,  //Balong Motor (Dongfeng Liuqi)
+  VLR_JACTEXT          = 79,  //Jianghuai JAC
+  VLR_JACBUS           = 80,  //Jianghuai Xiandai Bus
+  VLR_ANKAI            = 81,  //Ankai Bus
+  VLR_SHENLONG         = 82,  //Shenlong Bus
+  VLR_DAEWOO           = 83,  //Daewoo Bus
+  VLR_WUZHENG          = 84,  //Wuzheng Motor
+  VLR_MAN              = 85,  //MAN Motor
+  VLR_ZHONGTONG        = 86,  //Zhongtong Bus
+  VLR_BAOJUN           = 87,  //Baojun
+  VLR_BQWEIWANG        = 88,  //BAIC Weiwang
+  VLR_TRUMPCHE         = 89,  //Trumpchi
+  VLR_LUFENG           = 90,  //Landwind
+  VLR_HMZHENGZHOU      = 91,  //Zhengzhou Hippocampus
+  VLR_BEIJING          = 92,  //BAIC Motor
+  VLR_ZHONGSHUN        = 93,  //Zhongshun
+  VLR_WEILIN           = 94,  //Weiling Motor
+  VLR_OPEL             = 95,  //Opel
+  VLR_KARRY            = 96,  //Karry
+  VLR_SMA              = 97,  //Huapu Motor
+  VLR_SMATEXT          = 98,  //Huapu Motor Wenzi SMA
+  VLR_YUWIN            = 99,  //JMC Yusheng
+  VLR_MINI             = 100, //BMW MINI
+  VLR_MARK             = 101, //Toyota MARKX
+  VLR_HAVAL            = 102, //HAVAL
+  VLR_OGA              = 103, //Acura
+  VLR_VENUCIA          = 104, //Venucia
+  VLR_BYD2             = 105, //BYD Style 2
+  VLR_SMART            = 106, //Benz SMART
+  VLR_BAW              = 107, //Beijing Vehicle Manufacture/BAW
+  VLR_LUXGEN           = 108, //Luxgen
+  VLR_YEMA             = 109, //Yema
+  VLR_ZTE              = 110, //ZXAUT
+  VLR_EVERUS           = 111, //Linian
+  VLR_CHRYSLER         = 112, //Chrysler
+  VLR_GONOW            = 113, //Ji'ao
+  VLR_SHJIANG          = 114, //Songhua River
+  VLR_RUILIN           = 115, //Chrey
+  VLR_FORTA            = 116, //Fuda
+  VLR_GAGUAR           = 117, //Jaguar
+  VLR_HEIBAO           = 118, //Heibao
+  VLR_TKING            = 119, //TKING
+  VLR_TKINGTEXT        = 120, //Tangjun Wenzi
+  VLR_FODAY            = 121, //Foday
+  VLR_LOTUS            = 122, //Lianhua Motor
+  VLR_NANJUN           = 123, //CNJ
+  VLR_SHUANGHUAN       = 124, //Shuanghuan Motor
+  VLR_SAIBAO           = 125, //HAFEI Saibao
+  VLR_HAWTAI           = 126, //Hawtai
+  VLR_LIFO             = 127, //Yongyuan Feidie
+  VLR_JONWAY           = 128, //Yongyuan Motor
+  VLR_FULONGMA         = 129, //Fulongma
+  VLR_WEILI            = 130, //Huaili
+  VLR_ANCHI            = 131, //Jianghuai Anchi
+  VLR_PAIXI            = 132, //Splash
+  VLR_HIGERTEXT        = 133, //HIGER Wenzi
+  VLR_RIYECAR          = 134, //Hino Light Truck
+  VLR_RIYETRUCK        = 135, //Hino Heavy Truck
+  VLR_JIANGNAN         = 136, //Jiangnan 
+  VLR_OLDZOTYE         = 137, //Zhongtai (Old Version)
+  VLR_OLDXIALI         = 138, //Xiali (Old Version)
+  VLR_NEWAOCHI         = 139, //New Aochi
+  VLR_CDW              = 140, //Zhongqi Wangpai
+  VLR_CDWTEXT          = 141, //Zhongqi Wangpai Wenzi
+  VLR_CIIMO            = 142, //Honda CIIMO
+  VLR_CHANADS          = 143, //Chang'an Di Ai Shi
+  VLR_DS               = 144, //Dodge
+  VLR_ROHENS           = 145, //Hyundai Rohens Coupe
+  VLR_YANTAI           = 146, //Yantai
+  VLR_SHUANGLONG       = 147, //Shuanglong
+  VLR_FENGLING         = 148, //Shidai Fengling
+  VLR_XINKAI           = 149, //Xinkai
+  VLR_GMC              = 150, //GMC
+  VLR_DATONG           = 151, //MAXUS
+  VLR_BQYINXIANG       = 152, //BAIC Yinxiang
+  VLR_NEWCHERY         = 153, //New Chery
+  VLR_MUDAN            = 154, //Mudan
+  VLR_DAYUN            = 155, //Dayun Motor
+  VLR_DONGWO           = 156, //Dongwo Motor
+  VLR_UNION            = 157, //Union Motor
+  VLR_CHUNZHOU         = 158, //Chunzhou Bus
+  VLR_SANY             = 159, //Sany
+  VLR_YAXING           = 160, //Asiastar Bus
+  VLR_HENGTONG         = 161, //Hengtong Bus
+  VLR_SHAOLIN          = 162, //Shaolin Bus
+  VLR_YOUNG            = 163, //Young Man Bus
+  VLR_STOM             = 164, //Shitong
+  VLR_SANHUAN          = 165, //Tri-Ring
+  VLR_XUGONG           = 166, //XCMG
+  VLR_BEIFANG          = 167, //Beifang Motor
+  VLR_JIANGHUAN        = 168, //Jianghuan Truck
+  VLR_BJFARM           = 169, //Beijing Agricultural
+  VLR_NEWDADI          = 170, //Xin Dadi Motor
+  VLR_SUNWIN           = 171, //Sunwin Bus
+  VLR_YINGTIAN         = 172, //Yingtian
+  VLR_QINGQI           = 173, //Qingqi
+  VLR_CHUFENG          = 174, //Chufeng Motor
+  VLR_SCANIA           = 175, //Scania
+  VLR_JIULONG          = 176, //Jiulong Bus
+  VLR_YOUYI            = 177, //Youyi Bus
+  VLR_SHANGRAO         = 178, //Shangrao Bus
+  VLR_JIJIANG          = 179, //Jijiang
+  VLR_YANGZI           = 180, //Yangzi Bus
+  VLR_XIWO             = 181, //Seewo Bus
+  VLR_CHANGJIANG       = 182, //Changjiang Bus
+  VLR_WUYI             = 183, //Wuyi
+  VLR_CHENGDU          = 184, //Chengdu Bus
+  VLR_TIANMA           = 185, //Tianma
+  VLR_BAOLONG          = 186, //Baolong
+  VLR_NEWYATU          = 187, //Soyat
+  VLR_BARUI            = 188, //Kia Borrego
+  VLR_GUANZHI          = 189, //Qoros
+  VLR_XIYATE           = 190, //Seat
+  VLR_BINLI            = 191, //Bentley
+  VLR_DADI             = 192, //Dadi
+  VLR_FUQI             = 193, //Fuqi
+  VLR_HANGTIAN         = 194, //Hangtian Motor
+  VLR_HENGTIAN         = 195, //Hi-tech
+  VLR_JMCCAR           = 196, //JMC
+  VLR_KAERSEN          = 197, //Carlson Motor
+  VLR_KAWEI            = 198, //Kawei Motor
+  VLR_LANBOJINI        = 199, //Lamborghini
+  VLR_MASHALADI        = 200, //Maserati
+  VLR_SHUCHI           = 201, //Shuchi Bus
+  VLR_SHILI            = 202, //Shili Bus
+  VLR_HUABEI           = 203, //Zhongke Huabei
+  VLR_YIZHENG          = 204, //SAIC Yizheng
+  VLR_CHUNLAN          = 205, //Chunlan
+  VLR_DAFA             = 206, //Daihatsu Motor
+  VLR_SHENYE           = 207, //Shenye Motor
+  VLR_FALALI           = 208, //Ferrari
+  VLR_FUXING           = 209, //Fuxing Motor
+  VLR_ANYUAN           = 210, //Anyuan-Bus
+  VLR_JINGHUA          = 211, //Jinghua Bus
+  VLR_TAIHU            = 212, //Taihu Bus
+  VLR_WUZHOULONG       = 213, //Wuzhoulong
+  VLR_CHANGLONG        = 214, //Changlong-Bus
+  VLR_YUEXI            = 215, //Yuexi Bus
+  VLR_SHENMA           = 216, //Shenma Bus
+  VLR_LUSHAN           = 217, //Lushan
+  VLR_WANFENG          = 218, //Wanfeng
+  VLR_GZYUNBAO         = 219, //Guangzhou Yunbao
+  VLR_ZHONGDA          = 220, //Zhongda Motor
+  VLR_THREEWHEEL       = 221, //Tricycle 
+  VLR_TWOWHEEL         = 222, //Two Wheeler
+  VLR_JBC              = 223, //JBC
+  VLR_YZJIANG          = 224, //Yangtze Bus
+  VLR_CNJ              = 225, //CNJ
+  VLR_FORLAND          = 226, //Futian Shidai Wenzi
+  VLR_FARMCAR          = 227, //Agricultural Vehicle
+  VLR_DONGFANGHONG     = 228, //Dong Fang Hong
+  VLR_STEYR            = 229, //Steyr
+  VLR_HONGQI           = 230, //Hongqi
+  VLR_USER1            = 231, //User 1
+  VLR_USER2            = 232, //User 2
+  VLR_USER3            = 233, //User 3
+  VLR_USER4            = 234, //User 4
+  VLR_USER5            = 235, //User 5
+  VLR_USER6            = 236, //User 6
+  VLR_USER7            = 237, //User 7
+  VLR_USER8            = 238  //User 8
+}VLR_VEHICLE_CLASS;</pre>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-763D9DC9-B161-47F9-AFAF-0E663F28FD2A.html">Enumeration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-B0DF0669-08D5-47B1-AAAC-BC491E68EABE.html">BITRATE_ENCODE_INDEX</a></span></li><li><span class="topicref"><a href="GUID-515AE0E5-6AE5-4AEF-A2BD-A8CB1EB9A54A.html">COUNTRY_INDEX</a></span></li><li><span class="topicref"><a href="GUID-DBF4EBF4-7600-4A29-A55F-D64802838E9E.html">CR_INDEX</a></span></li><li><span class="topicref"><a href="GUID-B41799DB-4A7A-481D-ACFC-07DF0BD605D0.html">FIRE_ALARM</a></span></li><li><span class="topicref"><a href="GUID-ABAFC736-C0F9-4305-9C3E-57A789BEA2C2.html">NET_DVR_CHARSET_ENUM</a></span></li><li><span class="topicref"><a href="GUID-41D74A0A-E410-4BCF-9567-B2E25FC1FFA0.html">NET_SDK_CALLBACK_STATUS_NORMAL</a></span></li><li><span class="topicref"><a href="GUID-203D27A4-050E-4D53-A07C-DD9BABFBD69C.html">NET_DVR_LINK_KIND</a></span></li><li><span class="topicref"><a href="GUID-AA2E55F8-68E8-45B7-B3D1-970971406588.html">NET_SDK_LOCAL_CFG_TYPE</a></span></li><li><span class="topicref"><a href="GUID-34A41D61-8DA0-41C9-99ED-7159111FCEEA.html">NET_SDK_DOWNLOAD_TYPE</a></span></li><li><span class="topicref"><a href="GUID-576C3694-A8D3-44A4-B23B-46D3AA8F3AC1.html">NET_SDK_UPLOAD_TYPE</a></span></li><li><span class="topicref"><a href="GUID-3243BDAD-E3CE-4BCC-B78C-11BC5386878C.html">PRIDATA_RENDER</a></span></li><li><span class="topicref"><a href="GUID-D288A094-7CE9-46C1-92FA-09B89DD6FF1E.html">STREAM_TYPE_E</a></span></li><li><span class="topicref"><a href="GUID-B807213F-FD44-417C-A640-D4479212B89A.html">TEM_FLAG</a></span></li><li><span class="topicref"><a href="GUID-68C7CFE6-1C84-48E6-AEB1-2C120766A8B6.html">VCA_PLATE_COLOR</a></span></li><li class="active"><span class="topicref">VLR_VEHICLE_CLASS</span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

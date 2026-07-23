@@ -1,0 +1,219 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Table 1 PoE Port Configuration Function Description Get PoE Parameters Call NET_DVR_GetDVRConfig with NET_DVR_GET_POE_CFG (command No.: 6114). And the PoE parameters are returned by the lpOutBuffer in ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Network Interface" /><meta name="DC.Relation" scheme="URI" content="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A" /><meta name="DC.Language" content="en-US" /><title>Network Interface</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Network Interface</h1>
+
+<div class="body conbody">
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A__GUID-EBCCFB31-2636-4CEB-8E47-01922374A1F9" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1 PoE Port Configuration</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="50%" id="d1071046e28">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="50%" id="d1071046e34">
+                            <p class="p">Description</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="50%" headers="d1071046e28 ">
+                            <p class="p">Get PoE Parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="50%" headers="d1071046e34 ">
+                            <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_GET_POE_CFG</span> (command
+                                No.: 6114). And the PoE parameters are returned by the <span class="keyword parmname">lpOutBuffer</span> in the structure <a class="xref" href="GUID-F9A89BDB-9DC7-414A-BBED-97704190F3F6.html#GUID-F9A89BDB-9DC7-414A-BBED-97704190F3F6">NET_DVR_POE_CFG</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="50%" headers="d1071046e28 ">
+                            <p class="p">Set PoE Parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="50%" headers="d1071046e34 ">
+                            <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with <span class="keyword cmdname">NET_DVR_SET_POE_CFG</span> (command
+                                No.: 6115), and set the input parameter pointer <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-F9A89BDB-9DC7-414A-BBED-97704190F3F6.html#GUID-F9A89BDB-9DC7-414A-BBED-97704190F3F6">NET_DVR_POE_CFG</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A__GUID-68B4A005-4ED5-468F-852F-215605FAFFDF" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 2 UPnP Port Configuration</span></caption>
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="50%" id="d1071046e126">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="50%" id="d1071046e132">
+                            <p class="p">Description</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="50%" headers="d1071046e126 ">
+                            <p class="p">Get UPnP Parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="50%" headers="d1071046e132 ">
+                            <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information."><span class="keyword apiname">NET_DVR_GetDVRConfig</span></a>
+                                with <span class="keyword cmdname">NET_DVR_GET_NAT_CFG</span> (command
+                                No.: 6111). And the UPnP parameters are returned by the output
+                                buffer pointer (<span class="keyword parmname">lpOutBuffer</span>) in the
+                                structure <a class="xref" href="GUID-8CDEBA80-029D-40FA-ABEB-7566CE1E6CE0.html#GUID-8CDEBA80-029D-40FA-ABEB-7566CE1E6CE0" title="UPnP configuration structure."><var class="keyword varname">NET_DVR_NAT_CFG</var></a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="50%" headers="d1071046e126 ">
+                            <p class="p">Set UPnP Parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="50%" headers="d1071046e132 ">
+                            <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters."><span class="keyword apiname">NET_DVR_SetDVRConfig</span></a>
+                                with <span class="keyword cmdname">NET_DVR_SET_NAT_CFG</span> (command
+                                No.: 6112) and set the input buffer pointer (<span class="keyword parmname">lpInBuffer</span>) to the structure <a class="xref" href="GUID-8CDEBA80-029D-40FA-ABEB-7566CE1E6CE0.html#GUID-8CDEBA80-029D-40FA-ABEB-7566CE1E6CE0" title="UPnP configuration structure."><var class="keyword varname">NET_DVR_NAT_CFG</var></a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="50%" headers="d1071046e126 ">
+                            <p class="p">Get UPnP Port Mapping Status</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="50%" headers="d1071046e132 ">
+                            <p class="p">Call <a class="xref" href="GUID-FCD238AD-E474-44DF-8AA4-4342853F1383.html#GUID-FCD238AD-E474-44DF-8AA4-4342853F1383" title="Get UPnP port mapping status."><span class="keyword apiname">NET_DVR_GetUpnpNatState</span></a>. And the mapping
+                                status is returned by the parameter <span class="keyword parmname">lpState</span> in the structure <a class="xref" href="GUID-0D4565D5-205B-4F35-92FE-ED72C542F1DD.html#GUID-0D4565D5-205B-4F35-92FE-ED72C542F1DD" title="UPnP port mapping status structure"><var class="keyword varname">NET_DVR_UPNP_NAT_STATE</var></a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0.html">Channel Settings</a></span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li><span class="topicref"><a href="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014.html">Video/Image Settings</a></span></li><li><span class="topicref"><a href="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html">Network Settings</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF.html">Address Filter</a></span></li><li><span class="topicref"><a href="GUID-96255498-3AEB-4447-B310-03D6A8227839.html">Network Access</a></span></li><li class="active"><span class="topicref">Network Interface</span></li><li><span class="topicref"><a href="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4.html">Network Service</a></span></li><li><span class="topicref"><a href="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC.html">Wireless Network</a></span></li><li><span class="topicref"><a href="GUID-4F4A40F2-D35F-4C6F-9B8D-D7FC019580C5.html">Multicast</a></span></li></ul></li><li><span class="topicref"><a href="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9.html">Peripherals Settings</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

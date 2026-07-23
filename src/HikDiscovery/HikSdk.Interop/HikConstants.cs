@@ -2,6 +2,7 @@ namespace HikSdk.Interop;
 
 public static class HikConstants
 {
+    public const int NET_SDK_MAX_FILE_PATH = 256;
     public const int NAME_LEN = 32;
     public const int PASSWD_LEN = 16;
     public const int MACADDR_LEN = 6;

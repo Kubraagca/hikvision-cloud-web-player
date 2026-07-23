@@ -1,0 +1,133 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_DVR_GetErrorMsg" /><meta name="abstract" content="Return the error information of the last operation." /><meta name="description" content="Return the error information of the last operation." /><meta name="DC.Relation" scheme="URI" content="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-8CA5E016-1BAB-49B6-900D-BC8B8D1ACE97" /><meta name="DC.Language" content="en-US" /><title>NET_DVR_GetErrorMsg</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-8CA5E016-1BAB-49B6-900D-BC8B8D1ACE97" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_DVR_GetErrorMsg</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Return the error information of the last operation.</p>
+
+<div class="section" id="GUID-8CA5E016-1BAB-49B6-900D-BC8B8D1ACE97__GUID-11E4BD41-ECA1-449D-800A-347BEE16C6D0"><h2 class="title sectiontitle">API Definition</h2>
+            
+            <pre class="pre codeblock">char *NET_DVR_GetErrorMsg(
+  LONG   *pErrorNo
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-8CA5E016-1BAB-49B6-900D-BC8B8D1ACE97__GUID-25727651-0120-4991-A050-79CA5EE6995D"><h2 class="title sectiontitle">Parameters</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-8CA5E016-1BAB-49B6-900D-BC8B8D1ACE97__GUID-75B8EA13-16DB-4469-AB69-E18F874F357F"><!-- --></a>pErrorNo</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Error code pointer.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-8CA5E016-1BAB-49B6-900D-BC8B8D1ACE97__GUID-07D6E85E-FD51-4304-AB8E-1D45F900FD48"><h2 class="title sectiontitle">Return Values</h2>
+            
+            <p class="p">The return values are the pointers of error information, see <a class="xref" href="GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238.html#GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238" title="The errors that may occur during the device network SDK integration are listed here for reference. You can search for the error descriptions according to the error codes or names returned by a specific API (NET_DVR_GetLastError or NET_DVR_GetErrorMsg).">Device Network SDK Errors</a> for details.</p>
+
+        </div>
+
+        <div class="section" id="GUID-8CA5E016-1BAB-49B6-900D-BC8B8D1ACE97__GUID-B746F626-B941-4F33-BD9C-6168F5268F9D"><h2 class="title sectiontitle">Remarks</h2>
+            
+            <p class="p">You can call <a class="xref" href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html#GUID-14773B75-3782-443F-ACB8-C40146725A9B" title="Return the error code of the last operation."><span class="keyword apiname">NET_DVR_GetLastError</span></a> to get the
+                error codes.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html">NET_DVR_Cleanup</a></span></li><li><span class="topicref"><a href="GUID-1567EA25-2FE4-430D-96AF-5A3FADD753B2.html">NET_DVR_CloseFormatHandle</a></span></li><li><span class="topicref"><a href="GUID-BE126623-3EFF-4D0C-8406-DFF3D2361DCC.html">NET_DVR_FormatDisk</a></span></li><li><span class="topicref"><a href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html">NET_DVR_GetDeviceAbility</a></span></li><li><span class="topicref"><a href="GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E.html">NET_DVR_GetDeviceConfig</a></span></li><li><span class="topicref"><a href="GUID-D8A1E9B3-88D1-466A-94AA-B7C90B9DC785.html">NET_DVR_GetDeviceStatus</a></span></li><li><span class="topicref"><a href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html">NET_DVR_GetDVRConfig</a></span></li><li class="active"><span class="topicref">NET_DVR_GetErrorMsg</span></li><li><span class="topicref"><a href="GUID-2F2A964D-6310-4137-BA3F-E064B1401BDF.html">NET_DVR_GetFormatProgress</a></span></li><li><span class="topicref"><a href="GUID-4FC8423C-0417-4924-9D77-EE957D8FB81A.html">NET_DVR_GetIPCProtoList_V41</a></span></li><li><span class="topicref"><a href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html">NET_DVR_GetLastError</a></span></li><li><span class="topicref"><a href="GUID-C1820200-F6BA-4201-9F38-7873B4DC631A.html">NET_DVR_GetLastErrorModelCode</a></span></li><li><span class="topicref"><a href="GUID-F8E0AECB-4918-4493-983B-22E342C83F08.html">NET_DVR_GetLinkAddr</a></span></li><li><span class="topicref"><a href="GUID-044C4947-66D7-491F-AC5F-E6835FF3CFBD.html">NET_DVR_GetNextRemoteConfig</a></span></li><li><span class="topicref"><a href="GUID-F33E8DBA-5927-4A30-8EF6-10C493EB54C6.html">NET_DVR_GetRemoteConfigState</a></span></li><li><span class="topicref"><a href="GUID-22970EEC-E8FB-41E6-BA3E-1C4C12740F8E.html">NET_DVR_GetRtspConfig</a></span></li><li><span class="topicref"><a href="GUID-CA76A5BB-42FD-42E5-8AAF-9EE269F769CC.html">NET_DVR_GetSDKLocalCfg</a></span></li><li><span class="topicref"><a href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html">NET_DVR_GetSTDAbility</a></span></li><li><span class="topicref"><a href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html">NET_DVR_GetSTDConfig</a></span></li><li><span class="topicref"><a href="GUID-FCD238AD-E474-44DF-8AA4-4342853F1383.html">NET_DVR_GetUpnpNatState</a></span></li><li><span class="topicref"><a href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html">NET_DVR_Init </a></span></li><li><span class="topicref"><a href="GUID-240D08DD-4B11-45AB-8208-98942A0DB03B.html">NET_DVR_InquestGetEncryptState</a></span></li><li><span class="topicref"><a href="GUID-11D20238-1477-4754-B41A-D787AF1ABD19.html">NET_DVR_InquestSetSecretKey</a></span></li><li><span class="topicref"><a href="GUID-E07CEE1B-1527-42BD-BE9A-BCF9B5FBBC70.html">NET_DVR_InquestStreamEncrypt</a></span></li><li><span class="topicref"><a href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html">NET_DVR_Login_V40</a></span></li><li><span class="topicref"><a href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html">NET_DVR_Logout</a></span></li><li><span class="topicref"><a href="GUID-F06DCF7F-E1C1-4F77-BEB1-20636DD853CD.html">NET_DVR_RebootDVR</a></span></li><li><span class="topicref"><a href="GUID-61412615-3809-48F1-BBE6-4E0E9880AD53.html">NET_DVR_RemoteControl</a></span></li><li><span class="topicref"><a href="GUID-1AE2E189-7992-4ED0-B484-CF3D047C9756.html">NET_DVR_RenderPrivateData</a></span></li><li><span class="topicref"><a href="GUID-596449B9-2AF0-4C63-BB69-BD934C014A57.html">PlayM4_RenderPrivateDataEx</a></span></li><li><span class="topicref"><a href="GUID-6BBC93C6-8466-4B4F-90BE-285E310F2CC0.html">NET_DVR_SDKChannelToISAPI</a></span></li><li><span class="topicref"><a href="GUID-B0158173-3509-47C6-BC1B-765DD9719097.html">NET_DVR_SendRemoteConfig</a></span></li><li><span class="topicref"><a href="GUID-AC40A044-272B-4DF2-A606-224064C04097.html">NET_DVR_SendWithRecvRemoteConfig</a></span></li><li><span class="topicref"><a href="GUID-B563DF51-A008-4637-955D-D6A47F7B0833.html">NET_DVR_SetConnectTime</a></span></li><li><span class="topicref"><a href="GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF.html">NET_DVR_SetDeviceConfig</a></span></li><li><span class="topicref"><a href="GUID-423B7CD1-F50C-4561-B4CA-44DAC0EEB54A.html">NET_DVR_SetDeviceConfigEx</a></span></li><li><span class="topicref"><a href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html">NET_DVR_SetDVRConfig</a></span></li><li><span class="topicref"><a href="GUID-4884769C-52D1-44F7-A077-4A3449CF6FC8.html">NET_DVR_SetExceptionCallBack_V30</a></span></li><li><span class="topicref"><a href="GUID-38282924-90DF-4F61-8769-BEF5B5C1992E.html">NET_DVR_SetRtspConfig</a></span></li><li><span class="topicref"><a href="GUID-7EB8CAB7-E96B-4EB3-96C7-B1896CF44C0F.html">NET_DVR_SetSDKInitCfg</a></span></li><li><span class="topicref"><a href="GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120.html">NET_DVR_SetSDKLocalCfg</a></span></li><li><span class="topicref"><a href="GUID-F72C9471-79D4-4A98-9D19-9BD3B0FBE6B9.html">NET_DVR_SetSDKSecretKey</a></span></li><li><span class="topicref"><a href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html">NET_DVR_SetSTDConfig</a></span></li><li><span class="topicref"><a href="GUID-FB6A44F5-6203-47EE-93DB-D962C5D8B27C.html">NET_DVR_StartGetDevState</a></span></li><li><span class="topicref"><a href="GUID-23388F56-C88E-46E9-8B0B-A1ECF29945F5.html">NET_DVR_StartRemoteConfig</a></span></li><li><span class="topicref"><a href="GUID-3B531780-6B57-4CE3-ACEF-B02679D0AABD.html">NET_DVR_STDControl</a></span></li><li><span class="topicref"><a href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html">NET_DVR_STDXMLConfig</a></span></li><li><span class="topicref"><a href="GUID-2F91B302-4A34-4D17-9C50-35E910E6A4D8.html">NET_DVR_StopGetDevState</a></span></li><li><span class="topicref"><a href="GUID-6CD4FA89-AB74-4438-ABE8-089623E9AF84.html">NET_DVR_StopRemoteConfig</a></span></li></ul></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

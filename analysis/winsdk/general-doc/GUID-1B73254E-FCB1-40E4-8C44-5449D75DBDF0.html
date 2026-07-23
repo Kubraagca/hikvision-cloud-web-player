@@ -1,0 +1,198 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Basic Channel Parameters Get all channels' attributes Call NET_DVR_STDXMLConfig to pass through the request URL: GET /ISAPI/AUXInfo/attributes/Channels , the channels attributes are returned by output ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Channel Settings" /><meta name="DC.Relation" scheme="URI" content="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0" /><meta name="DC.Language" content="en-US" /><title>Channel Settings</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Channel Settings</h1>
+
+<div class="body conbody">
+        <div class="section" id="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-A2E6D3E5-C9BA-4A4A-BDCE-36E32126C12D"><h2 class="title sectiontitle">Basic Channel Parameters</h2>
+            
+            <dl class="dl">
+                
+                    <dt class="dt dlterm"><a name="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-A68D32A6-5357-464E-A55E-16701893E424"><!-- --></a>Get all channels' attributes</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass
+                            through the request URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-36C2C473-8A0D-42EB-B13C-E0406338FB61.html#GUID-36C2C473-8A0D-42EB-B13C-E0406338FB61" title="Get the attributes of channels.">/ISAPI/AUXInfo/attributes/Channels</a>, the channels attributes are
+                            returned by output parameter pointer <span class="keyword parmname">lpOutBuffer</span> in <a class="xref" href="GUID-6355EEC3-8C27-48B1-8755-B0FF2F7B919C.html#GUID-6355EEC3-8C27-48B1-8755-B0FF2F7B919C" title="ChannelInfoList message in XML format">XML_ChannelInfoList</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-57EE7CA8-CB36-4600-84C6-91EEA07916EF"><!-- --></a>Get one channel's attributes</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass
+                            through the request URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-3CFE7B66-C2D6-41F0-9447-D1FB5E7AE603.html#GUID-3CFE7B66-C2D6-41F0-9447-D1FB5E7AE603" title="Get the attributes of a specific channel according to channel ID.">/ISAPI/AUXInfo/attributes/Channels/&lt;ID&gt;</a>, the channel
+                            attributes are returned by output parameter pointer <span class="keyword parmname">lpOutBuffer</span> in <a class="xref" href="GUID-999DBDB2-8941-46BC-8099-F86FA09AC005.html#GUID-999DBDB2-8941-46BC-8099-F86FA09AC005" title="ChannelInfo message in XML format.">XML_ChannelInfo</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-4D4B4C17-3A73-4BF4-AA28-3473C9EB445C"><h2 class="title sectiontitle">Video Output Channel</h2>
+            
+            <dl class="dl">
+                
+                    <dt class="dt dlterm"><a name="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-BED76D0C-3158-44FD-8132-03BE182B493D"><!-- --></a>Get video output channel parameters</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with
+                                <span class="keyword cmdname">NET_DVR_GET_CCDPARAMCFG_EX</span> (command No.: 3368)
+                            and set <span class="keyword parmname">lChannel</span> to channel No. The parameters are
+                            returned in the structure <a class="xref" href="GUID-BE9716B3-2A64-4AEF-B7A4-50CA68C9FADE.html#GUID-BE9716B3-2A64-4AEF-B7A4-50CA68C9FADE" title="Camera configuration parameter structure">NET_DVR_CAMERAPARAMCFG_EX</a> by output buffer
+                                (<span class="keyword parmname">lpOutBuffer</span>).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-3D63F3D4-A278-4E58-A57D-BF493A189F3D"><!-- --></a>Set video output channel parameters</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with
+                                <span class="keyword cmdname">NET_DVR_SET_CCDPARAMCFG_EX</span> (command No.: 3369),
+                            set <span class="keyword parmname">lChannel</span> to channel No., and set input buffer
+                                (<span class="keyword parmname">lpInBuffer</span>) to the structure <a class="xref" href="GUID-BE9716B3-2A64-4AEF-B7A4-50CA68C9FADE.html#GUID-BE9716B3-2A64-4AEF-B7A4-50CA68C9FADE" title="Camera configuration parameter structure">NET_DVR_CAMERAPARAMCFG_EX</a></p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-0E879745-E758-428F-8783-A978E91C281D"><h2 class="title sectiontitle">Digital Channel</h2>
+            
+            <dl class="dl">
+                
+                    <dt class="dt dlterm"><a name="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-3D72118C-170C-45AC-93C8-92A46FC7C3D7"><!-- --></a>Get parameters of one digital channel</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass
+                            through the request URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-99B92A7D-90D3-4D36-A039-727D636A8354.html#GUID-99B92A7D-90D3-4D36-A039-727D636A8354" title="Operations about management of a specific digital channel.">/ISAPI/ContentMgmt/InputProxy/channels/&lt;ID&gt;</a>. The parameters are returned by output
+                            parameter pointer <span class="keyword parmname">lpOutBuffer</span> in <a class="xref" href="GUID-1FFC8144-660C-4B01-92BA-9E218AA42FEA.html#GUID-1FFC8144-660C-4B01-92BA-9E218AA42FEA" title="InputProxyChannel message in XML format">XML_InputProxyChannel</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-2642B862-8AB7-450F-B1E3-6369A1F31604"><!-- --></a>Set parameters of one digital channel</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass
+                            through the request URL: <span class="ph synph">PUT</span>
+                            <a class="xref" href="GUID-99B92A7D-90D3-4D36-A039-727D636A8354.html#GUID-99B92A7D-90D3-4D36-A039-727D636A8354" title="Operations about management of a specific digital channel.">/ISAPI/ContentMgmt/InputProxy/channels/&lt;ID&gt;</a> and set input parameter pointer
+                                <span class="keyword parmname">lpInBuffer</span> to the message <a class="xref" href="GUID-1FFC8144-660C-4B01-92BA-9E218AA42FEA.html#GUID-1FFC8144-660C-4B01-92BA-9E218AA42FEA" title="InputProxyChannel message in XML format">XML_InputProxyChannel</a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt dlterm"><a name="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0__GUID-FA7304FE-A446-4973-B303-3FA85EEA00E2"><!-- --></a>Delete one digital channel</dt>
+
+                    <dd class="dd">
+                        <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass
+                            through the request URL: <span class="ph synph">DELETE</span>
+                            <a class="xref" href="GUID-99B92A7D-90D3-4D36-A039-727D636A8354.html#GUID-99B92A7D-90D3-4D36-A039-727D636A8354" title="Operations about management of a specific digital channel.">/ISAPI/ContentMgmt/InputProxy/channels/&lt;ID&gt;</a>.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Channel Settings</span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li><span class="topicref"><a href="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014.html">Video/Image Settings</a></span></li><li><span class="topicref"><a href="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html">Network Settings</a></span></li><li><span class="topicref"><a href="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9.html">Peripherals Settings</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

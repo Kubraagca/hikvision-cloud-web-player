@@ -6,6 +6,15 @@ public static class HikSdkNative
 {
     private const string DllName = "HCNetSDK.dll";
 
+    public enum NET_SDK_INIT_CFG_TYPE
+    {
+        NET_SDK_INIT_CFG_TYPE_CHECK_MODULE_COM = 0,
+        NET_SDK_INIT_CFG_ABILITY = 1,
+        NET_SDK_INIT_CFG_SDK_PATH = 2,
+        NET_SDK_INIT_CFG_LIBEAY_PATH = 3,
+        NET_SDK_INIT_CFG_SSLEAY_PATH = 4
+    }
+
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool NET_DVR_Init();
@@ -15,10 +24,22 @@ public static class HikSdkNative
     public static extern bool NET_DVR_Cleanup();
 
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool NET_DVR_SetSDKInitCfg(
+        NET_SDK_INIT_CFG_TYPE enumType,
+        IntPtr lpInBuff);
+
+    [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
     public static extern uint NET_DVR_GetLastError();
 
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
     public static extern IntPtr NET_DVR_GetErrorMsg(ref int pErrorNo);
+
+    [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
+    public static extern uint NET_DVR_GetSDKVersion();
+
+    [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
+    public static extern uint NET_DVR_GetSDKBuildVersion();
 
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]

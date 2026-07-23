@@ -1,0 +1,606 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Start Live View" /><meta name="abstract" content="You can set stream parameters and remotely get the live stream for decoding and live view by calling SDK API based on private protocol. And forcing to generate I frame or refresh frame is also available for improving the stream delay problem." /><meta name="description" content="You can set stream parameters and remotely get the live stream for decoding and live view by calling SDK API based on private protocol. And forcing to generate I frame or refresh frame is also available for improving the stream delay problem." /><meta name="DC.Relation" scheme="URI" content="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492" /><meta name="DC.Language" content="en-US" /><title>Start Live View</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Start Live View</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">You can set stream parameters and remotely get the live stream for decoding
+        and live view by calling SDK API based on private protocol. And forcing to generate I frame
+        or refresh frame is also available for improving the stream delay problem.</p>
+
+        <div class="section prereq p" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-C3F70332-3FA1-4456-A973-908E3CCE3271">
+            <ul class="ul" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__UL_RDV_3KQ_52B">
+                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-8076CA57-89FF-44B9-A516-032A297139EB">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs."><span class="keyword apiname">NET_DVR_Init</span></a> to initialize the development
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-813F3882-DAE6-4ED7-B8BE-D52E8E3620A0">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login)."><span class="keyword apiname">NET_DVR_Login_V40</span></a> to log in to the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-70419191-AF73-45D8-A7FE-B06EE43BB155">
+                <div class="fig fignone" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__FIG_SWY_WXJ_GBB">
+                    
+                    <img class="image" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__IMAGE_Z3F_SLG_VBB" src="GUID-3E748BD4-542E-41DF-B6ED-24D3B77C8AFB-high.png" height="1417" />
+                <span class="figcap">Figure 1 Programming Flow of
+                        Starting Live View</span></div>
+
+            </p><ol class="ol steps" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-7A88ADEE-9181-431F-92C9-FD46980EC803"><li class="li step" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-F9094D5B-882A-45F8-AA31-F3BFA04A7314"><strong>Optional: </strong>
+                <span class="ph cmd">Perform the following operation(s) to set the stream parameters (i.e., encoding
+                    parameters, image parameter, and OSD parameters).</span>
+                
+<table border="1" frame="hsides" rules="rows" cellpadding="4" cellspacing="0" summary="" class="simpletable choicetable choicetableborder" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__CHOICETABLE_WPX_GYJ_GBB">
+<thead><tr><th id="d21000e68-option" valign="bottom" align="left">Option</th>
+<th id="d21000e68-desc" valign="bottom" align="left">Description</th></tr></thead>
+<tbody>
+                    <tr class="strow chrow">
+                        <td valign="top" headers="d21000e68-option" id="d21000e72" class="stentry choption"><strong>
+                            <p class="p">Set Encoding Parameters</p>
+
+                        </strong></td>
+
+                        <td valign="top" headers="d21000e68-desc d21000e72" class="stentry chdesc">
+                            <ol class="ol" type="a" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__OL_UST_DLQ_52B">
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-8819CC2A-F99A-4812-8A6B-A000028DBFD9">
+                                    <p class="p">Call <a class="xref" href="GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E.html#GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E" title="Get device configuration information in batch (with sending data)."><span class="keyword apiname">NET_DVR_GetDeviceConfig</span></a> with the
+                                        command of NET_DVR_GET_MULTI_STREAM_COMPRESSIONCFG (command
+                                        No.: 3216) to get the existing or configured encoding
+                                        parameters for reference.</p>
+
+                                </li>
+
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-4DA08A95-B155-45E5-8414-B97B6FF23FED">
+                                    <p class="p">Call <a class="xref" href="GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF.html#GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF" title="Set device parameters in batch (sending data is supported)."><span class="keyword apiname">NET_DVR_SetDeviceConfig</span></a> with the
+                                        command of NET_DVR_SET_MULTI_STREAM_COMPRESSIONCFG (command
+                                        No: 3217) to set the resolution, frame rate, stream type
+                                        (video &amp; audio, video), encoding type, and so on.</p>
+
+                                </li>
+
+                            </ol>
+
+                            <div class="note note" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-9F24D1AD-4565-4C55-B36F-49084CEEAAF8"><span class="notetitle">Note:</span> 
+                                <p class="p">The input parameter <span class="keyword parmname">IpInBuffer</span>/<span class="keyword parmname">
+                                        lpInParamBuffer</span> and output parameter <span class="keyword parmname"> lpOutBuffer</span> of encoding
+                                    configurations refer to the structure <a class="xref" href="GUID-83A12ECC-E00D-40D3-9266-793E1F105594.html#GUID-83A12ECC-E00D-40D3-9266-793E1F105594" title="Condition structure of multi-stream encoding parameter configuration.">NET_DVR_MULTI_STREAM_COMPRESSIONCFG_COND</a>.</p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="strow chrow">
+                        <td valign="top" headers="d21000e68-option" id="d21000e137" class="stentry choption"><strong>
+                            <p class="p">Set Image Parameters</p>
+
+                        </strong></td>
+
+                        <td valign="top" headers="d21000e68-desc d21000e137" class="stentry chdesc">
+                            <ol class="ol" type="a" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__OL_R4L_KXQ_52B">
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-D7518ECF-EF03-4F4C-8F13-A9344856017D">
+                                    <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information."><span class="keyword apiname">NET_DVR_GetDVRConfig</span></a> with the
+                                        command of NET_DVR_GET_PICCFG_V40 (command No,: 6179) to get
+                                        the existing or configured image parameters for
+                                        reference.</p>
+
+                                </li>
+
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-E6CBF480-7527-4485-88F9-BD07D2313D2C">
+                                    <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters."><span class="keyword apiname">NET_DVR_SetDVRConfig</span></a> with the
+                                        command of NET_DVR_SET_PICCFG_V40 (command No.: 6180) to set
+                                        the video channel name, time display parameters, and so
+                                        on.</p>
+
+                                </li>
+
+                            </ol>
+
+                            <div class="note note" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-3D84FEAE-BE7F-490A-8B52-5DA47F8BBB3A"><span class="notetitle">Note:</span> 
+                                <p class="p">The input parameter <span class="keyword parmname">IpInBuffer</span> and output parameter <span class="keyword parmname"> lpOutBuffer</span> of image configurations
+                                    refer to the structure <a class="xref" href="GUID-E76AD768-8A38-45B2-90FA-8FBDA8B1C315.html#GUID-E76AD768-8A38-45B2-90FA-8FBDA8B1C315" title="Image parameter structure.">NET_DVR_PICCFG_V40</a>.</p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr class="strow chrow">
+                        <td valign="top" headers="d21000e68-option" id="d21000e199" class="stentry choption"><strong>
+                            <p class="p">Set OSD parameters</p>
+
+                        </strong></td>
+
+                        <td valign="top" headers="d21000e68-desc d21000e199" class="stentry chdesc">
+                            <ol class="ol" type="a" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__OL_HS3_CYQ_52B">
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-11270969-C531-4892-9194-D2A716956987">
+                                    <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information."><span class="keyword apiname">NET_DVR_GetDVRConfig</span></a> with the
+                                        command of NET_DVR_GET_SHOWSTRING_V30 (command No,: 1030) to
+                                        get the existing or configured OSD parameters for
+                                        reference.</p>
+
+                                </li>
+
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-E242F379-1464-4A14-B4EA-CE9BA2157932">
+                                    <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters."><span class="keyword apiname">NET_DVR_SetDVRConfig</span></a> with the
+                                        command of NET_DVR_SET_SHOWSTRING_V30 (command No.: 1031) to
+                                        set OSD parameters for live view.</p>
+
+                                </li>
+
+                            </ol>
+
+                            <div class="note note" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-9B41561D-C6D2-4BFE-9998-87DFE1FD8507"><span class="notetitle">Note:</span> 
+                                <p class="p">The input parameter <span class="keyword parmname">IpInBuffer</span> and output parameter <span class="keyword parmname"> lpOutBuffer</span> of OSD configurations
+                                    refer to the structure <a class="xref" href="GUID-225D5E74-2D44-433F-8D2A-D493BA922B4F.html#GUID-225D5E74-2D44-433F-8D2A-D493BA922B4F" title="Text overlay parameter structure.">NET_DVR_SHOWSTRING_V30</a>.</p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                </tbody></table>
+
+            </li>
+<li class="li step" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-B127C955-0DEF-4197-8370-4001904DE8D3">
+                <span class="ph cmd">Call <a class="xref" href="GUID-E0445E09-4F30-4802-9BDA-859A69783D2C.html#GUID-E0445E09-4F30-4802-9BDA-859A69783D2C" title="Start live view."><span class="keyword apiname">NET_DVR_RealPlay_V40</span></a> to start live view.</span>
+            </li>
+<li class="li step" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-7E8109A5-339F-407C-923A-3BE56BA65997"><strong>Optional: </strong>
+                <span class="ph cmd">Perform one of the following operations according to the stream encoding types
+                    to force to generate I frame or refresh frame.</span>
+                <ul class="ul choices" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__CHOICES_BG2_XJK_GBB">
+                    <li class="li choice" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-BF783F0F-473A-4357-A2A0-2E1F28689F90">
+                        <p class="p">For stream with Smart264 encoding type, call <a class="xref" href="GUID-3B531780-6B57-4CE3-ACEF-B02679D0AABD.html#GUID-3B531780-6B57-4CE3-ACEF-B02679D0AABD" title="Control remotely."><span class="keyword apiname">NET_DVR_STDControl</span></a> with the command of
+                            NET_DVR_STREAMING_REFRESH_FRAME (command No.: 3714), : structure ) to
+                            force the device to generate a deep P frame.</p>
+
+                        <div class="note note" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-DB2DFB29-44AF-4E96-BF8C-72086B4C9F6F"><span class="notetitle">Note:</span> 
+                            <p class="p">The control parameter <span class="keyword parmname">lpCondBuffer</span> refers to the structure <a class="xref" href="GUID-B7946CDC-A974-424F-ABB1-85D79440EB4E.html#GUID-B7946CDC-A974-424F-ABB1-85D79440EB4E" title="Condition structure about stream control.">NET_DVR_STREAMING_COND</a>.</p>
+
+                        </div>
+
+                    </li>
+
+                    <li class="li choice" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-8867A2B3-8BD6-446C-928F-45F198C8B2C2">
+                        <p class="p">For stream with other encoding types, call <a class="xref" href="GUID-61412615-3809-48F1-BBE6-4E0E9880AD53.html#GUID-61412615-3809-48F1-BBE6-4E0E9880AD53" title="Implement remote control."><span class="keyword apiname">NET_DVR_RemoteControl</span></a> with the command of
+                            NET_DVR_MAKE_I_FRAME (command No.: 3402) to force the device stream to
+                            generate an I frame for improving the stream delay problem.</p>
+
+                        <div class="note note" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-B89B52CC-7DB5-4758-AB3E-774B4DA6C56A"><span class="notetitle">Note:</span> 
+                            <p class="p">The input parameter <span class="keyword parmname">lpInBuffer</span>
+                                refers to the structure <a class="xref" href="GUID-73B2AEEC-DEE5-4CCC-91A0-5A9C484629CD.html#GUID-73B2AEEC-DEE5-4CCC-91A0-5A9C484629CD" title="Force I frame parameter structure.">NET_DVR_I_FRAME</a>.</p>
+
+                        </div>
+
+                    </li>
+
+                </ul>
+
+            </li>
+<li class="li step" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-9F8DA4F8-B518-446F-9D0A-7CC68844D827">
+                <span class="ph cmd">Check the validity of handle for display window (<span class="keyword parmname">hPlayWnd</span>) and perform one of the following operations according
+                    to the checking result to start decoding and displaying.</span>
+                <ul class="ul choices" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__CHOICES_WNW_NDR_52B">
+                    <li class="li choice" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-A30DB586-DAD0-4295-BF5D-43EDE589197C">
+                        <p class="p">For valid <span class="keyword parmname">hPlayWnd</span>, the
+                            decoding and displaying starts automatically.</p>
+
+                    </li>
+
+                    <li class="li choice" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-1CF8E7F8-2F12-4867-827D-ED441D66EDC9">
+                        <div class="p">For unconfigured <span class="keyword parmname">hPlayWnd</span>,
+                            perform the following steps:<ol class="ol" type="a" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__OL_O1X_WDR_52B">
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-CE638F57-A223-49E6-941D-325E3E64ACA3">
+                                    <p class="p">Call <a class="xref" href="GUID-F7FF8C02-2A6E-468C-9760-B1DC5F86E04C.html#GUID-F7FF8C02-2A6E-468C-9760-B1DC5F86E04C" title="Set a callback function for getting the real-time stream data."><span class="keyword apiname">NET_DVR_SetRealDataCallBack</span></a> or
+                                            <a class="xref" href="GUID-D1D5EC42-F84E-4F59-B8A5-9FB6690502A6.html#GUID-D1D5EC42-F84E-4F59-B8A5-9FB6690502A6" title="Register a callback function for getting the standard real-time stream data."><span class="keyword apiname">NET_DVR_SetStandardDataCallBack</span></a> to
+                                        set callback functions for getting stream in PS or RTP
+                                        container format.</p>
+
+                                </li>
+
+                                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-07FF5E2A-04E2-4ED0-AFF3-53FCE9159372">
+                                    <p class="p">Write the obtained stream to file or call
+                                        PlayCtrl library to decode and display.</p>
+
+                                    <div class="note note" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-C6E426F4-3FC9-490E-8C89-C5B37CD781C1"><span class="notetitle">Note:</span> 
+                                        <p class="p">For details about calling PlayCtrl library,
+                                            refer to <cite class="cite">User Manual of
+                                                Cross-Platform PlayCtrl Library SDK</cite>.</p>
+
+                                    </div>
+
+                                </li>
+
+                            </ol>
+</div>
+
+                    </li>
+
+                </ul>
+
+            </li>
+<li class="li step" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-C4423531-C776-4873-9DF3-F2208DB68FA1">
+                <span class="ph cmd">Call <a class="xref" href="GUID-90584BC9-6474-4D2F-8746-B161DA499673.html#GUID-90584BC9-6474-4D2F-8746-B161DA499673" title="Stop live view."><span class="keyword apiname">NET_DVR_StopRealPlay</span></a> to
+                    stop live view.</span>
+            </li>
+</ol>
+
+<div class="example" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-A8A29325-509F-436F-A3BE-F069256CEC5C"><h2 class="title sectiontitle">Sample Code of Starting Live
+                View</h2>
+            
+            <ul class="ul" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__UL_M5Z_DGR_52B">
+                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-7EB77589-C37A-4CDC-BCFE-BF47A43CD2D3">
+                    <div class="p">Decode and Display via
+                        SDK<pre class="pre codeblock">#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include "Windows.h"
+#include "HCNetSDK.h"
+#include &lt;time.h&gt;
+using namespace std;
+
+typedef HWND (WINAPI *PROCGETCONSOLEWINDOW)();
+PROCGETCONSOLEWINDOW GetConsoleWindowAPI;
+
+void CALLBACK g_ExceptionCallBack(DWORD dwType, LONG lUserID, LONG lHandle, void *pUser)
+{
+    char tempbuf[256] = {0};
+    switch(dwType) 
+    {
+    case EXCEPTION_RECONNECT:    //Reconnect during live view
+        printf("----------reconnect--------%d\n", time(NULL));
+    break;
+	default:
+    break;
+    }
+}
+
+void main() {
+
+  //---------------------------------------
+  // Initialize
+  NET_DVR_Init();
+  //Set connection time and reconnection time
+  NET_DVR_SetConnectTime(2000, 1);
+  NET_DVR_SetReconnect(10000, true);
+  
+  //---------------------------------------
+  //Set callback function for exceptional message
+  NET_DVR_SetExceptionCallBack_V30(0, NULL,g_ExceptionCallBack, NULL);
+
+  //---------------------------------------
+  // Get the window handle
+  HMODULE hKernel32 = GetModuleHandle("kernel32");
+  GetConsoleWindowAPI = (PROCGETCONSOLEWINDOW)GetProcAddress(hKernel32,"GetConsoleWindow");
+
+  //---------------------------------------
+  // Log in to device
+  LONG lUserID;
+
+  //Login parameters, including device IP address, user name, password, and so on.
+  NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
+  struLoginInfo.bUseAsynLogin = 0; //Synchronous login mode
+  strcpy(struLoginInfo.sDeviceAddress, "10.13.35.229"); //Device IP address
+  struLoginInfo.wPort = 8000; //Service port No.
+  strcpy(struLoginInfo.sUserName, "admin"); //User name
+  strcpy(struLoginInfo.sPassword, "abcd1234"); //Password
+  
+  //Device information, output parameter
+  NET_DVR_DEVICEINFO_V40 struDeviceInfoV40 = {0};
+
+  lUserID = NET_DVR_Login_V40(&amp;struLoginInfo, &amp;struDeviceInfoV40);
+  if (lUserID &lt; 0)
+  {
+      printf("Login failed, error code: %d\n", NET_DVR_GetLastError());
+      NET_DVR_Cleanup();
+      return;
+  }
+
+  //---------------------------------------
+  //Start live view and set stream callback function
+  LONG lRealPlayHandle;
+  HWND hWnd = GetConsoleWindowAPI();     //Get window handle
+  NET_DVR_PREVIEWINFO struPlayInfo = {0};
+  struPlayInfo.hPlayWnd = hWnd;         //Set the handle as valid for SDK decoding; set the handle as null for streaming only
+  struPlayInfo.lChannel     = 1;       //Live view channel No.
+  struPlayInfo.dwStreamType = 0;       //0-Main Stream, 1-Sub Stream, 2-Stream 3, 3-Stream 4, and so on
+  struPlayInfo.dwLinkMode   = 0;       //0- TCP Mode, 1- UDP Mode, 2- Multicast Mode, 3- RTP Mode, 4-RTP/RTSP, 5-RSTP/HTTP
+  struPlayInfo.bBlocked     = 1;       //0- Non-blocking Streaming, 1- Blocking Streaming
+
+  lRealPlayHandle = NET_DVR_RealPlay_V40(lUserID, &amp;struPlayInfo, NULL, NULL);
+  if (lRealPlayHandle &lt; 0)
+  {
+      printf("NET_DVR_RealPlay_V40 error\n");
+	  NET_DVR_Logout(lUserID);
+      NET_DVR_Cleanup();
+      return;
+  }
+
+  Sleep(10000);
+  //---------------------------------------
+  //Stop live view
+  NET_DVR_StopRealPlay(lRealPlayHandle);
+  //Log out
+  NET_DVR_Logout(lUserID);
+  //Release SDK resource
+  NET_DVR_Cleanup();
+
+  return;
+}
+</pre>
+</div>
+
+                </li>
+
+                <li class="li" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-9657E872-FC61-4353-99B9-6104C6E1B7B0">
+                    <div class="p">Decode and Display via PlayCtrl Library (for API named by the prefix
+                        "PlayM4_", refer to <cite class="cite">User Manual of Cross-Platform PlayCtrl Library
+                            SDK</cite>)<pre class="pre codeblock">#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include "Windows.h"
+#include "HCNetSDK.h"
+#include "plaympeg4.h"
+#include &lt;time.h&gt;
+using namespace std;
+
+typedef HWND (WINAPI *PROCGETCONSOLEWINDOW)();
+PROCGETCONSOLEWINDOW GetConsoleWindowAPI;
+
+LONG lPort; //Port No. of global player SDK
+
+void CALLBACK g_RealDataCallBack_V30(LONG lRealHandle, DWORD dwDataType, BYTE *pBuffer,DWORD dwBufSize,void* dwUser)
+{
+    HWND hWnd=GetConsoleWindowAPI();
+
+	switch (dwDataType)
+	{
+	case NET_DVR_SYSHEAD: //System header
+		if (m_lPort &gt;= 0)
+		{
+			break;  //The handle of this channel is areadly obtained before streaming. There is no need to call it in the following.
+		}
+
+		if (!PlayM4_GetPort(&amp;lPort))  //Get unused channel No. of player
+		{
+			break;
+		}
+		//m_iPort = lPort; //The firstly called back is system header. The ontained player SDK port No. will be assigned to global port No. for next time play.
+		if (dwBufSize &gt; 0)
+		{
+			if (!PlayM4_SetStreamOpenMode(lPort, STREAME_REALTIME))  //Set play mode of real-time stream
+			{
+				break;
+			}
+
+			if (!PlayM4_OpenStream(lPort, pBuffer, dwBufSize, 1024*1024)) //Open stream API
+			{
+				break;
+			}
+
+			if (!PlayM4_Play(lPort, hWnd)) //Start playing
+			{
+				break;
+			}
+		}
+        break; 
+	case NET_DVR_STREAMDATA:   //Stream data
+		if (dwBufSize &gt; 0 &amp;&amp; lPort != -1)
+		{
+			if (!PlayM4_InputData(lPort, pBuffer, dwBufSize))
+			{
+				break;
+			} 
+		}
+        break; 
+    default: //Other data
+        if (dwBufSize &gt; 0 &amp;&amp; lPort != -1)
+		{
+			if (!PlayM4_InputData(lPort, pBuffer, dwBufSize))
+			{
+				break;
+			} 
+		}
+        break;      
+	}
+}
+
+void CALLBACK g_ExceptionCallBack(DWORD dwType, LONG lUserID, LONG lHandle, void *pUser)
+{
+    char tempbuf[256] = {0};
+    switch(dwType) 
+    {
+    case EXCEPTION_RECONNECT:    //Reconnect during live view
+    printf("----------reconnect--------%d\n", time(NULL));
+    break;
+	default:
+    break;
+    }
+}
+
+void main() {
+
+  //---------------------------------------
+  // Initialize
+  NET_DVR_Init();
+  //Set connection time and reconnection time
+  NET_DVR_SetConnectTime(2000, 1);
+  NET_DVR_SetReconnect(10000, true);
+ 
+  //---------------------------------------
+  //Set callback function for exceptional message
+  NET_DVR_SetExceptionCallBack_V30(0, NULL,g_ExceptionCallBack, NULL);
+   
+  //---------------------------------------
+  // Get the window handle
+  HMODULE hKernel32 = GetModuleHandle("kernel32");
+  GetConsoleWindowAPI = (PROCGETCONSOLEWINDOW)GetProcAddress(hKernel32,"GetConsoleWindow");
+
+  //---------------------------------------
+  // Log in to device
+  LONG lUserID;
+
+  //Login parameters, including device IP address, user name, password, and so on.
+  NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
+  struLoginInfo.bUseAsynLogin = 0; //Synchronous login mode
+  strcpy(struLoginInfo.sDeviceAddress, "10.13.35.229"); //Device IP address
+  struLoginInfo.wPort = 8000; //Service port No.
+  strcpy(struLoginInfo.sUserName, "admin"); //User name
+  strcpy(struLoginInfo.sPassword, "abcd1234"); //Password
+  
+  //Device information, output parameter
+  NET_DVR_DEVICEINFO_V40 struDeviceInfoV40 = {0};
+
+  lUserID = NET_DVR_Login_V40(&amp;struLoginInfo, &amp;struDeviceInfoV40);
+  if (lUserID &lt; 0)
+  {
+      printf("Login failed, error code: %d\n", NET_DVR_GetLastError());
+      NET_DVR_Cleanup();
+      return;
+  }
+
+  //---------------------------------------
+  //Start live view and set stream callback function
+  LONG lRealPlayHandle;
+  NET_DVR_PREVIEWINFO struPlayInfo = {0};
+  struPlayInfo.hPlayWnd     = NULL;    //Set the handle as valid for SDK decoding; set the handle as null for streaming only
+  struPlayInfo.lChannel     = 1;       //Live view channel No.
+  struPlayInfo.dwStreamType = 0;       //0-Main Stream, 1-Sub Stream, 2-Stream 3, 3-Stream 4, and so on
+  struPlayInfo.dwLinkMode   = 0;       //0- TCP Mode, 1- UDP Mode, 2- Multicast Mode, 3- RTP Mode, 4-RTP/RTSP, 5-RSTP/HTTP
+  struPlayInfo.bBlocked     = 1;       //0- Non-blocking Streaming, 1- Blocking Streaming
+
+  lRealPlayHandle = NET_DVR_RealPlay_V40(lUserID, &amp;struPlayInfo, g_RealDataCallBack_V30, NULL);
+  if (lRealPlayHandle &lt; 0)
+  {
+      printf("NET_DVR_RealPlay_V40 error, %d\n", NET_DVR_GetLastError());
+      NET_DVR_Logout(lUserID);
+      NET_DVR_Cleanup();
+      return;
+  }
+
+  Sleep(10000);
+  //---------------------------------------
+  //Stop live view
+  NET_DVR_StopRealPlay(lRealPlayHandle);
+
+  //Release player SDK resources
+  PlayM4_Stop(lPort);
+  PlayM4_CloseStream(lPort);
+  PlayM4_FreePort(lPort);
+
+  //Log out
+  NET_DVR_Logout(lUserID);
+  NET_DVR_Cleanup();
+
+  return;
+}</pre>
+</div>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<div class="section postreq" id="GUID-07DA612E-9E51-4A5C-BB58-96120FEB9492__GUID-14139B05-B5AC-4B90-9D15-B36E28152A81">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices."><span class="keyword apiname">NET_DVR_Logout</span></a>
+                and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended."><span class="keyword apiname">NET_DVR_Cleanup</span></a>
+                to log out and release resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-2ECEC1F2-C9FC-435C-BFBD-535A47BE3F6F.html">Video and Audio</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Start Live View</span></li><li><span class="topicref"><a href="GUID-03154749-CAD4-41FC-B318-AC697EF33AD1.html">Start Live View Based on ISAPI Protocol</a></span></li><li><span class="topicref"><a href="GUID-D9CED8C1-33F0-4E39-9449-A7D726BEA58A.html">Perform PTZ Control</a></span></li><li><span class="topicref"><a href="GUID-F6375406-A6C9-4B67-A4E1-7A10A453E635.html">Search for Recording Start and End Time by Channel</a></span></li><li><span class="topicref"><a href="GUID-486489B8-E670-46C3-B8EA-E6FC5CCDF760.html">Start Playback</a></span></li><li><span class="topicref"><a href="GUID-2F93B07A-00F0-4D57-A159-4CD852A2EFA0.html">Two-Way Audio</a></span></li><li><span class="topicref"><a href="GUID-77AC2C98-BDC8-4844-A930-F4B04C807473.html">Stream Encoding</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

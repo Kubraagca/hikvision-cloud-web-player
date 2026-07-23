@@ -1,0 +1,206 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Configure Camera Correction" /><meta name="abstract" content="If the image distortion occurs, you can configure camera parameters (such as focal length, camera position, lens distortion coefficient, etc.) to correct the lens distortion for getting the normal images." /><meta name="description" content="If the image distortion occurs, you can configure camera parameters (such as focal length, camera position, lens distortion coefficient, etc.) to correct the lens distortion for getting the normal images." /><meta name="DC.Relation" scheme="URI" content="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B" /><meta name="DC.Language" content="en-US" /><title>Configure Camera Correction</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Configure Camera Correction</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">If the image distortion occurs, you can configure camera parameters (such as
+        focal length, camera position, lens distortion coefficient, etc.) to correct the lens
+        distortion for getting the normal images.</p>
+
+        <div class="section prereq p" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-E70F59C7-7788-4383-B833-3D44976F04BF">
+            <ul class="ul" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__UL_Y2S_N3H_V3B">
+                <li class="li" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-0830E6CD-7031-4CBA-B0C2-80D02CA65D66">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs.">NET_DVR_Init</a> to initialize the development environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-2F60C875-32F7-449B-88B6-630266AD6AC4">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+        <p class="li stepsection" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-6F63D5F0-6562-489C-9C68-4277B161879A">
+                <div class="fig fignone" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__FIG_U2T_CP4_V3B">
+                    
+                    <img class="image" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__IMAGE_V2T_CP4_V3B" src="GUID-ABB59D3E-85D8-4E39-A64F-E15B7675BFD2-high.png" height="1982" />
+                <span class="figcap">Figure 1 Programming Flow of Configuring Camera Correction</span></div>
+
+            </p><div class="li step p" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-873381C5-A238-4F1F-A1D6-1754DC2B6568">
+                <span class="ph cmd">Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a>, and set the capability type
+                        (<span class="keyword parmname">dwAbilityType</span>) to "NET_DVR_GET_SYSTEM_CAPABILITIES"
+                    (value: 8100) for getting the device capability to check if the device supports
+                    passing through ISAPI protocol of camera correction.</span>
+                <ul class="ul choices" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__CHOICES_PNM_WJH_V3B">
+                    <li class="li choice" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-806B2D6A-9067-471C-811B-E45FD3ACC0E9">
+                        <p class="p">The node &lt;<span class="keyword parmname">isSupportBVCorrect</span>&gt; is returned in the
+                            capability message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> and its value is "true": the device supports passing
+                            through ISAPI protocol of camera correction, and continue to perform the
+                            steps below.</p>
+
+                        <ol class="ol" type="a" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__OL_KVW_BMH_V3B">
+                            <li class="li" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-939D3E2F-5813-4115-ACFF-2CD1B051D7AF">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-7C842150-8EC1-405F-AE45-45CD74976EDC.html#GUID-7C842150-8EC1-405F-AE45-45CD74976EDC" title="Get the configuration capability of camera correction.">/ISAPI/System/BVCorrect/channels/&lt;ID&gt;/capabilities?format=json</a> to get the configuration capability of
+                                    camera correction and know the supported parameters.</p>
+
+                                <p class="p">The configuration capability is returned in the message <a class="xref" href="GUID-D7F450F1-9B06-42D7-87DA-8459FB94ED36.html#GUID-D7F450F1-9B06-42D7-87DA-8459FB94ED36" title="BVCorrectParamCap capability message in JSON format">JSON_BVCorrectParamCap</a> by
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </li>
+
+                            <li class="li" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-E55E0899-78F2-4C6B-B84A-0BF83A55FA3E">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                                        <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-3BAC4E72-7E1C-4AD1-87CF-1BEA6E049C9B.html#GUID-3BAC4E72-7E1C-4AD1-87CF-1BEA6E049C9B" title="Operations about the camera correction parameters.">/ISAPI/System/BVCorrect/channels/&lt;ID&gt;?format=json</a> to get the default or configured camera
+                                    correction parameters for reference.</p>
+
+                                <p class="p">The camera correction parameters are returned in the message
+                                        <a class="xref" href="GUID-5F79D4FF-4C32-4FF6-B7D7-9D1983491FED.html#GUID-5F79D4FF-4C32-4FF6-B7D7-9D1983491FED" title="BVCorrectParam message in JSON format">JSON_BVCorrectParam</a> by
+                                        <span class="keyword parmname">lpOutBuffer</span> of
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </li>
+
+                            <li class="li" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-92149340-5FBA-42CD-8648-96B67CCEB579">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL:
+                                        <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-3BAC4E72-7E1C-4AD1-87CF-1BEA6E049C9B.html#GUID-3BAC4E72-7E1C-4AD1-87CF-1BEA6E049C9B" title="Operations about the camera correction parameters.">/ISAPI/System/BVCorrect/channels/&lt;ID&gt;?format=json</a> and set <span class="keyword parmname">lpInBuffer</span> of
+                                        <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-5F79D4FF-4C32-4FF6-B7D7-9D1983491FED.html#GUID-5F79D4FF-4C32-4FF6-B7D7-9D1983491FED" title="BVCorrectParam message in JSON format">JSON_BVCorrectParam</a> to configure the camera
+                                    correction parameters.</p>
+
+                            </li>
+
+                        </ol>
+
+                    </li>
+
+                    <li class="li choice" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-381A6055-032E-4F6B-9AC0-5B07E832D4C1">
+                        <p class="p">The node &lt;<span class="keyword parmname">isSupportBVCorrect</span>&gt; is not returned in the capability
+                            message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a>: perform the steps below.</p>
+
+                        <ol class="ol" type="a" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__OL_RCM_32N_V3B">
+                            <li class="li" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-12AD299E-F1EB-403D-A8E3-CD489C910B62">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with command "NET_DVR_GET_BV_CORRECT_PARAM"
+                                    (command No.: 3240) to get the default or configured camera
+                                    correction parameters for reference.</p>
+
+                                <p class="p">The camera correction parameters are returned in the
+                                    structure <a class="xref" href="GUID-0EA80F33-C476-4DF7-B537-0E565AF96194.html#GUID-0EA80F33-C476-4DF7-B537-0E565AF96194" title="Structure about the correction parameters of the left camera and the right camera.">NET_DVR_BV_CORRECT_PARAM</a> by the output buffer (<span class="keyword parmname">lpOutBuffer</span>).</p>
+
+                            </li>
+
+                            <li class="li" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-96BDA72D-7389-4892-BFDF-D9E42CD82BF8">
+                                <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with command "NET_DVR_SET_BV_CORRECT_PARAM"
+                                    (command No.: 3241) ans set the input buffer
+                                        (<span class="keyword parmname">lpInBuffer</span>) to the structure <a class="xref" href="GUID-0EA80F33-C476-4DF7-B537-0E565AF96194.html#GUID-0EA80F33-C476-4DF7-B537-0E565AF96194" title="Structure about the correction parameters of the left camera and the right camera.">NET_DVR_BV_CORRECT_PARAM</a> for configuring the camera correction
+                                    parameters.</p>
+
+                            </li>
+
+                        </ol>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        <div class="section postreq" id="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B__GUID-7F256C57-0CD7-4138-B9DA-7960AC7DB1D8">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices.">NET_DVR_Logout</a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended.">NET_DVR_Cleanup</a> to log out of the device and release resources.</p>
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li><span class="topicref"><a href="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2.html">Search for Logs</a></span></li><li><span class="topicref"><a href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html">Configure Log Storage Mode</a></span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697.html">Automatic Maintenance</a></span></li><li><span class="topicref"><a href="GUID-F703A174-8D62-4240-B68F-61994DB95C83.html">Basic Maintenance</a></span></li><li><span class="topicref"><a href="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743.html">Basic Settings</a></span></li><li><span class="topicref"><a href="GUID-406B75B5-6C79-474C-A456-0333498574DB.html">Device Calibration</a></span></li><li class="active"><span class="topicref">Configure Camera Correction</span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

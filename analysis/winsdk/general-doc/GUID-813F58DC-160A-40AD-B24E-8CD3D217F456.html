@@ -1,0 +1,178 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_DVR_SetLogToFile" /><meta name="abstract" content="Write log files." /><meta name="description" content="Write log files." /><meta name="DC.Relation" scheme="URI" content="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456" /><meta name="DC.Language" content="en-US" /><title>NET_DVR_SetLogToFile</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_DVR_SetLogToFile</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Write log files.</p>
+
+<div class="section" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-29243910-EBF8-4E45-9090-9745CE95E6B5"><h2 class="title sectiontitle">API Definition</h2>
+            
+            <pre class="pre codeblock">BOOL <span class="keyword apiname">NET_DVR_SetLogToFile</span>(
+  DWORD    <span class="keyword parmname">nLogLevel</span>,
+  char     *<span class="keyword parmname">strLogDir</span>,
+  BOOL     <span class="keyword parmname">bAutoDel</span>
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-7F325253-DFA9-46CE-B642-013A2750AA34"><h2 class="title sectiontitle">Parameters</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-4886CE81-0FF8-44D2-9DA9-F59F5B07470F"><!-- --></a>nLogLevel</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Log level: 0-disable log (default), 1-output error log
+                            only, 2-output error and debug log, 3-output all logs (i.e., error,
+                            debug, and information).</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-25D1FC2F-8DCE-4EBB-A9B6-94D8885CC7DA"><!-- --></a>strLogDir</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Saving path of log file. The default path of Windows
+                            operating system is <span class="ph filepath">C:\\SdkLog\\</span>, and the default
+                            path of Linux operating system is
+                            <span class="ph filepath">/home/sdklog/</span>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-B9F2C447-5E32-48A9-9D55-5C44651624B1"><!-- --></a>bAutoDel</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Whether to enable automatically deleting log files when
+                            the maximum number reached: "TRUE" (default)-yes and delete the exceeded
+                            number of log files; "FALSE"-no and compress the log files when the
+                            number reaches 50.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-03C21E2D-7D29-4C56-B003-76FCD1CB79EA"><h2 class="title sectiontitle">Return Values </h2>
+            
+            <p class="p">Return <samp class="ph systemoutput">TRUE</samp> for success and
+                    <samp class="ph systemoutput">FALSE</samp> for failure. </p>
+
+            <p class="p">If <samp class="ph systemoutput">FALSE</samp> is returned, you can call <a class="xref" href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html#GUID-14773B75-3782-443F-ACB8-C40146725A9B" title="Return the error code of the last operation.">NET_DVR_GetLastError</a> to get the error code. </p>
+
+        </div>
+
+        <div class="section" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-040B4BB6-A40C-40AA-949C-48AA8AC05261"><h2 class="title sectiontitle">Remarks </h2>
+            
+            <ul class="ul" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__UL_GZP_TR4_TJB">
+                <li class="li" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-98ECCA86-6B67-427C-B81D-884FA152DA77">
+                    <p class="p">The log file path must be absolute path, and should be finished
+                        with "\\" (Windows) or "/" (Linux). It is suggested to manually create file
+                        firstly. If no file path is allocated, it will use the default path. If the
+                        path is changed, it will use the new path when writing the next file. </p>
+
+                </li>
+
+                <li class="li" id="GUID-813F58DC-160A-40AD-B24E-8CD3D217F456__GUID-70C523AB-22B8-4A5B-A12E-4CBE186D1880">
+                    <p class="p">You can call the API for multiple times to create new log files and up to 10
+                        files can be created at the same time.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-E39F8D83-1DBB-4527-B313-152EEF87D904.html">NET_DVR_CloseUpgradeHandle</a></span></li><li><span class="topicref"><a href="GUID-6DA97BAE-1355-4BC1-8619-F47D4B9136B3.html">NET_DVR_FindDVRLog_V50</a></span></li><li><span class="topicref"><a href="GUID-AE080A14-1ECF-414E-B31D-A7D08C0F2A88.html">NET_DVR_FindLogClose_V30</a></span></li><li><span class="topicref"><a href="GUID-3E19AE07-9424-48E5-9122-D4EF65494A72.html">NET_DVR_FindNextLog_V50</a></span></li><li><span class="topicref"><a href="GUID-36206D6E-C9C2-49E3-8903-C16F5A214101.html">NET_DVR_GetUpgradeProgress</a></span></li><li><span class="topicref"><a href="GUID-1F0B955F-927B-4CF0-91D0-F3A1F0CE9072.html">NET_DVR_GetUpgradeState</a></span></li><li class="active"><span class="topicref">NET_DVR_SetLogToFile</span></li><li><span class="topicref"><a href="GUID-DE355759-CA04-41F8-A2B4-ABD84C271F94.html">NET_DVR_Upgrade_V50</a></span></li></ul></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

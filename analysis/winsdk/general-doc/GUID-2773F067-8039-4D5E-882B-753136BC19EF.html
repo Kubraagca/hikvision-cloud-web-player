@@ -1,0 +1,1441 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_DVR_PlayBackControl_V40" /><meta name="abstract" content="Control playback or video file downloading." /><meta name="description" content="Control playback or video file downloading." /><meta name="DC.Relation" scheme="URI" content="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-2773F067-8039-4D5E-882B-753136BC19EF" /><meta name="DC.Language" content="en-US" /><title>NET_DVR_PlayBackControl_V40</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_DVR_PlayBackControl_V40</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Control playback or video file downloading.</p>
+
+<div class="section" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-0D38F005-5DD2-44FC-A618-7461FD0D3F71"><h2 class="title sectiontitle">API Definition</h2>
+            
+            <pre class="pre codeblock">BOOL NET_DVR_PlayBackControl_V40(
+  LONG      <span class="keyword parmname">lPlayHandle</span>,
+  DWORD     <span class="keyword parmname">dwControlCode</span>,
+  LPVOID    <span class="keyword parmname">lpInBuffer</span>,
+  DWORD     <span class="keyword parmname">dwInLen</span>,
+  LPVOID    <span class="keyword parmname">lpOutBuffer</span>,
+  DWORD     <span class="keyword parmname">*lpOutLen</span>
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-E6D72EFB-E42D-4660-9CF6-CE3BB7AA42D6"><h2 class="title sectiontitle">Parameters</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-B645C9B5-F334-4BC2-8D78-04C132F6877C"><!-- --></a>lPlayHandle</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Handle for playback or downloading, which is returned by
+                                <a class="xref" href="GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B.html#GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B" title="Start playback by time."><span class="keyword apiname">NET_DVR_PlayBackByTime_V50</span></a>, <a class="xref" href="GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B.html#GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B" title="Playback by file."><span class="keyword apiname">NET_DVR_PlayBackByName</span></a>,
+                                <a class="xref" href="GUID-D9A299E3-8413-46E3-8BC5-2E43729E5009.html#GUID-D9A299E3-8413-46E3-8BC5-2E43729E5009" title="Download video files by file name."><span class="keyword apiname">NET_DVR_GetFileByName</span></a>, or
+                                <a class="xref" href="GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A.html#GUID-1852B907-1AEE-4CB3-A661-F1DEAB81403A" title="Download video files by time."><span class="keyword apiname">NET_DVR_GetFileByTime_V40</span></a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-AED6C876-EBDD-4BFA-898D-E8D59DAD280F"><!-- --></a>dwControlCode</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Control commands for playback or downloading, and
+                            different commands determine different input and output parameters, see
+                            details in the following table:</p>
+
+                        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__TABLE_QXF_FPH_3BB" class="table" frame="border" border="1" rules="all">
+                                
+                                
+                                
+                                <thead class="thead" align="left">
+                                    <tr>
+                                        <th class="entry" valign="top" width="33.26885880077369%" id="d132228e119">
+                                            <p class="p">Command</p>
+
+                                        </th>
+
+                                        <th class="entry" valign="top" width="19.342359767891683%" id="d132228e125">
+                                            <p class="p">Command No.</p>
+
+                                        </th>
+
+                                        <th class="entry" valign="top" width="47.38878143133463%" id="d132228e131">
+                                            <p class="p">Description</p>
+
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody class="tbody">
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYSTART</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">1</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Start playback or downloading.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYPAUSE</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">3</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Pause playback or downloading.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYRESTART</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">4</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Resume playback or downloading (playback
+                                                speed will also resume)</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYFAST</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">5</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Fast forward (playback).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYSLOW</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">6</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Slow forward (playback).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYNORMAL</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">7</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Play.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYFRAME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">8</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Playback in single frame.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYSTARTAUDIO</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">9</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Audio on (playback).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYSTOPAUDIO</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">10</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Mute.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYAUDIOVOLUME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">11</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Adjust volume during playback, the value
+                                                is ranging from 0 to 0xffff.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYSETPOS</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">12</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Locate the playback/downloading position
+                                                (not available for downloading by time).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYGETPOS</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">13</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Get playback or downloading progress by
+                                                file or by time.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYGETTIME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">14</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Get current played time (valid only when
+                                                playback by file).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYGETFRAME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">15</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Get current played frames number (valid
+                                                only when playback by file).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_GETTOTALFRAMES</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">16</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Get the total frame number of the video
+                                                (valid only when playback or downloading by
+                                                file).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_GETTOTALTIME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">17</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Get the total time duration of the video
+                                                (valid only when playback or downloading by
+                                                file).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_THROWBFRAME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">20</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Drop B frame.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_SETSPEED</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">24</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Set playback or downloading speed, unit:
+                                                kbps, minimum: 256 kbps, maximum: device
+                                                brandwidth.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_KEEPALIVE</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">25</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Keep the heartbeat with device (if the
+                                                callback blocked, send once per two seconds).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYSETTIME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">26</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Locate according to absolute time.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYGETTOTALLEN</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">27</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Get the size of all video files in the
+                                                time period for playback.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAYSETTIME_V50</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">28</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Locate time during playback.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAY_FORWARD</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">29</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Switch reverse playback to playback.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAY_REVERSE</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">30</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Switch playback to reverse playback.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_SET_TRANS_TYPE</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">32</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Set transcoding type (call before
+                                                NET_DVR_PLAYSTART).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_PLAY_CONVERT</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">33</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Switch streams during playback or
+                                                downloading (call before NET_DVR_PLAYSTART).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_START_DRAWFRAME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">34</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Start playback by extracting frame.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_STOP_DRAWFRAME</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">35</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Stop playback by extracting frame.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_CHANGEWNDRESOLUTION</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">36</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Send notification to player SDK when the
+                                                window size changed (only available for developing
+                                                in Linux system).</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_VOD_DRAG_ING</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">37</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Dragging</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="entry" valign="top" width="33.26885880077369%" headers="d132228e119 ">
+                                            <p class="p">NET_DVR_VOD_DRAG_END</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="19.342359767891683%" headers="d132228e125 ">
+                                            <p class="p">38</p>
+
+                                        </td>
+
+                                        <td class="entry" valign="top" width="47.38878143133463%" headers="d132228e131 ">
+                                            <p class="p">Dragging ended.</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-0B5DD182-7A16-4E84-9DE3-B4C2B2AC9E79"><!-- --></a>lpInBuffer</dt>
+
+                    <dd class="dd pd">
+                        <div class="p">[IN] Pointer of input parameters, which are different
+                            according to different commands, see details in the table below:
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-0031493D-C3D7-497A-B1C7-19A638DAC327" class="table" frame="border" border="1" rules="all">
+                                    
+                                    
+                                    
+                                    <thead class="thead" align="left">
+                                        <tr>
+                                            <th class="entry" valign="top" width="33.333333333333336%" id="d132228e825">
+                                                <p class="p">Command</p>
+
+                                            </th>
+
+                                            <th class="entry" valign="top" width="24.69135802469136%" id="d132228e831">
+                                                <p class="p">lpInBuf</p>
+
+                                            </th>
+
+                                            <th class="entry" valign="top" width="41.97530864197531%" id="d132228e837">
+                                                <p class="p">lpOutBuf</p>
+
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody class="tbody">
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYSTART</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">A 4-byte integer offset. If the
+                                                  offset is 0,it indicates the video playback or
+                                                  downloading starts from the initial position,
+                                                  otherwise, the playback or downloading starts from
+                                                  the position that ANR occurred.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYPAUSE</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYRESTART</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYFAST</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYSLOW</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYNORMAL</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYFRAME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYSTARTAUDIO</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYSTOPAUDIO</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYAUDIOVOLUME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYSETPOS</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">A 4-byte integer progress value
+                                                  (from 0 to 100).</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYGETPOS</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">A 4-byte integer progress value. If
+                                                  the value is ranging from 0 to 100, it refers to
+                                                  normal playback or downloading; if the value is
+                                                  larger than 100, it refers to playback or
+                                                  downloading exception. For playback or downloading
+                                                  by time, only the following progress value can be
+                                                  obtained: 0, 100 (ended), and 200 (exception).</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYGETTIME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">A 4-byte integer time.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYGETFRAME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">A 4-byte integer frame number.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_GETTOTALFRAMES</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">A 4-byte integer frame number.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_GETTOTALTIME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">A 4-byte integer time.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_THROWBFRAME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">A 4-byte integer B frame number.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_SETSPEED</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">A 4-byte integer speed.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_KEEPALIVE</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYSETTIME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p"><a class="xref" href="GUID-D0E2A4E3-633A-4BAC-B689-0F2B0109F096.html#GUID-D0E2A4E3-633A-4BAC-B689-0F2B0109F096"><var class="keyword varname">NET_DVR_TIME</var></a></p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYGETTOTALLEN</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">An 8-byte integer length (unit:
+                                                  byte).</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAYSETTIME_V50</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p"><a class="xref" href="GUID-75B6F124-D3A7-4377-BF61-1F298F0CE4F5.html#GUID-75B6F124-D3A7-4377-BF61-1F298F0CE4F5" title="Time parameters structure."><var class="keyword varname">NET_DVR_TIME_V50</var></a></p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAY_FORWARD</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">Decode on application layer: <a class="xref" href="GUID-D0E2A4E3-633A-4BAC-B689-0F2B0109F096.html#GUID-D0E2A4E3-633A-4BAC-B689-0F2B0109F096"><var class="keyword varname">NET_DVR_TIME</var></a>; Decode
+                                                  via SDK API: null</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAY_REVERSE</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">Decode on application layer: <a class="xref" href="GUID-D0E2A4E3-633A-4BAC-B689-0F2B0109F096.html#GUID-D0E2A4E3-633A-4BAC-B689-0F2B0109F096"><var class="keyword varname">NET_DVR_TIME</var></a>; Decode
+                                                  via SDK API: null</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_SET_TRANS_TYPE</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">A 4-byte integer packaging type:
+                                                1-PS, 2-TS, 3-RTP, 5-MP4 (3GPP, only available for
+                                                playback by file).</td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_PLAY_CONVERT</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p"><a class="xref" href="GUID-49CA5434-6042-43D2-8587-6681BC3163A2.html#GUID-49CA5434-6042-43D2-8587-6681BC3163A2" title="Structure about stream encoding parameters."><var class="keyword varname">NET_DVR_COMPRESSION_INFO_V30</var></a></p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_START_DRAWFRAME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p"><a class="xref" href="GUID-DBBD8FAD-38C1-4E8B-AD1F-37BF3BDEB304.html#GUID-DBBD8FAD-38C1-4E8B-AD1F-37BF3BDEB304" title="Condition structure for extracting frame during playback."><var class="keyword varname">NET_DVR_VOD_DRAWFRAME_PARA</var></a>
+                                                  or <a class="xref" href="GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811.html#GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811"><var class="keyword varname">NET_DVR_TIME_EX</var></a></p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_STOP_DRAWFRAME</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p"><a class="xref" href="GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811.html#GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811"><var class="keyword varname">NET_DVR_TIME_EX</var></a></p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_CHANGEWNDRESOLUTION</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_VOD_DRAG_ING</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p"><a class="xref" href="GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811.html#GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811"><var class="keyword varname">NET_DVR_TIME_EX</var></a></p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td class="entry" valign="top" width="33.333333333333336%" headers="d132228e825 ">
+                                                <p class="p">NET_DVR_VOD_DRAG_END</p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="24.69135802469136%" headers="d132228e831 ">
+                                                <p class="p"><a class="xref" href="GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811.html#GUID-D97CEBCC-7605-4F86-ABC4-6DA185C6F811"><var class="keyword varname">NET_DVR_TIME_EX</var></a></p>
+
+                                            </td>
+
+                                            <td class="entry" valign="top" width="41.97530864197531%" headers="d132228e837 ">
+                                                <p class="p">None.</p>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+</div>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-D106E953-919A-4870-BC3E-515282A19A6F"><!-- --></a>dwInLen</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Size of input parameter (when playback by extracting
+                            frame, you must set the correct length). This parameter is reserved
+                            during downloading control.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-E3A9960E-17A0-4DC0-B09E-577477836466"><!-- --></a>lpOutBuffer</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Pointer of output parameter.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-79222731-C863-445A-866C-405EA7E8A5BA"><!-- --></a>lpOutLen</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[OUT] Size of output parameters, which are different according to
+                            different commands, see details in the table above.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-E7154A27-5034-4F06-ABFA-A41388E30B30"><h2 class="title sectiontitle">Return Values</h2>
+            
+            <p class="p">Return <samp class="ph systemoutput">TRUE</samp> for success, and return
+                    <samp class="ph systemoutput">FALSE</samp> for failure.</p>
+
+            <p class="p">If <samp class="ph systemoutput">FALSE</samp> is returned, you can call <a class="xref" href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html#GUID-14773B75-3782-443F-ACB8-C40146725A9B" title="Return the error code of the last operation."><span class="keyword apiname">NET_DVR_GetLastError</span></a> to get the error
+                code.</p>
+
+            <p class="p">The error codes may be returned by this API are shown as the follows: 0,
+                1, 3, 5, 7, 8, 9, 10, 14, 17, 23, 33, 41, 43, 44, 64, 65, 66, 72, and 73, see
+                details in <a class="xref" href="GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238.html#GUID-C4DF6D08-6205-4B1F-82FD-587BC0394238" title="The errors that may occur during the device network SDK integration are listed here for reference. You can search for the error descriptions according to the error codes or names returned by a specific API (NET_DVR_GetLastError or NET_DVR_GetErrorMsg).">Device Network SDK Errors</a>.</p>
+
+        </div>
+
+        <div class="section" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-EFCB7128-AF15-444F-9D7D-AE24B2D7BA4A"><h2 class="title sectiontitle">Remarks</h2>
+            
+            <ul class="ul" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__UL_LYZ_CM3_3BB">
+                <li class="li" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-5D881381-E9E4-486B-A3B3-818870A7C207">
+                    <p class="p">For the integration based on OPEN ISAPI Protocol, only the following playback
+                        control commands are supported: NET_DVR_PLAYSTART (start playing),
+                        NET_DVR_PLAYPAUSE (pausing playing), NET_DVR_PLAYRESTART (resume playing),
+                        NET_DVR_PLAYFAST (fast forward), NET_DVR_PLAYSLOW (slow forward),
+                        NET_DVR_PLAYNORMAL (play in 1× speed).</p>
+
+                </li>
+
+                <li class="li" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-2E545EE9-9DD7-4E8C-916B-859176B93624">
+                    <p class="p">Before starting or stopping playback by extracting frame, you must send the
+                        current OSD time to device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-7597E5A6-5328-4D75-91BA-D0A905F612BE">
+                    <p class="p">If no window handle is imported by playback API, clearing the
+                        cache of PlayCtrl LibrarySDK to avoid delay is suggested when getting steam
+                        and decoding.</p>
+
+                </li>
+
+                <li class="li" id="GUID-2773F067-8039-4D5E-882B-753136BC19EF__GUID-08F87811-C132-45B5-A373-96E6268FDBB7">
+                    <p class="p">For developing in Linux system, valid window handle will be
+                        imported by the playback API, so you should call this API with command
+                        NET_DVR_CHANGEWNDRESOLUTION to notify the PlayCtrl LibrarySDK to get the
+                        window size when it changed during playback.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-D7437076-58B7-4648-9EFF-8E96C9E66284.html">NET_DVR_CloseFindPicture</a></span></li><li><span class="topicref"><a href="GUID-0AB95DC1-3444-42BA-B0EA-628A13B7D7DD.html">NET_DVR_CloseSmartSearchPicture</a></span></li><li><span class="topicref"><a href="GUID-2CBD8F86-9EF7-43EC-A658-491F820F2398.html">NET_DVR_FindClose_V30</a></span></li><li><span class="topicref"><a href="GUID-D24BB91B-B2E7-4EF2-9E6E-E13468DF3346.html">NET_DVR_FindFile_V50</a></span></li><li><span class="topicref"><a href="GUID-95A3F793-76E0-4C8D-B2B5-D1CDC6C69AB3.html">NET_DVR_FindFileByEvent_V50</a></span></li><li><span class="topicref"><a href="GUID-B9CE888C-DB72-4270-AABE-3C05B0833B8E.html">NET_DVR_FindNextEvent_V50</a></span></li><li><span class="topicref"><a href="GUID-18BF8AD9-64C8-4D11-8527-4907DCA64DDA.html">NET_DVR_FindNextFile_V50</a></span></li><li><span class="topicref"><a href="GUID-8CBD8FE1-604A-40BA-937A-F80DF0BF495F.html">NET_DVR_FindNextLabel</a></span></li><li><span class="topicref"><a href="GUID-3082780A-7C62-49A2-BBAF-E435E9304FA5.html">NET_DVR_FindNextPicture_V50</a></span></li><li><span class="topicref"><a href="GUID-0460B18C-0EE7-4EDE-9EDC-01A0CE608754.html">NET_DVR_FindNextSmartPicture_V50</a></span></li><li><span class="topicref"><a href="GUID-E6E8BDB3-938D-4AB5-B53C-A198890733F4.html">NET_DVR_FindPicture</a></span></li><li><span class="topicref"><a href="GUID-F6231A46-5E0C-45A9-A549-6634A77FB359.html">NET_DVR_FindRecordLabel</a></span></li><li><span class="topicref"><a href="GUID-5A852DB6-5CB8-413D-ACF0-60A9A4427A34.html">NET_DVR_GetPicture_V50</a></span></li><li><span class="topicref"><a href="GUID-CA0D8741-8A5C-471E-B4CD-D734C0D3C99B.html">NET_DVR_PlayBackByName</a></span></li><li><span class="topicref"><a href="GUID-EF04240F-A68B-49BC-9A34-DF49A18CF27B.html">NET_DVR_PlayBackByTime_V50</a></span></li><li class="active"><span class="topicref">NET_DVR_PlayBackControl_V40</span></li><li><span class="topicref"><a href="GUID-13A4BD9C-F592-4EDD-B112-E6BF51C0C0F9.html">NET_DVR_SearchNextInfo</a></span></li><li><span class="topicref"><a href="GUID-97C35264-1BAC-41F9-9637-D7C45058DBE6.html">NET_DVR_SetPlayDataCallBack_V40</a></span></li><li><span class="topicref"><a href="GUID-808CE166-A167-4769-B00F-2FE01523AB0C.html">NET_DVR_SmartSearch_V40</a></span></li><li><span class="topicref"><a href="GUID-2F3B6F10-901F-4639-8D66-D52A567001FE.html">NET_DVR_SmartSearchPicture</a></span></li><li><span class="topicref"><a href="GUID-5DAB9C6B-8C90-4861-93F7-2487F654CBC7.html">NET_DVR_StopFindLabel</a></span></li><li><span class="topicref"><a href="GUID-5C8EB9AA-DE64-4C11-B903-2E02E1949965.html">NET_DVR_StopPlayBack</a></span></li><li><span class="topicref"><a href="GUID-F6CA25BA-3E9C-4DAA-8EC0-8725F09EEB12.html">NET_DVR_StopSearch</a></span></li><li><span class="topicref"><a href="GUID-A6A385BB-2A66-471B-9B42-5C4D108B144B.html">NET_DVR_UpdateRecordIndex</a></span></li></ul></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

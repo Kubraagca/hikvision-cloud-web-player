@@ -3,6 +3,39 @@ using System.Runtime.InteropServices;
 namespace HikSdk.Interop;
 
 [StructLayout(LayoutKind.Sequential)]
+public struct NET_DVR_LOCAL_SDK_PATH
+{
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = HikConstants.NET_SDK_MAX_FILE_PATH, ArraySubType = UnmanagedType.I1)]
+    public sbyte[] sPath;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128, ArraySubType = UnmanagedType.U1)]
+    public byte[] byRes;
+
+    public static NET_DVR_LOCAL_SDK_PATH Create() =>
+        new()
+        {
+            sPath = new sbyte[HikConstants.NET_SDK_MAX_FILE_PATH],
+            byRes = new byte[128]
+        };
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct NET_DVR_INIT_CHECK_MODULE_COM
+{
+    public byte byEnable;
+
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 255, ArraySubType = UnmanagedType.U1)]
+    public byte[] byRes;
+
+    public static NET_DVR_INIT_CHECK_MODULE_COM Create(byte enable = 1) =>
+        new()
+        {
+            byEnable = enable,
+            byRes = new byte[255]
+        };
+}
+
+[StructLayout(LayoutKind.Sequential)]
 public struct NET_DVR_IPADDR
 {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.I1)]

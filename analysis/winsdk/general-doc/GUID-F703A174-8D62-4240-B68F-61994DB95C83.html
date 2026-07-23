@@ -1,0 +1,355 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Function API Get device working status Call NET_DVR_STDXMLConfig to transmit the request URL: GET /ISAPI/System/workingstatus?format=json . And the device status is returned in the message ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Basic Maintenance" /><meta name="DC.Relation" scheme="URI" content="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-F703A174-8D62-4240-B68F-61994DB95C83" /><meta name="DC.Language" content="en-US" /><title>Basic Maintenance</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-F703A174-8D62-4240-B68F-61994DB95C83" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Basic Maintenance</h1>
+
+<div class="body conbody">
+        
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-F703A174-8D62-4240-B68F-61994DB95C83__TABLE_K3K_SJP_XLB" class="table" frame="border" border="1" rules="all">
+                
+                
+                <thead class="thead" align="left">
+                    <tr>
+                        <th class="entry" valign="top" width="40%" id="d1154957e25">
+                            <p class="p">Function</p>
+
+                        </th>
+
+                        <th class="entry" valign="top" width="60%" id="d1154957e31">
+                            <p class="p">API</p>
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="tbody">
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Get device working status</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit the request URL:
+                                    <span class="ph synph">GET</span>
+                                <a class="xref" href="GUID-BD47314B-D671-4ED6-9923-FCF73282EB66.html#GUID-BD47314B-D671-4ED6-9923-FCF73282EB66" title="Get device working status.">/ISAPI/System/workingstatus?format=json</a>.</p>
+
+                            <p class="p">And the device status is returned in the message <a class="xref" href="GUID-B55489F2-27B9-49C2-9171-A501A5B27C5F.html#GUID-B55489F2-27B9-49C2-9171-A501A5B27C5F" title="WorkingStatus message in JSON format">JSON_WorkingStatus</a> by output parameter pointer
+                                    (<span class="keyword parmname">IpOutputParam</span>).</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Enable/Disable device status checking</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Enable: <a class="xref" href="GUID-FB6A44F5-6203-47EE-93DB-D962C5D8B27C.html#GUID-FB6A44F5-6203-47EE-93DB-D962C5D8B27C" title="Enable device status checking.">NET_DVR_StartGetDevState</a></p>
+
+                            <p class="p">Disable: <a class="xref" href="GUID-2F91B302-4A34-4D17-9C50-35E910E6A4D8.html#GUID-2F91B302-4A34-4D17-9C50-35E910E6A4D8" title="Disable device status checking.">NET_DVR_StopGetDevState</a></p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Receive device status changes</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Refer to <a class="xref" href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html#GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D" title="When the alarm is triggered or the event occurred, the secondarily developed third-party platform can automatically connect and send alarm/event uploading command to the device, and then the device uploads the alarm/event information to the platform for receiving.">Receive Alarm/Event in Arming Mode</a> for the integration process of
+                                uploading status changes, and refer to <a class="xref" href="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8.html#GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8" title="For arming mode, the platform will connect to the devices automatically and send commands to the devices for uploading alarm/event information when the alarm is triggered or event occurred. To reduce the CPU and bandwidth usage of platform, and improve the device processing performance, the platform can subscribe alarm/event types to receive alarm/event information as required.">Subscribe Alarm/Event in Arming Mode</a> for the integration process of
+                                uploading capability changes. </p>
+
+                            <p class="p">And then the command (<span class="keyword parmname">lCommand</span>) to upload status changes in the API <a class="xref" href="GUID-3C513730-D89A-40D2-A25E-C994310578D2.html#GUID-3C513730-D89A-40D2-A25E-C994310578D2" title="Set callback functions for getting the video data.">NET_DVR_SetDVRMessageCallBack_V50</a> should be set to <span class="keyword cmdname">COMM_DEV_STATUS_CHANGED</span> (command No.:
+                                0x7000).</p>
+
+                            <div class="note note" id="GUID-F703A174-8D62-4240-B68F-61994DB95C83__GUID-885B1F78-1079-4399-A93F-976C04C789AF"><span class="notetitle">Note:</span> 
+                                <p class="p">To check if uploading status changes is supported by
+                                    device, you can call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities.">NET_DVR_GetSTDAbility</a> with capability type
+                                    "NET_DVR_GET_SYSTEM_CAPABILITIES" to get the device capability
+                                        (<a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a>). If supports, the node
+                                        &lt;<span class="keyword parmname">isSupportChangedUpload</span>&gt; is returned.</p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Restore to factory settings</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-52D2E166-AD52-4092-AEFE-58FCE5EDC8F9.html#GUID-52D2E166-AD52-4092-AEFE-58FCE5EDC8F9" title="Restore the device to default settings.">/ISAPI/System/factoryReset?mode=</a> with <span class="ph synph">PUT</span> method.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Reboot the device</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p"><a class="xref" href="GUID-F06DCF7F-E1C1-4F77-BEB1-20636DD853CD.html#GUID-F06DCF7F-E1C1-4F77-BEB1-20636DD853CD" title="Reboot the device.">NET_DVR_RebootDVR</a></p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Get device algorithm version</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <ul class="ul" id="GUID-F703A174-8D62-4240-B68F-61994DB95C83__UL_ASY_NLP_XLB">
+                                <li class="li" id="GUID-F703A174-8D62-4240-B68F-61994DB95C83__GUID-66D7B8F0-77FE-4E17-AE20-E4699BD2A4EA">
+                                    <p class="p">Option 1: Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-C5273A42-D2F2-4594-A7E1-0F8F071DDDCA.html#GUID-C5273A42-D2F2-4594-A7E1-0F8F071DDDCA" title="Get the version information of algorithm library.">/ISAPI/System/algorithmsVersion</a> with <span class="ph synph">GET</span>
+                                        method.</p>
+
+                                    <p class="p">The algorithm version information is returned in
+                                        the message <a class="xref" href="GUID-4566F47C-AC1E-4B79-943F-FB2A178B5B93.html#GUID-4566F47C-AC1E-4B79-943F-FB2A178B5B93" title="Message about version information of algorithm library in XML format">XML_AlgorithmsVersion</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                                </li>
+
+                                <li class="li" id="GUID-F703A174-8D62-4240-B68F-61994DB95C83__GUID-CC0430BC-0F44-48A2-8749-05C3F7E4AC1D">
+                                    <p class="p">Option 2: Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information.">NET_DVR_GetSTDConfig</a> with
+                                        "NET_DVR_GET_VCA_VERSION_LIST" (command No.: 3973) and set
+                                            <span class="keyword parmname">IpCondBuffer</span> in the
+                                        structure <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83">NET_DVR_STD_CONFIG</a> to NULL.</p>
+
+                                    <p class="p">The algorithm version information (<a class="xref" href="GUID-AC92E721-BA00-4D92-9603-4EF25E8C8D97.html#GUID-AC92E721-BA00-4D92-9603-4EF25E8C8D97" title="Algorithms library version information structure.">NET_DVR_VCA_VERSION_LIST</a>) is returned by <span class="keyword parmname">lpOutBuffer</span> in the structure
+                                            <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83">NET_DVR_STD_CONFIG</a>.</p>
+
+                                </li>
+
+                            </ul>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Get device information</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-468B5836-8658-4605-94F4-5EE809F786A0.html#GUID-468B5836-8658-4605-94F4-5EE809F786A0" title="Operations about the device information.">/ISAPI/System/deviceInfo</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The device information is returned in the message <a class="xref" href="GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300.html#GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300" title="XML message about device information">XML_DeviceInfo</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Get capability of exporting device diagnose information</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-38A14286-4040-47B8-86DC-E1710DF15201.html#GUID-38A14286-4040-47B8-86DC-E1710DF15201" title="Get the capability of exporting device diagnose information.">/ISAPI/System/diagnosedData/parameter/capabilities</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The capability is returned in the message <a class="xref" href="GUID-E22563C8-445E-4BF3-8DDE-33C8414F1D08.html#GUID-E22563C8-445E-4BF3-8DDE-33C8414F1D08" title="XML message about capability of exporting diagnose information">XML_Cap_DiagnosedDataParameter</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Get parameters of exporting device diagnose information</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-E0F822F3-E756-41E5-BE64-F79D0E9DFDBE.html#GUID-E0F822F3-E756-41E5-BE64-F79D0E9DFDBE" title="Get or set the parameters of exporting device diagnose information.">/ISAPI/System/diagnosedData/parameter</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The parameters are returned in the message <a class="xref" href="GUID-32FDFAB3-C31D-4BC0-8846-F82B79329D43.html#GUID-32FDFAB3-C31D-4BC0-8846-F82B79329D43" title="XML message about parameters of exporting diagnose information">XML_DiagnosedDataParameter</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Set parameters of exporting device diagnose information</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-E0F822F3-E756-41E5-BE64-F79D0E9DFDBE.html#GUID-E0F822F3-E756-41E5-BE64-F79D0E9DFDBE" title="Get or set the parameters of exporting device diagnose information.">/ISAPI/System/diagnosedData/parameter</a> with <span class="ph synph">PUT</span> method and
+                                set <span class="keyword parmname">lpInputParam</span> to the message
+                                    <a class="xref" href="GUID-32FDFAB3-C31D-4BC0-8846-F82B79329D43.html#GUID-32FDFAB3-C31D-4BC0-8846-F82B79329D43" title="XML message about parameters of exporting diagnose information">XML_DiagnosedDataParameter</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Get diagnostic server capability</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-1A7814B2-B03F-4AFC-961D-05CA81360D8A.html#GUID-1A7814B2-B03F-4AFC-961D-05CA81360D8A" title="Get the diagnostic server capability.">/ISAPI/System/diagnosedData/server/capabilities?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The capability is returned in the message <a class="xref" href="GUID-9F20E858-7BC9-4ED9-B7F0-C4283E48DB2B.html#GUID-9F20E858-7BC9-4ED9-B7F0-C4283E48DB2B" title="JSON message about diagnostic server capability">JSON_DiagnosedDataServerCap</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Get diagnostic server parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-292D8AD7-7D85-4897-B37D-25D5B2717D06.html#GUID-292D8AD7-7D85-4897-B37D-25D5B2717D06" title="Get or set the diagnostic server parameters.">/ISAPI/System/diagnosedData/server?format=json</a> with <span class="ph synph">GET</span> method.</p>
+
+                            <p class="p">The parameters are returned in the message <a class="xref" href="GUID-D52395C7-7310-433F-A7DC-DC936E60D5C5.html#GUID-D52395C7-7310-433F-A7DC-DC936E60D5C5" title="JSON message about diagnostic server configuration parameters.">JSON_DiagnosedDataServerList</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Set diagnostic server parameters</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-292D8AD7-7D85-4897-B37D-25D5B2717D06.html#GUID-292D8AD7-7D85-4897-B37D-25D5B2717D06" title="Get or set the diagnostic server parameters.">/ISAPI/System/diagnosedData/server?format=json</a> with <span class="ph synph">PUT</span> method and set <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-D52395C7-7310-433F-A7DC-DC936E60D5C5.html#GUID-D52395C7-7310-433F-A7DC-DC936E60D5C5" title="JSON message about diagnostic server configuration parameters.">JSON_DiagnosedDataServerList</a>.</p>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="entry" valign="top" width="40%" headers="d1154957e25 ">
+                            <p class="p">Test diagnostic server</p>
+
+                        </td>
+
+                        <td class="entry" valign="top" width="60%" headers="d1154957e31 ">
+                            <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-B2925C03-3C09-4DD2-A0A5-6CD9693660AC.html#GUID-B2925C03-3C09-4DD2-A0A5-6CD9693660AC" title="Test the diagnostic server.">/ISAPI/System/diagnosedData/server/test?format=json</a> with <span class="ph synph">POST</span> method.</p>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li><span class="topicref"><a href="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2.html">Search for Logs</a></span></li><li><span class="topicref"><a href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html">Configure Log Storage Mode</a></span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-4BA76279-D403-419D-A9AD-DEEB4FC2D697.html">Automatic Maintenance</a></span></li><li class="active"><span class="topicref">Basic Maintenance</span></li><li><span class="topicref"><a href="GUID-A3A47FB2-DAA4-47A6-8EC3-0086D3663743.html">Basic Settings</a></span></li><li><span class="topicref"><a href="GUID-406B75B5-6C79-474C-A456-0333498574DB.html">Device Calibration</a></span></li><li><span class="topicref"><a href="GUID-B02720B8-22DF-4F8B-8305-F6A65BEA582B.html">Configure Camera Correction</a></span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

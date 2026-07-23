@@ -1,0 +1,788 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Camera Video/Image Settings Basic Parameters Get camera image parameters Call NET_DVR_GetDVRConfig with &#34;NET_DVR_GET_CCDPARAMCFG&#34; (command No.: 1067) and set lChannel to &#34;0XFFFFFFFF&#34;. The camera image ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Video/Image Settings" /><meta name="DC.Relation" scheme="URI" content="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014" /><meta name="DC.Language" content="en-US" /><title>Video/Image Settings</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Video/Image Settings</h1>
+
+<div class="body conbody">
+        <div class="section" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__GUID-0FE90EB4-FC33-43A8-9F3D-183A6B2B88CA"><h2 class="title sectiontitle">Camera Video/Image
+                Settings</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__TABLE_PMF_RJS_BKB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="14.285714285714285%">
+                                <p class="p">Basic Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get camera image parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with "NET_DVR_GET_CCDPARAMCFG"
+                                    (command No.: 1067) and set <span class="keyword parmname">lChannel</span> to "0XFFFFFFFF".</p>
+
+                                <p class="p">The camera image parameters are returned in the
+                                    structure <a class="xref" href="GUID-7042BB4F-9089-4FFF-8239-D3D5CF6B2F6F.html#GUID-7042BB4F-9089-4FFF-8239-D3D5CF6B2F6F" title="Camera parameter structure">NET_DVR_CAMERAPARAMCFG</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="14.285714285714285%">
+                                <p class="p">Set camera image parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with "NET_DVR_SET_CCDPARAMCFG"
+                                    (command No: 1068), set <span class="keyword parmname">lChannel</span> to "0XFFFFFFFF", and set <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-7042BB4F-9089-4FFF-8239-D3D5CF6B2F6F.html#GUID-7042BB4F-9089-4FFF-8239-D3D5CF6B2F6F" title="Camera parameter structure">NET_DVR_CAMERAPARAMCFG</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" colspan="2" valign="top">
+                                <p class="p">Correct defective pixel</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-61412615-3809-48F1-BBE6-4E0E9880AD53.html#GUID-61412615-3809-48F1-BBE6-4E0E9880AD53" title="Implement remote control.">NET_DVR_RemoteControl</a> with "NET_DVR_DPC_CTRL"
+                                    (command No.: 3410) and set <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-BE50F6A4-F937-49CB-8673-BEF2B6768A5E.html#GUID-BE50F6A4-F937-49CB-8673-BEF2B6768A5E">NET_DVR_DPC_PARAM</a>.</p>
+
+                                <div class="note note" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__GUID-A7FAEC45-7AAC-4C36-85AF-4D551FAE6B50"><span class="notetitle">Note:</span> 
+                                    <p class="p">This function is only available for certain
+                                        camera models.</p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="14.285714285714285%">
+                                <p class="p">ISP Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get ISP (Image Signal Processing) parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with
+                                    "NET_DVR_GET_ISP_CAMERAPARAMCFG" (command No.: 3255).</p>
+
+                                <p class="p">The ISP parameters are returned in the structure
+                                        <a class="xref" href="GUID-795514FA-64AC-40B3-BCB0-BB259E8F798F.html#GUID-795514FA-64AC-40B3-BCB0-BB259E8F798F" title="Image signal processing (ISP) parameter structure of front-end device.">NET_DVR_ISP_CAMERAPARAMCFG</a> by<span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Set ISP (Image Signal Processing) parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with
+                                    "NET_DVR_SET_ISP_CAMERAPARAMCFG" (command No.: 3256) and set
+                                        <span class="keyword parmname">lpInBuffer</span> to the
+                                    structure <a class="xref" href="GUID-795514FA-64AC-40B3-BCB0-BB259E8F798F.html#GUID-795514FA-64AC-40B3-BCB0-BB259E8F798F" title="Image signal processing (ISP) parameter structure of front-end device.">NET_DVR_ISP_CAMERAPARAMCFG</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="14.285714285714285%">
+                                <p class="p">Shielded Area Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get shielded area parameters of all channels</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with
+                                    "NET_DVR_GET_VCA_MASK_REGION" (command No.: 167).</p>
+
+                                <p class="p">The parameters are returned by <span class="keyword parmname">lpOutBuffer</span> in the structure <a class="xref" href="GUID-F2F62F5D-03B8-4F3D-9BD7-81442F50CF41.html#GUID-F2F62F5D-03B8-4F3D-9BD7-81442F50CF41" title="Shielded areas parameters structure">NET_VCA_MASK_REGION_LIST</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get shielded area parameters of a channel by event</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-B4001A15-D23A-4239-82C3-AE519CD0ABFC.html#GUID-B4001A15-D23A-4239-82C3-AE519CD0ABFC" title="Get and set the shielded area of a specified channel according to event type.">/ISAPI/Intelligent/channels/&lt;ID&gt;/Shield/EventType</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The parameters are returned by <span class="keyword parmname">lpOutBuffer</span> in the message <a class="xref" href="GUID-5D2AEA06-E566-49ED-AA46-53C1F75D4D28.html#GUID-5D2AEA06-E566-49ED-AA46-53C1F75D4D28" title="Message about shielded area parameters in XML format">XML_Shield</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Set shielded area parameter of a channel by event</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-B4001A15-D23A-4239-82C3-AE519CD0ABFC.html#GUID-B4001A15-D23A-4239-82C3-AE519CD0ABFC" title="Get and set the shielded area of a specified channel according to event type.">/ISAPI/Intelligent/channels/&lt;ID&gt;/Shield/EventType</a> by <span class="ph synph">PUT</span> method
+                                    and set <span class="keyword parmname">lpInBuffer</span> to the
+                                    message <a class="xref" href="GUID-5D2AEA06-E566-49ED-AA46-53C1F75D4D28.html#GUID-5D2AEA06-E566-49ED-AA46-53C1F75D4D28" title="Message about shielded area parameters in XML format">XML_Shield</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__GUID-198F83AA-9F9E-4CD9-88C9-3B522F4B11E4"><h2 class="title sectiontitle">On Screen Display (OSD) Settings</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__TABLE_S3H_4LS_BKB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" colspan="2" valign="top">
+                                <p class="p">Get OSD capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-408F6679-18CF-4E10-BE31-345EC276BF77.html#GUID-408F6679-18CF-4E10-BE31-345EC276BF77" title="Get video channel capability.">/ISAPI/System/Video/capabilities</a> by <span class="ph synph">GET</span> method. </p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-54CECDB5-0AC7-4AC2-8618-216B334C7FDF.html#GUID-54CECDB5-0AC7-4AC2-8618-216B334C7FDF" title="VideoCap message in XML format">XML_VideoCap</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="14.285714285714285%">
+                                <p class="p">OSD Language</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get text language parameters of OSD</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-AC0D230B-A0CD-414B-B9D2-33C61DF14089.html#GUID-AC0D230B-A0CD-414B-B9D2-33C61DF14089" title="Operations about OSD language configuration.">/ISAPI/System/Video/inputs/OSDLanguage</a> by <span class="ph synph">GET</span> method. </p>
+
+                                <p class="p">The OSD language parameters are returned in the
+                                    message <a class="xref" href="GUID-E51761D8-340D-46DD-86D8-386922F0E5B8.html#GUID-E51761D8-340D-46DD-86D8-386922F0E5B8" title="Language message in XML format">XML_Language</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Set text language parameters of OSD</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-AC0D230B-A0CD-414B-B9D2-33C61DF14089.html#GUID-AC0D230B-A0CD-414B-B9D2-33C61DF14089" title="Operations about OSD language configuration.">/ISAPI/System/Video/inputs/OSDLanguage</a> by <span class="ph synph">PUT</span> method
+                                    and set <span class="keyword parmname">lpInputParam</span> to the
+                                    message <a class="xref" href="GUID-E51761D8-340D-46DD-86D8-386922F0E5B8.html#GUID-E51761D8-340D-46DD-86D8-386922F0E5B8" title="Language message in XML format">XML_Language</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="14.285714285714285%">
+                                <p class="p">Intelligent Information Display</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Display intelligent information on live video</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-1AE2E189-7992-4ED0-B484-CF3D047C9756.html#GUID-1AE2E189-7992-4ED0-B484-CF3D047C9756" title="Whether to display intelligent information on live video.">NET_DVR_RenderPrivateData</a> and set information type
+                                        (<span class="keyword parmname">iIntelType</span>) as needed.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Display intelligent thermal information on live video</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-596449B9-2AF0-4C63-BB69-BD934C014A57.html#GUID-596449B9-2AF0-4C63-BB69-BD934C014A57" title="Whether to display intelligent thermal information on the live video.">PlayM4_RenderPrivateDataEx</a> and set <span class="keyword parmname">iIntelType</span> to
+                                    "RENDER_FIRE_DETCET" or "RENDER_TEM".</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="14.285714285714285%">
+                                <p class="p">Smart Event Rule Display</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get capability of displaying rule information of smart events on
+                                    video</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-ABFB81F5-BABC-4057-9B58-C9118DAF1A0F.html#GUID-ABFB81F5-BABC-4057-9B58-C9118DAF1A0F" title="Get the capability of configuring the stream for displaying VCA rules of smart events.">/ISAPI/Streaming/channels/&lt;ID&gt;/smartOverlap/capabilities?format=json</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-FF21D15E-5760-45A5-997E-7ED0479B6F0D.html#GUID-FF21D15E-5760-45A5-997E-7ED0479B6F0D" title="SmartOverlapCap capability message in JSON format">JSON_SmartOverlapCap</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                                <div class="note note" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__GUID-C7E681C5-93AA-49F2-9E80-85C0AC0D8BCD"><span class="notetitle">Note:</span> 
+                                    <p class="p">To check whether the function is supported by the
+                                        device, you can call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a> by <span class="ph synph">GET</span> method
+                                        to get device capability <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a>. If it supports, the node
+                                            &lt;<span class="keyword parmname">supportSmartOverlapChannles</span>&gt; will be
+                                        returned and its value is "true".</p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get parameters of displaying rule information of smart events on
+                                    video</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-0A45FA82-144E-40E5-AF2A-E3528C2BE96B.html#GUID-0A45FA82-144E-40E5-AF2A-E3528C2BE96B" title="Get or set the stream parameters for displaying VCA rules of smart events.">/ISAPI/Streaming/channels/&lt;ID&gt;/smartOverlap?format=json</a> by <span class="ph synph">GET</span> method.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-852823AF-5073-4EA7-B7FB-74C120AF1522.html#GUID-852823AF-5073-4EA7-B7FB-74C120AF1522" title="SmartOverlap message in JSON format">JSON_SmartOverlap</a> by the output parameter
+                                        <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Set parameters of displaying rule information of smart events on
+                                    video</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-0A45FA82-144E-40E5-AF2A-E3528C2BE96B.html#GUID-0A45FA82-144E-40E5-AF2A-E3528C2BE96B" title="Get or set the stream parameters for displaying VCA rules of smart events.">/ISAPI/Streaming/channels/&lt;ID&gt;/smartOverlap?format=json</a> by <span class="ph synph">PUT</span> method and set <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-852823AF-5073-4EA7-B7FB-74C120AF1522.html#GUID-852823AF-5073-4EA7-B7FB-74C120AF1522" title="SmartOverlap message in JSON format">JSON_SmartOverlap</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="14.285714285714285%">
+                                <p class="p">Temperature Range Display</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get configuration capability of displayed temperature range</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-666364DD-5BA6-4817-B8E8-8E8CE9B54F81.html#GUID-666364DD-5BA6-4817-B8E8-8E8CE9B54F81" title="Get the temperature range configuration capability of a specified channel.">/ISAPI/Image/channels/&lt;ID&gt;/tempRange/capabilities</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-762D0C52-2943-43B0-8C30-15CE43A16444.html#GUID-762D0C52-2943-43B0-8C30-15CE43A16444" title="tempRange capability message in XML format">XML_Cap_tempRange</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Get displayed temperature range</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-28C21FA9-6DC8-4DB7-8B6D-3CDDB748382F.html#GUID-28C21FA9-6DC8-4DB7-8B6D-3CDDB748382F" title="Operation about temperature range parameters of the specified channel.">/ISAPI/Image/channels/&lt;ID&gt;/tempRange</a> by <span class="ph synph">GET</span>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-FD143B4D-E545-4195-ABBE-CE2350007B19.html#GUID-FD143B4D-E545-4195-ABBE-CE2350007B19" title="tempRange message in XML format">XML_tempRange</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="28.57142857142857%">
+                                <p class="p">Set displayed temperature range</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="57.14285714285714%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-28C21FA9-6DC8-4DB7-8B6D-3CDDB748382F.html#GUID-28C21FA9-6DC8-4DB7-8B6D-3CDDB748382F" title="Operation about temperature range parameters of the specified channel.">/ISAPI/Image/channels/&lt;ID&gt;/tempRange</a> by <span class="ph synph">PUT</span> method and
+                                    set <span class="keyword parmname">lpInputParam</span> to the
+                                    message <a class="xref" href="GUID-FD143B4D-E545-4195-ABBE-CE2350007B19.html#GUID-FD143B4D-E545-4195-ABBE-CE2350007B19" title="tempRange message in XML format">XML_tempRange</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__GUID-CAF6D2ED-E787-4039-87AA-E9F7705E1E04"><h2 class="title sectiontitle">Other Settings</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014__TABLE_YBZ_LNS_BKB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" rowspan="4" valign="top" width="25%">
+                                <p class="p">Focus Settings</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get focus configuration capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-913CB036-1353-4FEA-AB65-B729CD74B3F6.html#GUID-913CB036-1353-4FEA-AB65-B729CD74B3F6" title="Get the focus configuration capability.">/ISAPI/Image/channels/&lt;ID&gt;/focusConfiguration/capabilities</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-144E2166-F73C-4FA0-BA9D-0D6D930A2CD1.html#GUID-144E2166-F73C-4FA0-BA9D-0D6D930A2CD1" title="FocusConfiguration capability message in XML format">XML_Cap_FocusConfiguration</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get focus parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with "NET_DVR_GET_FOCUSMODECFG"
+                                    (command No.: 3305). </p>
+
+                                <p class="p">The focus parameters is returned by <span class="keyword parmname">lpOutBuffer</span> in the structure <a class="xref" href="GUID-BF8FA19D-BF6C-4BDE-A929-354037096212.html#GUID-BF8FA19D-BF6C-4BDE-A929-354037096212">NET_DVR_FOCUSMODE_CFG</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Set focus parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with "NET_DVR_SET_FOCUSMODECFG"
+                                    (command No.: 3306) and set <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-BF8FA19D-BF6C-4BDE-A929-354037096212.html#GUID-BF8FA19D-BF6C-4BDE-A929-354037096212">NET_DVR_FOCUSMODE_CFG</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get focus status</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-BB4466E3-9A29-4F39-9C91-9808ECC1488B.html#GUID-BB4466E3-9A29-4F39-9C91-9808ECC1488B" title="Get the focus status.">/ISAPI/Image/channels/&lt;ID&gt;/focusConfiguration/status?format=json</a> by <span class="ph synph">GET</span> method.</p>
+
+                                <p class="p">The focus status is returned in the message <a class="xref" href="GUID-5EC4BF2D-77F2-47AD-93CB-213D48CBA74B.html#GUID-5EC4BF2D-77F2-47AD-93CB-213D48CBA74B" title="JSON message about focus status">JSON_FocusStatus</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="25%">
+                                <p class="p">Target Enhancement Settings</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get target enhancement capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-8F90836F-4461-4D4E-B604-7FC35857A21C.html#GUID-8F90836F-4461-4D4E-B604-7FC35857A21C" title="Get the target enhancement capability.">/ISAPI/Image/channels/&lt;ID&gt;/targetEnhancement/capabilities</a> by <span class="ph synph">GET</span> method. </p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-F35D650D-2098-4A9D-BDF2-0B972D0F6FB5.html#GUID-F35D650D-2098-4A9D-BDF2-0B972D0F6FB5" title="TargetEnhancementCap message in XML format">XML_TargetEnhancementCap</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get target enhancement parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-0D8B8A47-B03B-4843-BA45-5A728DB12A25.html#GUID-0D8B8A47-B03B-4843-BA45-5A728DB12A25" title="Get or set the target enhancement parameters.">/ISAPI/Image/channels/&lt;ID&gt;/targetEnhancement</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The target enhancement parameters are returned in the
+                                    message <a class="xref" href="GUID-6258A0FF-B6AD-4838-9214-C48D6DA8CF45.html#GUID-6258A0FF-B6AD-4838-9214-C48D6DA8CF45" title="TargetEnhancement message in XML format">XML_TargetEnhancement</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Set target enhancement parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-0D8B8A47-B03B-4843-BA45-5A728DB12A25.html#GUID-0D8B8A47-B03B-4843-BA45-5A728DB12A25" title="Get or set the target enhancement parameters.">/ISAPI/Image/channels/&lt;ID&gt;/targetEnhancement</a> by <span class="ph synph">PUT</span> method
+                                    and set <span class="keyword parmname">lpInputParam</span> to the
+                                    message <a class="xref" href="GUID-6258A0FF-B6AD-4838-9214-C48D6DA8CF45.html#GUID-6258A0FF-B6AD-4838-9214-C48D6DA8CF45" title="TargetEnhancement message in XML format">XML_TargetEnhancement</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="2" valign="top" width="25%">
+                                <p class="p">Privacy Mask Region Settings</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get a privacy mask region's information</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-E57B04FD-E74D-40AC-AF92-CE472AE4201E.html#GUID-E57B04FD-E74D-40AC-AF92-CE472AE4201E" title="Get, set, or delete parameters of a privacy mask region.">/ISAPI/System/Video/inputs/channels/&lt;ID&gt;/privacyMask/regions/&lt;ID&gt;</a> by <span class="ph synph">GET</span> method.</p>
+
+                                <p class="p">The parameters of the privacy mask region are
+                                    returned in the message <a class="xref" href="GUID-A664512B-72B6-4942-ACF1-264C5E7588DA.html#GUID-A664512B-72B6-4942-ACF1-264C5E7588DA" title="PrivacyMaskRegion message in XML format">XML_PrivacyMaskRegion</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Set a privacy mask region's information</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-E57B04FD-E74D-40AC-AF92-CE472AE4201E.html#GUID-E57B04FD-E74D-40AC-AF92-CE472AE4201E" title="Get, set, or delete parameters of a privacy mask region.">/ISAPI/System/Video/inputs/channels/&lt;ID&gt;/privacyMask/regions/&lt;ID&gt;</a> by <span class="ph synph">PUT</span> method and set <span class="keyword parmname">lpInputParam</span> to the message <a class="xref" href="GUID-A664512B-72B6-4942-ACF1-264C5E7588DA.html#GUID-A664512B-72B6-4942-ACF1-264C5E7588DA" title="PrivacyMaskRegion message in XML format">XML_PrivacyMaskRegion</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="25%">
+                                <p class="p">Distortion Correction Settings</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get distortion correction capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-80D4EE61-AD68-42A2-8D77-6378B7B6093E.html#GUID-80D4EE61-AD68-42A2-8D77-6378B7B6093E" title="Get capability of image distortion correction.">/ISAPI/Image/channels/&lt;ID&gt;/lensDistortionCorrection/capabilities</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-4BDAE35C-D4E5-4F94-B2D9-D1BEA1BF210D.html#GUID-4BDAE35C-D4E5-4F94-B2D9-D1BEA1BF210D" title="LensDistortionCorrection capability message in XML format">XML_Cap_LensDistortionCorrection</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get distortion correction parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-5A6F2AB7-FC52-4AB4-937B-D1448CAEA5F1.html#GUID-5A6F2AB7-FC52-4AB4-937B-D1448CAEA5F1" title="Get or set parameters of image distortion correction.">/ISAPI/Image/channels/&lt;ID&gt;/lensDistortionCorrection</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-98CC9159-AA21-4B32-A426-ACB29C1DF31D.html#GUID-98CC9159-AA21-4B32-A426-ACB29C1DF31D" title="LensDistortionCorrection message in XML format">XML_LensDistortionCorrection</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Set distortion correction parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-5A6F2AB7-FC52-4AB4-937B-D1448CAEA5F1.html#GUID-5A6F2AB7-FC52-4AB4-937B-D1448CAEA5F1" title="Get or set parameters of image distortion correction.">/ISAPI/Image/channels/&lt;ID&gt;/lensDistortionCorrection</a> by <span class="ph synph">PUT</span>  method
+                                    and set <span class="keyword parmname">lpInputParam</span> to the
+                                    message <a class="xref" href="GUID-98CC9159-AA21-4B32-A426-ACB29C1DF31D.html#GUID-98CC9159-AA21-4B32-A426-ACB29C1DF31D" title="LensDistortionCorrection message in XML format">XML_LensDistortionCorrection</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="25%">
+                                <p class="p">Image Adjustment Settings</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get image adjustment capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-4C37B786-F1FA-40AD-988F-4DED37AEEEF5.html#GUID-4C37B786-F1FA-40AD-988F-4DED37AEEEF5" title="Get the image adjustment capability of a specified channel.">/ISAPI/Image/channels/&lt;ID&gt;/color/capabilities</a>
+                                    by <span class="ph synph">GET</span> method.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-A836A47A-36DD-40A6-91B7-063E8E50210E.html#GUID-A836A47A-36DD-40A6-91B7-063E8E50210E" title="Color capability message in XML format">XML_Cap_Color</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get image adjustment parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-5B3AC4D9-0B41-4377-925C-0E83432B1DCE.html#GUID-5B3AC4D9-0B41-4377-925C-0E83432B1DCE" title="Operations about the image adjustment parameters of a specific channel.">/ISAPI/Image/channels/&lt;ID&gt;/color</a> by <span class="ph synph">GET</span>
+                                    method.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-AEF3CBF8-C53C-4917-8A47-3ADA76F53783.html#GUID-AEF3CBF8-C53C-4917-8A47-3ADA76F53783" title="XML message about color adjustment parameters">XML_Color</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Set image adjustment parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-5B3AC4D9-0B41-4377-925C-0E83432B1DCE.html#GUID-5B3AC4D9-0B41-4377-925C-0E83432B1DCE" title="Operations about the image adjustment parameters of a specific channel.">/ISAPI/Image/channels/&lt;ID&gt;/color</a> by <span class="ph synph">PUT</span> method
+                                    and set <span class="keyword parmname">lpInputParam</span> to the
+                                    message <a class="xref" href="GUID-AEF3CBF8-C53C-4917-8A47-3ADA76F53783.html#GUID-AEF3CBF8-C53C-4917-8A47-3ADA76F53783" title="XML message about color adjustment parameters">XML_Color</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" rowspan="3" valign="top" width="25%">
+                                <p class="p">Mounting Scenario</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get configuration capability of mounting scenario mode</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-9BB52E8C-00A9-4AF0-BBD3-DB6F0A2CD565.html#GUID-9BB52E8C-00A9-4AF0-BBD3-DB6F0A2CD565" title="Get the capability of configurations of mounting scenario mode.">/ISAPI/Image/channels/&lt;ID&gt;/mountingScenario/capabilities</a> by <span class="ph synph">GET</span> method.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-E265DA16-716B-4022-84E4-37518C9FF107.html#GUID-E265DA16-716B-4022-84E4-37518C9FF107" title="MountingScenario capability message in XML format">XML_Cap_MountingScenario</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Get mounting scenario mode by channel</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-1FE80DB1-4814-48B8-AC57-3419C4BF0F7D.html#GUID-1FE80DB1-4814-48B8-AC57-3419C4BF0F7D" title="Operations about the mounting scenario mode of a camera.">/ISAPI/Image/channels/&lt;ID&gt;/mountingScenario</a> by <span class="ph synph">GET</span> method.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-EC637AB8-3A5F-4897-80A1-3B84EED89762.html#GUID-EC637AB8-3A5F-4897-80A1-3B84EED89762" title="MountingScenario message in XML format">XML_MountingScenario</a> by <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="25%">
+                                <p class="p">Set mounting scenario mode by channel</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="50%">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to transmit <a class="xref" href="GUID-1FE80DB1-4814-48B8-AC57-3419C4BF0F7D.html#GUID-1FE80DB1-4814-48B8-AC57-3419C4BF0F7D" title="Operations about the mounting scenario mode of a camera.">/ISAPI/Image/channels/&lt;ID&gt;/mountingScenario</a> by <span class="ph synph">PUT</span> method and set
+                                        <span class="keyword parmname">lpInputParam</span> to the
+                                    message <a class="xref" href="GUID-EC637AB8-3A5F-4897-80A1-3B84EED89762.html#GUID-EC637AB8-3A5F-4897-80A1-3B84EED89762" title="MountingScenario message in XML format">XML_MountingScenario</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0.html">Channel Settings</a></span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li class="active"><span class="topicref">Video/Image Settings</span></li><li><span class="topicref"><a href="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html">Network Settings</a></span></li><li><span class="topicref"><a href="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9.html">Peripherals Settings</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

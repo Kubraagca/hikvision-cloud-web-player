@@ -28,12 +28,14 @@ public sealed class IsapiRequestException : InvalidOperationException
 public sealed class IsapiClient : IDisposable
 {
     private readonly HttpClient _httpClient;
+    private readonly Action<ApiTraceEntry>? _trace;
 
-    public IsapiClient(CameraConnectionOptions options)
+    public IsapiClient(CameraConnectionOptions options, Action<ApiTraceEntry>? trace = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(options.CameraAddress);
         ArgumentException.ThrowIfNullOrWhiteSpace(options.UserName);
         ArgumentException.ThrowIfNullOrWhiteSpace(options.Password);
+        _trace = trace;
 
         var baseUri = BuildBaseUri(options.CameraAddress);
         var handler = new HttpClientHandler
@@ -157,7 +159,35 @@ public sealed class IsapiClient : IDisposable
             }
         }
 
-        await PutXmlAsync("/ISAPI/System/Network/interfaces", document.ToString(SaveOptions.DisableFormatting), cancellationToken).ConfigureAwait(false);
+        try
+        {
+            await PutXmlAsync("/ISAPI/System/Network/interfaces", document.ToString(SaveOptions.DisableFormatting), cancellationToken).ConfigureAwait(false);
+        }
+        catch (IsapiRequestException exception) when (SupportsPerInterfaceNetworkUpdateFallback(exception))
+        {
+            var updatedInterfaces = ParseNetworkInterfaces(document);
+            var updateTasks = new List<Task>();
+
+            foreach (var model in updatedInterfaces)
+            {
+                var interfaceElement = FindInterfaceElement(document, model.Id, model.IpAddress);
+                if (interfaceElement is null || string.IsNullOrWhiteSpace(model.Id) || model.Id == "-")
+                {
+                    continue;
+                }
+
+                var interfaceXml = interfaceElement.ToString(SaveOptions.DisableFormatting);
+                updateTasks.Add(PutXmlAsync($"/ISAPI/System/Network/interfaces/{Uri.EscapeDataString(model.Id)}", interfaceXml, cancellationToken));
+            }
+
+            if (updateTasks.Count == 0)
+            {
+                throw;
+            }
+
+            await Task.WhenAll(updateTasks).ConfigureAwait(false);
+        }
+
         return await GetNetworkInterfacesAsync(cancellationToken).ConfigureAwait(false);
     }
 
@@ -286,7 +316,13 @@ public sealed class IsapiClient : IDisposable
     private async Task<XDocument> GetXmlAsync(string requestUri, CancellationToken cancellationToken)
     {
         using var response = await _httpClient.GetAsync(requestUri, cancellationToken).ConfigureAwait(false);
-        var xml = await ReadXmlOrThrowAsync(response, cancellationToken).ConfigureAwait(false);
+        var xml = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        Trace("ISAPI", "GET", requestUri, null, (int)response.StatusCode, xml);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw CreateRequestException(response.RequestMessage?.Method.Method ?? "GET", response.RequestMessage?.RequestUri?.ToString() ?? string.Empty, response.StatusCode, xml);
+        }
+
         return XDocument.Parse(xml);
     }
 
@@ -296,22 +332,36 @@ public sealed class IsapiClient : IDisposable
         using var response = await _httpClient.PutAsync(requestUri, content, cancellationToken).ConfigureAwait(false);
         if (response.IsSuccessStatusCode)
         {
+            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            Trace("ISAPI", "PUT", requestUri, xml, (int)response.StatusCode, responseBody);
             return;
         }
 
         var body = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        Trace("ISAPI", "PUT", requestUri, xml, (int)response.StatusCode, body);
         throw CreateRequestException("PUT", requestUri, response.StatusCode, body);
     }
 
-    private static async Task<string> ReadXmlOrThrowAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+    private void Trace(string source, string method, string requestUri, string? requestBody, int? statusCode, string? responseBody)
     {
-        var xml = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        if (response.IsSuccessStatusCode)
+        _trace?.Invoke(new ApiTraceEntry(
+            DateTimeOffset.Now,
+            source,
+            method,
+            BuildAbsoluteUrl(requestUri),
+            statusCode,
+            requestBody ?? string.Empty,
+            responseBody ?? string.Empty));
+    }
+
+    private string BuildAbsoluteUrl(string requestUri)
+    {
+        if (Uri.TryCreate(requestUri, UriKind.Absolute, out var absolute))
         {
-            return xml;
+            return absolute.ToString();
         }
 
-        throw CreateRequestException(response.RequestMessage?.Method.Method ?? "GET", response.RequestMessage?.RequestUri?.ToString() ?? string.Empty, response.StatusCode, xml);
+        return new Uri(_httpClient.BaseAddress!, requestUri).ToString();
     }
 
     private static Exception CreateRequestException(string method, string requestUri, HttpStatusCode statusCode, string body)
@@ -330,6 +380,18 @@ public sealed class IsapiClient : IDisposable
             statusCode,
             body,
             subStatusCode);
+    }
+
+    private static bool SupportsPerInterfaceNetworkUpdateFallback(IsapiRequestException exception)
+    {
+        if (exception.StatusCode != HttpStatusCode.Forbidden)
+        {
+            return false;
+        }
+
+        return exception.ResponseBody.Contains("Invalid Operation", StringComparison.OrdinalIgnoreCase) ||
+               exception.ResponseBody.Contains("invalidOperation", StringComparison.OrdinalIgnoreCase) ||
+               exception.SubStatusCode.Contains("method", StringComparison.OrdinalIgnoreCase);
     }
 
     private static IReadOnlyList<NetworkInterfaceModel> ParseNetworkInterfaces(XDocument document)

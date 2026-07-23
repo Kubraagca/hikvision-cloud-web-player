@@ -1,0 +1,159 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="NET_DVR_VoiceComSendData" /><meta name="abstract" content="Forward the audio data." /><meta name="description" content="Forward the audio data." /><meta name="DC.Relation" scheme="URI" content="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE" /><meta name="DC.Language" content="en-US" /><title>NET_DVR_VoiceComSendData</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">NET_DVR_VoiceComSendData</h1>
+
+
+<div class="body refbody"><p class="shortdesc">Forward the audio data.</p>
+
+<div class="section" id="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE__GUID-A0882995-0C91-4B02-855C-3DF619F1C64F"><h2 class="title sectiontitle">API Definition</h2>
+            
+            <pre class="pre codeblock">BOOL NET_DVR_VoiceComSendData(
+  LONG     lVoiceComHandle,
+  char     *pSendBuf,
+  DWORD    dwBufSize
+);</pre>
+
+        </div>
+
+        <div class="section" id="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE__GUID-A19F5DAE-B9AC-47A3-A97D-C92D2961E46A"><h2 class="title sectiontitle">Parameters</h2>
+            
+            <dl class="dl parml">
+                
+                    <dt class="dt pt dlterm"><a name="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE__GUID-AC48D770-609A-4279-9EDC-734DBB5F488E"><!-- --></a>lVoiceComHandle</dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Value returned by <a class="xref" href="GUID-F24F7F8B-BFA8-461F-A4D4-8A0353859DBA.html#GUID-F24F7F8B-BFA8-461F-A4D4-8A0353859DBA" title="Enable audio forwarding function and get the encoded audio data."><span class="keyword apiname">NET_DVR_StartVoiceCom_MR_V30</span></a>.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE__GUID-665AE479-90B4-415A-A4C8-DE089B3EE485"><!-- --></a>pSendBuf </dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Buffer for saving audio data.</p>
+
+                    </dd>
+
+                
+                
+                    <dt class="dt pt dlterm"><a name="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE__GUID-37424112-64BF-4AA9-ADF7-7B9D02E76CB7"><!-- --></a>dwBufSize </dt>
+
+                    <dd class="dd pd">
+                        <p class="p">[IN] Audio data size. When the audio is encoded to G722 format, the size
+                            of data sent for each time is 80 bytes. When the audio is encoded to
+                            G726 format, the size of data sent for each time is 160 bytes.</p>
+
+                    </dd>
+
+                
+            </dl>
+
+        </div>
+
+        <div class="section" id="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE__GUID-50A9DEA9-6EBB-4D23-B36C-9E68F50307DE"><h2 class="title sectiontitle">Return Values</h2>
+            
+            <p class="p">Return <samp class="ph systemoutput">TRUE</samp> for success, and return
+                    <samp class="ph systemoutput">FALSE</samp> for failure.</p>
+
+            <p class="p">If <samp class="ph systemoutput">FALSE</samp> is returned, you can call <a class="xref" href="GUID-14773B75-3782-443F-ACB8-C40146725A9B.html#GUID-14773B75-3782-443F-ACB8-C40146725A9B" title="Return the error code of the last operation."><span class="keyword apiname">NET_DVR_GetLastError</span></a> to get the error code.</p>
+
+        </div>
+
+        <div class="section" id="GUID-1B366571-8DFA-4C1E-B0C5-0CE878DC80FE__GUID-F8121D72-9247-4FE9-B444-0F9A1E03E8FF"><h2 class="title sectiontitle">Remarks</h2>
+            
+            <p class="p">This API is used to send the encoded audio data to device, so for
+                different audio encoding types, the API used to decode the audio data are also
+                different.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-982310D3-D420-4816-BCBC-6CD60795008D.html">API Reference</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A1BFABAD-D484-4BDB-83B3-6B1399923DB3.html">General APIs</a></span></li><li><span class="topicref"><a href="GUID-19A40C0B-98BB-436E-BD85-3FF0EE53FCD8.html">Live View and PTZ APIs</a></span></li><li><span class="topicref"><a href="GUID-277D1CF9-69EE-455F-A15D-3790797586F7.html">Search and Playback APIs</a></span></li><li><span class="topicref"><a href="GUID-530B4A5B-5A1D-448B-A681-DB69D150A802.html">File Uploading and Downloading APIs</a></span></li><li><span class="topicref"><a href="GUID-98F3AD48-2B14-49EF-8917-5E13D1B5CA56.html">Alarm APIs</a></span></li><li><span class="topicref"><a href="GUID-78503113-F7F2-4950-8F2F-80290EDF9062.html">Two-Way Audio APIs</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-DBD84983-507A-4FA9-ACF4-E033F5736B8E.html">NET_DVR_AddDVR_V30</a></span></li><li><span class="topicref"><a href="GUID-4EFB0CB8-579B-4505-B3AD-834BDFCFDC35.html">NET_DVR_ClientAudioStart_V30</a></span></li><li><span class="topicref"><a href="GUID-087E7DD8-647F-475A-89DB-5636FC989A1F.html">NET_DVR_ClientAudioStop</a></span></li><li><span class="topicref"><a href="GUID-30F6789A-1D09-4F56-9059-F2CC79C79DD9.html">NET_DelDVR_V30</a></span></li><li><span class="topicref"><a href="GUID-2896BD15-6970-4502-9683-694B008D0463.html">NET_DVR_GetCurrentAudioCompress_V50</a></span></li><li><span class="topicref"><a href="GUID-C4366806-FAA5-475B-B0B2-B363B7B513AF.html">NET_DVR_EncodeMP3Frame</a></span></li><li><span class="topicref"><a href="GUID-45AB94A7-40BD-4FB8-833C-D03332FB991A.html">NET_DVR_DecodeMP3Frame</a></span></li><li><span class="topicref"><a href="GUID-B01535F9-761C-4548-A00A-226BB2774456.html">NET_DVR_InitG711Encoder</a></span></li><li><span class="topicref"><a href="GUID-51FD578A-40DD-4AC4-947B-6236B3D9E3F5.html">NET_DVR_EncodeG711Frame</a></span></li><li><span class="topicref"><a href="GUID-2C1C0BE7-D272-4E9D-B998-4A2DE914225A.html">NET_DVR_ReleaseG711Encoder</a></span></li><li><span class="topicref"><a href="GUID-330F6990-BD23-43C8-AB46-C201EE1EC2FB.html">NET_DVR_InitG711Decoder</a></span></li><li><span class="topicref"><a href="GUID-1968492D-873B-42F4-8A7E-D86082E6CAF1.html">NET_DVR_DecodeG711Frame</a></span></li><li><span class="topicref"><a href="GUID-2FBD7DAD-A8E1-4DEB-AE41-4A4903EB6162.html">NET_DVR_ReleaseG711Decoder</a></span></li><li><span class="topicref"><a href="GUID-6977B95E-3DC6-41F6-8A92-80687FD0109A.html">NET_DVR_InitG722Encoder</a></span></li><li><span class="topicref"><a href="GUID-DE302DB3-6201-4446-8C3E-F1E877DF31E1.html">NET_DVR_EncodeG722Frame</a></span></li><li><span class="topicref"><a href="GUID-9F793A30-10B6-426C-A155-9DE444A915BB.html">NET_DVR_ReleaseG722Encoder</a></span></li><li><span class="topicref"><a href="GUID-25093FF5-1174-4CE8-A6D4-04FC1E275851.html">NET_DVR_InitG722Decoder</a></span></li><li><span class="topicref"><a href="GUID-C61A6DFB-C61E-4400-8B90-49ACA098A24C.html">NET_DVR_DecodeG722Frame</a></span></li><li><span class="topicref"><a href="GUID-AFA1CDC1-C427-46FA-83EE-759223F8EB38.html">NET_DVR_ReleaseG722Decoder</a></span></li><li><span class="topicref"><a href="GUID-71E090FA-2D4D-4305-ABB4-6AECCB80F149.html">NET_DVR_InitG726Encoder</a></span></li><li><span class="topicref"><a href="GUID-89020620-9FC9-4E15-879A-A3C00C2BD128.html">NET_DVR_EncodeG726Frame</a></span></li><li><span class="topicref"><a href="GUID-E14B4027-65E4-42C7-BFC2-57A6123A060D.html">NET_DVR_ReleaseG726Encoder</a></span></li><li><span class="topicref"><a href="GUID-1AD8DED0-DEC0-40B1-9A52-99ACDABFA568.html">NET_DVR_InitG726Decoder</a></span></li><li><span class="topicref"><a href="GUID-BB0E91E5-0B23-4004-9E6F-D854A4194188.html">NET_DVR_DecodeG726Frame</a></span></li><li><span class="topicref"><a href="GUID-DCAB0D46-F368-48C6-B0BD-56FE5A4D5738.html">NET_DVR_ReleaseG726Decoder</a></span></li><li><span class="topicref"><a href="GUID-45D603CC-E8D9-4646-AB79-908F286852B8.html">NET_DVR_SetVoiceDataCallBack</a></span></li><li><span class="topicref"><a href="GUID-F24F7F8B-BFA8-461F-A4D4-8A0353859DBA.html">NET_DVR_StartVoiceCom_MR_V30</a></span></li><li><span class="topicref"><a href="GUID-F80C75EA-05E9-4AA4-9A5C-1232742A3B4D.html">NET_DVR_StartVoiceCom_V30</a></span></li><li><span class="topicref"><a href="GUID-BD9C2142-475E-47FE-B8B8-1D90FA5388E2.html">NET_DVR_StopVoiceCom</a></span></li><li class="active"><span class="topicref">NET_DVR_VoiceComSendData</span></li></ul></li><li><span class="topicref"><a href="GUID-6BB05CF1-2C44-4A59-B6E6-FAC33E2EED69.html">Remote Maintenance APIs</a></span></li><li><span class="topicref"><a href="GUID-FBFDE24D-B83C-4498-BD4E-8BA16ED974EB.html">Callback Function</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

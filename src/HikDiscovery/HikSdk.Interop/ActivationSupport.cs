@@ -19,16 +19,19 @@ public sealed class HikActivationSession : IDisposable
         }
 
         SadpInteropValidator.ThrowIfInvalid();
+        HikSdkSession.ConfigureSdkInitPaths();
 
         if (!HikSdkNative.NET_DVR_Init())
         {
-            throw new InvalidOperationException(HikSdkSession.GetLastErrorDescription("NET_DVR_Init"));
+            var error = HikSdkSession.CaptureLastError();
+            throw new InvalidOperationException($"NET_DVR_Init failed. Error={error.ErrorCode}, Symbol={error.ErrorSymbol}, Message={error.ErrorMessage}");
         }
 
         Directory.CreateDirectory(logDirectory);
         if (!HikSdkNative.NET_DVR_SetLogToFile(3, logDirectory, true))
         {
-            throw new InvalidOperationException(HikSdkSession.GetLastErrorDescription("NET_DVR_SetLogToFile"));
+            var error = HikSdkSession.CaptureLastError();
+            throw new InvalidOperationException($"NET_DVR_SetLogToFile failed. Error={error.ErrorCode}, Symbol={error.ErrorSymbol}, Message={error.ErrorMessage}");
         }
 
         _initialized = true;
@@ -47,8 +50,8 @@ public sealed class HikActivationSession : IDisposable
             return new ActivationResult(true, 0, string.Empty);
         }
 
-        var errorCode = HikSdkNative.NET_DVR_GetLastError();
-        return new ActivationResult(false, errorCode, HikSdkSession.TryGetErrorMessage((int)errorCode));
+        var error = HikSdkSession.CaptureLastError();
+        return new ActivationResult(false, error.ErrorCode, $"{error.ErrorSymbol}: {error.ErrorMessage}");
     }
 
     public LoginResult Login(string ipAddress, ushort sdkPort, string userName, string password)
@@ -73,8 +76,8 @@ public sealed class HikActivationSession : IDisposable
             return new LoginResult(true, userId, 0, string.Empty);
         }
 
-        var errorCode = HikSdkNative.NET_DVR_GetLastError();
-        return new LoginResult(false, -1, errorCode, HikSdkSession.TryGetErrorMessage((int)errorCode));
+        var error = HikSdkSession.CaptureLastError();
+        return new LoginResult(false, -1, error.ErrorCode, $"{error.ErrorSymbol}: {error.ErrorMessage}");
     }
 
     public void Dispose()

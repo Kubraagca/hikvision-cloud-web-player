@@ -210,6 +210,51 @@ app.MapGet("/api/provision/tasks/{taskId}", (string taskId, ProvisioningTaskStor
     });
 });
 
+app.MapPost("/api/provision/tasks/{taskId}/cancel", (string taskId, ProvisioningTaskStore taskStore) =>
+{
+    return taskStore.TryCancel(taskId)
+        ? Results.Ok(new { cancelled = true, taskId })
+        : Results.NotFound(new { error = "Task bulunamadi." });
+});
+
+app.MapPost("/api/provisioning/team-register", async (
+    TeamRegisterRequest request,
+    HikConnectGatewayService gatewayService,
+    CancellationToken cancellationToken) =>
+{
+    var result = await gatewayService.AddDeviceAsync(
+        new TeamDeviceAddRequest(
+            request.ShortSerial,
+            request.VerificationCode,
+            request.Alias,
+            request.AreaName),
+        cancellationToken);
+
+    return result.Success
+        ? Results.Ok(new BackendProvisioningResponse(
+            "Cihaz Team hesabina aktarildi.",
+            null,
+            new BackendProvisioningResult(
+                result.Success,
+                result.DeviceId,
+                result.ShortSerial,
+                result.Alias,
+                result.AreaId,
+                result.AreaName,
+                result.DeviceAdded,
+                result.ImportedChannelCount,
+                result.TotalChannelCount,
+                result.DeviceStatusMessage,
+                result.ChannelStatusMessage,
+                request.Model,
+                request.SerialNumber,
+                request.SubSerialNumber,
+                request.FirmwareVersion,
+                request.MacAddress,
+                request.CurrentIpAddress)))
+        : Results.BadRequest(new BackendProvisioningResponse(result.Message, result.ErrorCode, null));
+});
+
 app.MapRazorPages();
 app.Run();
 
@@ -247,3 +292,36 @@ static class RegexPatterns
     public static readonly System.Text.RegularExpressions.Regex KeyUri =
         new("URI=\"([^\"]+)\"", System.Text.RegularExpressions.RegexOptions.Compiled);
 }
+
+public sealed record TeamRegisterRequest(
+    string ShortSerial,
+    string VerificationCode,
+    string Alias,
+    string AreaName,
+    string Model,
+    string SerialNumber,
+    string SubSerialNumber,
+    string FirmwareVersion,
+    string MacAddress,
+    string CurrentIpAddress);
+
+public sealed record BackendProvisioningResponse(string? Message, string? Error, BackendProvisioningResult? Result);
+
+public sealed record BackendProvisioningResult(
+    bool Success,
+    string DeviceId,
+    string ShortSerial,
+    string Alias,
+    string AreaId,
+    string AreaName,
+    bool DeviceAdded,
+    int ImportedChannelCount,
+    int TotalChannelCount,
+    string DeviceStatusMessage,
+    string ChannelStatusMessage,
+    string Model,
+    string SerialNumber,
+    string SubSerialNumber,
+    string FirmwareVersion,
+    string MacAddress,
+    string CurrentIpAddress);

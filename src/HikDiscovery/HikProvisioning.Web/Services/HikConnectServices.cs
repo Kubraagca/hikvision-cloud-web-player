@@ -849,6 +849,17 @@ public sealed class ProvisioningTaskStore
     }
 
     public bool TryGet(string taskId, out ProvisioningTaskState? state) => _tasks.TryGetValue(taskId, out state);
+
+    public bool TryCancel(string taskId)
+    {
+        if (!_tasks.TryGetValue(taskId, out var state) || state is null)
+        {
+            return false;
+        }
+
+        state.Cancel();
+        return true;
+    }
 }
 
 public sealed class ProvisioningTaskState
@@ -870,6 +881,7 @@ public sealed class ProvisioningTaskState
     public string Error { get; private set; } = string.Empty;
     public ProvisioningResult? Result { get; private set; }
     public ProvisioningRequest Input { get; }
+    public CancellationTokenSource Cancellation { get; } = new();
 
     public void SetStage(string name, string status, string detail)
     {
@@ -884,6 +896,7 @@ public sealed class ProvisioningTaskState
         Result = result;
         Status = "completed";
         UpdatedAtUtc = DateTimeOffset.UtcNow;
+        Cancellation.Dispose();
     }
 
     public void Fail(string message)
@@ -891,6 +904,20 @@ public sealed class ProvisioningTaskState
         Error = message;
         Status = "failed";
         UpdatedAtUtc = DateTimeOffset.UtcNow;
+        Cancellation.Dispose();
+    }
+
+    public void Cancel()
+    {
+        if (Status is "completed" or "failed" or "cancelled")
+        {
+            return;
+        }
+
+        Status = "cancelled";
+        Error = "Islem kullanici tarafindan iptal edildi.";
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        Cancellation.Cancel();
     }
 }
 

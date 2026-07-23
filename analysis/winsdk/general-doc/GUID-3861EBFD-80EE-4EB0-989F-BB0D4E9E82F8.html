@@ -1,0 +1,212 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Subscribe Alarm/Event in Arming Mode" /><meta name="abstract" content="For arming mode, the platform will connect to the devices automatically and send commands to the devices for uploading alarm/event information when the alarm is triggered or event occurred. To reduce the CPU and bandwidth usage of platform, and improve the device processing performance, the platform can subscribe alarm/event types to receive alarm/event information as required." /><meta name="description" content="For arming mode, the platform will connect to the devices automatically and send commands to the devices for uploading alarm/event information when the alarm is triggered or event occurred. To reduce the CPU and bandwidth usage of platform, and improve the device processing performance, the platform can subscribe alarm/event types to receive alarm/event information as required." /><meta name="DC.Relation" scheme="URI" content="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8" /><meta name="DC.Language" content="en-US" /><title>Subscribe Alarm/Event in Arming Mode</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Subscribe Alarm/Event in Arming Mode</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">For arming mode, the platform will connect to the devices automatically and
+        send commands to the devices for uploading alarm/event information when the alarm is
+        triggered or event occurred. To reduce the CPU and bandwidth usage of platform, and improve
+        the device processing performance, the platform can subscribe alarm/event types to receive
+        alarm/event information as required.</p>
+
+        <div class="section prereq p" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-C0E9B4E5-748C-4CCC-A0DD-C02B73BE696E">
+            <ul class="ul" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__UL_RDV_3KQ_52B">
+                <li class="li" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-C4CCBB2A-B6F0-4DE8-A0A6-BE9CE26534CE">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs.">NET_DVR_Init</a> to initialize the development environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-2BE6020B-9845-43A4-8116-3E9DF5900DE9">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to the device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-FC1CEC90-2C7D-4D6F-8960-B8C50F466E17">
+                    <p class="p">Make sure you have configured the alarm/event parameters, refer to the
+                        typical alarm/event configurations for details.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-E2AE86A7-7F2A-4860-A74D-052B35562112">
+                <div class="fig fignone" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__FIG_OJ4_QFS_PGB">
+                    
+                    <img class="image" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__IMAGE_AZN_2PS_PGB" height="1417" src="GUID-8A38AF76-0052-489F-9A84-C6840745B2E4-high.png" />
+                <span class="figcap">Figure 1 Programming Flow of Subscribing Alarm/Event in Arming Mode</span></div>
+
+            </p><ol class="ol steps" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-C79FE83A-63E1-4FCC-9454-C7592571AC68"><li class="li step stepexpand" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-3C18295E-EF40-4F48-8D0D-0369C0E1BB5E">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA.html#GUID-931A5A8A-BFC6-49A9-B2BA-7103078F84EA" title="Get device capability.">/ISAPI/System/capabilities</a> for getting device capability to check if alarm/event subscription is
+                    supported.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The device capability is returned in the message <a class="xref" href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html#GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7" title="XML message about device capability">XML_DeviceCap</a> by the output parameter (<span class="keyword parmname">lpOutputParam</span>)
+                        pointer.</p>
+
+                    <p class="p">If the node &lt;<span class="keyword parmname">isSupportSubscribeEvent</span>&gt; is also returned in the message
+                        and its value is "true", it indicates that alarm/event subscription is
+                        supported by device, and you can continue to perform the following steps; </p>
+
+                    <p class="p">Otherwise, alarm/event subscription is not supported, please end
+                        the task.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-B6D927BD-B7EF-4029-81C6-8B3CC31DDAB2">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-60F9E74E-E43D-4299-AA7C-BEA0001DA4E7.html#GUID-60F9E74E-E43D-4299-AA7C-BEA0001DA4E7" title="Get event/alarm subscription capability.">/ISAPI/Event/notification/subscribeEventCap</a> for getting subscription capability, which contains supported alarm/event
+                    types.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The alarm/event subscription capability is returned in the
+                        message <a class="xref" href="GUID-835A2244-6D79-408F-9876-A58FB979E3BB.html#GUID-835A2244-6D79-408F-9876-A58FB979E3BB" title="SubscribeEventCap capability message in XML format">XML_SubscribeEventCap</a> by the output parameter (<span class="keyword parmname">lpOutputParam</span>)
+                        pointer.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-FE786ED5-7A66-4DD1-9D34-C63B51F9427E">
+                <span class="ph cmd">Call <a class="xref" href="GUID-3C513730-D89A-40D2-A25E-C994310578D2.html#GUID-3C513730-D89A-40D2-A25E-C994310578D2" title="Set callback functions for getting the video data.">NET_DVR_SetDVRMessageCallBack_V50</a> to set callback function for returning alarm/event information or
+                    subscription failed information.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-DA3D95AB-00A6-447A-8074-EC78DB14A744"><span class="notetitle">Note:</span> 
+                        <ul class="ul" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__UL_DWR_W2S_PGB">
+                            <li class="li" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-F394BE97-10AE-4817-AAFE-1580896EA09D">
+                                <p class="p">If the configured alarm is triggered or event
+                                    occurred, the alarm/event information will be uploaded by device
+                                    and returned in the callback function. You can view the
+                                    alarm/event and do some processing operations.</p>
+
+                            </li>
+
+                            <li class="li" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-BFB2C874-DF24-4CAA-8D70-59879787A5E1">
+                                <p class="p">To receive different types of alarm/event
+                                    information, the parameter <span class="keyword parmname">lCommand</span> (data type to be uploaded) in the
+                                    configured callback function should be different (refer to
+                                        <cite class="cite">Supported Alarm/Event Types</cite> for details).</p>
+
+                            </li>
+
+                            <li class="li" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-335C40FC-E58A-4AC0-AA26-B7C5AF3BA843">
+                                <p class="p">To receive the subscription result (subscription
+                                    failed), the parameter <span class="keyword parmname">lCommand</span>
+                                    (data type to be uploaded) in the configured callback function
+                                    should be set to "COMM_ALARM_SUBSCRIBE_EVENT". And the result is
+                                    returned in the message <a class="xref" href="GUID-CB0AFADA-1951-45ED-95F5-5C3481A1ABBB.html#GUID-CB0AFADA-1951-45ED-95F5-5C3481A1ABBB" title="SubscribeEventResponse message in XML format">XML_SubscribeEventResponse</a></p>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-7B3E9402-C0B4-4AD8-9CCE-CC06839CA432">
+                <span class="ph cmd">Call <a class="xref" href="GUID-ED63BEF4-AC00-43CF-AB54-CC696D0656C2.html#GUID-ED63BEF4-AC00-43CF-AB54-CC696D0656C2" title="Set up persistent connection to receive alarm/event information (supports alarm/event subscription).">NET_DVR_SetupAlarmChan_V50</a> to set up alarm/event uploading channel.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-5E406A24-EC94-4CE5-9C0B-CEBA20E02633"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-40C6F49A-1950-4B5F-9EB1-6805B88CF55F.html#GUID-40C6F49A-1950-4B5F-9EB1-6805B88CF55F" title="Get the event/alarm subscription parameters.">NET_DVR_GetAlarmSubscribe</a> to get subscribed alarm/event types for reference.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-C0BCB9FF-846A-4387-89FE-D3EB5F819E8E">
+                <span class="ph cmd">Call <a class="xref" href="GUID-FDC2A7B4-432D-4D8F-A7BB-F8DDC870DB72.html#GUID-FDC2A7B4-432D-4D8F-A7BB-F8DDC870DB72" title="Set the event/alarm subscription parameters.">NET_DVR_SetAlarmSubscribe</a> to set alarm/event type to subscribe.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-1545C499-17AC-4E69-8CD5-D0969F94E2C3">
+                <span class="ph cmd">Call <a class="xref" href="GUID-02C261CC-D722-41F1-B792-5B2B4A77DCA0.html#GUID-02C261CC-D722-41F1-B792-5B2B4A77DCA0" title="Close alarm uploading channel.">NET_DVR_CloseAlarmChan_V30</a> to close alarm/event uploading channel and finishing receiving.</span>
+            </li>
+</ol>
+
+<div class="section postreq" id="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8__GUID-D654C17B-FEC5-4D9F-A979-C3295280E4EC">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices.">NET_DVR_Logout</a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended.">NET_DVR_Cleanup</a> to log out and release resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html">Alarm and Event Receiving</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D.html">Supported Alarm/Event Types</a></span></li><li><span class="topicref"><a href="GUID-05DA94E5-0692-440C-B6A0-EF5DA377FBB7.html">Configure Exception Alarm</a></span></li><li><span class="topicref"><a href="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB.html">Configure Audio Exception Detection Alarm</a></span></li><li><span class="topicref"><a href="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED.html">Configure Certificate Expiry Alarm</a></span></li><li><span class="topicref"><a href="GUID-08B26BCD-F96A-47E2-BF2F-8248A0355C7D.html">Configure Network Traffic Pre-alarm</a></span></li><li><span class="topicref"><a href="GUID-E1B1BF4A-4841-4D36-B525-4B3EB5CB3FBF.html">Configure Vibration Detection Alarm</a></span></li><li><span class="topicref"><a href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html">Receive Alarm/Event in Arming Mode</a></span></li><li><span class="topicref"><a href="GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1.html">Receive Alarm/Event in Listening Mode</a></span></li><li class="active"><span class="topicref">Subscribe Alarm/Event in Arming Mode</span></li><li><span class="topicref"><a href="GUID-673C21A2-6826-491E-BAED-F4FDB4AA91F2.html">Search for Alarms or Events</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

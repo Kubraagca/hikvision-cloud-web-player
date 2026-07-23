@@ -1,0 +1,939 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="XML_CAMERAPARA" /><meta name="abstract" content="CAMERAPARA message in XML format" /><meta name="description" content="CAMERAPARA message in XML format" /><meta name="DC.Relation" scheme="URI" content="GUID-7B43AD5E-EC45-47B2-89A3-A8371A5A3A93.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-7B6A1D3C-6028-417C-80A9-2324308A7026" /><meta name="DC.Language" content="en-US" /><title>XML_CAMERAPARA</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-7B6A1D3C-6028-417C-80A9-2324308A7026" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">XML_CAMERAPARA</h1>
+
+
+<div class="body refbody"><p class="shortdesc">CAMERAPARA message in XML format</p>
+
+        <div class="section" id="GUID-7B6A1D3C-6028-417C-80A9-2324308A7026__GUID-ED8463C4-9354-4B07-A1F2-72882F7EB32E">
+            <pre class="pre codeblock">&lt;xml version="1.0" encoding="utf-8"?&gt; 
+&lt;!--req, camera parameter capability set description --&gt; 
+&lt;CAMERAPARA version="2.0"&gt;  
+  &lt;ChannelList&gt; 
+    &lt;ChannelEntry&gt; 
+      &lt;ChannelNumber&gt;1&lt;/ChannelNumber&gt; 
+      &lt;IPStartChanNoDefault&gt;&lt;!--optional, xs:integer, start digital channel No. The device's digital channel No. will start from the returned No.--&gt;&lt;/IPStartChanNoDefault&gt;
+      &lt;PowerLineFrequencyMode&gt;&lt;!-- req, format --&gt; 
+        &lt;isNotSupportDigitalChanCfg opt="true,false"/&gt;&lt;!--optional, whether setting digital channels is not supported: true-yes (not supported), false-no (supported). If this field is not returned, it indicates that setting digital channels is supported--&gt;
+        &lt;Range&gt;0,1&lt;/Range&gt;&lt;!-- req, 0-50HZ; 1-60HZ --&gt; 
+        &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+      &lt;/PowerLineFrequencyMode&gt; 
+      &lt;CaptureMode&gt;
+        &lt;!--req, correspond to byCaptureMode in NET_DVR_CAMERAPARAMCFG_EX--&gt;
+        &lt;!--req, the device supports captureModePWithIndex and captureModeNWithIndex, when returning captureModeP and captureModeN, the client resolves the capability set, first with captureModePWithIndex and captureModeNWithIndex, or captureModeP and captureModeN if the former nodes are not supported--&gt; 
+        &lt;!--req, 0-close, 1-640*480@25fps, 2-640*480@30ps, 3-704*576@25fps, 4-704*480@30fps, 5-1280*720@25fps, 6-1280*720@30fps, 7-1280*720@50fps, 8-1280*720@60fps, 9-1280*960@15fps, 10-1280*960@25fps, 11-1280*960@30fps, 12-1280*1024@25fps, 13-1280*1024@30fps, 14-1600*900@15fps, 15-1600*1200@15fps, 16-1920*1080@15fps, 17-1920*1080@25fps, 18-1920*1080@30fps, 19-1920*1080@50fps, 20-1920*1080@60fps, 21-2048*1536@15fps, 22-2048*1536@20fps, 23-2048*1536@24fps, 24-2048*1536@25fps, 25-2048*1536@30fps, 26-2560*2048@25fps, 27-2560*2048@30fps, 28-2560*1920@7.5fps, 29-3072*2048@25fps, 30-3072*2048@30fps, 31-2048*1536@12.5, 32-2560*1920@6.25, 33-1600*1200@25, 34-1600*1200@30, 35-1600*1200@12.5,36-1600*900@12.5, 37-1600@900@15, 38-800*600@25, 39-800*600@30fps,136-640*960@25fps, 137-640*960@24fps, 142-2992*2192@25fps, 143-2992*2192@30fps,158-384*288@8.3fps, 159-640*512@8.3fps, 160-160*120@8.3fps, 161-1024*768@8.3fps, 162-640*480@8.3fps--&gt;
+        &lt;captureModeP opt="close,640*480@25fps,640*480@30ps,704*576@25fps,704*480@30fps,1280*720@25fps, 1280*720@30fps,1280*720@50fps,1280*720@60fps,1280*960@15fps,1280*960@25fps, 1280*960@30fps,1280*1024@25fps,1280*1024@30fps,1600*900@15fps,1600*1200@15fps, 1920*1080@15fps,1920*1080@25fps,1920*1080@30fps,1920*1080@50fps,1920*1080@60fps, 2048*1536@15fps,2048*1536@20fps,2048*1536@24fps,2048*1536@25fps,2048*1536@30fps, 2560*2048@25fps,2560*2048@30fps,2560*1920@7.5fps,3072*2048@25fps,3072*2048@30fps, 2048*1536@12.5fps,2560*1920@6.25fps,1600*1200@25fps,1600*1200@30fps,1600*1200@12.5fps, 1600*900@12.5fps,1600@900@15fps,800*600@25fps,800*600@30fps,640*960@25fps,640*960@24fps"/&gt;
+          &lt;!--req, The value of captureMode in P standard--&gt; 
+        &lt;captureModeN opt="close,640*480@25fps,640*480@30ps,704*576@25fps,704*480@30fps,1280*720@25fps, 1280*720@30fps,1280*720@50fps,1280*720@60fps,1280*960@15fps,1280*960@25fps, 1280*960@30fps,1280*1024@25fps,1280*1024@30fps,1600*900@15fps,1600*1200@15fps, 1920*1080@15fps,1920*1080@25fps,1920*1080@30fps,1920*1080@50fps,1920*1080@60fps, 2048*1536@15fps,2048*1536@20fps,2048*1536@24fps,2048*1536@25fps,2048*1536@30fps, 2560*2048@25fps,2560*2048@30fps,2560*1920@7.5fps,3072*2048@25fps,3072*2048@30fps, 2048*1536@12.5fps,2560*1920@6.25fps,1600*1200@25fps,1600*1200@30fps,1600*1200@12.5fps, 1600*900@12.5fps,1600@900@15fps,800*600@25fps,800*600@30fps,640*960@25fps,640*960@24fps"/&gt; 
+          &lt;!--req, The value of captureMode in N standard--&gt; 
+        &lt;captureModePWithIndex opt="0-close, 1-640*480@25fps,2-640*480@30ps,3-704*576@25fps,4-704*480@30fps,5-1280*720@25fps, 6-1280*720@30fps,7-1280*720@50fps,8-1280*720@60fps,9-1280*960@15fps,10-1280*960@25fps, 11-1280*960@30fps,12-1280*1024@25fps,13-1280*1024@30fps,14-1600*900@15fps,15-1600*1200@15fps, 16-1920*1080@15fps,17-1920*1080@25fps,18-1920*1080@30fps,19-1920*1080@50fps,20-1920*1080@60fps, 21-2048*1536@15fps,22-2048*1536@20fps,23-2048*1536@24fps,24-2048*1536@25fps,25-2048*1536@30fps, 26-2560*2048@25fps,27-2560*2048@30fps,28-2560*1920@7.5fps,29-3072*2048@25fps,30-3072*2048@30fps, 31-2048*1536@12.5fps,32-2560*1920@6.25fps,33-1600*1200@25fps,34-1600*1200@30fps,35-1600*1200@12.5fps, 36-1600*900@12.5fps,37-1280*960@12.5fps,38-800*600@25fps,39-800*600@30fps,40-4000*3000@12.5fps, 41-4000*3000@15fps,42-4096*2160@20fps,43-3840*2160@20fps,44-960*576@25fps,45-960*480@30fps, 46-752*582@25fps,47-768*494@30fps,48-2560*1440@25fps,49-2560*1440@30fps,50-720P@100fps, 51-720P@120fps,52-2048*1536@50fps,53-2048*1536@60fps,54-3840*2160@25fps,55-3840*2160@30fps, 56-4096*2160@25fps,57-4096*2160@30fps,58-1280*1024@50fps,59-1280*1024@60fps,60-3072*2048@50fps, 61-3072*2048@60fps,62-3072*1728@25fps,63-3072*1728@30fps,64-3072*1728@50fps,65-3072*1728@60fps, 66-336*256@50fps,67-336*256@60fps,68-384*288@50fps,69-384*288@60fps,70-640*512@50fps, 71-640*512@60fps,72-2592*1944@25fps,73-2592*1944@30fps,74-2688*1536@25fps,75-2688*1536@30fps, 76-2592*1944@20fps,77-2592*1944@15fps,78-2688*1520@20fps,79-2688*1520@15fps,80-2688*1520@25fps, 81-2688*1520@30fps,82-2720*2048@25fps,83-2720*2048@30fps,84- 336*256@25fps,85-384*288@25fps, 86-640*512@25fps,87-1280*960@50fps,88-1280*960@60fps,89-1280*960@100fps,90-1280*960@120fps, 91-4000*3000@20fps,141-2688*1520@12.5fps"/&gt; 
+          &lt;!--req, captureMode value with index in P standard--&gt; 
+        &lt;captureModeNWithIndex opt="0-close,1-640*480@25fps,2-640*480@30ps,3-704*576@25fps,4-704*480@30fps,5-1280*720@25fps, 6-1280*720@30fps,7-1280*720@50fps,8-1280*720@60fps,9-1280*960@15fps,10-1280*960@25fps, 11-1280*960@30fps,12-1280*1024@25fps,13-1280*1024@30fps,14-1600*900@15fps,15-1600*1200@15fps, 16-1920*1080@15fps,17-1920*1080@25fps,18-1920*1080@30fps,19-1920*1080@50fps,20-1920*1080@60fps, 21-2048*1536@15fps,22-2048*1536@20fps,23-2048*1536@24fps,24-2048*1536@25fps,25-2048*1536@30fps, 26-2560*2048@25fps,27-2560*2048@30fps,28-2560*1920@7.5fps,29-3072*2048@25fps,30-3072*2048@30fps, 31-2048*1536@12.5fps,32-2560*1920@6.25fps,33-1600*1200@25fps,34-1600*1200@30fps,35-1600*1200@12.5fps, 36-1600*900@12.5fps,37-1280*960@12.5fps,38-800*600@25fps,39-800*600@30fps,40-4000*3000@12.5fps, 41-4000*3000@15fps,42-4096*2160@20fps,43-3840*2160@20fps,44-960*576@25fps,45-960*480@30fps, 46-752*582@25fps,47-768*494@30fps,48-2560*1440@25fps,49-2560*1440@30fps,50-720P@100fps, 51-720P@120fps,52-2048*1536@50fps,53-2048*1536@60fps,54-3840*2160@25fps,55-3840*2160@30fps, 56-4096*2160@25fps,57-4096*2160@30fps,58-1280*1024@50fps,59-1280*1024@60fps,60-3072*2048@50fps, 61-3072*2048@60fps,62-3072*1728@25fps,63-3072*1728@30fps,64-3072*1728@50fps,65-3072*1728@60fps, 66-336*256@50fps,67-336*256@60fps,68-384*288@50fps,69-384*288@60fps,70-640*512@50fps, 71-640*512@60fps,72-2592*1944@25fps,73-2592*1944@30fps,74-2688*1536@25fps,75-2688*1536@30fps, 76-2592*1944@20fps,77-2592*1944@15fps,78-2688*1520@20fps,79-2688*1520@15fps,80-2688*1520@25fps, 81-2688*1520@30fps,82-2720*2048@25fps,83-2720*2048@30fps,84- 336*256@25fps,85-384*288@25fps, 86-640*512@25fps,87-1280*960@50fps,88-1280*960@60fps,89-1280*960@100fps,90-1280*960@120fps, 91-4000*3000@20fps,141-2688*1520@12.5fps"/&gt; 
+          &lt;!--req,  captureMode value with index in N standard--&gt; 
+
+        &lt;!--req, to enable 3D noise reduction, SMD, rotation or WDR in 1080p50/1080p60 mode, the prompt will show "please set capture mode with normal frame rate"--&gt; 
+        &lt;CaptureModeIndex19&gt; 
+          &lt;!--1920*1080@50fps--&gt; 
+          &lt;!--req, mutually exclusive capability, difital noise reduction, line crossing detection, rotation, WDR access capability--&gt; 
+          &lt;mutexAbility opt="digitalNoiseReduction,traversingVirtualPlane,fieldDetection,corridorMode,WDR"/&gt; 
+        &lt;/CaptureModeIndex19&gt; 
+
+        &lt;CaptureModeIndex20&gt; 
+          &lt;!--req, 1920*1080@60fps--&gt; 
+          &lt;!--req, mutually exclusive capability, difital noise reduction, line crossing detection, rotation, WDR access capability--&gt; 
+          &lt;mutexAbility opt="digitalNoiseReduction,traversingVirtualPlane,fieldDetection,corridorMode,WDR"/&gt; 
+        &lt;/CaptureModeIndex20&gt; 
+
+        &lt;!--req, to enable rotation or WDR in 720p50/720p60 mode, the prompt will show "please set capture mode with normal frame rate"--&gt; 
+        &lt;CaptureModeIndex7&gt; 
+          &lt;!--1280*720@50fps--&gt; 
+          &lt;!--req mutually exclusive capability  rotation  WDR access capability--&gt; 
+          &lt;mutexAbility opt="corridorMode,WDR"/&gt; 
+        &lt;/CaptureModeIndex7&gt; 
+
+        &lt;CaptureModeIndex8&gt; 
+          &lt;!--1280*720@60fps--&gt; 
+          &lt;!--req mutually exclusive capability  rotation  WDR access capability--&gt; 
+          &lt;mutexAbility opt="corridorMode,WDR"/&gt; 
+        &lt;/CaptureModeIndex8&gt; 
+
+        &lt;CaptureModeIndex52&gt; 
+          &lt;!--2048*1536@50fps--&gt; 
+          &lt;!--req mutually exclusive capability  rotation  WDR access capability--&gt; 
+          &lt;mutexAbility opt="WDR"/&gt; 
+        &lt;/CaptureModeIndex52&gt; 
+
+        &lt;CaptureModeIndex53&gt; 
+          &lt;!--2048*1536@60fps --&gt; 
+          &lt;!--req mutually exclusive capability  rotation  WDR access capability--&gt; 
+          &lt;mutexAbility opt="WDR"/&gt; 
+        &lt;/CaptureModeIndex53&gt; 
+
+        &lt;CaptureModeIndex87&gt; 
+          &lt;!--1280*960@50fps --&gt; 
+          &lt;!--req mutually exclusive capability WDR access capability--&gt; 
+          &lt;mutexAbility opt="WDR"/&gt; 
+        &lt;/CaptureModeIndex87&gt; 
+
+        &lt;CaptureModeIndex88&gt; 
+          &lt;!--1280*960@60fps --&gt; 
+          &lt;!--req mutually exclusive capability WDR access capability--&gt; 
+          &lt;mutexAbility opt="WDR"/&gt; 
+        &lt;/CaptureModeIndex88&gt; 
+
+      &lt;CaptureModeIndex89&gt; 
+        &lt;!--1280*960@100fps --&gt; 
+        &lt;!--req mutually exclusive capability WDR access capability--&gt; 
+        &lt;mutexAbility opt="WDR"/&gt; 
+      &lt;/CaptureModeIndex89&gt; 
+
+      &lt;CaptureModeIndex90&gt; 
+        &lt;!--1280*960@120fps --&gt; 
+        &lt;!--req mutually exclusive capability WDR access capability--&gt; 
+        &lt;mutexAbility opt="WDR"/&gt; 
+      &lt;/CaptureModeIndex90&gt; 
+      &lt;WhiteBalance&gt;&lt;!-- req, white balance --&gt; 
+        &lt;WhiteBalanceMode&gt;&lt;!-- req, white balance mode --&gt; 
+          &lt;!-- req, 0-Manual, 1-AWB1, 2-AWB2, 3-Automatic Control(4~9:reserved), 11-Auto Trace,12-One Push,13-Indoor, 14-Outdoor, 15-Outdoor Auto, 16- SodiumLight Auto --&gt; 
+          &lt;!-- req, 10~16: new options for speed domes --&gt; 
+          &lt;Range&gt;1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16&lt;/Range&gt; 
+          &lt;Default&gt;1&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/WhiteBalanceMode&gt; 
+        &lt;WhiteBalanceModeRGain&gt;&lt;!-- req, R gain of white balance --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;255&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;100&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/WhiteBalanceModeRGain&gt; 
+        &lt;WhiteBalanceModeBGain&gt;&lt;!-- req, B gain of white balance --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;255&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;100&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/WhiteBalanceModeBGain&gt; 
+      &lt;/WhiteBalance&gt; 
+
+      &lt;!-- req, supported by IPC only --&gt; 
+      &lt;Exposure&gt; &lt;!-- req, exposure --&gt; 
+        &lt;ExposureMode&gt;  &lt;!-- req, exposure mode, reserved currently --&gt; 
+          &lt;Range&gt;0,1&lt;/Range&gt;&lt;!-- req, 0-manual exposure,1-auto exposure --&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/ExposureMode&gt; 
+           
+        &lt;ExposureSet&gt; 
+          &lt;!-- req, exposure time, 0(index): auto*8(display on the client), 40000*8 us(the actual value)--&gt;
+          &lt;!-- req,0-auto*8(40000*8us),1-auto*5(40000*5us),2-auto*4(40000*4us),3-auto*2(40000*2us),--&gt; 
+          &lt;!-- req,4-1/25(40000us),5-1/50(20000us),6-1/100(10000us),7-1/250(4000us),8-1/500(2000us), --&gt; 
+          &lt;!-- req,9-1/750(1333us),10-1/1000(1000us),11-1/2000(500us),12-1/4000(250us),--&gt; 
+          &lt;!-- req,13-1/10,000(100us),14-1/100,000(10us), 17-1/150, 18-1/200, 20-1-1000000us, 21-1/75, 22-1/125, 23-1/175, 24-1/225,25-1/300, 26-1/400 --&gt;
+            &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14&lt;/Range&gt; 
+            &lt;Default&gt;4&lt;/Default&gt;&lt;!-- req, default value--&gt; 
+          &lt;DynamicAbility&gt; 
+            &lt;!--req, IPC 5.1.0 supports to get or set abilities dynamicly--&gt; 
+            &lt;dynamicAbilityLinkTo opt="wdrEnable,irisType"/&gt; 
+              &lt;!--req, Dynamic related items, WDR enable, the structure used for defining the type of len is NET_DVR_CAMERAPARAMCFG_EX, the parameters is struWdr.byWDREnabled and struWdr.byIrisMode --&gt; 
+          &lt;/DynamicAbility&gt; 
+        &lt;/ExposureSet&gt; 
+        &lt;exposureUSERSET&gt;&lt;!--req, customized exposure time--&gt; 
+          &lt;Min&gt;1&lt;/Min&gt;&lt;!--req, minimum value--&gt; 
+          &lt;Max&gt;40000&lt;/Max&gt;&lt;!--req, maximum value--&gt; 
+          &lt;Default&gt;20000&lt;/Default&gt;&lt;!--req, default value--&gt; 
+        &lt;/exposureUSERSET&gt; 
+        &lt;ExposureTarget&gt; &lt;!--req, reserved--&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;2000000&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;1000000&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/ExposureTarget&gt; 
+      &lt;/Exposure&gt; 
+      &lt;IrisMode&gt; &lt;!--req, Lens mode--&gt; 
+        &lt;!--req, 0- auto iris, 1- manual iris, 2- Piris1"Tamron 2.8-8mm F1.2 (M13VP288-IR) ", 3- Union 3-9mm F1.6-2.7 (T5280-PQ1),4- Union 2.8-12mm F1.6-2.7(T5289-PQ1), 5- <span class="ph">Private</span> 3.8-16mm F1.5 (HV3816P-8MPIR), 6-<span class="ph">Private</span> 11-40mm F1.7, 7- <span class="ph">Private</span> 2.7-12mm F1.2 (TV2712P-MPIR), 8- MZ5721D-12MPIR, 9- MZ1555D-12MPIR, 10- MZ5721D-12MPIR(RS485), 11- MZ1555D-12MPIR(RS485)--&gt; 
+        &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11&lt;/Range&gt; 
+        &lt;Default&gt;1&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;Piris&gt; 
+          &lt;!--req valid when IrisMode&gt;=2--&gt; 
+          &lt;Piris1&gt;&lt;!--req, Tamron 2.8-8mm F1.2 (M13VP288-IR) --&gt; 
+            &lt;modeType opt="automatic, manual"/&gt;&lt;!--req, 0-auto, 1-manual--&gt; 
+            &lt;PIrisAperture min="" max=""/&gt;&lt;!--req, level range: 1 to 100 (can be configured under the manual mode)--&gt; 
+          &lt;/Piris1&gt; 
+          &lt;Piris2&gt;&lt;!--req, Union 3-9mm F1.6-2.7 (T5280-PQ1)--&gt; 
+            &lt;modeType opt="automatic, manual"/&gt;&lt;!--req, 0-auto, 1-manual--&gt; 
+            &lt;PIrisAperture min="" max=""/&gt;&lt;!--req, level range: 1 to 100 (can be configured under the manual mode)--&gt; 
+          &lt;/Piris2&gt; 
+          &lt;Piris3&gt;&lt;!--req, Union 2.8-12mm F1.6-2.7 (T5289-PQ1)--&gt; 
+            &lt;modeType opt="automatic, manual"/&gt;&lt;!--req, 0-auto, 1-manual--&gt; 
+            &lt;PIrisAperture min="" max=""/&gt;&lt;!--req, level range: 1 to 100 (can be configured under the manual mode)--&gt; 
+          &lt;/Piris3&gt; 
+          &lt;Piris4&gt;&lt;!--req, <span class="ph">Private</span> 3.8-16mm F1.5 (HV3816P-8MPIR)--&gt; 
+            &lt;modeType opt="automatic, manual"/&gt;&lt;!--req, 0-auto, 1-manual--&gt; 
+            &lt;PIrisAperture min="" max=""/&gt;&lt;!--req, level range: 1 to 100 (can be configured under the manual mode)--&gt; 
+          &lt;/Piris4&gt; 
+          &lt;Piris6&gt;&lt;!--req,<span class="ph">Private</span> 11-40mm F1.7 (HV1140P-8MPIR)--&gt; 
+            &lt;modeType opt="automatic, manual"/&gt;&lt;!--req, 0-auto, 1-manual--&gt; 
+            &lt;PIrisAperture min="" max=""/&gt;&lt;!--req, level range: 1 to 100 (can be configured under the manual mode)--&gt; 
+          &lt;/Piris6&gt; 
+          &lt;Piris7&gt;&lt;!--req, <span class="ph">Private</span> 2.7-12mm F1.2 (TV2712P-MPIR) --&gt; 
+            &lt;modeType opt="automatic, manual"/&gt;&lt;!--req, 0-auto, 1-manual--&gt;
+            &lt;PIrisAperture min="" max=""/&gt;&lt;!--req, level range: 1 to 100 (can be configured under the manual mode)--&gt; 
+          &lt;/Piris7&gt; 
+         &lt;/Piris&gt;
+      &lt;/IrisMode&gt; 
+                     
+      &lt;AutoApertureLevel&gt; &lt;!-- req, auto aperture sensitivity --&gt; 
+        &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+        &lt;Max&gt;15&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+        &lt;Default&gt;7&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+      &lt;/AutoApertureLevel&gt; 
+
+      &lt;FocusMode&gt; &lt;!--req, reserved--&gt; 
+        &lt;!--req, 0- manual focus; 1-auto focus; 2- auto back focus--&gt; 
+        &lt;Range&gt;0,1,2&lt;/Range&gt; 
+        &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+        &lt;GainLevel&gt;&lt;!--req, gain, ranges from 0 to 100--&gt;
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!--req, minimum value--&gt; 
+          &lt;Max&gt;100&lt;/Max&gt;&lt;!--req, maximum value--&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value--&gt; 
+        &lt;/GainLevel&gt; 
+        &lt;BrightnessLevel&gt;&lt;!--req, brightness, ranges from 0 to 100 --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;100&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/BrightnessLevel&gt; 
+        &lt;ContrastLevel&gt;&lt;!--req, contrast, ranges from 0 to 100--&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!--req, minimum value--&gt; 
+          &lt;Max&gt;100&lt;/Max&gt;&lt;!--req, maximum value--&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!--req, default value--&gt; 
+        &lt;/ContrastLevel&gt; 
+        &lt;SharpnessType&gt;&lt;!--sharpness type--&gt;
+          &lt;Range&gt;&lt;!--sharpness type range (for speed dome): 0-automatic, 1-manual--&gt;&lt;/Range&gt;
+          &lt;Default&gt;&lt;!--default value--&gt;&lt;/Default&gt;
+        &lt;/SharpnessType&gt;
+        &lt;SharpnessLevel&gt;&lt;!--req, sharpness--&gt; 
+          &lt;!--req, IPC(min/max); speed dome/zoom camera(Range), from 0 to 100--&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;100&lt;/Max&gt;&lt;!-- req, maximum value --&gt;            
+          &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17&lt;/Range&gt;
+            &lt;!-- req, speed dome: 0- auto, 1- manual, 2-1, 3-2, 4-3, 5-4, 6-5, 7-6, 8-7, 9-8, 10-9, 11-10, 12-11, 13-12, 14-13, 15-14, 16-15, 17-16 --&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/SharpnessLevel&gt; 
+        &lt;HorizonAperture&gt; &lt;!-- req, horizontal sharpness --&gt; 
+          &lt;!-- req, special for speed dome: 1~64 --&gt; 
+          &lt;Min&gt;1&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;64&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;10&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/HorizonAperture&gt; 
+        &lt;VerticalAperture&gt; &lt;!-- req, vertical sharpness --&gt; 
+          &lt;!-- req, special for speed dome: 1~64 --&gt; 
+          &lt;Min&gt;1&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;64&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;10&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/VerticalAperture&gt; 
+
+        &lt;LaserConfig&gt; 
+          &lt;controlMode opt="auto,manual"/&gt;            
+          &lt;autoMode&gt;&lt;!--req,Control Mode--&gt; 
+            &lt;sensitivity min="0" max="100"/&gt;&lt;!--req,laser light sensitivity--&gt; 
+            &lt;triggerMode opt=" cameraModuleTrigger, photoresistanceTrigger"/&gt; 
+              &lt;!--req laser light triggering mode--&gt; 
+            &lt;limitBrightness min="0" max="100"/&gt; 
+              &lt;!--req,laser light brightness limitation--&gt; 
+            &lt;angle min="1" max="36"/&gt;&lt;!--req,laser light angle--&gt; 
+            &lt;enable opt="true,false" /&gt; 
+              &lt;!-- dep, enable manual control laser: 0- No, 1- Yes --&gt; 
+            &lt;illumination min="0" max="100" /&gt;&lt;!-- dep, laser light strength limit--&gt; 
+            &lt;lightAngle min="0" max="100" /&gt;&lt;!-- dep, light angle --&gt; 
+          &lt;/autoMode&gt; 
+
+          &lt;manualMode&gt; 
+            &lt;sensitivity min="0" max="100"/&gt;&lt;!--req,laser light sensitivity--&gt; 
+            &lt;triggerMode opt=" cameraModuleTrigger, photoresistanceTrigger"/&gt; 
+              &lt;!--req laser light triggering mode--&gt; 
+            &lt;brightness min="0" max="255"/&gt;&lt;!--req,laser light brightness--&gt; 
+            &lt;angle min="1" max="36"/&gt;&lt;!--req,laser light angle--&gt; 
+          &lt;/manualMode&gt; 
+        &lt;/LaserConfig&gt; 
+
+        &lt;ChromaSuppress&gt;&lt;!-- req, color suppression --&gt; 
+          &lt;!--req, special for speed dome: 0~100 --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!--req, minimum value --&gt; 
+          &lt;Max&gt;100&lt;/Max&gt;&lt;!--req, maximum value --&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!--req, default value --&gt; 
+         &lt;/ChromaSuppress&gt; 
+         &lt;SaturationLevel&gt;&lt;!--req, saturation, from 0 to 100 --&gt; 
+           &lt;Min&gt;0&lt;/Min&gt;&lt;!--req, minimum value --&gt; 
+           &lt;Max&gt;100&lt;/Max&gt;&lt;!--req, maximum value --&gt; 
+           &lt;Default&gt;50&lt;/Default&gt;&lt;!--req, default value --&gt; 
+         &lt;/SaturationLevel&gt; 
+         &lt;HueLevel&gt;&lt;!--req, hue, from 0 to 100--&gt; 
+           &lt;Min&gt;0&lt;/Min&gt;&lt;!--req, minimum value --&gt; 
+           &lt;Max&gt;100&lt;/Max&gt;&lt;!--req, maximum value --&gt; 
+           &lt;Default&gt;50&lt;/Default&gt;&lt;!--req, default value --&gt; 
+         &lt;/HueLevel&gt; 
+         &lt;GammaCorrection&gt;&lt;!--req, gamma correction--&gt; 
+           &lt;GammaCorrectionEnabled&gt;&lt;!--req, 0-disable, 1-enable--&gt; 
+             &lt;Range&gt;0,1&lt;/Range&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+           &lt;/GammaCorrectionEnabled&gt; 
+           &lt;GammaCorrectionLevel&gt;&lt;!--req, the level of Gamma correction--&gt; 
+             &lt;Min&gt;0&lt;/Min&gt; 
+             &lt;Max&gt;100&lt;/Max&gt; 
+             &lt;Default&gt;50&lt;/Default&gt;&lt;!--req, default value --&gt; 
+           &lt;/GammaCorrectionLevel&gt; 
+         &lt;/GammaCorrection&gt; 
+         &lt;WDR&gt;&lt;!--req, wide dynamic range--&gt; 
+           &lt;WDREnabled&gt;&lt;!--req, 0-disable, 1-enable, 2-auto--&gt; 
+             &lt;Range&gt;0,1,2&lt;/Range&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+           &lt;/WDREnabled&gt; 
+           &lt;isNotSupportDigitalChanCfg opt="true,false"/&gt;&lt;!--optional, whether setting digital channels is not supported: true-yes (not supported), false-no (supported). If this field is not returned, it indicates that setting digital channels is supported--&gt;
+           &lt;WDRLevel1&gt;&lt;!--req, level 1 of wide dynamic range, from 0 to 15--&gt; 
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value--&gt; 
+             &lt;Max&gt;15&lt;/Max&gt;&lt;!-- req, maximum value--&gt;
+             &lt;Range&gt;0,1,2&lt;/Range&gt;&lt;!--req, speed dome: 0- low, 1- medium, 2- high--&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+           &lt;/WDRLevel1&gt; 
+           &lt;WDRLevel2&gt;&lt;!--req, level 2 of wide dynamic range, from 0 to 15--&gt; 
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!--req, minimum value--&gt; 
+             &lt;Max&gt;15&lt;/Max&gt;&lt;!--req, maximum value--&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+           &lt;/WDRLevel2&gt; 
+           &lt;WDRContrastLevel&gt;&lt;!--req, contrast of wide dynamic range, from 0 to 100 --&gt; 
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+             &lt;Max&gt;100&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+             &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/WDRContrastLevel&gt; 
+         &lt;/WDR&gt; 
+         &lt;DayNightFilter&gt;&lt;!--req, day and night switch --&gt; 
+           &lt;DayNightFilterType&gt;&lt;!--req, day and night switch mode --&gt; 
+             &lt;!--req, 0- day,1- night, 2- auto, 3- timing, 4- triggered by alarm input , 5- Auto mode 2(no photosensitivity)--&gt; 
+             &lt;Range&gt;0,1,2,3,4&lt;/Range&gt; 
+             &lt;Default&gt;2&lt;/Default&gt;&lt;!--req, default value --&gt; 
+           &lt;/DayNightFilterType&gt; 
+           &lt;SwitchSchedule&gt; 
+             &lt;SwitchScheduleEnabled&gt;&lt;!--req, reserved --&gt; 
+               &lt;Range&gt;0,1&lt;/Range&gt;&lt;!--req, 0- disable  1- enable --&gt; 
+               &lt;Default&gt;1&lt;/Default&gt;&lt;!--req, default value --&gt; 
+             &lt;/SwitchScheduleEnabled&gt; 
+             &lt;DayToNightFilterLevel&gt;&lt;!--req, sensitivity of switching day to night --&gt;
+               &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12&lt;/Range&gt; 
+               &lt;!--req, 0, 1, 2, 3, 4, 5, 6, 7, 10-low, 11-medium, 12-high --&gt; 
+               &lt;!-- req, (10~12: new options for speed domes) --&gt; 
+               &lt;Default&gt;3&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+             &lt;/DayToNightFilterLevel&gt; 
+             &lt;NightToDayFilterLevel&gt;&lt;!-- req, sensitivity of switching night to day --&gt; 
+               &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12&lt;/Range&gt;
+                 &lt;!-- req, 0, 1, 2, 3, 4, 5, 6, 7, 10-low, 11-medium, 12-high --&gt; 
+                 &lt;!-- req,  (10~12: new options for speed domes)  --&gt; 
+               &lt;Default&gt;3&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+             &lt;/NightToDayFilterLevel&gt; 
+             &lt;DayNightFilterTime&gt;&lt;!-- req, filtering time of switching day to night --&gt; 
+               &lt;!-- req, IPC(min/max); speed dome/zoom camera(Range) --&gt; 
+               &lt;Min&gt;10&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+               &lt;Max&gt;120&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+               &lt;Range&gt;0,1,2,3,4,5,6,7&lt;/Range&gt;
+               &lt;!-- req, zoom camera/speed dome: 0-2S, 1-3S, 2-5S, 3-10S, 4-15S, 5-30S, 6-45S, 7-60S --&gt; 
+               &lt;Default&gt;55&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+             &lt;/DayNightFilterTime&gt; 
+             &lt;NightDayFilterTime&gt; 
+               &lt;!-- req, IPC(min/max); speed dome/zoom camera(Range) --&gt; 
+               &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+               &lt;Max&gt;120&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+               &lt;Range&gt;0,1,2,3,4,5,6,7&lt;/Range&gt;
+                 &lt;!-- req, zoom camera/speed dome:0-2S,1-3S,2-5S,3-10S,4-15S,5-30S,6-45S,7-60S --&gt;
+               &lt;Default&gt;55&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+             &lt;/NightDayFilterTime&gt; 
+             &lt;TimeSchedule&gt;&lt;!--2012-08-29--&gt; 
+               &lt;BeginTime&gt;1&lt;/BeginTime&gt;&lt;!--req, 1 means it supports the beginning time--&gt; 
+               &lt;EndTime&gt;1&lt;/EndTime&gt;&lt;!--req, 1 means it supports the ending time--&gt; 
+             &lt;/TimeSchedule&gt; 
+           &lt;/SwitchSchedule&gt; 
+           &lt;AlarmInTrigType&gt;&lt;!--2012-08-29--&gt; 
+             &lt;Range&gt;0,1&lt;/Range&gt;&lt;!--req, triggered status of alarm input: 0- day, 1- night--&gt; 
+           &lt;/AlarmInTrigType&gt; 
+           &lt;DayNightFilterandGain&gt;
+             &lt;!--opt, whether to support setting day/night auto-switch and gain simultaneously--&gt;
+             &lt;enabled&gt;&lt;!--req, if this function is supported, this node must exist and be set to "true"--&gt;&lt;/enabled&gt;
+           &lt;/DayNightFilterandGain&gt;
+         &lt;/DayNightFilter&gt; 
+         &lt;Backlight&gt;&lt;!-- req, backlight compensation --&gt; 
+           &lt;BacklightMode&gt;&lt;!-- req, option of backlight compensation --&gt; 
+             &lt;!-- req, 0-closed, 1-UP, 2-DOWN, 3-LEFT, 4-RIGHT, 5-MIDDLE, 6-customized, 10-open, 11-auto, 12- multi-zone backlight compensation --&gt; 
+             &lt;!-- req,  (10~12: new options for speed domes, when the value is 10(open), it supports to adjust the compensation level) --&gt; 
+             &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12&lt;/Range&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/BacklightMode&gt; 
+           &lt;BacklightLevel&gt;&lt;!-- req, backlight compensation level --&gt; 
+             &lt;!-- req, IPC, 0-15 --&gt; 
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+             &lt;Max&gt;15&lt;/Max&gt;&lt;!-- req, maximum value --&gt;  
+             &lt;Range&gt;0,1,2&lt;/Range&gt;
+               &lt;!-- req, speed dome/zoom camera: 0-low, 1-medium, 2-high --&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/BacklightLevel&gt; 
+         &lt;/Backlight&gt; 
+         &lt;LowLightLimit&gt; &lt;!--req, low illumination electronic shutter--&gt; 
+           &lt;LowLightLimitEnabled&gt;&lt;!--req, enable: 0-closed, 1-open--&gt; 
+             &lt;Range&gt;0,1&lt;/Range&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/LowLightLimitEnabled&gt; 
+           &lt;LowLightLimitLevel&gt; &lt;!-- req, the level of low illumination electronic shutter --&gt; 
+             &lt;!-- req, speed dome 0- slow shutter*2, 1-slow shutter*3, 2-slow shutter*4, 3-slow shutter*8, 4-slow shutter*16, 5-slow shutter*32, 6-1, 7-2, 8-3, 9-4, 10-5, 11-6, 12-low, 13-medium, 14-high --&gt; 
+             &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14&lt;/Range&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/LowLightLimitLevel&gt; 
+         &lt;/LowLightLimit&gt; 
+         &lt;ImageStabilize&gt; 
+           &lt;ImageStabilizeLevel&gt; &lt;!--req, image stabilization level--&gt; 
+             &lt;Range&gt;0,1,2&lt;/Range&gt;&lt;!--req, speed dome: 0-low, 1-medium, 2-high--&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value --&gt; 
+           &lt;/ImageStabilizeLevel&gt; 
+         &lt;/ImageStabilize&gt; 
+         &lt;CameraIRCorrection&gt; &lt;!--req, the movement infrared correction function--&gt; 
+           &lt;Range&gt;0,1,2&lt;/Range&gt;&lt;!--req, speed dome: 0-auto, 1-open, 2-closed--&gt; 
+           &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+         &lt;/CameraIRCorrection&gt; 
+
+         &lt;HighSensitivitySupport&gt;
+           &lt;!--req, whether supports setting high sensitivity: 1- suport, no this node if not support--&gt; 
+           &lt;Range&gt;1&lt;/Range&gt; 
+         &lt;/HighSensitivitySupport&gt; 
+         &lt;InitializeLensSupport&gt;
+           &lt;!--req, whether supports initializing the Lens: 1-support, no this node if not support--&gt; 
+           &lt;Range&gt;1&lt;/Range&gt; 
+         &lt;/InitializeLensSupport&gt; 
+         &lt;CameraResetSupport&gt; 
+           &lt;!--req, whether supports rebooting movement: 1-support, no this node if not support--&gt; 
+           &lt;Range&gt;1&lt;/Range&gt; 
+         &lt;/CameraResetSupport&gt; 
+         &lt;CameraRestoreSupport&gt;
+           &lt;!--req, whether supports resuming movement to the factory settings: 1-support, no this node if not support--&gt; 
+           &lt;Range&gt;1&lt;/Range&gt; 
+         &lt;/CameraRestoreSupport&gt; 
+
+         &lt;Mirror&gt; &lt;!--req, mirror--&gt; 
+           &lt;Range&gt;0,1,2,3&lt;/Range&gt;&lt;!--req, 0-off, 1-leftright, 2-updown, 3-center--&gt; 
+           &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+         &lt;/Mirror&gt; 
+
+         &lt;EPTZ&gt;&lt;!-- req, E-PTZ --&gt;  
+           &lt;!-- req, 1-support, and there is no this node if not support --&gt; 
+           &lt;Range&gt;1&lt;/Range&gt; 
+         &lt;/EPTZ&gt; 
+
+         &lt;LOCALOUTPUT&gt;&lt;!--req, local output--&gt; 
+           &lt;!--req, 0-not support, 1-support--&gt; 
+           &lt;!--req, 365: mini-dome and cube camera don't support local output --&gt; 
+           &lt;!--req, 6467:BNC-0,1, 10-closed, 11-scaling output, 12-cropping output,--&gt;  
+           &lt;!--req, 13-cropping and scaling output (10~13: special for speed dome);--&gt; 
+           &lt;!--req, HDMI®-0:not support,20:HDMI®(720P50),21:HDMI®(720P60),22:HDMI®(1080I60)--&gt; 
+           &lt;!--req, 23 : HDMI®(1080I50), 24 : HDMI®(1080P24), 25 : HDMI®(1080P25),--&gt; 
+           &lt;!--req, 26:HDMI®(1080P30), 27 : HDMI®(1080P50), 28 : HDMI®(1080P60)--&gt; 
+           &lt;Range&gt;0,1,10,11,12,13,20,21,22,23,24,25,26,27,28&lt;/Range&gt; 
+           &lt;Default&gt;1&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+         &lt;/LOCALOUTPUT&gt; 
+
+         &lt;DigitalNoiseReduction&gt;&lt;!--req, noise reduction--&gt;  
+           &lt;DigitalNoiseReductionEnable&gt; 
+             &lt;!-- req, 0-closed,1-normal mode,2-expert mode,(3~9:reserved),10-open --&gt; 
+             &lt;!-- req, (10: new options for speed domes, when the value is 10(open), it supports to adjust noise reduction level (that is, DigitalNoiseReductionLevel is valid) ) --&gt; 
+             &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10&lt;/Range&gt; 
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/DigitalNoiseReductionEnable&gt; 
+           &lt;DigitalNoiseReductionLevel&gt;
+             &lt;!--req, digital noise reduction level in normal mode, from 0 to 100--&gt; 
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+             &lt;Max&gt;100&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+             &lt;!-- req, speed dome: 0-low,1-medium,2-high, 3-1,4-2,5-3,6-4,7-5,8-6,9-7,10-8,11-9,12-10,13-11,14-12,15-13,16-14,17-15 --&gt; 
+             &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17&lt;/Range&gt; 
+             &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/DigitalNoiseReductionLevel&gt;                     
+           &lt;DigitalNoiseSpectralLevel&gt;
+             &lt;!-- req, spatial digital noise reduction level in expert mode, from 0 to 100--&gt; 
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+             &lt;Max&gt;100&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+             &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/DigitalNoiseSpectralLevel&gt; 
+           &lt;DigitalNoiseTemporalLevel&gt;
+             &lt;!-- req, temporal digital noise reduction level in expert mode, from 0 to 100--&gt; 
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+             &lt;Max&gt;100&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+             &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+           &lt;/DigitalNoiseTemporalLevel&gt; 
+           &lt;DigitalNoiseRemove2DEnable&gt;&lt;!--whether to enable 2D noise reduction for captured frames: 0-disable, 1-enable--&gt;
+             &lt;Range&gt;0,1&lt;/Range&gt;
+             &lt;Default&gt;0&lt;/Default&gt;&lt;!--default value--&gt;
+           &lt;/DigitalNoiseRemove2DEnable&gt;
+           &lt;DigitalNoiseRemove2DLevel&gt;&lt;!--2D noise reduction level for captured frames, which is between 0 and 100--&gt;
+             &lt;Min&gt;0&lt;/Min&gt;&lt;!--minimum value--&gt;
+             &lt;Max&gt;100&lt;/Max&gt;&lt;!--maximum value--&gt;
+             &lt;Default&gt;50&lt;/Default&gt;&lt;!--default value--&gt;
+           &lt;/DigitalNoiseRemove2DLevel&gt;
+           &lt;mutexAbility opt="1920*1080@50fps,1920*1080@60fps"/&gt;
+             &lt;!--req, if 1920*1080@50fps or 1920*1080@60fps needs to be enabled after 3D noise reduction, SMD, rotation, or WDR (wide dynamic range) is enabled, users will be prompted to disable 3D noise reduction, SMD, rotation, and WDR in the self-adaptive mode and schedule mode first. This node is mutually exclusive with <span class="keyword parmname">CaptureMode</span>--&gt;
+         &lt;/DigitalNoiseReduction&gt; 
+         &lt;SceneMode&gt;&lt;!--req, scene mode: 0-outdoor, 1-indoor--&gt; 
+           &lt;Range&gt;0,1&lt;/Range&gt;&lt;!--req, 0-outdoor, 1-indoor, 2-default, 3-low light--&gt;
+           &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+         &lt;/SceneMode &gt; 
+         &lt;ColorRange&gt;&lt;!--req, color scale range--&gt; 
+           &lt;Range&gt;0,1&lt;/Range&gt;&lt;!--req, 0:16-235, 1:0-255--&gt; 
+           &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+         &lt;/ColorRange&gt; 
+         &lt;DigitalZoom&gt;&lt;!--req, digital zoom, special for thermal network camera--&gt; 
+           &lt;Range&gt;0,1,2,3,4,5&lt;/Range&gt;
+             &lt;!-- req, digital zoom: 0-closed, 1-×2, 2-×4, 3-×8, 4-×16, 5-×32 --&gt; 
+           &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+         &lt;/DigitalZoom&gt; 
+         &lt;DeadPixelDetect&gt;&lt;!--req, dead pixel detection, 1-support, and there is no this node if not support--&gt; 
+           &lt;Range&gt;1&lt;/Range&gt;--&gt; 
+         &lt;/DeadPixelDetect&gt; 
+                         
+         &lt;LINEENCODE&gt;&lt;!--req, whether it supports line coding capacity: 1-support, and there is no this node if not support--&gt; 
+           &lt;Range&gt;1&lt;/Range&gt; 
+         &lt;/LINEENCODE&gt; 
+         &lt;!--req, whether it supports one-key focus or not: 1- support, and there is no this node if not support--&gt; 
+         &lt;OnepushFocus&gt;1&lt;/OnepushFocus&gt; 
+         
+        &lt;Dehaze&gt;&lt;!--req, de-haze--&gt; 
+          &lt;DehazeEnable&gt;0,1&lt;/DehazeEnable&gt;
+          &lt;!--req, enable de-haze mode or not: 0-no, 1-adaptive mode--&gt; 
+        &lt;/Dehaze&gt; 
+
+        &lt;!--req, the following from dimmer mode to auto shutter compensation are special for thermal network camera--&gt; 
+        &lt;DimmerMode&gt; 
+          &lt;!--req, dimmer mode: 0-semiautomatic, 1-automatic--&gt; 
+          &lt;Range&gt;0,1&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!--req, default value--&gt; 
+        &lt;/DimmerMode&gt; 
+
+        &lt;PaletteMode&gt;
+        &lt;!-- req, palette: 0- white heat, 1-black heat, 2-palette2, ..., 8-palette8, 9-fusion 1, 10-rainbow, 11-fusion 2, 12-iron red 1, 13-iron red 2, 14-sepia, 15-color 1, 16-color 2, 17-ice &amp; fire, 18-rain, 19-red hot, 20-green hot, 21-dark blue, 22-color 3--&gt; 
+          &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt;
+        &lt;/PaletteMode&gt; 
+
+        &lt;EnhancedMode&gt; 
+          &lt;!-- req, enhanced mode(detection object surrounding): 0- not enhanced, 1-1, 2-2, 3-3, 4-4 --&gt; 
+          &lt;Range&gt;0,1,2,3,4&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/EnhancedMode&gt; 
+ 
+        &lt;FilterSwitch&gt; 
+          &lt;!-- req, filter switch: 1-support --&gt; 
+          &lt;Range&gt;1&lt;/Range&gt; 
+        &lt;/FilterSwitch&gt; 
+
+        &lt;FocusSpeed&gt; 
+          &lt;!-- req, focus speed: 0~10 --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;10&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;5&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/FocusSpeed&gt; 
+                         
+        &lt;AutoCompensationInterval&gt;&lt;!--req, time interval of auto shutter compensation--&gt; 
+          &lt;!-- req, timing auto shutter compensation: 1~120, unit: minute --&gt; 
+          &lt;Min&gt;1&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;120&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;60&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/AutoCompensationInterval&gt; 
+
+        &lt;SmartIR&gt;&lt;!--2012-08-29--&gt; 
+          &lt;Range&gt;0,1&lt;/Range&gt;&lt;!--req,SMART IR: 0-closed, 1-open--&gt; 
+          &lt;modeType opt="automatic, manual"&gt;&lt;!--req,0-auto 1-manual&gt;&lt;-req valid when switch is on&gt; 
+          &lt;IRDistance min="" max=""/&gt;&lt;!--req,level 1-100(can be set in manaul mode)--&gt; 
+          &lt;ShortIRDistance min="" max=""/&gt; 
+            &lt;!--req,the level of short light 1-100(can be set in manaul mode)--&gt; 
+          &lt;LongIRDistance min="" max=""/&gt; 
+          &lt;!--req,the level of long light 1-100(can be set in manaul mode)--&gt; 
+        &lt;/SmartIR&gt; 
+
+        &lt;Illumination&gt;&lt;!--2012-08-29--&gt; 
+          &lt;Range&gt;0,1&lt;/Range&gt;&lt;!--req,low light: 0-closed, 1-open--&gt; 
+        &lt;/Illumination&gt; 
+
+        &lt;LightInhibit&gt;&lt;!--2012-08-29--&gt; 
+          &lt;LightInhibitEnable opt="true,false"/&gt;
+            &lt;!--req, enable high light compensation: 0-closed, 1-open--&gt; 
+          &lt;isNotSupportDigitalChanCfg opt="true,false"/&gt;&lt;!--optional, whether setting digital channels is not supported: true-yes (not supported), false-no (supported). If this field is not returned, it indicates that setting digital channels is supported--&gt;
+          &lt;level min="0" max="100"/&gt; 
+            &lt;!--req,high light compensation level--&gt; 
+        &lt;/LightInhibit&gt; 
+
+        &lt;GrayLevel&gt;&lt;!--2012-08-29--&gt; 
+          &lt;Range&gt;0,1&lt;/Range&gt;&lt;!--req,grayscale value range,0- [0,255], 1- [16,235]--&gt; 
+        &lt;/GrayLevel&gt; 
+                        
+        &lt;AutoFocusMode&gt;&lt;!--req, focus mode of zoom camera and speed dome--&gt; 
+          &lt;FocusModeSet&gt; 
+            &lt;!-- req, focus mode: 0-auto,1-manual,2-once,3-semiautomatic --&gt; 
+            &lt;Range&gt;0,1,2,3&lt;/Range&gt; 
+            &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+          &lt;/FocusModeSet&gt; 
+          &lt;AFModeChoose&gt; 
+            &lt;!-- req, auto focus mode: 0-closed, 1-mode A, 2-mode B, 3-mode AB, 4-mode C --&gt; 
+            &lt;Range&gt;0,1,2,3,4&lt;/Range&gt; 
+            &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+          &lt;/AFModeChoose&gt; 
+          &lt;MinFocusDistance&gt; 
+            &lt;!-- req, minimum focusing distance: 0- automatic, 0xffff- unlimited --&gt; 
+            &lt;Range&gt;0,1,2,5,10,30,50,100,150,200,300,500,600,800,1000,2000,0xffff&lt;/Range&gt; 
+            &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+          &lt;/MinFocusDistance&gt; 
+          &lt;ZoomSpeedLevel&gt; &lt;!-- req, zoom speed --&gt; 
+            &lt;!-- req, 0-0, 1-1, 2-2, 3-3, 4-4, 10-low, 11-medium, 12-high --&gt; 
+            &lt;!-- req,  (0-4: special for zoom camera, 10-12: special for speed dome)  --&gt; 
+            &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12&lt;/Range&gt;                            
+            &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+          &lt;/ZoomSpeedLevel&gt; 
+          &lt;FocusSpeedLevel&gt; 
+            &lt;!-- req, focus speed: 0-low, 1-medium, 2-high --&gt; 
+            &lt;Range&gt;0,1,2&lt;/Range&gt; 
+            &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+          &lt;/FocusSpeedLevel&gt; 
+        &lt;/AutoFocusMode&gt; 
+        &lt;assistFocus opt="true"/&gt;&lt;!--req, whether to enable assist zoom: 0-No, 1-Yes --&gt; 
+        &lt;focusSensitivity min="0" max="2" def="1"/&gt;
+          &lt;!--opt, focus sensitivity, ranges from 0 to 2, it is valid when the focus mode is auto or semi-auto--&gt; 
+        &lt;relativeFocusPos min="0" max="4000" def=""/&gt;
+          &lt;!--opt, xs:integer, relative focus sensitivity, low 16 bytes indicate focus value (ranges from 0 to 4000), and high 16 bytes indicate temperature value under current focus, it is valid when the focus mode is manual or semi-auto--&gt; 
+      &lt;/FocusMode&gt; 
+                         
+      &lt;AutoExposureMode&gt;
+        &lt;!-- req, exposure and gain control of zoom camera and speed dome--&gt;
+        &lt;ExposureSet&gt; 
+          &lt;!-- req, exposure mode: 0-manual mode, 1-auto exposure, 2-aperture priority, 3-shutter priority, 4-gain priority --&gt; 
+          &lt;Range&gt;0,1,2,3,4&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/ExposureSet&gt; 
+        &lt;IrisSet&gt;  &lt;!-- req, aperture --&gt; 
+          &lt;!-- req, 0-F1.2,1-F1.4,2-F1.6,3-F1.67,4-F1.8,5-F1.85,6-F1.96,7-F2.0,8-F2.11 --&gt; 
+          &lt;!-- req, 9-F2.2,10-F2.4,11-F2.41,12-F2.64,13-F2.8,14-F2.86,15-F3.13,16-F3.2 --&gt; 
+          &lt;!-- req, 17-F3.4,18-F3.53,19-F3.7,20-F3.95,21-F4.0,22-F4.4,23-F4.49,24-F4.8 --&gt; 
+          &lt;!-- req, 25-F5.35,26-F5.6,27-F6.38,28-F6.4,29-F6.8,30-F7.90,31-F8.0,32-F8.8 --&gt; 
+          &lt;!-- req, 33-F9.6,34-F11,35-F11.06,36-F12,37-F14,38-F16,39-F16.60,40-F17 --&gt; 
+          &lt;!-- req, 41-F19,42-F22,43-F24,44-F33.19,45-F34 --&gt; 
+          &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/IrisSet&gt; 
+        &lt;ShutterSet&gt; &lt;!-- req, shutter --&gt; 
+          &lt;!-- req,0-closed, 1-auto x1,2-auto x2,3-auto x4,4-auto x8,5-auto x16,6-auto x32,--&gt; 
+          &lt;!-- req,7-auto x64, 8-auto x128, 9-1/1, 10-1/2, 11-1/3, 12-1/4,  13-1/6, 14-1/8,--&gt; 
+          &lt;!-- req,15-1/12, 16-1/15, 17-1/25, 18-1/30, 19-1/50, 20-1/60, 21-1/75, 22-1/90,--&gt; 
+          &lt;!-- req,23-1/100, 24-1/120, 25-1/125, 26-1/150, 27-1/180, 28-1/200, 29-1/215,--&gt; 
+          &lt;!-- req,30-1/250, 31-1/300, 32-1/350, 33-1/425, 34-1/500, 35-1/600, 36-1/725,--&gt;  
+          &lt;!-- req,37-1/1000, 38-1/1250, 39-1500, 40-1/1750, 41-1/2000, 42-1/2500, 43-3000,--&gt; 
+          &lt;!-- req,44-1/3500, 45-1/4000, 46-1/6000, 47-1/10000, 48-1/30000, 49-1/100000 --&gt; 
+          &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,2/9,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/ShutterSet&gt; 
+        &lt;GainSet&gt;&lt;!-- req, gain: 0~100 --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt; 
+          &lt;Max&gt;100&lt;/Max&gt;
+            &lt;!-- req, : 0-closed, 1-low, 2-medium, 3-high, 4-0, 5-1, 6-2, 7-3, 8-4, 9-5, 10-6, 11-7, 12-8, 13-9, 14-10, 15-11, 16-12, 17-13, 18-14, 19-15 --&gt; 
+          &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19&lt;/Range&gt; 
+            &lt;!-- req, (0~19: special for speed dome) --&gt;
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/GainSet&gt; 
+        &lt;GainLimit&gt; &lt;!-- req, gain limit --&gt; 
+          &lt;!-- req, speed dome --&gt;
+          &lt;Min&gt;0&lt;/Min&gt;&lt;!-- req, minimum value --&gt; 
+          &lt;Max&gt;0x0f&lt;/Max&gt;&lt;!-- req, maximum value --&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/GainLimit&gt; 
+        &lt;ExposureComp&gt; 
+          &lt;!-- req, exposure compensation: 0~100 --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt;  
+          &lt;Max&gt;100&lt;/Max&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+          &lt;!-- req, : 0-closed, 1-low, 2-medium, 3-high, 4-0, 5-1, 6-2, 7-3, 8-4, 9-5, 10-6, 11-7, 12-8, 13-9, 14-10, 15-11, 16-12, 17-13, 18-14 --&gt; 
+          &lt;!-- req,  (0~18: special for speed dome) --&gt; 
+          &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19&lt;/Range&gt; 
+        &lt;/ExposureComp&gt; 
+      &lt;/AutoExposureMode&gt; 
+       
+      &lt;ZoomPara&gt;
+        &lt;!-- req, zoom parameter of zoom camera/speed dome  --&gt;
+        &lt;ZoomDisplay&gt;  
+          &lt;!-- req, zoom display: 0-closed, 1-open --&gt; 
+          &lt;Range&gt;0,1&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/ZoomDisplay&gt; 
+        &lt;ZoomLimit&gt; 
+          &lt;!-- req, zoom camera(Range); speed dome(min,max)--&gt; 
+          &lt;!-- req, zoom limit of zoom camera: 0-10,1-18,2-20,3-22,4-23,5-30,6-36,7-37,8-38,9-39,10-40,11-unlimited --&gt; 
+          &lt;Range&gt;0,1,2,3,4,5,6,7,8,9,10,11&lt;/Range&gt; 
+          &lt;!-- req, optical zoom of speed dome: 1~50 --&gt; 
+          &lt;Min&gt;1&lt;/Min&gt;  
+          &lt;Max&gt;50&lt;/Max&gt; 
+          &lt;Default&gt;1&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/ZoomLimit&gt; 
+        &lt;DigitalZoom&gt; 
+          &lt;!-- req, zoom camera(Range);speed dome(min,max) --&gt; 
+          &lt;!-- req, digital zoom of zoom camera: 0-closed, 1- *2, 2-*4, 3-*8, 4-*10, 5-*12 --&gt; 
+          &lt;Range&gt;0,1,2,3,4,5&lt;/Range&gt; 
+          &lt;!-- req, digital zoom of speed dome: 0~30 --&gt; 
+          &lt;Min&gt;1&lt;/Min&gt; 
+          &lt;Max&gt;30&lt;/Max&gt; 
+          &lt;Default&gt;1&lt;/Default&gt;&lt;!-- req, default value --&gt;       
+        &lt;/DigitalZoom&gt; 
+      &lt;/ZoomPara&gt; 
+       
+      &lt;SnapExposure&gt;
+        &lt;!-- req, exposure control general triggered snapshot --&gt; 
+        &lt;SnapMode&gt; 
+          &lt;!-- req, snapshot mode: 0- snapshot mode 1, 1- snapshot mode 2, 2- snapshot mode 3 --&gt; 
+          &lt;Range&gt;0,1,2&lt;/Range&gt; 
+          &lt;Default&gt;0&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/SnapMode&gt; 
+        &lt;SnapGain1&gt; 
+          &lt;!-- req, snapshot gain 1: 0-100 --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt; 
+          &lt;Max&gt;100&lt;/Max&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt; 
+        &lt;/SnapGain1&gt; 
+        &lt;SnapGain2&gt; 
+          &lt;!-- req, snapshot gain 2: 0-100 --&gt; 
+          &lt;Min&gt;0&lt;/Min&gt; 
+          &lt;Max&gt;100&lt;/Max&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!-- req, default value --&gt;       
+        &lt;/SnapGain2&gt; 
+      &lt;/SnapExposure&gt; 
+
+      &lt;!--req, dynamic contrast ratio level of intelligent traffic camera--&gt; 
+      &lt;DynamicContrast&gt; 
+        &lt;DynamicContrastLevel&gt; 
+          &lt;Min&gt;0&lt;/Min&gt; 
+          &lt;Max&gt;100&lt;/Max&gt; 
+          &lt;Default&gt;50&lt;/Default&gt;&lt;!--req, default value--&gt; 
+        &lt;/DynamicContrastLevel&gt; 
+      &lt;/DynamicContrast&gt; 
+
+      &lt;!--req, Rotation Mode--&gt; 
+      &lt;CorridorMode&gt; 
+        &lt;corridorModeFunEnable opt="true,false"/&gt; 
+        &lt;!--req,Enable or not, true-Enable, false-Disable--&gt; 
+        &lt;!--req,If enable 1080p50/1080p60 after the 3D DNR, SMD, rotation or WDR is enabled, the prompt will pop up "Close the 3D DNR, SMD, rotation and WDR under the self-adaptive and continuous mode first."--&gt; 
+        &lt;!--req,If enable 720p50/720p60 after the rotation or WDR is enabled, the prompt will pop up "Close rotation and WDR under the self-adaptive and continuous mode first."--&gt; 
+        &lt;mutexAbility opt="19-1920*1080@50fps,20-1920*1080@60fps,8-1280*720@60fps,7-1280*720@50fps"/&gt; 
+        &lt;!--req Mutex among the CaptureMode 1920*1080@50fps, 1920*1080@60fps, 1280*720@60fps and 1280*720@50fps, prompt will pop up when enabled any of the modes.--&gt; 
+      &lt;/CorridorMode&gt;
+
+      &lt;ISPAdvanceCfg&gt;&lt;!--req,ISP supports return or not.--&gt; 
+        &lt;ISPSupportMode opt="dayMode,nightMode"/&gt; 
+        &lt;!--req Mode supported by ISP--&gt; 
+        &lt;workMode opt="auto,schedule"/&gt; 
+        &lt;!--req,0-Auto,1-Scheduled switch--&gt; 
+        &lt;TimeSchedule&gt; 
+          &lt;beginTime opt="hour,min,sec,millisec"/&gt; 
+          &lt;!--req Type of start time period--&gt; 
+          &lt;endTime opt="hour,min,sec,millisec"/&gt; 
+          &lt;!--req Type of end time period--&gt; 
+        &lt;/TimeSchedule&gt; 
+        &lt;ISPCfgSupport opt="whiteBalanceMode,whiteBalanceModeRGain,whiteBalanceModeBGain,exposureSet, 
+                             exposureUserSet,gainLevel,brightnessLevel,contrastLevel,sharpnessLevel,WDREnabled, 
+                             WDRLevel1,WDRLevel2,WDRContrastLevel,backlightMode,backlightLevel,position1, 
+                             position2,imageStabilizeEnable,imageStabilizeLevel,digitalNoiseReductionEnable, 
+                             digitalNoiseReductionLevel,digitalNoiseSpectralLevel,digitalNoiseTemporalLevel, 
+                             dehazeEnable,dehazeLevel,lightInhibitEnable,lightInhibitLevel,grayLevel"/&gt; 
+      &lt;/ISPAdvanceCfg&gt; 
+
+      &lt;supportCCDFunc opt="whiteBalance,exposure,WDR,dayNightFilter,gammaCorrection,digitalNoiseReduction, 
+                          backLight,lowLight,focus,infrared,domeAemode,dehaze,parkAction,elecStab,other,ISP,laser"/&gt; 
+      &lt;!--req supported front-end parameter capabilities.--&gt; 
+
+      &lt;!--req, Illumination Enhancement Capture Camera v3.5--&gt; 
+      &lt;BrightCompensate&gt; 
+        &lt;brightCompensate min="0" max="100"/&gt; 
+      &lt;/BrightCompensate&gt; 
+
+      &lt;!--req, Exposure Control Capture Camera v3.5--&gt; 
+      &lt;ExposureSegment&gt; 
+        &lt;exposureSegmentEnable opt="true,false"/&gt; 
+        &lt;!--req,Enable or not,  true-Enable, false-Disable--&gt; 
+      &lt;/ExposureSegment&gt; 
+
+      &lt;LensDistortionCorrection&gt; 
+        &lt;enable opt="false,true" default="false"/&gt; 
+        &lt;!--req,Lens Distortion Correction (0-Disable/1-Enable)--&gt; 
+        &lt;mutexAbility opt="WDR"/&gt; 
+        &lt;!--req,mutex in WDR --&gt; 
+        &lt;level min="1" max="3"&gt; 
+          &lt;!--opt, xs:integer, Distortion Correction Level,  1-3--&gt; 
+        &lt;/level&gt; 
+        &lt;zoomedInDistantView&gt; 
+          &lt;!--dep, xs:integer, Remote zoom,  takes effect when Distortion Correction is enabled.--&gt; 
+          &lt;enabled&gt; 
+            &lt;!--req, xs:bool, "true,false"--&gt; 
+          &lt;/enabled&gt; 
+          &lt;level min="1" max="3"&gt; 
+            &lt;!--opt, xs:integer, Correction level of remote zoom,  1-3--&gt; 
+          &lt;/level&gt; 
+        &lt;/zoomedInDistantView&gt; 
+        &lt;horizontalFOV min="0" max="100"&gt; 
+          &lt;!--opt, xs:integer, Horizontal FOV[0-100]--&gt; 
+        &lt;/horizontalFOV&gt; 
+        &lt;verticalFOV min="0" max="100"&gt; 
+          &lt;!--opt, xs:integer, Vertical FOV[0,100]--&gt; 
+        &lt;/verticalFOV&gt; 
+      &lt;/LensDistortionCorrection&gt; 
+      &lt;BrightnessSuddenChangeSuppressionCap&gt; 
+        &lt;enabled opt="true,false"&gt; 
+          &lt;!--req, xs:boolean, brightness sudden change suppression--&gt; 
+        &lt;/enabled&gt; 
+      &lt;/BrightnessSuddenChangeSuppressionCap&gt; 
+
+      &lt;DPCParam&gt; 
+        &lt;!--req,DPC--&gt; 
+        &lt;ctrltype opt="correct,cancelCorrect,crossDisplayOpen,crossDisplayClose,point,up,down,right,left,allCorrect,save"/&gt; 
+        &lt;!--req,correction, cancel correction, enable/disable DPC cross display, DPC coordinate, up-forward offset of DPC coordinate, 
+        down-forward offset of DPC coordinate, right-forward offset of DPC coordinate, left-forward offset of DPC coordinate, DPC all, save defective Pixel--&gt; 
+        &lt;dpcMode opt="manual,auto" def="auto"/&gt; 
+        &lt;!--req,xs:string,"manual-Manual Correction, auto-Auto Correction, if device does not support this node,  all will be handled manually"--&gt; 
+      &lt;/DPCParam&gt; 
+
+      &lt;FFCParam&gt; 
+        &lt;mode opt="schedule,temperature "/&gt; 
+        &lt;!--req,1-Continuous mode, 2-Temperature difference mode, 3-Close--&gt; 
+        &lt;ScheduleMode&gt; 
+          &lt;compensateTime opt="10,20,30,40,50,60,120,180,240"/&gt; 
+          &lt;compensateTimeUnit opt="min"/&gt; 
+          &lt;!--req,min--&gt; 
+        &lt;/ScheduleMode&gt; 
+        &lt;FFCManualCtrl opt="true"/&gt; 
+        &lt;!--req,FFC Manual Control--&gt; 
+        &lt;FFCBackCompCtrl opt="true"/&gt; 
+        &lt;!--req,FFC Background Compensation control--&gt; 
+      &lt;/FFCParam&gt; 
+
+      &lt;DDEParam&gt; 
+        &lt;mode opt="off,normal,expert"/&gt; 
+        &lt;!--req,1-Close, 2-Normal Mode, 3-Expert Mode--&gt; 
+        &lt;normalLevel min="1" max="100"/&gt; 
+        &lt;!--req,Level settings under normal mode--&gt; 
+        &lt;expertLevel min="1" max="100"/&gt; 
+        &lt;!--req,Level settings under expert mode--&gt; 
+      &lt;/DDEParam&gt; 
+
+      &lt;AGCParam&gt; 
+        &lt;scene opt="normal,highlight,manual"/&gt; 
+        &lt;!--req,1-Normal scene,  2-Highlight scene,  3- Manual scene--&gt; 
+        &lt;ManualMode&gt; 
+          &lt;lightLevel min="1" max="100"/&gt; 
+          &lt;!--req,Brightness level--&gt; 
+          &lt;gainLevel min="1" max="100"/&gt; 
+          &lt;!--req,Gain level--&gt; 
+        &lt;/ManualMode&gt; 
+      &lt;/AGCParam&gt; 
+      &lt;fusionMode/&gt; &lt;!--opt, xs:string, visual and thermal image fusion mode: "thermal"-thermal mode, "fusion"-fusion mode, "PIP"-picture in picture mode, "Visible"-visible mode, "fusionB/W"-black and white fusion mode, "city", "jungle", "deset", "sea", "snow"--&gt;
+      &lt;ThermometryAGC&gt; 
+        &lt;mode opt = "close,auto,manual"&gt; 
+          &lt;!--opt, xs:string--&gt; 
+        &lt;/mode&gt; 
+        &lt;highTemperature min="-273" max="10000"&gt; 
+          &lt;!--dep, xs:integer--&gt; 
+        &lt;/highTemperature&gt; 
+        &lt;lowTemperature min="-273" max="10000"&gt; 
+          &lt;!--dep, xs:integer--&gt; 
+        &lt;/lowTemperature&gt; 
+      &lt;/ThermometryAGC&gt; 
+      
+      &lt;isSupportGPSControl&gt;
+        &lt;!—optional, boolean, whether the device supports GPS control capability--&gt;
+      &lt;/isSupportGPSControl &gt;
+
+      &lt;gearRange&gt;
+        &lt;!—optional, xs;integer, the number of ranges supported by the device, e.g., when the value is 3,it indicates supported three ranges--&gt;
+      &lt;gearRange&gt;
+
+    &lt;/ChannelEntry&gt; 
+  &lt;/ChannelList&gt; 
+&lt;/CAMERAPARA&gt;</pre>
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-7B43AD5E-EC45-47B2-89A3-A8371A5A3A93.html">Request and Response Messages</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-C0AFBBE4-DBF5-4B6C-A337-43ABC2717FDE.html">JSON_AlarmStatistics</a></span></li><li><span class="topicref"><a href="GUID-173C7C6B-2A4E-4C56-9760-3997B357D60C.html">JSON_AssociatedChannelList</a></span></li><li><span class="topicref"><a href="GUID-26CBB592-B498-444F-A2E6-7A47F509742F.html">JSON_AudioAlarm</a></span></li><li><span class="topicref"><a href="GUID-0F05BA6F-BB0B-4A14-9D62-AA60229D0229.html">JSON_AudioAlarmCap</a></span></li><li><span class="topicref"><a href="GUID-34141E72-BA7A-47FF-AB94-348A67AC7B3C.html">JSON_Authentication</a></span></li><li><span class="topicref"><a href="GUID-3FC462BB-BA0F-40BB-A65A-9616A2E2A34A.html">JSON_AuthenticationCap</a></span></li><li><span class="topicref"><a href="GUID-8D4FA16E-57EF-4EF9-94DD-D817B803E9D5.html">JSON_AutoEagleFocusing</a></span></li><li><span class="topicref"><a href="GUID-24C86270-E356-43BD-818A-EFE39AEE3A4F.html">JSON_AutoEagleFocusingCap</a></span></li><li><span class="topicref"><a href="GUID-0CD33188-598A-4B44-9836-B48A997E0A15.html">JSON_AutoMaintenance</a></span></li><li><span class="topicref"><a href="GUID-8BA5D876-65FF-491B-98BC-F59C8674CEBC.html">JSON_AutoMaintenanceCap</a></span></li><li><span class="topicref"><a href="GUID-33A70934-3D6E-4F9C-8FC3-FD57429C3B1D.html">JSON_AutoSwitch</a></span></li><li><span class="topicref"><a href="GUID-967C1465-307B-463C-A8C0-7B804DA9FA6A.html">JSON_AutoSwitchCap</a></span></li><li><span class="topicref"><a href="GUID-0A166343-B71C-424E-98E9-B4318DE2603E.html">JSON_BasicParam</a></span></li><li><span class="topicref"><a href="GUID-5F79D4FF-4C32-4FF6-B7D7-9D1983491FED.html">JSON_BVCorrectParam</a></span></li><li><span class="topicref"><a href="GUID-D7F450F1-9B06-42D7-87DA-8459FB94ED36.html">JSON_BVCorrectParamCap</a></span></li><li><span class="topicref"><a href="GUID-3E7EF792-1365-4A56-AB5F-E75BA7852393.html">JSON_CalibrationStatus</a></span></li><li><span class="topicref"><a href="GUID-3EA71A43-68ED-4B7C-B8CB-98AB4ADB9C5E.html">JSON_Cap_CalibrationStatus</a></span></li><li><span class="topicref"><a href="GUID-6A00AB4E-E8E3-4026-B249-4ED4DC4FEC1A.html">JSON_Cap_CaputreDescription</a></span></li><li><span class="topicref"><a href="GUID-AD67DB00-7D10-4BB7-98FF-82E944C30EDB.html">JSON_Cap_ClearingSpaceConfig</a></span></li><li><span class="topicref"><a href="GUID-8077C6FD-5310-4076-890E-24241BAADEB9.html">JSON_Cap_IntelliManagement</a></span></li><li><span class="topicref"><a href="GUID-92816BD8-5EC5-4441-AE06-3A6FC8AC2358.html">JSON_Cap_RemarkList</a></span></li><li><span class="topicref"><a href="GUID-F59B8AC4-391E-4A4A-9F30-B002102A2C1E.html">JSON_Cap_SSD</a></span></li><li><span class="topicref"><a href="GUID-5533BD15-04FF-428D-BA16-C173A0C211F6.html">JSON_Cap_TimeSearchCond</a></span></li><li><span class="topicref"><a href="GUID-9AE1CAAF-FAA3-4682-ABF0-4B8C047F5A64.html">JSON_CaputreDescription</a></span></li><li><span class="topicref"><a href="GUID-69999543-7004-4801-8BA9-EC67C8C15A1B.html">JSON_CaputreResult</a></span></li><li><span class="topicref"><a href="GUID-014A8D24-EBF2-479A-B89B-8D09095DBCA7.html">JSON_CertificateRevocation</a></span></li><li><span class="topicref"><a href="GUID-B49E7BF4-CF38-4867-B64F-EC770629B035.html">JSON_CertificateRevocationCap</a></span></li><li><span class="topicref"><a href="GUID-F228158C-20B1-44C5-BE47-E8E9320BB604.html">JSON_ChangedStatus</a></span></li><li><span class="topicref"><a href="GUID-88E102B6-0BA6-4E2B-B834-E3B72178C9D4.html">JSON_Characteristic</a></span></li><li><span class="topicref"><a href="GUID-35637948-B268-48E9-9B1F-385CC9DD8E64.html">JSON_ClearingSpaceConfig</a></span></li><li><span class="topicref"><a href="GUID-532D1109-7689-4F85-8714-EFA5636FC851.html">JSON_CloudUserManage</a></span></li><li><span class="topicref"><a href="GUID-FECC0D5B-3459-4EC0-A60E-3073E06012E0.html">JSON_CloudUserManageCap</a></span></li><li><span class="topicref"><a href="GUID-ABA1B4A8-41F8-4CA9-B8CB-96920B25E954.html">JSON_CloudUserManageList</a></span></li><li><span class="topicref"><a href="GUID-4732833D-7F5C-4506-834C-423FAB478433.html">JSON_CustomAudioID</a></span></li><li><span class="topicref"><a href="GUID-9A9EB847-9777-4968-8100-3F429894883C.html">JSON_CustomAudioTypeInfoList</a></span></li><li><span class="topicref"><a href="GUID-B4E9C479-21DC-4D12-861F-64E0E857960C.html">JSON_DataReconstruction</a></span></li><li><span class="topicref"><a href="GUID-9F20E858-7BC9-4ED9-B7F0-C4283E48DB2B.html">JSON_DiagnosedDataServerCap</a></span></li><li><span class="topicref"><a href="GUID-D52395C7-7310-433F-A7DC-DC936E60D5C5.html">JSON_DiagnosedDataServerList</a></span></li><li><span class="topicref"><a href="GUID-3B8A41E5-C46D-4762-9183-FBC8A0397405.html">JSON_DoubleVerification</a></span></li><li><span class="topicref"><a href="GUID-5979F0A0-0DA8-4514-B9EB-72473859C9E8.html">JSON_DownloadPackageStatus</a></span></li><li><span class="topicref"><a href="GUID-35F75E48-1B80-4E39-AFB0-30055AA8F0F5.html">JSON_EmailCertification</a></span></li><li><span class="topicref"><a href="GUID-5F3E0750-CDC1-4F22-9248-A2F7A6782143.html">JSON_EncryptFormat</a></span></li><li><span class="topicref"><a href="GUID-2F568F6E-E83D-4F54-BB41-3A10E28926BB.html">JSON_EncryptVerfy</a></span></li><li><span class="topicref"><a href="GUID-A9BD8CB3-E684-40F1-A88C-F98C8D1E8F53.html">JSON_EPTZMode</a></span></li><li><span class="topicref"><a href="GUID-4768457B-55DF-4E72-B53A-11F880F6BB39.html">JSON_EPTZModeCap</a></span></li><li><span class="topicref"><a href="GUID-F5A672C7-A17A-43E0-B2B5-BC763D5E8DFE.html">JSON_EventNotificationAlert_Alarm/EventInfo</a></span></li><li><span class="topicref"><a href="GUID-59342F84-79D2-4545-BB18-CA53330D0A05.html">JSON_EventNotificationAlert_CertificateExpiryAlarmMsg</a></span></li><li><span class="topicref"><a href="GUID-5F3D5ED7-9202-4626-AC84-AA73DC0F5370.html">JSON_EventNotificationAlert_HDDBadSectorEventMsg</a></span></li><li><span class="topicref"><a href="GUID-00997BEA-0027-40B3-80EC-29F52E156A62.html">JSON_EventNotificationAlert_HDDHighTemperatureEventMsg</a></span></li><li><span class="topicref"><a href="GUID-E8E982BB-D63E-4256-B5BD-9E31E79C14C3.html">JSON_EventNotificationAlert_HDDImpactEventMsg</a></span></li><li><span class="topicref"><a href="GUID-1578ADBF-9A1F-4ABA-B9C9-B6EE70EE06D6.html">JSON_EventNotificationAlert_HDDLowTemperatureEventMsg</a></span></li><li><span class="topicref"><a href="GUID-A3CE87E8-8E6A-4589-945B-DFB474137D06.html">JSON_EventNotificationAlert_HDDSevereFaultEventMsg</a></span></li><li><span class="topicref"><a href="GUID-FD0E0783-6C9C-4A78-92E0-756339D9EEE9.html">JSON_EventNotificationAlert_NetworkTrafficPrealarmMsg</a></span></li><li><span class="topicref"><a href="GUID-B649CC2B-B7A7-4253-BA3E-4CCF0FCA23D7.html">JSON_EventNotificationAlert_vibrationDetection</a></span></li><li><span class="topicref"><a href="GUID-B08ED061-393D-4DE0-B9EA-BE5A3787B372.html">JSON_EventSearchCap</a></span></li><li><span class="topicref"><a href="GUID-6F530429-0DDC-4F04-B4B2-EF80AF70E754.html">JSON_EventSearchCond</a></span></li><li><span class="topicref"><a href="GUID-E0140F54-2E3D-41CB-A685-6E6E4FDAC013.html">JSON_EventSearchResult</a></span></li><li><span class="topicref"><a href="GUID-3DA91274-3EA0-4A14-8C2B-4631D5D17D29.html">JSON_EZVIZSecretKey</a></span></li><li><span class="topicref"><a href="GUID-92854651-DAC4-42AF-AE13-C227ABB9B11B.html">JSON_EZVIZQRCode</a></span></li><li><span class="topicref"><a href="GUID-5EC4BF2D-77F2-47AD-93CB-213D48CBA74B.html">JSON_FocusStatus</a></span></li><li><span class="topicref"><a href="GUID-D0F77457-63AF-4F34-954F-B22B7E6580B4.html">JSON_GetCustomAudio</a></span></li><li><span class="topicref"><a href="GUID-03A5262D-4289-4039-A9C5-4E8D6C3D7DED.html">JSON_GetUserInfoByType</a></span></li><li><span class="topicref"><a href="GUID-1B5AFBF4-4DD4-4D64-85C4-3EB52AD2E40F.html">JSON_GPSCalibratation</a></span></li><li><span class="topicref"><a href="GUID-49500432-B99F-4A64-A20A-68B6AC51377B.html">JSON_GPSCalibratationCap</a></span></li><li><span class="topicref"><a href="GUID-8D75C74E-42FD-4D8E-97EE-BE29B1341543.html">JSON_GPSCalibratationList</a></span></li><li><span class="topicref"><a href="GUID-6F421FD1-D3A5-4300-999F-5BDD04BD2C52.html">JSON_GPSCalibratationStatus</a></span></li><li><span class="topicref"><a href="GUID-FF059CEC-090D-4DA6-9098-E7BFFAB0604A.html">JSON_GPSInfo</a></span></li><li><span class="topicref"><a href="GUID-218D75A3-A9F3-4B54-A6C3-F456E8164246.html">JSON_GPSVerification_ResultInfo</a></span></li><li><span class="topicref"><a href="GUID-ED7D8881-B99E-4F1A-99F4-DAF5FF19D717.html">JSON_GPSVerification_ResultInfoList</a></span></li><li><span class="topicref"><a href="GUID-1D249E29-1BE5-4FF7-A8EF-BB009F6BDFBA.html">JSON_GyroVerify</a></span></li><li><span class="topicref"><a href="GUID-7D69B94A-EAEA-46A6-AB2C-B9660EF4A33F.html">JSON_GyroVerifyCap</a></span></li><li><span class="topicref"><a href="GUID-4F3E8086-9F8E-44C4-92B9-921EA17D36BD.html">JSON_GuideConfig</a></span></li><li><span class="topicref"><a href="GUID-CF88F2CF-67F9-46B4-BDDA-5A83543B2081.html">JSON_GuideConfigCap</a></span></li><li><span class="topicref"><a href="GUID-3D927ECF-F960-4FBD-86ED-D09E1FF3B37C.html">JSON_HddFormatList</a></span></li><li><span class="topicref"><a href="GUID-31B8EFD1-A076-497F-94F8-11195C057638.html">JSON_HeatMap_CollectionDescription</a></span></li><li><span class="topicref"><a href="GUID-6413B5E1-371C-4DCE-8416-D25882CB74D7.html">JSON_HeatMap_CollectionDescriptionCap</a></span></li><li><span class="topicref"><a href="GUID-C37B3A28-303F-4DEC-915E-20BFFE09DEF6.html">JSON_HeatMap_CollectionResult</a></span></li><li><span class="topicref"><a href="GUID-08A355E3-CFB6-447B-BA91-9E6B803D6324.html">JSON_id</a></span></li><li><span class="topicref"><a href="GUID-B8762B94-763D-4E71-A95A-64100074B7A3.html">JSON_ImportCustomAudio</a></span></li><li><span class="topicref"><a href="GUID-460889A1-96BD-4C64-956F-D546CA4F7184.html">JSON_IntelligentSearchCap</a></span></li><li><span class="topicref"><a href="GUID-44376519-2535-4B88-9D4B-214835537DEA.html">JSON_IntelligentSearchCondition</a></span></li><li><span class="topicref"><a href="GUID-F1EF7B92-A928-4D2F-8F68-AE0257EE87E4.html">JSON_IntelligentSearchResult</a></span></li><li><span class="topicref"><a href="GUID-FAEC7708-D955-4ACE-9FB8-85F48A643BF3.html">JSON_IOT_ChannelInfo</a></span></li><li><span class="topicref"><a href="GUID-511E9D5A-5249-4FCC-A46C-BBA53427053E.html">JSON_IOT_ChannelInfoList</a></span></li><li><span class="topicref"><a href="GUID-84C7927A-F046-4263-BD26-3509AFDFA138.html">JSON_IOT_ErrorList</a></span></li><li><span class="topicref"><a href="GUID-9CACC5DD-F7EB-461A-9553-7F185EE3C89B.html">JSON_IOTChannel</a></span></li><li><span class="topicref"><a href="GUID-634ADF9C-E7B3-42A9-8788-DB55D461AE8E.html">JSON_IOTChannelEventCap</a></span></li><li><span class="topicref"><a href="GUID-4201AB22-133D-45E2-9D58-93CE666DF3DD.html">JSON_IOTChannelList</a></span></li><li><span class="topicref"><a href="GUID-86BAEB27-5539-4E3E-9A6A-72A4D618AFBC.html">JSON_IOTChannelStatus</a></span></li><li><span class="topicref"><a href="GUID-70C933A2-A032-45C6-95F3-F3248E89B067.html">JSON_IOTChannelStatusList</a></span></li><li><span class="topicref"><a href="GUID-8178B08B-D7A2-47CF-8C56-DC7270D5DF02.html">JSON_IOTSourceDescription</a></span></li><li><span class="topicref"><a href="GUID-47D337EE-01C6-48A5-B380-72F299B74BDD.html">JSON_IOTSourceList</a></span></li><li><span class="topicref"><a href="GUID-6E0E0F07-C842-4B64-80D2-40A0315B11F6.html">JSON_IOTSourceSupport</a></span></li><li><span class="topicref"><a href="GUID-F3FEFEF5-6036-4F50-923B-EE4F7DFECAC0.html">JSON_KeepAlive</a></span></li><li><span class="topicref"><a href="GUID-749BFEB0-CBA6-4ED7-8F89-9C1F7A459C99.html">JSON_KeepAliveCap</a></span></li><li><span class="topicref"><a href="GUID-679A3726-3D89-4BBD-AC8A-D00C727ADDF1.html">JSON_LaserOpticalAxis</a></span></li><li><span class="topicref"><a href="GUID-72052DBA-0EDC-438E-B32F-52E176AFB17C.html">JSON_LaserOpticalAxis_direction</a></span></li><li><span class="topicref"><a href="GUID-84BF547F-4C7C-409D-A6C0-3EBB07C9C3BD.html">JSON_LaserOpticalAxisCap</a></span></li><li><span class="topicref"><a href="GUID-B4681491-112C-45EC-BA15-ED13A42D70E8.html">JSON_LinkageChansCond</a></span></li><li><span class="topicref"><a href="GUID-F3EE186A-CF7E-4580-BAB7-9BF4C23EDE8C.html">JSON_LinkedTracking</a></span></li><li><span class="topicref"><a href="GUID-12A2F23C-6392-4220-936F-B70644B143B1.html">JSON_LinkedTrackingCap</a></span></li><li><span class="topicref"><a href="GUID-D68983B0-30BA-41B5-A1FA-4076AD503422.html">JSON_logProTestResult</a></span></li><li><span class="topicref"><a href="GUID-6B777F7A-CCD7-49C1-A8B3-E105FFACC8B9.html">JSON_MatchList</a></span></li><li><span class="topicref"><a href="GUID-401EFFDA-278A-4721-A4F2-0D61B7111C34.html">JSON_MoveAutoTracking</a></span></li><li><span class="topicref"><a href="GUID-8D2E7882-3F59-4065-8AF2-E94919B6C014.html">JSON_OnlineUpgradeParameter</a></span></li><li><span class="topicref"><a href="GUID-A9E00AAD-400B-45C3-869C-CAE3998AD424.html">JSON_OSD</a></span></li><li><span class="topicref"><a href="GUID-7E495C11-811B-4D22-90F8-C2D8A86580B6.html">JSON_OSDCap</a></span></li><li><span class="topicref"><a href="GUID-5E2EF61C-2EDE-42AD-B745-67B09AFB24A8.html">JSON_PeopleCounting_CollectionDescriptionCap</a></span></li><li><span class="topicref"><a href="GUID-971ED226-A3FC-4D55-BD93-DE5CBF746B3A.html">JSON_PeopleCounting_CollectionDescription</a></span></li><li><span class="topicref"><a href="GUID-C791E310-0B59-4D77-A779-8B5C4F92767D.html">JSON_PeopleCounting_CollectionResult</a></span></li><li><span class="topicref"><a href="GUID-24D140BB-D6C2-4624-A508-8C762AB156E3.html">JSON_Reconstruction_ProgressLists</a></span></li><li><span class="topicref"><a href="GUID-ED1A942E-D325-4332-A74B-FBD4FD885D46.html">JSON_RemarkList</a></span></li><li><span class="topicref"><a href="GUID-CF2B6FF0-8F75-4576-B084-37D5FC056ED2.html">JSON_resourceStatistics</a></span></li><li><span class="topicref"><a href="GUID-4D7E632E-13C5-4AFE-9BFB-1E020B5E449F.html">JSON_ResponseStatus</a></span></li><li><span class="topicref"><a href="GUID-76A6C134-DB6E-4493-B0E6-028E80EBD7AB.html">JSON_Result</a></span></li><li><span class="topicref"><a href="GUID-9E4F9833-E695-4926-9444-F535E652BE58.html">JSON_SearchCondition</a></span></li><li><span class="topicref"><a href="GUID-CB271067-2C83-46A1-AC95-1B8D9F62A86A.html">JSON_SecurityEmail</a></span></li><li><span class="topicref"><a href="GUID-C0BAD899-C2E1-4119-AF2D-7A02D0527F5B.html">JSON_SecurityEmailCap</a></span></li><li><span class="topicref"><a href="GUID-3AC4E4E3-88D9-40A3-BEB8-D4BC75B93C36.html">JSON_SecurityEmailQrCode</a></span></li><li><span class="topicref"><a href="GUID-852823AF-5073-4EA7-B7FB-74C120AF1522.html">JSON_SmartOverlap</a></span></li><li><span class="topicref"><a href="GUID-FF21D15E-5760-45A5-997E-7ED0479B6F0D.html">JSON_SmartOverlapCap</a></span></li><li><span class="topicref"><a href="GUID-E41F21C2-4236-448C-96B9-466AE96A8C5E.html">JSON_SourceCapabilities</a></span></li><li><span class="topicref"><a href="GUID-2E989F3B-955B-4980-8A2E-BB786F95306C.html">JSON_SSDCapacity</a></span></li><li><span class="topicref"><a href="GUID-B5977D4E-E1CB-41DD-89CA-B124EA3DE174.html">JSON_SSDFormatStatus</a></span></li><li><span class="topicref"><a href="GUID-B27832AC-971D-4631-BB84-C73BCDC2EACB.html">JSON_SSDUpgrade</a></span></li><li><span class="topicref"><a href="GUID-2CC4D412-6B84-48C8-8699-834F0A710E8C.html">JSON_SSDUpgradeStatus</a></span></li><li><span class="topicref"><a href="GUID-D480A770-2D8B-4592-9E76-21028C3982FA.html">JSON_SSD_UpgradeStatus</a></span></li><li><span class="topicref"><a href="GUID-8640CA1F-3F90-4FA8-8CF0-3AA8A8A86CAE.html">JSON_SyncStatus</a></span></li><li><span class="topicref"><a href="GUID-490E10DA-6CB3-4988-BD66-DE1C06BC44EC.html">JSON_CollectionDescription</a></span></li><li><span class="topicref"><a href="GUID-A9EBB1E3-2E0F-4CF1-88A6-10E17553AA03.html">JSON_Temperature_CollectionDescriptionCap</a></span></li><li><span class="topicref"><a href="GUID-51C59E76-111E-4163-BE0B-CFCDC61F7C89.html">JSON_CollectionResult</a></span></li><li><span class="topicref"><a href="GUID-80A02F69-5153-45BB-BC4A-59DCA66CB7A9.html">JSON_TestDescription</a></span></li><li><span class="topicref"><a href="GUID-02728C07-78F8-44E2-9C01-28B7730A0AD1.html">JSON_TestResult</a></span></li><li><span class="topicref"><a href="GUID-4DA2BCDE-8107-4FC8-8628-107D67A434D6.html">JSON_TimeSearchCond</a></span></li><li><span class="topicref"><a href="GUID-7C28D6D9-5C35-423A-B2C2-801A7B26480A.html">JSON_TimeSearchResult</a></span></li><li><span class="topicref"><a href="GUID-55C8C601-E51E-47EF-B174-0F5B5335E156.html">JSON_TrafficMonitor</a></span></li><li><span class="topicref"><a href="GUID-FC67300C-B155-4F9F-98DD-793325A766E2.html">JSON_TrafficMonitorCap</a></span></li><li><span class="topicref"><a href="GUID-0D7F1E92-C940-4E4B-B73C-99A137716B1A.html">JSON_TrafficMonitorStatus</a></span></li><li><span class="topicref"><a href="GUID-3A3C9C2B-A0C5-4A0B-8F41-397CB9DA1079.html">JSON_unitConfig</a></span></li><li><span class="topicref"><a href="GUID-D60919B9-5BEA-4AEA-8250-B0399DB2C644.html">JSON_unitConfigCap</a></span></li><li><span class="topicref"><a href="GUID-C35F972C-0FA7-4A2F-8B57-31EA0E3BB1D3.html">JSON_USB</a></span></li><li><span class="topicref"><a href="GUID-C7DEF049-C3C3-4567-83BC-BA4BAAA5E5C5.html">JSON_USBCap</a></span></li><li><span class="topicref"><a href="GUID-AA5058F8-3D51-46FC-8731-A9A10F0CC473.html">JSON_User</a></span></li><li><span class="topicref"><a href="GUID-A2517164-9BEF-47F0-A9E6-A4B5A5D4089C.html">JSON_UserCap</a></span></li><li><span class="topicref"><a href="GUID-F36A79EB-318F-4AA0-B029-E2E1CFCCA34D.html">JSON_UserList</a></span></li><li><span class="topicref"><a href="GUID-502C6264-91EA-41F9-B121-8CAAEB90CA9E.html">JSON_UserPermission</a></span></li><li><span class="topicref"><a href="GUID-67A325B0-E34B-4E28-B766-FE792174F16B.html">JSON_UserPermissionCap</a></span></li><li><span class="topicref"><a href="GUID-0E2783F6-B6EA-4251-A759-5F8C3B5DD297.html">JSON_VerificationDisplay</a></span></li><li><span class="topicref"><a href="GUID-B26E4F1F-23B7-43D5-9CFF-FE48C92F229A.html">JSON_VerificationPoint</a></span></li><li><span class="topicref"><a href="GUID-3D8059FA-2A91-46EB-930B-0645CE0722BE.html">JSON_VerificationPointList</a></span></li><li><span class="topicref"><a href="GUID-CEC91434-6B37-4493-9CC4-3BA429B187DE.html">JSON_VerificationPointsCap</a></span></li><li><span class="topicref"><a href="GUID-91F268B8-A588-4688-BAC4-4E6546926942.html">JSON_VibrationDetection</a></span></li><li><span class="topicref"><a href="GUID-275FEDCF-999A-4CDF-9FB7-2C1EF52DE302.html">JSON_VibrationDetectionCap</a></span></li><li><span class="topicref"><a href="GUID-C5FF1FC1-C944-45C2-BA7A-1893FF1AA84C.html">JSON_WhiteLightAlarm</a></span></li><li><span class="topicref"><a href="GUID-85CCD127-C3D3-49CB-AF84-0CD0B62A8716.html">JSON_WhiteLightAlarmCap</a></span></li><li><span class="topicref"><a href="GUID-B55489F2-27B9-49C2-9171-A501A5B27C5F.html">JSON_WorkingStatus</a></span></li><li><span class="topicref"><a href="GUID-A3F8310E-44B8-419C-BA4D-BA73108A5454.html">JSON_XX</a></span></li><li><span class="topicref"><a href="GUID-8743ED4D-CA7F-4562-A373-2E15A8253ECA.html">JSON_XXCap</a></span></li><li><span class="topicref"><a href="GUID-7123B94A-D4C0-4C92-A6B1-269228B0665E.html">XML_AccessProtocolAbility</a></span></li><li><span class="topicref"><a href="GUID-736854EF-9508-4A41-BC24-B7F55B8C3725.html">XML_AdminAccessProtocol</a></span></li><li><span class="topicref"><a href="GUID-4BB0688E-16C0-4AB5-A76C-8D48DF4EA470.html">XML_AdminAccessProtocolList</a></span></li><li><span class="topicref"><a href="GUID-4566F47C-AC1E-4B79-943F-FB2A178B5B93.html">XML_AlgorithmsVersion</a></span></li><li><span class="topicref"><a href="GUID-8EB02935-03B8-423E-A130-6D400C29E032.html">XML_BasicCapability</a></span></li><li class="active"><span class="topicref">XML_CAMERAPARA</span></li><li><span class="topicref"><a href="GUID-57C0B531-90FA-407F-9926-A00FD4ED9CE4.html">XML_Cap_AdminAccessProtocolList</a></span></li><li><span class="topicref"><a href="GUID-8AB9305A-C1B1-4B9C-948A-EFA34CE7D893.html">XML_Cap_AudioVideoCompressInfo</a></span></li><li><span class="topicref"><a href="GUID-A836A47A-36DD-40A6-91B7-063E8E50210E.html">XML_Cap_Color</a></span></li><li><span class="topicref"><a href="GUID-DEDC49E2-1A84-4668-8C3A-A3D633ECF2CA.html">XML_Cap_DefaultParam</a></span></li><li><span class="topicref"><a href="GUID-8B9DB43B-4A46-4988-9326-E56D76E99C52.html">XML_Cap_DeviceInfo</a></span></li><li><span class="topicref"><a href="GUID-58A9E65D-6F55-4206-99D4-28E7518EAE25.html">XML_Cap_DeviceLanguage</a></span></li><li><span class="topicref"><a href="GUID-E22563C8-445E-4BF3-8DDE-33C8414F1D08.html">XML_Cap_DiagnosedDataParameter</a></span></li><li><span class="topicref"><a href="GUID-9860FDBD-CC23-4877-9B5C-2B91E5F38DA9.html">XML_Cap_Dial</a></span></li><li><span class="topicref"><a href="GUID-D1DCA704-4A39-4E2C-95A8-7EE57B351798.html">XML_Cap_EagleFocusing</a></span></li><li><span class="topicref"><a href="GUID-C32D4242-BC6D-4179-9539-9FC2B696DEDC.html">XML_Cap_EHome</a></span></li><li><span class="topicref"><a href="GUID-A70DECD8-955B-4923-B4B8-0029E4A253DE.html">XML_Cap_ExternalDevice</a></span></li><li><span class="topicref"><a href="GUID-015416B8-5129-4B39-9464-1CC8C708A4BA.html">XML_Cap_EZVIZ</a></span></li><li><span class="topicref"><a href="GUID-144E2166-F73C-4FA0-BA9D-0D6D930A2CD1.html">XML_Cap_FocusConfiguration</a></span></li><li><span class="topicref"><a href="GUID-F86F96D1-67CA-4E01-B9CA-534A1C3B7730.html">XML_Cap_FTPNotification</a></span></li><li><span class="topicref"><a href="GUID-92124B42-5860-4244-AE07-8AED7E253376.html">XML_Cap_FTPNotificationList</a></span></li><li><span class="topicref"><a href="GUID-DCD4D073-A7F2-46EB-A6FA-AE3E05B10236.html">XML_Cap_HardwareService</a></span></li><li><span class="topicref"><a href="GUID-8CF597F4-8D06-4F44-A37F-F7A20BABFA22.html">XML_Cap_hddList</a></span></li><li><span class="topicref"><a href="GUID-A70A05E5-03D2-400A-9694-8021F466C4D1.html">XML_Cap_HiddenInformation</a></span></li><li><span class="topicref"><a href="GUID-70493645-F41C-4136-A936-2DE639C60008.html">XML_Cap_ImageChannel</a></span></li><li><span class="topicref"><a href="GUID-7FD141B6-6001-460A-871F-5AD720C652CF.html">XML_Cap_Integrate </a></span></li><li><span class="topicref"><a href="GUID-D68B8DFF-9EEB-4F85-9146-53D55C29378A.html">XML_Cap_IPFilter</a></span></li><li><span class="topicref"><a href="GUID-77EB646E-F6A3-43DC-A002-41FFE881BCAB.html">XML_Cap_ItemList</a></span></li><li><span class="topicref"><a href="GUID-4BDAE35C-D4E5-4F94-B2D9-D1BEA1BF210D.html">XML_Cap_LensDistortionCorrection</a></span></li><li><span class="topicref"><a href="GUID-B6406CAB-39D7-4CB3-A94A-CC67A419C859.html">XML_Cap_MACFilter</a></span></li><li><span class="topicref"><a href="GUID-3A0466F9-D200-4982-AE93-7EC93E3AF6BB.html">XML_Cap_MaxElevation</a></span></li><li><span class="topicref"><a href="GUID-E265DA16-716B-4022-84E4-37518C9FF107.html">XML_Cap_MountingScenario</a></span></li><li><span class="topicref"><a href="GUID-17ED36A4-C402-4187-91EF-2C27ED8468E9.html">XML_Cap_SalveCamera</a></span></li><li><span class="topicref"><a href="GUID-3B59EB8A-7FD1-4211-9EC0-D9238EAF27C9.html">XML_Cap_Schedule</a></span></li><li><span class="topicref"><a href="GUID-D2540DA7-513B-4A57-AE79-025A4BEDFDEB.html">XML_Cap_storage</a></span></li><li><span class="topicref"><a href="GUID-D02F638D-4A22-45E7-9FB8-1996686D1F6D.html">XML_Cap_storageExtension</a></span></li><li><span class="topicref"><a href="GUID-4F6F9561-3B65-48E0-9B34-2FB355575A14.html">XML_Cap_StreamingChannel</a></span></li><li><span class="topicref"><a href="GUID-500CF084-66AB-4EF7-83C9-57921089A706.html">XML_Cap_SoftwareService</a></span></li><li><span class="topicref"><a href="GUID-95401305-FB8E-48B0-93B3-DCB6DF3C67A3.html">XML_Cap_SupplementLight</a></span></li><li><span class="topicref"><a href="GUID-762D0C52-2943-43B0-8C30-15CE43A16444.html">XML_Cap_tempRange</a></span></li><li><span class="topicref"><a href="GUID-427B2249-4583-464D-952A-9215B414D466.html">XML_Cap_Time</a></span></li><li><span class="topicref"><a href="GUID-218A55C9-462B-42B8-BBA9-8BBDC5A0EAC8.html">XML_Cap_Track</a></span></li><li><span class="topicref"><a href="GUID-57E7CB21-E90E-4022-88DF-FB985A3BEF0F.html">XML_Cap_Tracking</a></span></li><li><span class="topicref"><a href="GUID-4E00969E-7E99-4519-8F08-FA77F8926E23.html">XML_Cap_User</a></span></li><li><span class="topicref"><a href="GUID-FEFF0EB2-62DD-4062-9420-893D2B85BF04.html">XML_Cap_UserPermissionList</a></span></li><li><span class="topicref"><a href="GUID-C238C9AE-BC5B-47DA-9FBE-9ADBAF705967.html">XML_Cap_VCAResource</a></span></li><li><span class="topicref"><a href="GUID-920ED1A7-C2A1-4165-AD0C-D7D0A0502D69.html">XML_Cap_WirelessServer</a></span></li><li><span class="topicref"><a href="GUID-20F24B22-C3C2-48CA-A93C-D9614CCF6C4C.html">XML_ChannelEventCap</a></span></li><li><span class="topicref"><a href="GUID-76B73B45-F16D-4D0A-A1D5-78F59DAB1AE7.html">XML_ChannelEventCapList</a></span></li><li><span class="topicref"><a href="GUID-999DBDB2-8941-46BC-8099-F86FA09AC005.html">XML_ChannelInfo</a></span></li><li><span class="topicref"><a href="GUID-6355EEC3-8C27-48B1-8755-B0FF2F7B919C.html">XML_ChannelInfoList</a></span></li><li><span class="topicref"><a href="GUID-AE4DCF4A-C20A-4B7E-A1F8-CEE987E8ADB1.html">XML_CheckInfo</a></span></li><li><span class="topicref"><a href="GUID-8F31CA95-84EC-4674-A273-31FD483BEBD7.html">XML_CMSearchProfile</a></span></li><li><span class="topicref"><a href="GUID-AEF3CBF8-C53C-4917-8A47-3ADA76F53783.html">XML_Color</a></span></li><li><span class="topicref"><a href="GUID-80C621E6-8D05-4EEF-BDD4-4EC77B86A1F8.html">XML_DefaultParam</a></span></li><li><span class="topicref"><a href="GUID-DA37DB4B-A50D-4B78-AF1E-CF43A904DC17.html">XML_Desc_AccessProtocolAbility</a></span></li><li><span class="topicref"><a href="GUID-ABD383B8-3134-4978-9980-47869D7595E9.html">XML_Desc_AudioVideoCompressInfo</a></span></li><li><span class="topicref"><a href="GUID-0D464ED5-1157-459D-8DCB-ECC162FE39F7.html">XML_Desc_EventAbility</a></span></li><li><span class="topicref"><a href="GUID-DEB61283-D70D-4E29-B9F0-0FBF82559229.html">XML_Desc_JpegCaptureAbility</a></span></li><li><span class="topicref"><a href="GUID-C0DD35F1-D5D6-4A8B-AFA1-D0A67980CE51.html">XML_Desc_NetAppAbility</a></span></li><li><span class="topicref"><a href="GUID-18FB25F5-9379-49A4-86C5-6F5BBA0BCA31.html">XML_Desc_POSAbility</a></span></li><li><span class="topicref"><a href="GUID-E1D9AEF2-54FE-4C39-88C7-5E90929094B4.html">XML_Desc_UserAbility</a></span></li><li><span class="topicref"><a href="GUID-D11D2B7E-AAD5-483B-A485-ACA027E713B7.html">XML_DeviceCap</a></span></li><li><span class="topicref"><a href="GUID-E12B91BB-52BF-4F9A-A12D-E267369F0300.html">XML_DeviceInfo</a></span></li><li><span class="topicref"><a href="GUID-61F36496-F280-4896-A765-E02172710BF1.html">XML_DeviceLanguage</a></span></li><li><span class="topicref"><a href="GUID-3C1E449D-64AB-4F30-A516-E967308E7539.html">XML_DeviceStatus</a></span></li><li><span class="topicref"><a href="GUID-32FDFAB3-C31D-4BC0-8846-F82B79329D43.html">XML_DiagnosedDataParameter</a></span></li><li><span class="topicref"><a href="GUID-282108CC-4BF1-4C90-86B0-7D4F9F607A3C.html">XML_Dial</a></span></li><li><span class="topicref"><a href="GUID-46BE9BB8-DFDC-4591-819F-F6C332540B46.html">XML_DownloadAbility</a></span></li><li><span class="topicref"><a href="GUID-A7E7DAB9-2F30-4AB4-BC46-E433684D05E0.html">XML_downloadRequest</a></span></li><li><span class="topicref"><a href="GUID-1C00B63C-1F3C-49F0-B532-25AB94C081D1.html">XML_Ehome</a></span></li><li><span class="topicref"><a href="GUID-934E8003-A3F8-47E7-B87E-C93B3FF72B8D.html">XML_EhomeList</a></span></li><li><span class="topicref"><a href="GUID-7B3DAFD8-A5ED-4EAA-8D25-2EDD578DA2ED.html">XML_EPTZ</a></span></li><li><span class="topicref"><a href="GUID-EBAA067C-19A4-42A4-BDC6-142DD5A3A818.html">XML_EventAbility</a></span></li><li><span class="topicref"><a href="GUID-A2514CE9-A8F9-4642-9374-ED00DDD370C7.html">XML_EventCap</a></span></li><li><span class="topicref"><a href="GUID-48D208E8-1FE0-4819-B224-342FF946C367.html">XML_EventNotificationAlert_AlarmEventInfo</a></span></li><li><span class="topicref"><a href="GUID-82453EEF-F819-4F0A-9042-151128DBA97C.html">XML_EventTrigger</a></span></li><li><span class="topicref"><a href="GUID-1E12E922-06E7-4D59-94F8-1455B970BAAE.html">XML_EventTriggerCapType</a></span></li><li><span class="topicref"><a href="GUID-1C25AE20-13DC-4B34-ABFB-1B951C0F1886.html">XML_EventTriggerNotification</a></span></li><li><span class="topicref"><a href="GUID-0872EF2F-A863-4108-A717-E8E665F6AC5A.html">XML_EventTriggerNotificationList</a></span></li><li><span class="topicref"><a href="GUID-DC6B9540-35EE-4529-812C-EADCA8E6B11E.html">XML_EventTriggersCap</a></span></li><li><span class="topicref"><a href="GUID-031EDD91-0C67-4A42-80EC-E2B082B3E9A8.html">XML_externSecurityCap</a></span></li><li><span class="topicref"><a href="GUID-A6A95A93-CDEF-401C-9890-C3C830FB0892.html">XML_EZVIZ</a></span></li><li><span class="topicref"><a href="GUID-436C3CCF-F0C3-4170-A89B-F59B4CB9B7C0.html">XML_FocusConfiguration</a></span></li><li><span class="topicref"><a href="GUID-37C28440-8988-4D4D-BD04-E4D28027C142.html">XML_FTPNotification</a></span></li><li><span class="topicref"><a href="GUID-346935B9-12FD-4991-A10D-9BE7EECA48FB.html">XML_hdd</a></span></li><li><span class="topicref"><a href="GUID-E7AB4271-8F50-488F-8BAE-B862A9CF9ED3.html">XML_hddList</a></span></li><li><span class="topicref"><a href="GUID-6FF8AFC9-A1EE-4B73-B864-1AB04370488F.html">XML_IllegalLoginLock</a></span></li><li><span class="topicref"><a href="GUID-617E7C30-B3AA-4764-8ABD-6540EA0FD0BF.html">XML_ImageChannel</a></span></li><li><span class="topicref"><a href="GUID-EA4C1DAB-67CD-4C22-B8A1-69241973380A.html">XML_Integrate</a></span></li><li><span class="topicref"><a href="GUID-71444359-042E-45AD-A9E0-B23C241119B6.html">XML_IntelliCap</a></span></li><li><span class="topicref"><a href="GUID-BC3523F6-E799-4A9C-9A3F-E56E2E3B04AA.html">XML_IOTTriggersCap</a></span></li><li><span class="topicref"><a href="GUID-A36CA124-2ADB-4B77-BF49-F05D883985F4.html">XML_IPFilter</a></span></li><li><span class="topicref"><a href="GUID-8CC7451D-CBDF-4D6D-A338-886BF19F72CA.html">XML_IPFilterAddress</a></span></li><li><span class="topicref"><a href="GUID-83B950E7-9D63-4147-8C7B-5981BF24C46D.html">XML_IPFilterAddressList</a></span></li><li><span class="topicref"><a href="GUID-1FFC8144-660C-4B01-92BA-9E218AA42FEA.html">XML_InputProxyChannel</a></span></li><li><span class="topicref"><a href="GUID-0DF2B694-D754-4CB6-9070-ED810FDB6728.html">XML_IpViewDevAbility</a></span></li><li><span class="topicref"><a href="GUID-12DAA95E-CC48-4E6F-9CA4-F7EEAF31FB79.html">XML_ItemList</a></span></li><li><span class="topicref"><a href="GUID-D0BFB0F7-9E38-4288-A8F8-96EE93579BB8.html">XML_JpegCaptureAbility</a></span></li><li><span class="topicref"><a href="GUID-E51761D8-340D-46DD-86D8-386922F0E5B8.html">XML_Language</a></span></li><li><span class="topicref"><a href="GUID-98CC9159-AA21-4B32-A426-ACB29C1DF31D.html">XML_LensDistortionCorrection</a></span></li><li><span class="topicref"><a href="GUID-62EDF3C7-2EAC-4D7A-95F2-E34FFEB14912.html">XML_localPermission</a></span></li><li><span class="topicref"><a href="GUID-B893D847-E722-47EF-AEB7-FA487CC4D59E.html">XML_localPermissionCap</a></span></li><li><span class="topicref"><a href="GUID-A65B16AD-FC41-484A-A4D7-DB7EAA3973F1.html">XML_LockByName</a></span></li><li><span class="topicref"><a href="GUID-02821124-E488-44D0-87CD-97FB12AEE381.html">XML_LockCap</a></span></li><li><span class="topicref"><a href="GUID-26B7CC5F-AA4B-411E-9AA9-CF9FA1617B3E.html">XML_LogServer</a></span></li><li><span class="topicref"><a href="GUID-9E054070-E65F-457A-A58D-09F3DBCCAB91.html">XML_LogServerCap</a></span></li><li><span class="topicref"><a href="GUID-A664512B-72B6-4942-ACF1-264C5E7588DA.html">XML_PrivacyMaskRegion</a></span></li><li><span class="topicref"><a href="GUID-9B01B93B-7D60-40E9-8A57-479AEC287620.html">XML_MasterSlaveTrackingCap</a></span></li><li><span class="topicref"><a href="GUID-533403AA-76B4-47B6-93A9-BF7CB46CAE45.html">XML_MaxElevation</a></span></li><li><span class="topicref"><a href="GUID-EC637AB8-3A5F-4897-80A1-3B84EED89762.html">XML_MountingScenario</a></span></li><li><span class="topicref"><a href="GUID-D58967AB-D7C4-4409-BFEF-1C778CA1B27E.html">XML_NetAppAbility</a></span></li><li><span class="topicref"><a href="GUID-62A83405-10A1-4956-8E53-1267242B4514.html">XML_NetworkCap</a></span></li><li><span class="topicref"><a href="GUID-E85F51DE-F878-4A88-BC1B-8ED8599924E1.html">XML_networkExtension</a></span></li><li><span class="topicref"><a href="GUID-5C2D609E-0A36-4E85-8A3B-0B5FC53480C4.html">XML_NetworkSetting</a></span></li><li><span class="topicref"><a href="GUID-6757E5CB-A327-418D-BEC0-E14495DBA4E6.html">XML_OcrConfigCap</a></span></li><li><span class="topicref"><a href="GUID-4BB8C8AD-9BD2-4E84-9B19-B91571C3441F.html">XML_OnlineUpgradeCap</a></span></li><li><span class="topicref"><a href="GUID-E8F996A6-CDDB-40D0-BC47-07534FECFF50.html">XML_OnlineUpgradeServer</a></span></li><li><span class="topicref"><a href="GUID-7FF88D22-C167-4C31-A450-29570CA15A1E.html">XML_OnlineUpgradeStatus</a></span></li><li><span class="topicref"><a href="GUID-8EE86B52-3D7C-4A28-93DB-0C71DC66FA6B.html">XML_OnlineUpgradeVersion</a></span></li><li><span class="topicref"><a href="GUID-AE064192-9EE0-4817-92C5-FD89FA2A2446.html">XML_ParkAction</a></span></li><li><span class="topicref"><a href="GUID-B71FC8EE-A6F3-4B31-BF4E-1C3662C099D5.html">XML_POSAbility</a></span></li><li><span class="topicref"><a href="GUID-A664512B-72B6-4942-ACF1-264C5E7588DA.html">XML_PrivacyMaskRegion</a></span></li><li><span class="topicref"><a href="GUID-EB0A2127-047B-4794-8290-A77A7518A17E.html">XML_PTZAux</a></span></li><li><span class="topicref"><a href="GUID-866CA70B-D6C5-4C1F-A7BD-0A896FAC70E8.html">XML_PTZChannel</a></span></li><li><span class="topicref"><a href="GUID-77085394-8ED2-4F01-8AD5-6FF3667E17BD.html">XML_PTZChanelCap</a></span></li><li><span class="topicref"><a href="GUID-C404A402-9D82-40D9-8584-F1ED63B45229.html">XML_PTZOSDDisplay</a></span></li><li><span class="topicref"><a href="GUID-6A64A5F0-39E5-4DEB-9D79-7E695B78AAFD.html">XML_RacmCap</a></span></li><li><span class="topicref"><a href="GUID-AF9192E0-280C-43EA-AADB-71A91FA3BF51.html">XML_RecordAbility</a></span></li><li><span class="topicref"><a href="GUID-3BFCEBD2-5991-4DCB-BA68-F25A94980ED0.html">XML_remotePermission</a></span></li><li><span class="topicref"><a href="GUID-FB8D20DF-C708-40FC-B67C-78885447C93D.html">XML_remotePermissionCap</a></span></li><li><span class="topicref"><a href="GUID-7568B3DA-6D04-4AD5-A8FD-97A71F4AB8E5.html">XML_ResponseStatus</a></span></li><li><span class="topicref"><a href="GUID-427D0F3E-FF9D-4901-A0B3-75CB6B9D2BCB.html">XML_RTSPCertificate</a></span></li><li><span class="topicref"><a href="GUID-9AA91663-F962-409B-AD4D-04B959D403A7.html">XML_RTSPCertificateCap</a></span></li><li><span class="topicref"><a href="GUID-F441577B-9446-4A78-A790-70C5E6798B60.html">XML_Schedule</a></span></li><li><span class="topicref"><a href="GUID-CCC2D076-F53E-44DD-89D0-FA0F74924250.html">XML_SecurityCap</a></span></li><li><span class="topicref"><a href="GUID-277DB64A-7D00-43F4-ADCF-CC2067B30893.html">XML_SecurityQuestion</a></span></li><li><span class="topicref"><a href="GUID-AFFEB0EE-17B2-481A-A019-AA95377006C7.html">XML_SerialCap</a></span></li><li><span class="topicref"><a href="GUID-5D2AEA06-E566-49ED-AA46-53C1F75D4D28.html">XML_Shield</a></span></li><li><span class="topicref"><a href="GUID-7E934C02-337A-4C38-8F55-AB0BD1F4C2C6.html">XML_SlaveCamera</a></span></li><li><span class="topicref"><a href="GUID-8311E693-AB4F-4B18-BB62-A5996BB11A16.html">XML_SlaveCameraStatus</a></span></li><li><span class="topicref"><a href="GUID-4B27994B-9FB9-4CEA-9D34-FC78FB4E5B74.html">XML_SNMP</a></span></li><li><span class="topicref"><a href="GUID-E50D4D25-A0B1-411F-B7BF-7518A3C23AA6.html">XML_SNMPAdvanced</a></span></li><li><span class="topicref"><a href="GUID-6F916B6A-01EA-4886-8F6D-363DB8F597D5.html">XML_SNMPTrapReceiver</a></span></li><li><span class="topicref"><a href="GUID-D1093ED5-817B-4857-A1DE-62E0C89BC6FD.html">XML_SNMPTrapReceiverList</a></span></li><li><span class="topicref"><a href="GUID-189F3B52-DEFF-4704-B8EA-59505EC07CF7.html">XML_ssd</a></span></li><li><span class="topicref"><a href="GUID-242EF5FC-D734-42F7-91AC-9B3D1E2BD676.html">XML_ssdList</a></span></li><li><span class="topicref"><a href="GUID-272F5AF8-DE15-4B76-9D16-B66626A651CA.html">XML_SSDSMARTTest</a></span></li><li><span class="topicref"><a href="GUID-4E57246F-6AA4-4C0C-A321-89F4CBD361DE.html">XML_SSD_SmartTestStatus</a></span></li><li><span class="topicref"><a href="GUID-3FB4B845-C6EF-4F31-8D10-9F51EFACAE2B.html">XML_StreamingChannel</a></span></li><li><span class="topicref"><a href="GUID-D3DF98ED-5AB1-4A51-A15F-AFDE9C4D2360.html">XML_storage</a></span></li><li><span class="topicref"><a href="GUID-9BC176E2-DF4A-46D2-B929-7F6F40F360A6.html">XML_storageExtension</a></span></li><li><span class="topicref"><a href="GUID-A3720D48-8041-46D2-AF5A-D438C0241D20.html">XML_SoftwareService</a></span></li><li><span class="topicref"><a href="GUID-FA50E53A-1892-4A67-B08B-73ECEA81A55C.html">XML_SocketIP</a></span></li><li><span class="topicref"><a href="GUID-CADF8BF5-F6E5-465D-9FCF-A7CE96F60D69.html">XML_SubscribeEvent</a></span></li><li><span class="topicref"><a href="GUID-835A2244-6D79-408F-9876-A58FB979E3BB.html">XML_SubscribeEventCap</a></span></li><li><span class="topicref"><a href="GUID-CB0AFADA-1951-45ED-95F5-5C3481A1ABBB.html">XML_SubscribeEventResponse</a></span></li><li><span class="topicref"><a href="GUID-27B5980C-CA19-45E9-846E-3ADA0B36A916.html">XML_SupplementLight</a></span></li><li><span class="topicref"><a href="GUID-6258A0FF-B6AD-4838-9214-C48D6DA8CF45.html">XML_TargetEnhancement</a></span></li><li><span class="topicref"><a href="GUID-F35D650D-2098-4A9D-BDF2-0B972D0F6FB5.html">XML_TargetEnhancementCap</a></span></li><li><span class="topicref"><a href="GUID-FD143B4D-E545-4195-ABBE-CE2350007B19.html">XML_tempRange</a></span></li><li><span class="topicref"><a href="GUID-EA2111B9-8398-4B65-A8F8-0BDCF507E6D1.html">XML_ThermalCap</a></span></li><li><span class="topicref"><a href="GUID-D7B1FAAC-DBE6-4FBB-A04B-309D09790406.html">XML_TimeTaskList</a></span></li><li><span class="topicref"><a href="GUID-D6591E0A-4031-43B8-A459-922BC401B19D.html">XML_Track</a></span></li><li><span class="topicref"><a href="GUID-9EBA7F63-2CF8-4163-BF78-9955ACB3690E.html">XML_Tracking</a></span></li><li><span class="topicref"><a href="GUID-63EE9FE2-DE1B-4916-B972-5AE34CE41152.html">XML_TrackList</a></span></li><li><span class="topicref"><a href="GUID-1C8166A9-D797-4FFE-9C9E-495C4FC2054D.html">XML_TwoWayAudioChannel</a></span></li><li><span class="topicref"><a href="GUID-567AD16F-42C1-4F9F-885B-1A33F662F204.html">XML_TwoWayAudioChannelList</a></span></li><li><span class="topicref"><a href="GUID-B1BA411A-5A3B-4F4E-9BF2-DA7C386F5872.html">XML_User</a></span></li><li><span class="topicref"><a href="GUID-4BF9E217-49E4-4B80-A86A-87EAE62460BE.html">XML_UserAbility</a></span></li><li><span class="topicref"><a href="GUID-95A93922-7001-4F9F-A9FE-807EF9CB7E8E.html">XML_UserList</a></span></li><li><span class="topicref"><a href="GUID-40395056-E0B6-48C9-9E43-AE458DB4DC79.html">XML_UserPermission</a></span></li><li><span class="topicref"><a href="GUID-7C433D41-7255-4F52-AAF4-94E53B03F8BD.html">XML_UserPermissionCap</a></span></li><li><span class="topicref"><a href="GUID-EC56731A-51D7-45AC-ADA5-4A5914C3B1AE.html">XML_UserPermissionList</a></span></li><li><span class="topicref"><a href="GUID-E45974F8-4F79-4777-AB3F-7ACEE39FB34E.html">XML_VCAResource</a></span></li><li><span class="topicref"><a href="GUID-54CECDB5-0AC7-4AC2-8618-216B334C7FDF.html">XML_VideoCap</a></span></li><li><span class="topicref"><a href="GUID-FF26CB5C-EF0B-4F4F-AF28-5428388FFA3A.html">XML_VideoPic_CMSearchDescription</a></span></li><li><span class="topicref"><a href="GUID-8C5540B5-16E2-4576-912F-10B80FE40BD7.html">XML_VideoPic_CMSearchResult</a></span></li><li><span class="topicref"><a href="GUID-EB3FCD98-6715-4BAE-9E1E-12EB0015C670.html">XML_WebCertificate</a></span></li><li><span class="topicref"><a href="GUID-35FCF636-B314-401F-A308-46E41F52731B.html">XML_WirelessDialInterface</a></span></li><li><span class="topicref"><a href="GUID-12B8972B-99ED-4C5C-9B93-0F3B665D6A55.html">XML_WirelessDialInterfaceList</a></span></li><li><span class="topicref"><a href="GUID-4B9384F6-5BCA-4248-BEA9-46917DCBAFB8.html">XML_ZoomFocus</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

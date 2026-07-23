@@ -59,7 +59,8 @@
         </label>
 
         <div class="button-row">
-            <button id="start-btn" class="primary-button" type="button">Baştan Sona Kurulum</button>
+            <button id="start-btn" class="primary-button" type="button">Bastan Sona Kurulum</button>
+            <button id="cancel-btn" class="secondary-button" type="button">Iptal Et</button>
             <button id="reload-btn" class="secondary-button" type="button">Durumu Yenile</button>
         </div>
 
@@ -119,6 +120,7 @@
     <script>
         (() => {
           const startBtn = document.getElementById("start-btn");
+          const cancelBtn = document.getElementById("cancel-btn");
           const reloadBtn = document.getElementById("reload-btn");
           const statusBox = document.getElementById("status-box");
           const stageBody = document.getElementById("stage-body");
@@ -213,6 +215,18 @@
             renderNetwork(result?.networkInterfaces || []);
           }
 
+          function clearPolling() {
+            if (pollTimer) {
+              clearInterval(pollTimer);
+              pollTimer = null;
+            }
+          }
+
+          function syncButtons(isRunning) {
+            startBtn.disabled = isRunning;
+            cancelBtn.disabled = !isRunning;
+          }
+
           async function loadTask(taskId) {
             const response = await fetch(`/api/provision/tasks/${encodeURIComponent(taskId)}`);
             const data = await response.json();
@@ -226,21 +240,19 @@
 
             if (data.status === "completed") {
               clearPolling();
+              syncButtons(false);
               setStatus("Kurulum tamamlandi. Portalda ek adim gerekmemeli.");
-              startBtn.disabled = false;
+            } else if (data.status === "cancelled") {
+              clearPolling();
+              syncButtons(false);
+              setStatus(data.error || "Kurulum iptal edildi.");
             } else if (data.status === "failed") {
               clearPolling();
+              syncButtons(false);
               setStatus(`Kurulum basarisiz: ${data.error || "Bilinmeyen hata"}`);
-              startBtn.disabled = false;
             } else {
+              syncButtons(true);
               setStatus(`Kurulum suruyor. Son guncelleme: ${new Date(data.updatedAt).toLocaleTimeString("tr-TR")}`);
-            }
-          }
-
-          function clearPolling() {
-            if (pollTimer) {
-              clearInterval(pollTimer);
-              pollTimer = null;
             }
           }
 
@@ -265,7 +277,7 @@
               return;
             }
 
-            startBtn.disabled = true;
+            syncButtons(true);
             setStatus("Kurulum baslatiliyor...");
             renderStages([]);
             renderNetwork([]);
@@ -285,8 +297,29 @@
 
               startPolling(data.taskId);
             } catch (error) {
-              startBtn.disabled = false;
+              syncButtons(false);
               setStatus(error.message || "Kurulum baslatilamadi.");
+            }
+          });
+
+          cancelBtn.addEventListener("click", async () => {
+            if (!activeTaskId) {
+              setStatus("Iptal edilecek aktif task yok.");
+              return;
+            }
+
+            try {
+              const response = await fetch(`/api/provision/tasks/${encodeURIComponent(activeTaskId)}/cancel`, {
+                method: "POST"
+              });
+              const data = await response.json();
+              if (!response.ok) {
+                throw new Error(data.error || "Iptal istegi gonderilemedi.");
+              }
+
+              setStatus("Iptal istegi gonderildi.");
+            } catch (error) {
+              setStatus(error.message || "Iptal istegi gonderilemedi.");
             }
           });
 
@@ -298,6 +331,8 @@
 
             loadTask(activeTaskId).catch((error) => setStatus(error.message));
           });
+
+          syncButtons(false);
         })();
     </script>
 }

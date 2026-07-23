@@ -1,0 +1,212 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Configure Certificate Expiry Alarm" /><meta name="abstract" content="Generally, the device certificate is only valid in a specific period of time. You can configure the certificate expiry alarm to remind the user a few days in advance. When the certificate is expired, the alarm will be triggered and uploaded automatically." /><meta name="description" content="Generally, the device certificate is only valid in a specific period of time. You can configure the certificate expiry alarm to remind the user a few days in advance. When the certificate is expired, the alarm will be triggered and uploaded automatically." /><meta name="DC.Relation" scheme="URI" content="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED" /><meta name="DC.Language" content="en-US" /><title>Configure Certificate Expiry Alarm</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Configure Certificate Expiry Alarm</h1>
+
+    
+<div class="body taskbody"><p class="shortdesc">Generally, the device certificate is only valid in a specific period of
+        time. You can configure the certificate expiry alarm to remind the user a few days in
+        advance. When the certificate is expired, the alarm will be triggered and uploaded
+        automatically.</p>
+
+        <div class="section prereq p" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-B2B9ED22-1BCC-4A68-9212-35ED0E66898A">
+            <ul class="ul" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__UL_JNH_5PB_PHB">
+                <li class="li" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-E54B2ADC-DE2E-4B00-AC8A-64FA6CFF771F">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs.">NET_DVR_Init</a> to initialize the development
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-85CC5FAF-622F-40D3-803D-07F14516FEF6">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-69EFE45B-7243-4EE3-B9D6-B9A9F4D551BA">
+                <div class="fig fignone" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__FIG_HVN_LBQ_CJB">
+                    
+                    <img class="image" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__IMAGE_IVN_LBQ_CJB" src="GUID-92ED142C-AAE0-4BAC-9FFD-D2F26317EF54-high.png" height="2362" />
+                <span class="figcap">Figure 1 Programming Flow of Configuring Certificate Expiry Alarm</span></div>
+
+            </p><ol class="ol steps" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-19C41161-31EB-4969-A6CC-34719A7FC2BE"><li class="li step stepexpand" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-A070BD1A-5320-4181-AC49-E61FBD457F36">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-2E58CA89-1FEA-4DEB-9CE1-E57338273E5B.html#GUID-2E58CA89-1FEA-4DEB-9CE1-E57338273E5B" title="Get the device event capability.">/ISAPI/Event/capabilities</a> to get the event capability of the device and
+                    check whether the device supports certificate expiry alarm.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The event capability of the device is returned in the message
+                            <a class="xref" href="GUID-A2514CE9-A8F9-4642-9374-ED00DDD370C7.html#GUID-A2514CE9-A8F9-4642-9374-ED00DDD370C7" title="EventCap capability message in XML format">XML_EventCap</a> by the output parameter <span class="keyword parmname">lpOutputParam</span>. If the
+                        certificate expiry alarm is supported, the node &lt;<span class="keyword parmname">isSupportCertificateRevocation</span>&gt; will be returned and its
+                        value is "true", then you can perform the following steps. Otherwise, please
+                        end this task.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-983C93D0-5292-4ED7-9692-5F4AF32A3077">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-173DFBD5-903D-412A-913A-10451DCC8FFE.html#GUID-173DFBD5-903D-412A-913A-10451DCC8FFE" title="Get the configuration capability of the certificate expiry alarm.">/ISAPI/Security/deviceCertificate/certificateRevocation/capabilities?format=json</a> to get the configuration capability of
+                    certificate expiry alarm and know the supported parameters that can be
+                    configured.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The configuration capability is returned in the message <a class="xref" href="GUID-B49E7BF4-CF38-4867-B64F-EC770629B035.html#GUID-B49E7BF4-CF38-4867-B64F-EC770629B035" title="CertificateRevocationCap capability message in JSON format">JSON_CertificateRevocationCap</a> by the output parameter
+                            <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-950A0E66-B0DB-4970-B3E9-6D3D8A703978"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-39A90528-871A-49FE-8D4F-280CD39E79ED.html#GUID-39A90528-871A-49FE-8D4F-280CD39E79ED" title="Get or set the configuration of certificate expiry alarm.">/ISAPI/Security/deviceCertificate/certificateRevocation?format=json</a> to get the existing or configured parameters of certificate expiry alarm for
+                    reference.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The parameters are returned in the message <a class="xref" href="GUID-014A8D24-EBF2-479A-B89B-8D09095DBCA7.html#GUID-014A8D24-EBF2-479A-B89B-8D09095DBCA7" title="CertificateRevocation message in JSON format">JSON_CertificateRevocation</a> by the output parameter
+                            <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-931B020C-E787-406D-8E0F-B38593155A25">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-39A90528-871A-49FE-8D4F-280CD39E79ED.html#GUID-39A90528-871A-49FE-8D4F-280CD39E79ED" title="Get or set the configuration of certificate expiry alarm.">/ISAPI/Security/deviceCertificate/certificateRevocation?format=json</a> and set <span class="keyword parmname">lpInBuffer</span> of <span class="keyword parmname">lpInputParam</span>
+                    to the message <a class="xref" href="GUID-014A8D24-EBF2-479A-B89B-8D09095DBCA7.html#GUID-014A8D24-EBF2-479A-B89B-8D09095DBCA7" title="CertificateRevocation message in JSON format">JSON_CertificateRevocation</a> for setting parameters of certificate expiry
+                    alarm.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-2F05BC19-718C-4069-B068-845904131A47"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88.html#GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88" title="Get, set, or delete the alarm linkage action by channel.">/ISAPI/Event/triggers/&lt;eventType&gt;-&lt;channelID&gt;</a> or <a class="xref" href="GUID-5FED129E-CC9A-439F-8A06-5CBF8CD4DAF6.html#GUID-5FED129E-CC9A-439F-8A06-5CBF8CD4DAF6" title="Operations about configurations of alarm/event linkage actions.">/ISAPI/Event/triggers/&lt;eventType&gt;-&lt;channelID&gt;/notifications</a> to get the existing or configured linkage parameters of certificate expiry
+                    alarm for reference.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-0932DAA1-7773-4201-AB9F-4D43874F47B9"><span class="notetitle">Note:</span> 
+                        <p class="p">The &lt;<span class="keyword parmname">ID</span>&gt; in the
+                            request URL refers to the channel No., and it should be set to the
+                            format "certificateRevocation-&lt;channelID&gt;".</p>
+
+                    </div>
+
+                </div>
+                <div class="itemgroup stepresult">
+                    <p class="p">The parameters are returned in the message <a class="xref" href="GUID-82453EEF-F819-4F0A-9042-151128DBA97C.html#GUID-82453EEF-F819-4F0A-9042-151128DBA97C" title="Linkage parameter message in XML format">XML_EventTrigger</a> or <a class="xref" href="GUID-0872EF2F-A863-4108-A717-E8E665F6AC5A.html#GUID-0872EF2F-A863-4108-A717-E8E665F6AC5A" title="EventTriggerNotificationList message in XML format">XML_EventTriggerNotificationList</a> by the output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-7B7314F8-C05C-413D-86F6-EE8C730B642C">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request URL: <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88.html#GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88" title="Get, set, or delete the alarm linkage action by channel.">/ISAPI/Event/triggers/&lt;eventType&gt;-&lt;channelID&gt;</a> or <a class="xref" href="GUID-5FED129E-CC9A-439F-8A06-5CBF8CD4DAF6.html#GUID-5FED129E-CC9A-439F-8A06-5CBF8CD4DAF6" title="Operations about configurations of alarm/event linkage actions.">/ISAPI/Event/triggers/&lt;eventType&gt;-&lt;channelID&gt;/notifications</a> and set <span class="keyword parmname">lpInBuffer</span> of <span class="keyword parmname">lpInputParam</span>
+                    to the message <a class="xref" href="GUID-82453EEF-F819-4F0A-9042-151128DBA97C.html#GUID-82453EEF-F819-4F0A-9042-151128DBA97C" title="Linkage parameter message in XML format">XML_EventTrigger</a> or <a class="xref" href="GUID-0872EF2F-A863-4108-A717-E8E665F6AC5A.html#GUID-0872EF2F-A863-4108-A717-E8E665F6AC5A" title="EventTriggerNotificationList message in XML format">XML_EventTriggerNotificationList</a> for setting the linkage parameters of certificate expiry alarm.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-90054253-BA95-4033-8777-DE18C755C7CC"><span class="notetitle">Note:</span> 
+                        <p class="p">The &lt;<span class="keyword parmname">ID</span>&gt; in the
+                            request URL refers to the channel No., and it should be set to the
+                            format "certificateRevocation-&lt;channelID&gt;".</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-20357ECB-59AA-41ED-8E7B-03BDBEBE4598"><strong>Optional: </strong>
+                <span class="ph cmd">Set <span class="keyword parmname">lCommand</span> of alarm/event callback function
+                        <a class="xref" href="GUID-70F6AE9B-8A77-4EBD-8C09-74FEB3324CD8.html#GUID-70F6AE9B-8A77-4EBD-8C09-74FEB3324CD8" title="Alarm/event information callback function.">MSGCallBack</a> to "COMM_VCA_ALARM" (command No.: 0x4993) for
+                    receiving certificate expiry alarm in arming mode (refer to <a class="xref" href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html#GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D" title="When the alarm is triggered or the event occurred, the secondarily developed third-party platform can automatically connect and send alarm/event uploading command to the device, and then the device uploads the alarm/event information to the platform for receiving.">Receive Alarm/Event in Arming Mode</a> for details) or listening mode (refer to <a class="xref" href="GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1.html#GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1" title="When alarm is triggered or event occurred, the device uploads the alarm/event information automatically, so you can configure the listening address and port for listening and receiving the alarm/event in the secondarily developed third-part platform.">Receive Alarm/Event in Listening Mode</a> for details).</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The certificate expiry alarm information is called back in the
+                        message <a class="xref" href="GUID-59342F84-79D2-4545-BB18-CA53330D0A05.html#GUID-59342F84-79D2-4545-BB18-CA53330D0A05" title="The certificate expiry alarm details are uploaded in JSON format of EventNotificationAlert message, here shows an example.">JSON_EventNotificationAlert_CertificateExpiryAlarmMsg</a>.</p>
+
+                </div>
+            </li>
+</ol>
+
+        <div class="section postreq" id="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED__GUID-3DD7EB36-F9A5-42A1-BAAF-7EC066358F6C">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices.">NET_DVR_Logout</a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended.">NET_DVR_Cleanup</a> to log out of the device and release the
+                resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html">Alarm and Event Receiving</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D.html">Supported Alarm/Event Types</a></span></li><li><span class="topicref"><a href="GUID-05DA94E5-0692-440C-B6A0-EF5DA377FBB7.html">Configure Exception Alarm</a></span></li><li><span class="topicref"><a href="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB.html">Configure Audio Exception Detection Alarm</a></span></li><li class="active"><span class="topicref">Configure Certificate Expiry Alarm</span></li><li><span class="topicref"><a href="GUID-08B26BCD-F96A-47E2-BF2F-8248A0355C7D.html">Configure Network Traffic Pre-alarm</a></span></li><li><span class="topicref"><a href="GUID-E1B1BF4A-4841-4D36-B525-4B3EB5CB3FBF.html">Configure Vibration Detection Alarm</a></span></li><li><span class="topicref"><a href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html">Receive Alarm/Event in Arming Mode</a></span></li><li><span class="topicref"><a href="GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1.html">Receive Alarm/Event in Listening Mode</a></span></li><li><span class="topicref"><a href="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8.html">Subscribe Alarm/Event in Arming Mode</a></span></li><li><span class="topicref"><a href="GUID-673C21A2-6826-491E-BAED-F4FDB4AA91F2.html">Search for Alarms or Events</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

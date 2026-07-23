@@ -1,0 +1,321 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="Log Server Function Description Get Log Server Configuration Capability Call NET_DVR_STDXMLConfig to pass through the request URL: GET /ISAPI/System/logServer/capabilities . The capability is returned ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Network Service" /><meta name="DC.Relation" scheme="URI" content="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4" /><meta name="DC.Language" content="en-US" /><title>Network Service</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="frmBody" id="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Network Service</h1>
+
+<div class="body conbody">
+        <div class="section" id="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4__GUID-E978CEA6-D961-49F6-BD37-57CBC8E41897"><h2 class="title sectiontitle">Log Server</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4__TABLE_IGN_VFV_LLB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d1081496e30">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d1081496e36">
+                                <p class="p">Description</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e30 ">
+                                <p class="p">Get Log Server Configuration Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e36 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request
+                                    URL: <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-08539FB5-6C71-42F1-8F2D-6B8A9EE83188.html#GUID-08539FB5-6C71-42F1-8F2D-6B8A9EE83188" title="Get log server configuration capability.">/ISAPI/System/logServer/capabilities</a>.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-9E054070-E65F-457A-A58D-09F3DBCCAB91.html#GUID-9E054070-E65F-457A-A58D-09F3DBCCAB91" title="XML message about log server capability">XML_LogServerCap</a> by the
+                                    output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e30 ">
+                                <p class="p">Get Log Server Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e36 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request
+                                    URL: <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-3DB312F5-0601-4055-A433-E7186EC8F89D.html#GUID-3DB312F5-0601-4055-A433-E7186EC8F89D" title="Get or set log server parameters.">/ISAPI/System/logServer</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-26B7CC5F-AA4B-411E-9AA9-CF9FA1617B3E.html#GUID-26B7CC5F-AA4B-411E-9AA9-CF9FA1617B3E" title="XML message about log server information">XML_LogServer</a> by the
+                                    output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e30 ">
+                                <p class="p">Set Log Server Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e36 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request
+                                    URL: <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-3DB312F5-0601-4055-A433-E7186EC8F89D.html#GUID-3DB312F5-0601-4055-A433-E7186EC8F89D" title="Get or set log server parameters.">/ISAPI/System/logServer</a> and set the input parameter
+                                        <span class="keyword parmname">lpInputParam</span> to the message
+                                        <a class="xref" href="GUID-26B7CC5F-AA4B-411E-9AA9-CF9FA1617B3E.html#GUID-26B7CC5F-AA4B-411E-9AA9-CF9FA1617B3E" title="XML message about log server information">XML_LogServer</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4__GUID-93B0121C-014E-4713-ADE7-66330D906A9E"><h2 class="title sectiontitle">File Transfer Protocol (FTP) Server</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4__TABLE_AV5_YFV_LLB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d1081496e199">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d1081496e205">
+                                <p class="p">Description</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e199 ">
+                                <p class="p">Get FTP Server Configuration Capability</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e205 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request
+                                    URL: <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-E71ECA9F-4315-4178-837D-DC3237FE079F.html#GUID-E71ECA9F-4315-4178-837D-DC3237FE079F" title="Get the FTP capability.">/ISAPI/System/Network/ftp/capabilities</a>.</p>
+
+                                <p class="p">The capability is returned in the message <a class="xref" href="GUID-92124B42-5860-4244-AE07-8AED7E253376.html#GUID-92124B42-5860-4244-AE07-8AED7E253376" title="XML message about the FTP capability">XML_Cap_FTPNotificationList</a>
+                                    by the output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e199 ">
+                                <p class="p">Get Parameters of A Specific FTP Server</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e205 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request
+                                    URL: <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-A8871CFC-8584-48BD-B519-F39C378B8219.html#GUID-A8871CFC-8584-48BD-B519-F39C378B8219" title="Operations about the configuration of a specific FTP.">/ISAPI/System/Network/ftp/&lt;ID&gt;</a>.</p>
+
+                                <p class="p">The parameters are returned in the message <a class="xref" href="GUID-37C28440-8988-4D4D-BD04-E4D28027C142.html#GUID-37C28440-8988-4D4D-BD04-E4D28027C142" title="XML message about the parameters of a specific FTP">XML_FTPNotification</a> by the
+                                    output parameter <span class="keyword parmname">lpOutputParam</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e199 ">
+                                <p class="p">Set Parameters of A Specific FTP Server</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e205 ">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions.">NET_DVR_STDXMLConfig</a> to pass through the request
+                                    URL: <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-A8871CFC-8584-48BD-B519-F39C378B8219.html#GUID-A8871CFC-8584-48BD-B519-F39C378B8219" title="Operations about the configuration of a specific FTP.">/ISAPI/System/Network/ftp/&lt;ID&gt;</a> and set the input parameter
+                                        <span class="keyword parmname">lpInputParam</span> to the message
+                                        <a class="xref" href="GUID-37C28440-8988-4D4D-BD04-E4D28027C142.html#GUID-37C28440-8988-4D4D-BD04-E4D28027C142" title="XML message about the parameters of a specific FTP">XML_FTPNotification</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+        <div class="section" id="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4__GUID-55F4DC00-9A80-4866-B450-F93A6FA52FB7"><h2 class="title sectiontitle">SIP (Session Initiation Protocol)
+                Service</h2>
+            
+            
+<table cellpadding="4" cellspacing="0" summary="" id="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4__TABLE_GHJ_CGV_LLB" class="table" frame="border" border="1" rules="all">
+                    
+                    
+                    <thead class="thead" align="left">
+                        <tr>
+                            <th class="entry" valign="top" width="33.33333333333333%" id="d1081496e368">
+                                <p class="p">Function</p>
+
+                            </th>
+
+                            <th class="entry" valign="top" width="66.66666666666666%" id="d1081496e374">
+                                <p class="p">Description</p>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody class="tbody">
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e368 ">
+                                <p class="p">Get SIP Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e374 ">
+                                <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information.">NET_DVR_GetDVRConfig</a> with "NET_DVR_GET_SIP_CFG_V50" (command No.:
+                                    16044) and set <span class="keyword parmname">lChannel</span> to 0XFFFFFFFF.</p>
+
+                                <p class="p">The parameters are returned in the structure <a class="xref" href="GUID-F34F877A-067E-4CE2-BB6E-4EF3CE5CA597.html#GUID-F34F877A-067E-4CE2-BB6E-4EF3CE5CA597" title="SIP (Session Initiation Protocol) parameter structure.">NET_DVR_SIP_CFG_V50</a> by <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="entry" valign="top" width="33.33333333333333%" headers="d1081496e368 ">
+                                <p class="p">Set SIP Parameters</p>
+
+                            </td>
+
+                            <td class="entry" valign="top" width="66.66666666666666%" headers="d1081496e374 ">
+                                <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters.">NET_DVR_SetDVRConfig</a> with "NET_DVR_SET_SIP_CFG_V50" (command No.:
+                                    16045), set <span class="keyword parmname">lChannel</span> to 0XFFFFFFFF, and set
+                                        <span class="keyword parmname">lpInBuffer</span> to the structure <a class="xref" href="GUID-F34F877A-067E-4CE2-BB6E-4EF3CE5CA597.html#GUID-F34F877A-067E-4CE2-BB6E-4EF3CE5CA597" title="SIP (Session Initiation Protocol) parameter structure.">NET_DVR_SIP_CFG_V50</a>.</p>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0.html">Channel Settings</a></span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li><span class="topicref"><a href="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014.html">Video/Image Settings</a></span></li><li><span class="topicref"><a href="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html">Network Settings</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF.html">Address Filter</a></span></li><li><span class="topicref"><a href="GUID-96255498-3AEB-4447-B310-03D6A8227839.html">Network Access</a></span></li><li><span class="topicref"><a href="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A.html">Network Interface</a></span></li><li class="active"><span class="topicref">Network Service</span></li><li><span class="topicref"><a href="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC.html">Wireless Network</a></span></li><li><span class="topicref"><a href="GUID-4F4A40F2-D35F-4C6F-9B8D-D7FC019580C5.html">Multicast</a></span></li></ul></li><li><span class="topicref"><a href="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9.html">Peripherals Settings</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

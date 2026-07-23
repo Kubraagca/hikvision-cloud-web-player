@@ -1,0 +1,208 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Configure Audio Exception Detection Alarm" /><meta name="abstract" content="When the sound in the environment is detected as the sudden increase or decrease of sound intensity, the audio exception detection alarm will be triggered. You can configure linkage actions, such as alarm output, uploading alarms to the center, etc., for the audio exception detection alarm." /><meta name="description" content="When the sound in the environment is detected as the sudden increase or decrease of sound intensity, the audio exception detection alarm will be triggered. You can configure linkage actions, such as alarm output, uploading alarms to the center, etc., for the audio exception detection alarm." /><meta name="DC.Relation" scheme="URI" content="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB" /><meta name="DC.Language" content="en-US" /><title>Configure Audio Exception Detection Alarm</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Configure Audio Exception Detection
+        Alarm</h1>
+
+
+    <div class="body taskbody"><p class="shortdesc">When the sound in the environment is detected as the sudden increase or
+        decrease of sound intensity, the audio exception detection alarm will be triggered. You can
+        configure linkage actions, such as alarm output, uploading alarms to the center, etc., for
+        the audio exception detection alarm.</p>
+
+        <div class="section prereq p" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-037B8B91-8865-4757-95C0-B444399F00A3">
+            <ul class="ul" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__UL_RDV_3KQ_52B">
+                <li class="li" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-332FCA1B-7CB9-47F9-A541-0D3E1B2687BE">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs.">NET_DVR_Init</a> to initialize the development
+                        environment.</p>
+
+                </li>
+
+                <li class="li" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-210EB91F-884B-4C2E-87B2-14F941CFB625">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to the device.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+        <p class="li stepsection" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-92CF845D-23B0-4F7B-84A8-7FD48D77511B">
+                <div class="fig fignone" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__FIG_JPV_H5Y_MLB">
+                    
+                    <img class="image" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__IMAGE_KPV_H5Y_MLB" src="GUID-B40DE82E-C890-4AF9-AFCE-C80EC8E3DE58-high.png" height="1417" />
+                <span class="figcap">Figure 1 Programming Flow of Configuring Audio Exception Detection Alarm</span></div>
+
+            </p><ol class="ol steps" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-FA05C71D-F548-41B8-9325-C8D1DAA9ADDD"><li class="li step stepexpand" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-C14FDDC9-3F80-4418-8760-90A2560B0A45">
+                <span class="ph cmd">Call <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a> and set the capability type (<span class="keyword parmname">dwAbilityType</span>) to "DEVICE_SOFTHARDWARE_ABILITY"
+                    (macro definition value: 0x001) for getting the device software and hardware
+                    capability to check if the audio exception detection is supported by the
+                    device.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The device software and hardware capability is returned in the
+                        message <a class="xref" href="GUID-8EB02935-03B8-423E-A130-6D400C29E032.html#GUID-8EB02935-03B8-423E-A130-6D400C29E032" title="BasicCapability message in XML format">XML_BasicCapability</a> by output buffer (<span class="keyword parmname">pOutBuf</span>).</p>
+
+                    <p class="p">If the node &lt;<span class="keyword parmname">audioException</span>&gt; is returned in the message and its value is
+                        true, it indicates that the audio exception detection is supported, and you
+                        can continue to perform this task.</p>
+
+                    <p class="p">Otherwise, the audio exception detection is not supported by the
+                        device, please end this task.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-2F19F2BD-F13D-46A9-9A4D-D1E9867E3310"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E.html#GUID-EC027D87-F54A-4147-9F2E-E61E08774F3E" title="Get device configuration information in batch (with sending data).">NET_DVR_GetDeviceConfig</a> with "NET_DVR_GET_AUDIOEXCEPTIONPARAM" (command
+                    No.: 3366), and set the input parameter pointer (<span class="keyword parmname">lpInBuffer</span>) to the structure <a class="xref" href="GUID-31E8699D-174C-4266-B168-A13BC01AC028.html#GUID-31E8699D-174C-4266-B168-A13BC01AC028" title="Channel No. and group No. information structure.">NET_DVR_CHANNEL_GROUP</a> for getting the audio exception detection
+                    parameters, including detection rule, arming schedule, alarm linkage, and so on,
+                    for reference.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The audio exception detection parameters is returned in the
+                        structure <a class="xref" href="GUID-3E6B64FC-0842-4EA3-8D5E-E844B4731288.html#GUID-3E6B64FC-0842-4EA3-8D5E-E844B4731288">NET_DVR_AUDIO_EXCEPTION</a> by output parameter <span class="keyword parmname">lpOutBuffer</span>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-C2609674-6C40-4E5F-9B39-CA486D097076">
+                <span class="ph cmd">Call <a class="xref" href="GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF.html#GUID-6C9AD066-486F-4070-9D1D-0BC0D25993BF" title="Set device parameters in batch (sending data is supported).">NET_DVR_SetDeviceConfig</a> with "NET_DVR_SET_AUDIOEXCEPTIONPARAM" (command
+                    No.: 3367), set the input parameter pointer (<span class="keyword parmname">lpInBuffer</span>) to the structure <a class="xref" href="GUID-31E8699D-174C-4266-B168-A13BC01AC028.html#GUID-31E8699D-174C-4266-B168-A13BC01AC028" title="Channel No. and group No. information structure.">NET_DVR_CHANNEL_GROUP</a>, and set the input parameter (<span class="keyword parmname">lpInParamBuffer</span>) to the structure <a class="xref" href="GUID-3E6B64FC-0842-4EA3-8D5E-E844B4731288.html#GUID-3E6B64FC-0842-4EA3-8D5E-E844B4731288">NET_DVR_AUDIO_EXCEPTION</a> for setting the audio exception detection
+                    parameters.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-C329A517-C254-408B-B52D-D0DF71459055"><span class="notetitle">Note:</span> 
+                        <ul class="ul" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__UL_N4C_R1Z_NGB">
+                            <li class="li" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-7B979FC5-6A47-4350-B181-AFCEFA222704">
+                                <p class="p">To receive the alarm in the platform, the linkage
+                                    action must be set to "0x04" (upload to center).</p>
+
+                            </li>
+
+                            <li class="li" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-455445C8-EFAE-4C52-A0FD-234FD18121FF">
+                                <p class="p">The above audio exception detection parameters can
+                                    also be configured by logging in to the device via web
+                                    browser.</p>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-0D0794D2-6EBC-439C-A35D-CF5198CD42F3">
+                <span class="ph cmd">Receive the audio exception alarm in arming mode (see <a class="xref" href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html#GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D" title="When the alarm is triggered or the event occurred, the secondarily developed third-party platform can automatically connect and send alarm/event uploading command to the device, and then the device uploads the alarm/event information to the platform for receiving.">Receive Alarm/Event in Arming Mode</a>) or in listening mode (see <a class="xref" href="GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1.html#GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1" title="When alarm is triggered or event occurred, the device uploads the alarm/event information automatically, so you can configure the listening address and port for listening and receiving the alarm/event in the secondarily developed third-part platform.">Receive Alarm/Event in Listening Mode</a>) when the alarm is triggered.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-60C1B1BE-1504-4413-8A39-D1B00533D7DD"><span class="notetitle">Note:</span> 
+                        <ul class="ul" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__UL_AKL_H3Y_NGB">
+                            <li class="li" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-3A40C5C9-72C1-4D5E-BF44-78BDF18F0670">
+                                <p class="p">The command (<span class="keyword parmname">lCommand</span>) to receive audio exception alarms
+                                    should be set to "COMM_ALARM_AUDIOEXCEPTION" (command No.:
+                                    0x1150) in the APIs <a class="xref" href="GUID-3C513730-D89A-40D2-A25E-C994310578D2.html#GUID-3C513730-D89A-40D2-A25E-C994310578D2" title="Set callback functions for getting the video data.">NET_DVR_SetDVRMessageCallBack_V50</a> and <a class="xref" href="GUID-F3E1CB85-D785-4643-B901-0CEEED3B9B76.html#GUID-F3E1CB85-D785-4643-B901-0CEEED3B9B76" title="Register callback function for receiving alarm/event information and start listening (supports multiple threads).">NET_DVR_StartListen_V30</a>.</p>
+
+                            </li>
+
+                            <li class="li" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-6B8B0096-EF11-42B4-AD7C-DBAA6D0F8BFB">
+                                <p class="p">For the alarm details, refer to the structure <a class="xref" href="GUID-CC685311-F65B-4B9B-8361-449FE198B103.html#GUID-CC685311-F65B-4B9B-8361-449FE198B103" title="Audio exception alarm information structure">NET_DVR_AUDIOEXCEPTION_ALARM</a>.</p>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+            </li>
+</ol>
+
+        <div class="section postreq" id="GUID-B396CD8D-07A3-4AB8-BAC2-E1ADA2AAC2FB__GUID-AC57A3C9-2353-4E26-A831-F1A1BFAC5FD6">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices.">NET_DVR_Logout</a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended.">NET_DVR_Cleanup</a> to log out and release resources.</p>
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-7F5A4D7B-8A1E-4195-B943-6091A76577ED.html">Alarm and Event Receiving</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-6D2D6897-54BA-4366-AEE7-87C18BE5B37D.html">Supported Alarm/Event Types</a></span></li><li><span class="topicref"><a href="GUID-05DA94E5-0692-440C-B6A0-EF5DA377FBB7.html">Configure Exception Alarm</a></span></li><li class="active"><span class="topicref">Configure Audio Exception Detection Alarm</span></li><li><span class="topicref"><a href="GUID-45D8CB31-2422-4E80-98B7-A80B904FA6ED.html">Configure Certificate Expiry Alarm</a></span></li><li><span class="topicref"><a href="GUID-08B26BCD-F96A-47E2-BF2F-8248A0355C7D.html">Configure Network Traffic Pre-alarm</a></span></li><li><span class="topicref"><a href="GUID-E1B1BF4A-4841-4D36-B525-4B3EB5CB3FBF.html">Configure Vibration Detection Alarm</a></span></li><li><span class="topicref"><a href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html">Receive Alarm/Event in Arming Mode</a></span></li><li><span class="topicref"><a href="GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1.html">Receive Alarm/Event in Listening Mode</a></span></li><li><span class="topicref"><a href="GUID-3861EBFD-80EE-4EB0-989F-BB0D4E9E82F8.html">Subscribe Alarm/Event in Arming Mode</a></span></li><li><span class="topicref"><a href="GUID-673C21A2-6826-491E-BAED-F4FDB4AA91F2.html">Search for Alarms or Events</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

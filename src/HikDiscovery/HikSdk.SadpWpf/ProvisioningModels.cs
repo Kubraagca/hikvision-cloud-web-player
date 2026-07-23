@@ -7,6 +7,7 @@ namespace HikSdk.SadpWpf;
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
     private string _cameraAddress = "192.168.1.64";
+    private string _subnetPrefix = string.Empty;
     private string _userName = "admin";
     private string _statusText = "Tek tusla tam kurulum icin kamera bilgilerini girin ve 'Bastan Sona Kurulum' butonunu kullanin.";
     private string _errorText = "Hata yok.";
@@ -22,16 +23,27 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private string _verificationCode = string.Empty;
     private string _backendBaseUrl = "http://127.0.0.1:5188";
     private string _areaName = string.Empty;
+    private string _deviceAlias = string.Empty;
     private string _areaId = string.Empty;
     private string _gatewayOverride = string.Empty;
+    private string _primaryDns = "8.8.8.8";
+    private string _secondaryDns = "1.1.1.1";
     private string _deviceId = "-";
+    private string _technicalLogText = "Teknik istek/yanit kaydi henuz yok.";
     private bool _isBusy;
     private bool _enableDhcp;
+    private DiscoveredCameraRow? _selectedDiscoveredCamera;
 
     public string CameraAddress
     {
         get => _cameraAddress;
         set => SetField(ref _cameraAddress, value);
+    }
+
+    public string SubnetPrefix
+    {
+        get => _subnetPrefix;
+        set => SetField(ref _subnetPrefix, value);
     }
 
     public string UserName
@@ -124,6 +136,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         set => SetField(ref _areaName, value);
     }
 
+    public string DeviceAlias
+    {
+        get => _deviceAlias;
+        set => SetField(ref _deviceAlias, value);
+    }
+
     public string AreaId
     {
         get => _areaId;
@@ -136,10 +154,28 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         set => SetField(ref _gatewayOverride, value);
     }
 
+    public string PrimaryDns
+    {
+        get => _primaryDns;
+        set => SetField(ref _primaryDns, value);
+    }
+
+    public string SecondaryDns
+    {
+        get => _secondaryDns;
+        set => SetField(ref _secondaryDns, value);
+    }
+
     public string DeviceId
     {
         get => _deviceId;
         set => SetField(ref _deviceId, value);
+    }
+
+    public string TechnicalLogText
+    {
+        get => _technicalLogText;
+        set => SetField(ref _technicalLogText, value);
     }
 
     public bool IsBusy
@@ -154,7 +190,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         set => SetField(ref _enableDhcp, value);
     }
 
+    public DiscoveredCameraRow? SelectedDiscoveredCamera
+    {
+        get => _selectedDiscoveredCamera;
+        set => SetField(ref _selectedDiscoveredCamera, value);
+    }
+
     public ObservableCollection<NetworkInterfaceRow> NetworkInterfaces { get; } = [];
+    public ObservableCollection<DiscoveredCameraRow> DiscoveredCameras { get; } = [];
 
     public ObservableCollection<SetupStageRow> Stages { get; } = [];
 
@@ -211,6 +254,17 @@ public sealed record EnableEzvizResult(
     EzvizStatusModel FinalStatus,
     int PollCount,
     bool TimedOut);
+
+public sealed record DiscoveredCameraModel(
+    string IpAddress,
+    string MacAddress,
+    string SerialNumber,
+    string Model,
+    string ActivationStatus,
+    bool IsHikvision,
+    bool SupportsIsapi,
+    bool SupportsSdkPort,
+    bool PingSucceeded);
 
 public sealed record BackendAddDeviceRequest(
     string ShortSerial,
@@ -269,6 +323,40 @@ public sealed class NetworkInterfaceRow
     public string DhcpMode { get; }
 }
 
+public sealed class DiscoveredCameraRow
+{
+    public DiscoveredCameraRow(DiscoveredCameraModel model)
+    {
+        IpAddress = model.IpAddress;
+        MacAddress = model.MacAddress;
+        SerialNumber = model.SerialNumber;
+        Model = model.Model;
+        ActivationStatus = model.ActivationStatus;
+        IsHikvision = model.IsHikvision ? "Evet" : "Hayir";
+        SupportsIsapi = model.SupportsIsapi ? "Evet" : "Hayir";
+        SupportsSdkPort = model.SupportsSdkPort ? "Evet" : "Hayir";
+        PingSucceeded = model.PingSucceeded ? "Evet" : "Hayir";
+    }
+
+    public string IpAddress { get; }
+
+    public string MacAddress { get; }
+
+    public string SerialNumber { get; }
+
+    public string Model { get; }
+
+    public string ActivationStatus { get; }
+
+    public string IsHikvision { get; }
+
+    public string SupportsIsapi { get; }
+
+    public string SupportsSdkPort { get; }
+
+    public string PingSucceeded { get; }
+}
+
 public sealed class SetupStageRow : INotifyPropertyChanged
 {
     private string _status = "Bekliyor";
@@ -325,3 +413,12 @@ internal static class ObservableCollectionExtensions
         }
     }
 }
+
+public sealed record ApiTraceEntry(
+    DateTimeOffset Timestamp,
+    string Source,
+    string Method,
+    string Url,
+    int? StatusCode,
+    string RequestBody,
+    string ResponseBody);

@@ -1,10 +1,14 @@
 {
   "version": 4,
   "targets": {
-    "net9.0-windows": {}
+    "net8.0-windows": {},
+    "net8.0-windows/win-x64": {},
+    "net9.0-windows": {},
+    "net9.0-windows/win-x64": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
+    "net8.0-windows": [],
     "net9.0-windows": []
   },
   "packageFolders": {
@@ -20,6 +24,7 @@
       "packagesPath": "C:\\Users\\CodexSandboxOffline\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\obj\\",
       "projectStyle": "PackageReference",
+      "crossTargeting": true,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
@@ -29,6 +34,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
+        "net8.0-windows",
         "net9.0-windows"
       ],
       "sources": {
@@ -36,6 +42,11 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
+          "targetAlias": "net8.0-windows",
+          "projectReferences": {}
+        },
         "net9.0-windows": {
           "framework": "net9.0-windows7.0",
           "targetAlias": "net9.0-windows",
@@ -48,13 +59,48 @@
         ]
       },
       "restoreAuditProperties": {
-        "enableAudit": "false",
+        "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
       },
       "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
+      "net8.0-windows": {
+        "framework": "net8.0-windows7.0",
+        "targetAlias": "net8.0-windows",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.28, 8.0.28]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.28, 8.0.28]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.28, 8.0.28]"
+          }
+        ],
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
+      },
       "net9.0-windows": {
         "framework": "net9.0-windows7.0",
         "targetAlias": "net9.0-windows",
@@ -76,6 +122,34 @@
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
       }
+    },
+    "runtimes": {
+      "win-x64": {
+        "#import": []
+      }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı."
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı."
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor.\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı. (api.nuget.org:443)\r\n  Erişim izinlerince izin verilmeyen bir şekilde bir yuvaya erişilmeye çalışıldı."
+    },
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Paket güvenlik açığı verileri alınırken hata oluştu: https://api.nuget.org/v3/index.json kaynağı için hizmet dizini yüklenemiyor."
+    }
+  ]
 }

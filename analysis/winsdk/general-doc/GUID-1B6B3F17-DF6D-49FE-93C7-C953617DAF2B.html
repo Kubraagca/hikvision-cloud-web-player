@@ -1,0 +1,193 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="(Optional) Verify Device" /><meta name="abstract" content="To meet different security requirements, before encrypting the transmission links, you can verify the logged device via the device root certificate or user-purchased certificate by calling HCNetSDK APIs to make sure the device is available or valid." /><meta name="description" content="To meet different security requirements, before encrypting the transmission links, you can verify the logged device via the device root certificate or user-purchased certificate by calling HCNetSDK APIs to make sure the device is available or valid." /><meta name="DC.Relation" scheme="URI" content="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B" /><meta name="DC.Language" content="en-US" /><title>(Optional) Verify Device</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">(Optional) Verify Device</h1>
+
+
+<div class="body conbody"><p class="shortdesc">To meet different security requirements, before encrypting the transmission
+        links, you can verify the logged device via the device root certificate or user-purchased
+        certificate by calling HCNetSDK APIs to make sure the device is available or
+        valid.</p>
+
+        <div class="note note" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-2FF35CBE-98D2-4AB7-A530-57126D794EAF"><span class="notetitle">Note:</span> 
+            <ul class="ul" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__UL_N2J_1P5_LHB">
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-4630CE13-A183-44F1-A888-0799F265A709">
+                    <p class="p">The device root certificate is for communication only. You can
+                        call <a class="xref" href="GUID-61412615-3809-48F1-BBE6-4E0E9880AD53.html#GUID-61412615-3809-48F1-BBE6-4E0E9880AD53" title="Implement remote control.">NET_DVR_RemoteControl</a> with <span class="keyword cmdname">NET_DVR_CREATE_CERT</span> (command No.: 6138) to
+                        generate a custom certificate by device. The generated certificate is
+                        neutral with required information only.</p>
+
+                </li>
+
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-95A5C49C-67FE-42B1-91A1-D1AABBB8AF2F">
+                    <p class="p">For the first time development, as there is no certificate
+                        provided during initialization, you'd better not verify the device, and the
+                        certificate verification callback function will directly return "TRUE"
+                        (verified).</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="section" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-75A8761F-5DFB-4ED7-A3FA-70D6918500FE"><h2 class="title sectiontitle">Verify via Root Certificate</h2>
+            
+            <ol class="ol" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__OL_N3C_KH5_LHB">
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-E0B5BE60-ACA1-415F-984F-FFF32A3686EE">
+                    <p class="p">Call <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to
+                        device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-922519C6-BEB4-47B7-AA62-B78566974C99">
+                    <p class="p">Call <a class="xref" href="GUID-C1BC563E-07E3-49A5-B247-FD785477479B.html#GUID-C1BC563E-07E3-49A5-B247-FD785477479B" title="Start downloading files">NET_DVR_StartDownload</a> with <span class="keyword cmdname">NET_SDK_DOWNLOAD_CERT</span> (command No.: 0) to download
+                        the root certificate from device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-40E05BF9-6B06-4E83-9EF7-B4BE1B58E6E4">
+                    <p class="p">Call <a class="xref" href="GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120.html#GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120" title="Set the local parameters.">NET_DVR_SetSDKLocalCfg</a> and set related
+                        parameter structure (<a class="xref" href="GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833.html#GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833" title="Cettificate configuration parameter structure">NET_DVR_LOCAL_CERTIFICATION</a>) to
+                        transmit the root certificate to the development program for
+                        verification.</p>
+
+                    <div class="note note" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-F3E4CA92-03E6-4D4A-A335-2EEB6215A4DF"><span class="notetitle">Note:</span> 
+                        <p class="p">The verification results is returned in the structure <a class="xref" href="GUID-AC9D1ACB-7235-4EB9-AB54-DB5130A7A134.html#GUID-AC9D1ACB-7235-4EB9-AB54-DB5130A7A134" title="Certificate information structure">NET_DVR_CETTIFICATE_INFO</a> by the
+                            certificate verification callback function of structure <a class="xref" href="GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833.html#GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833" title="Cettificate configuration parameter structure">NET_DVR_LOCAL_CERTIFICATION</a>.</p>
+
+                    </div>
+
+                </li>
+
+            </ol>
+
+        </div>
+
+        <div class="section" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-7CB4A31A-7D16-4A2E-A07B-3C6E96849FEC"><h2 class="title sectiontitle">Verify via User-Purchased Certificate</h2>
+            
+            <ol class="ol" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__OL_EWF_C35_LHB">
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-4B175349-0748-4F2D-A287-3904D5EA8B0D">
+                    <p class="p">Call <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login).">NET_DVR_Login_V40</a> to log in to
+                        device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-70406E1F-0C8B-45D6-916C-F6B78975A20A">
+                    <p class="p">Call <a class="xref" href="GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8.html#GUID-DC40EC84-DFAB-46D0-9534-A376F210D9F8" title="Upload file.">NET_DVR_UploadFile_V40</a> with <span class="keyword cmdname">UPLOAD_CERTIFICATE</span> (command No.: 1) to import the
+                        user-purchased certificate to the device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-ED70D2C7-FA19-4D40-A9DE-516E1C19CDC0">
+                    <p class="p">Call <a class="xref" href="GUID-C1BC563E-07E3-49A5-B247-FD785477479B.html#GUID-C1BC563E-07E3-49A5-B247-FD785477479B" title="Start downloading files">NET_DVR_StartDownload</a> with <span class="keyword cmdname">NET_SDK_DOWNLOAD_CERT</span> (command No.: 0) to
+                        download the root certificate from device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-C40B0272-CAC1-4A6F-B33D-32E0F0168547">
+                    <p class="p">Call <a class="xref" href="GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120.html#GUID-8F53D94A-9FA7-4C59-82A3-870CAFA61120" title="Set the local parameters.">NET_DVR_SetSDKLocalCfg</a> and set related
+                        parameter structure (<a class="xref" href="GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833.html#GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833" title="Cettificate configuration parameter structure">NET_DVR_LOCAL_CERTIFICATION</a>) to
+                        transmit the root certificate to the development program for
+                        verification.</p>
+
+                    <div class="note note" id="GUID-1B6B3F17-DF6D-49FE-93C7-C953617DAF2B__GUID-067248FF-0CCB-447E-9A5C-56D259E4300B"><span class="notetitle">Note:</span> 
+                        <p class="p">The verification results is returned in the structure <a class="xref" href="GUID-AC9D1ACB-7235-4EB9-AB54-DB5130A7A134.html#GUID-AC9D1ACB-7235-4EB9-AB54-DB5130A7A134" title="Certificate information structure">NET_DVR_CETTIFICATE_INFO</a> by the
+                            certificate verification callback function of structure <a class="xref" href="GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833.html#GUID-05FEDDEE-DC7B-41C3-8FB8-EB59C57A7833" title="Cettificate configuration parameter structure">NET_DVR_LOCAL_CERTIFICATION</a>.</p>
+
+                    </div>
+
+                </li>
+
+            </ol>
+
+        </div>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-9AB5DE09-F0A6-4C3E-AF6B-E224632ECAC2.html">Security Service</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-582533B9-4A7E-40C9-B660-8C71F6DEBECC.html">Configure Double Verification</a></span></li><li><span class="topicref"><a href="GUID-E61EB5F0-9F48-4D9F-96E5-E4517A3F19A5.html">Encrypt Stream</a></span></li><li><span class="topicref"><a href="GUID-B3B3E522-538A-46F7-B296-8A410756EBF0.html">Encrypt Stream Transmission Link</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">(Optional) Verify Device</span></li><li><span class="topicref"><a href="GUID-8A95E9AA-EBCD-468C-BB5A-C6ECDA069DE0.html">Encrypt HTTPS Link</a></span></li><li><span class="topicref"><a href="GUID-7A18C8F1-678A-4378-9850-F4F8B206F67E.html">Encrypt TLS Link</a></span></li></ul></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

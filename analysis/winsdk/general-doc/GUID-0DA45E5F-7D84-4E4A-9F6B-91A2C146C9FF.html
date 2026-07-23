@@ -1,0 +1,202 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="description" content="IP Address Configuration Get IP Address Filter Configuration Capability Call NET_DVR_STDXMLConfig to pass through the request URL: GET /ISAPI/System/Network/capabilities . And the capability is ..." /><meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Address Filter" /><meta name="DC.Relation" scheme="URI" content="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF" /><meta name="DC.Language" content="en-US" /><title>Address Filter</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Address Filter</h1>
+
+<div class="body conbody">
+        <dl class="dl">
+            
+                <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-F58D268C-121A-4B4E-9092-77AC1159A907"><!-- --></a>IP Address Configuration</dt>
+
+                <dd class="dd">
+                    <dl class="dl">
+                        
+                            <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-20FE6DEA-D773-4EC8-9F3A-9EE78A61921B"><!-- --></a>Get IP Address Filter Configuration Capability</dt>
+
+                            <dd class="dd">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                                    the request URL: <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F.html#GUID-4D251289-BEA6-47C8-8F10-15FCB8F3FD4F" title="Get the network capability.">/ISAPI/System/Network/capabilities</a>. And the capability is returned
+                                    in the message <a class="xref" href="GUID-62A83405-10A1-4956-8E53-1267242B4514.html#GUID-62A83405-10A1-4956-8E53-1267242B4514" title="NetworkCap capability message in XML format">XML_NetworkCap</a> by the output parameter pointer
+                                        (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                            </dd>
+
+                        
+                        
+                            <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-E05065E9-B081-46EA-A5A6-6CB593470470"><!-- --></a>Get IP Address Filter Configuration Parameters</dt>
+
+                            <dd class="dd">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                                    the request URL: <span class="ph synph">GET</span>
+                                    <a class="xref" href="GUID-DE1B7FCB-1582-43D1-9594-1554274631C4.html#GUID-DE1B7FCB-1582-43D1-9594-1554274631C4" title="Operations about IP address filter configuration.">/ISAPI/System/Network/ipFilter</a>. And the parameters are returned
+                                    in the message <a class="xref" href="GUID-A36CA124-2ADB-4B77-BF49-F05D883985F4.html#GUID-A36CA124-2ADB-4B77-BF49-F05D883985F4" title="IPFilter message in XML format">XML_IPFilter</a> by the output parameter pointer
+                                        (<span class="keyword parmname">lpOutputParam</span>).</p>
+
+                            </dd>
+
+                        
+                        
+                            <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-252762A6-990F-4A87-9576-235758AFD79F"><!-- --></a>Set IP Address Filter</dt>
+
+                            <dd class="dd">
+                                <p class="p">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                                    the request URL: <span class="ph synph">PUT</span>
+                                    <a class="xref" href="GUID-DE1B7FCB-1582-43D1-9594-1554274631C4.html#GUID-DE1B7FCB-1582-43D1-9594-1554274631C4" title="Operations about IP address filter configuration.">/ISAPI/System/Network/ipFilter</a>, and set the input parameter
+                                        (<span class="keyword parmname">lpInBuffer</span>) to the
+                                    message <a class="xref" href="GUID-A36CA124-2ADB-4B77-BF49-F05D883985F4.html#GUID-A36CA124-2ADB-4B77-BF49-F05D883985F4" title="IPFilter message in XML format">XML_IPFilter</a>.</p>
+
+                            </dd>
+
+                        
+                    </dl>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-066C7A2E-AA9F-4333-BAA7-A8AD14D0F107"><!-- --></a>Mac Address Configuration</dt>
+
+                <dd class="dd">
+                    <dl class="dl">
+                        
+                            <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-D757C7CB-A261-4F51-A2BB-F4EB355D0EF6"><!-- --></a>Get MAC Address Filter Configuration Capability</dt>
+
+                            <dd class="dd">
+                                <p class="p">Call <a class="xref" href="GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E.html#GUID-B0CBE0E1-0AF2-45C8-B1A0-9CA90956081E" title="Get the device capabilities."><span class="keyword apiname">NET_DVR_GetSTDAbility</span></a>, set the
+                                        <span class="keyword parmname">dwAbilityType</span> to
+                                    NET_DVR_GET_MACFILTER_CAPABILITIES (value: 3643), and set
+                                    condition parameter <span class="keyword parmname">lpCondBuffer</span> in the structure of <a class="xref" href="GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597.html#GUID-DB3345B5-B4EF-4491-92E3-4325AB9E1597"><var class="keyword varname">NET_DVR_STD_ABILITY</var></a> to null. Then the
+                                    capability is returned by the output parameter <span class="keyword parmname">lpOutBuffer</span> in the message <a class="xref" href="GUID-B6406CAB-39D7-4CB3-A94A-CC67A419C859.html#GUID-B6406CAB-39D7-4CB3-A94A-CC67A419C859" title="MACFilter capability message in XML format">XML_Cap_MACFilter</a>.</p>
+
+                                <div class="note note" id="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-F42D8055-58B9-41B7-84E4-B738D138CCB0"><span class="notetitle">Note:</span> 
+                                    <p class="p">Check whether the device supports MAC address
+                                        filter configuration via node &lt;<span class="keyword parmname">isSupportMACFilter</span>&gt; in the network
+                                        capability set <a class="xref" href="GUID-62A83405-10A1-4956-8E53-1267242B4514.html#GUID-62A83405-10A1-4956-8E53-1267242B4514" title="NetworkCap capability message in XML format">XML_NetworkCap</a>.</p>
+
+                                </div>
+
+                            </dd>
+
+                        
+                        
+                            <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-E232BB9E-52E2-4AF3-859D-685343516C5A"><!-- --></a>Get MAC Address Filter Configuration Parameters</dt>
+
+                            <dd class="dd">
+                                <p class="p">Call <a class="xref" href="GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73.html#GUID-70CBC000-1A54-4359-BBD8-7C4013B63D73" title="Get the device configuration information."><span class="keyword apiname">NET_DVR_GetSTDConfig</span></a> with the command of
+                                        <span class="keyword cmdname">NET_DVR_GET_MACFILTER_CFG</span>
+                                    (command No.: 3644) and set the condition parameter <span class="keyword parmname">IpCondBuffer</span> in the structure of
+                                        <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83"><var class="keyword varname">NET_DVR_STD_CONFIG</var></a> to null. Then the
+                                    parameters are returned by the output parameter <span class="keyword parmname">lpOutBuffer</span> in the structure <a class="xref" href="GUID-81046746-4F20-4A0F-9A12-CE5EE35C7E09.html#GUID-81046746-4F20-4A0F-9A12-CE5EE35C7E09" title="Structure about configuration parameters of MAC address filter"><var class="keyword varname">NET_DVR_MACFILTER_CFG</var></a>.</p>
+
+                            </dd>
+
+                        
+                        
+                            <dt class="dt dlterm"><a name="GUID-0DA45E5F-7D84-4E4A-9F6B-91A2C146C9FF__GUID-F190EA0A-4A44-40F8-A8DC-18C398F850B5"><!-- --></a>Set MAC Address Filter</dt>
+
+                            <dd class="dd">
+                                <p class="p">Call <a class="xref" href="GUID-19B97F95-5F55-48EF-9450-AC33661876D2.html#GUID-19B97F95-5F55-48EF-9450-AC33661876D2" title="Set the device parameters."><span class="keyword apiname">NET_DVR_SetSTDConfig</span></a> with the command of
+                                        <span class="keyword cmdname">NET_DVR_SET_MACFILTER_CFG</span>
+                                    (command No.: 3645), set the condition parameter <span class="keyword parmname">IpCondBuffer</span> and input parameter
+                                        <span class="keyword parmname">lpInBuffer</span> in the
+                                    structure of <a class="xref" href="GUID-E88C6E31-1515-475E-A239-7884B6841E83.html#GUID-E88C6E31-1515-475E-A239-7884B6841E83"><var class="keyword varname">NET_DVR_STD_CONFIG</var></a> to null and <a class="xref" href="GUID-81046746-4F20-4A0F-9A12-CE5EE35C7E09.html#GUID-81046746-4F20-4A0F-9A12-CE5EE35C7E09" title="Structure about configuration parameters of MAC address filter"><var class="keyword varname">NET_DVR_MACFILTER_CFG</var></a> for setting MAC
+                                    address filter.</p>
+
+                            </dd>
+
+                        
+                    </dl>
+
+                </dd>
+
+            
+        </dl>
+
+    </div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-19F84B86-FA91-4BF1-A2CA-6D6B920D05F4.html">Parameter Configuration</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-1B73254E-FCB1-40E4-8C44-5449D75DBDF0.html">Channel Settings</a></span></li><li><span class="topicref"><a href="GUID-CF5B00A7-AE42-4189-85E9-4BF759498BB8.html">I/O Settings</a></span></li><li><span class="topicref"><a href="GUID-D2A7D6A2-8DB3-46CC-AB1A-3CFE62F98014.html">Video/Image Settings</a></span></li><li><span class="topicref"><a href="GUID-0C83FD45-C519-485D-885A-A4A79E30F201.html">Network Settings</a></span><ul class="nav nav-list"><li class="active"><span class="topicref">Address Filter</span></li><li><span class="topicref"><a href="GUID-96255498-3AEB-4447-B310-03D6A8227839.html">Network Access</a></span></li><li><span class="topicref"><a href="GUID-E4AFAF76-2CA0-45CF-9737-58CDDB28BB4A.html">Network Interface</a></span></li><li><span class="topicref"><a href="GUID-E70B1963-CC38-4CFC-B7D4-6FA94345FEA4.html">Network Service</a></span></li><li><span class="topicref"><a href="GUID-8A81BBE5-8A2A-43E4-8721-7459C1FE70EC.html">Wireless Network</a></span></li><li><span class="topicref"><a href="GUID-4F4A40F2-D35F-4C6F-9B8D-D7FC019580C5.html">Multicast</a></span></li></ul></li><li><span class="topicref"><a href="GUID-EA0FDCCA-0557-4141-9489-2E72D26A42B9.html">Peripherals Settings</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

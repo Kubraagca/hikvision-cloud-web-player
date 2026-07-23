@@ -1,0 +1,218 @@
+@page
+@model HikProvisioning.Web.Pages.LocalAgentModel
+@{
+    ViewData["Title"] = "Yerel Agent";
+}
+
+<section class="hero">
+    <div>
+        <p class="eyebrow">Yerel Kurulum Agent'i</p>
+        <h1>Web panelden yerel helper ile kamera kurulumunu yonet</h1>
+        <p class="hero-copy">
+            Bu sayfa, ayni Windows bilgisayarda arka planda calisan <code>HikProvisioning.Agent</code> ile konusur.
+            Tarayici dogrudan kameraya degil, localhost agent API'sine istek gonderir.
+        </p>
+    </div>
+    <div class="hero-actions">
+        <a class="secondary-button" href="/downloads/local-agent/HikProvisioning.Agent-win-x64.zip">Agent Paketi Indir</a>
+        <button id="agent-health-btn" class="secondary-button" type="button">Agent Durumu</button>
+        <button id="discover-btn" class="primary-button" type="button">Kamera Tara</button>
+    </div>
+</section>
+
+<section class="viewer-grid">
+    <aside class="panel-card sidebar-panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Baglanti</p>
+                <h2>Agent Kontrolu</h2>
+            </div>
+        </div>
+        <div class="health-card" id="agent-status">Agent kontrol edilmedi.</div>
+
+        <div class="health-card">
+            Agent varsayilan olarak <code>http://127.0.0.1:47831</code> adresinde dinler.
+        </div>
+
+        <div class="health-card">
+            1. Agent paketini indir. 2. Icinden <code>install-agent.cmd</code> dosyasina bir kez cift tikla. 3. Sonra bu sayfadan <code>Agent Durumu</code> ile kontrol et.
+        </div>
+
+        <label for="backend-url">Backend URL</label>
+        <input id="backend-url" class="text-input" value="@($"{Request.Scheme}://{Request.Host}")" />
+
+        <label for="camera-ip">Kamera IP</label>
+        <input id="camera-ip" class="text-input" value="192.168.1.64" />
+
+        <label for="username">Kullanici</label>
+        <input id="username" class="text-input" value="admin" />
+
+        <label for="password">Parola</label>
+        <input id="password" class="text-input" type="password" />
+
+        <label for="area-name">Area Adi</label>
+        <input id="area-name" class="text-input" value="Kameralar" />
+
+        <label for="alias">Cihaz Adi / Alias</label>
+        <input id="alias" class="text-input" value="CAM-LOCAL-1" />
+
+        <label for="verification-code">Verification Code</label>
+        <input id="verification-code" class="text-input" />
+
+        <label for="gateway">Gateway</label>
+        <input id="gateway" class="text-input" value="192.168.1.1" />
+
+        <label for="dns1">DNS 1</label>
+        <input id="dns1" class="text-input" value="8.8.8.8" />
+
+        <label for="dns2">DNS 2</label>
+        <input id="dns2" class="text-input" value="1.1.1.1" />
+
+        <label class="checkbox-row">
+            <input id="enable-dhcp" type="checkbox" />
+            <span>DHCP etkinlestir</span>
+        </label>
+
+        <button id="start-provision-btn" class="primary-button" type="button">Yerel Kurulumu Baslat</button>
+        <button id="cancel-task-btn" class="secondary-button" type="button">Gorevi Iptal Et</button>
+    </aside>
+
+    <section class="panel-card player-panel">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Sonuclar</p>
+                <h2>Kesif ve Gorev Durumu</h2>
+            </div>
+        </div>
+
+        <div class="health-card" id="discover-status">Kesif yapilmadi.</div>
+        <pre id="discover-output" class="code-panel">[]</pre>
+
+        <div class="health-card" id="task-status">Provision gorevi baslatilmadi.</div>
+        <pre id="task-output" class="code-panel">{}</pre>
+    </section>
+</section>
+
+@section Scripts {
+<script>
+(() => {
+  const agentBase = "http://127.0.0.1:47831";
+  const statusEl = document.getElementById("agent-status");
+  const discoverStatusEl = document.getElementById("discover-status");
+  const discoverOutputEl = document.getElementById("discover-output");
+  const taskStatusEl = document.getElementById("task-status");
+  const taskOutputEl = document.getElementById("task-output");
+  let activeTaskId = null;
+  let pollTimer = null;
+
+  async function checkAgent() {
+    try {
+      const response = await fetch(`${agentBase}/agent/health`);
+      const data = await response.json();
+      statusEl.textContent = data.ok
+        ? `Agent hazir. CLI bulundu: ${data.cli?.found ? "evet" : "hayir"} | SDK DLL: ${data.cli?.sdkDllFound ? "evet" : "hayir"}`
+        : "Agent cevap verdi ama hazir degil.";
+      if (data.cli?.path) {
+        statusEl.textContent += ` | Yol: ${data.cli.path}`;
+      }
+      if (data.cli?.error) {
+        statusEl.textContent += ` | Hata: ${data.cli.error}`;
+      }
+    } catch (error) {
+      statusEl.textContent = `Agent ulasilamiyor: ${error.message}`;
+    }
+  }
+
+  async function discover() {
+    discoverStatusEl.textContent = "Yerel agent ile tarama baslatiliyor...";
+    try {
+      const response = await fetch(`${agentBase}/agent/discover`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scanSeconds: 12, concurrency: 32 })
+      });
+      const text = await response.text();
+      discoverOutputEl.textContent = text;
+      discoverStatusEl.textContent = response.ok ? "Tarama tamamlandi." : "Tarama hatasi.";
+    } catch (error) {
+      discoverStatusEl.textContent = `Tarama basarisiz: ${error.message}`;
+    }
+  }
+
+  async function startProvision() {
+    const payload = {
+      cameraAddress: document.getElementById("camera-ip").value,
+      userName: document.getElementById("username").value,
+      password: document.getElementById("password").value,
+      backendUrl: document.getElementById("backend-url").value,
+      areaName: document.getElementById("area-name").value,
+      alias: document.getElementById("alias").value,
+      gatewayOverride: document.getElementById("gateway").value,
+      primaryDns: document.getElementById("dns1").value,
+      secondaryDns: document.getElementById("dns2").value,
+      verificationCode: document.getElementById("verification-code").value,
+      enableDhcp: document.getElementById("enable-dhcp").checked,
+      sdkPort: 8000
+    };
+
+    taskStatusEl.textContent = "Provision gorevi yerel agent'a gonderiliyor...";
+    try {
+      const response = await fetch(`${agentBase}/agent/provision/start`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      activeTaskId = data.taskId;
+      taskOutputEl.textContent = JSON.stringify(data, null, 2);
+      taskStatusEl.textContent = `Gorev baslatildi: ${activeTaskId}`;
+      startPolling();
+    } catch (error) {
+      taskStatusEl.textContent = `Provision baslatilamadi: ${error.message}`;
+    }
+  }
+
+  async function cancelTask() {
+    if (!activeTaskId) {
+      taskStatusEl.textContent = "Iptal edilecek aktif gorev yok.";
+      return;
+    }
+
+    await fetch(`${agentBase}/agent/tasks/${encodeURIComponent(activeTaskId)}/cancel`, { method: "POST" });
+    taskStatusEl.textContent = "Iptal istendi.";
+  }
+
+  function startPolling() {
+    if (pollTimer) {
+      clearInterval(pollTimer);
+    }
+
+    pollTimer = setInterval(async () => {
+      if (!activeTaskId) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${agentBase}/agent/tasks/${encodeURIComponent(activeTaskId)}`);
+        const data = await response.json();
+        taskOutputEl.textContent = JSON.stringify(data, null, 2);
+        taskStatusEl.textContent = `Durum: ${data.status} - ${data.message || ""}`;
+
+        if (["completed", "failed", "cancelled"].includes((data.status || "").toLowerCase())) {
+          clearInterval(pollTimer);
+          pollTimer = null;
+        }
+      } catch (error) {
+        taskStatusEl.textContent = `Gorev durumu okunamadi: ${error.message}`;
+      }
+    }, 2000);
+  }
+
+  document.getElementById("agent-health-btn").addEventListener("click", checkAgent);
+  document.getElementById("discover-btn").addEventListener("click", discover);
+  document.getElementById("start-provision-btn").addEventListener("click", startProvision);
+  document.getElementById("cancel-task-btn").addEventListener("click", cancelTask);
+  checkAgent();
+})();
+</script>
+}

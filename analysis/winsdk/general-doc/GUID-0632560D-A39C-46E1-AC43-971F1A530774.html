@@ -1,0 +1,149 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="User Management" /><meta name="abstract" content="You can configure the user parameters, such as user name, password, local permissions, remote permissions, and so on." /><meta name="description" content="You can configure the user parameters, such as user name, password, local permissions, remote permissions, and so on." /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-0632560D-A39C-46E1-AC43-971F1A530774" /><meta name="DC.Language" content="en-US" /><title>User Management</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-0632560D-A39C-46E1-AC43-971F1A530774" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">User Management</h1>
+
+
+<div class="body conbody"><p class="shortdesc">You can configure the user parameters, such as user name, password, local
+        permissions, remote permissions, and so on.</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm"><a name="GUID-0632560D-A39C-46E1-AC43-971F1A530774__GUID-77F0016D-578E-4CEB-82BC-F687A3A8CD4E"><!-- --></a>Get User Management Capability</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-7A991358-F099-466C-A416-054DFA03D6CD.html#GUID-7A991358-F099-466C-A416-054DFA03D6CD" title="Get the device capabilities.">NET_DVR_GetDeviceAbility</a>, set the capability type
+                            (<span class="keyword parmname">dwAbilityType</span>) to "DEVICE_USER_ABILITY" (macro
+                        definition value: 0x00c), and set the input pointer
+                            (<span class="keyword parmname">pInbuf</span>) to the message <a class="xref" href="GUID-E1D9AEF2-54FE-4C39-88C7-5E90929094B4.html#GUID-E1D9AEF2-54FE-4C39-88C7-5E90929094B4" title="Input description message to get user configuration capability.">XML_Desc_UserAbility</a>.</p>
+
+                    <p class="p">And the user configuration capability is returned in the message <a class="xref" href="GUID-4BF9E217-49E4-4B80-A86A-87EAE62460BE.html#GUID-4BF9E217-49E4-4B80-A86A-87EAE62460BE" title="UserAbility message in XML format">XML_UserAbility</a> by the output pointer
+                            (<span class="keyword parmname">pOutBuf</span>).</p>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0632560D-A39C-46E1-AC43-971F1A530774__GUID-B07833CE-31DF-48E6-9B77-904DA4F3E342"><!-- --></a>Get User Parameters</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-11EF9797-8677-4363-9957-74FAE1C8AE17.html#GUID-11EF9797-8677-4363-9957-74FAE1C8AE17" title="Get the device configuration information."><span class="keyword apiname">NET_DVR_GetDVRConfig</span></a> with the
+                        command of <span class="keyword cmdname">NET_DVR_GET_USERCFG_V52</span> (command
+                        No.: 4194), the user information are returned in the structure <a class="xref" href="GUID-8CA1D1D0-84D2-4CC2-AC46-D92DC4940081.html#GUID-8CA1D1D0-84D2-4CC2-AC46-D92DC4940081" title="User parameters structure (V52)"><var class="keyword varname">NET_DVR_USER_V52</var></a> by output
+                        buffer (<span class="keyword parmname">lpOutBuffer</span>).</p>
+
+                    <div class="note note" id="GUID-0632560D-A39C-46E1-AC43-971F1A530774__GUID-2F540D29-64B6-431E-87AC-D005500E7C74"><span class="notetitle">Note:</span> 
+                        <p class="p">The password will not be returned in the user information.</p>
+
+                    </div>
+
+                </dd>
+
+            
+            
+                <dt class="dt dlterm"><a name="GUID-0632560D-A39C-46E1-AC43-971F1A530774__GUID-69319C4F-FB57-498E-BA0A-F38282831DA5"><!-- --></a>Set User Parameters</dt>
+
+                <dd class="dd">
+                    <p class="p">Call <a class="xref" href="GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954.html#GUID-8C0BEB5A-EE83-4E0F-A1CA-B6DF69E92954" title="Set the device parameters."><span class="keyword apiname">NET_DVR_SetDVRConfig</span></a> with
+                        the command of <span class="keyword cmdname">NET_DVR_SET_USERCFG_V52</span>
+                        (command No.: 4195), and set the input buffer
+                            (<span class="keyword parmname">lpInBuffer</span>) to <a class="xref" href="GUID-8CA1D1D0-84D2-4CC2-AC46-D92DC4940081.html#GUID-8CA1D1D0-84D2-4CC2-AC46-D92DC4940081" title="User parameters structure (V52)"><var class="keyword varname">NET_DVR_USER_V52</var></a>.</p>
+
+                    <div class="note note" id="GUID-0632560D-A39C-46E1-AC43-971F1A530774__GUID-A6475004-4355-4E67-A6EF-2A775D1416EE"><span class="notetitle">Note:</span> 
+                        <p class="p">If the password field is not configured, it indicates that the password
+                            will not be changed.</p>
+
+                    </div>
+
+                </dd>
+
+            
+        </dl>
+
+</div>
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>

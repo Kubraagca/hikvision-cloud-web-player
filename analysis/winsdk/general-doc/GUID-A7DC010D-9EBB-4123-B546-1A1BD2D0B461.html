@@ -1,0 +1,238 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.daksys.com/webhelp/components" xml:lang="en-us" lang="en-us">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2005" /><meta name="DC.rights.owner" content="(C) Copyright 2005" /><meta name="DC.Type" content="task" /><meta name="DC.Title" content="Configure Alarm of IoT Device" /><meta name="abstract" content="When the IoT device is added to NVR/DVR, you can configure the alarm parameters such as arming schedule, linkage method, OSD, and so on for receiving the alarm of IoT device." /><meta name="description" content="When the IoT device is added to NVR/DVR, you can configure the alarm parameters such as arming schedule, linkage method, OSD, and so on for receiving the alarm of IoT device." /><meta name="DC.Relation" scheme="URI" content="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461" /><meta name="DC.Language" content="en-US" /><title>Configure Alarm of IoT Device</title><!--  Generated with dksgen version 19.0, build number 2017042020.  --><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" /><meta name="wh-path2root" content="index.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/commonltr.css?buildId=2017042020" />
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/webhelp_responsive_topic.css?buildId=2017042020" />
+		<!-- Latest compiled and minified Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/bootstrap/css/bootstrap.min.css" />
+		<!-- Bootstrap Optional theme -->
+		<link rel="stylesheet" href="daksys-webhelp/resources/bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="daksys-webhelp/resources/js/jquery-ui.min.css" />
+		<!-- Changes and comments, as side-notes  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/resources/css/p-side-notes.css?buildId=2017042020" />
+		<!-- Template default styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_default.css?buildId=2017042020" />
+		<!-- Expand-collapse support styles  -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/resources/css/wt_expand.css?buildId=2017042020" />
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-3.1.1.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/localization/strings.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/localization.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/parseuri.js?buildId=2017042020">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.cookie.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery-ui.min.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/jquery.highlight-3.js">
+			<!---->
+		</script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/browserDetect.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<script type="text/javascript" src="daksys-webhelp/resources/js/image-resize.js">
+			<!---->
+		</script>
+		<!-- BnStart No37 -->
+		<!-- Skin resources -->
+		<link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/skin.css?buildId=2017042020" /><link rel="stylesheet" type="text/css" href="daksys-webhelp/template/variants/tiles/custom/watermark.css?buildId=2017042020" />
+		<!-- EXM-36950 - Expand the args.hdf parameter here -->
+		
+		<!-- EXM-36950 - webhelp.fragment.head :topic -->
+		
+	</head>
+	<body class="wh_topic_page frmBody" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461" onload="topicOnload()">
+		<!-- get_lang -->
+		<div id="lang" style="display:none">en-US</div><div id="mapoutputclass" style="display:none"></div>
+		<input hidden="hidden" id="UDCode" value="" /><input hidden="hidden" id="UDTrademark" value="" /><input hidden="hidden" id="Trademark" value="" />
+		<div class="content_area" id="content_area">
+			<div id="container_body" class="container">
+				<div id="container_body_right">
+					<div class="row">
+						<div id="contentArea">
+							<div class=" wh_topic_content body ">
+    <h1 class="title topictitle1">Configure Alarm of IoT Device</h1>
+
+
+<div class="body taskbody"><p class="shortdesc">When the IoT device is added to NVR/DVR, you can configure the alarm
+        parameters such as arming schedule, linkage method, OSD, and so on for receiving the alarm
+        of IoT device.</p>
+
+<div class="section prereq p" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-8FF07776-F95C-4B78-A36F-7D3EB6982FFB">
+            <ul class="ul" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__UL_GQ1_NTR_NGB">
+                <li class="li" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-8451DAAB-0EA2-4ACB-A06E-DC868E601AC1">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4.html#GUID-418DA3BC-68AB-4C21-98B7-366E1228C5F4" title="Initialize the programming environment before calling other APIs."><span class="keyword apiname">NET_DVR_Init</span></a> to initialize
+                        the integration resources.</p>
+
+                </li>
+
+                <li class="li" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-5D42602A-28A3-4529-A792-32D76E2B5EC5">
+                    <p class="p">Make sure you have called <a class="xref" href="GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7.html#GUID-A2BD64FA-1CD2-49BF-91AC-C0C818B540B7" title="Log in to the device (supports asynchronous login)."><span class="keyword apiname">NET_DVR_Login_V40</span></a> to log in
+                        to the device.</p>
+
+                </li>
+
+                <li class="li" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-6651FBBC-EBF7-499A-9D62-FF244CAC7D18">
+                    <p class="p">Make sure the IoT device is added to NVR/DVR.</p>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+<p class="li stepsection" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-A6792C38-4058-49C4-BF7B-FB1DDB717C44">
+                <div class="fig fignone" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__FIG_YDD_RJF_XGB">
+                    
+                    <img class="image" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__IMAGE_N1X_LTF_XGB" src="GUID-F3646A82-3B9E-4AA6-9572-1961EA2AF55B-high.png" height="2362" />
+                <span class="figcap">Figure 1 Programming Flow of Configuring Alarm of IoT Device</span></div>
+
+            </p><ol class="ol steps" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-5ACCDF3A-EBFE-46B5-926D-2733C0764757"><li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-81F204E6-3FA4-4483-BD85-834B9F4B6D2D">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-71AFFE1A-F8A5-4E86-A8E7-7A2F17B471FA.html#GUID-71AFFE1A-F8A5-4E86-A8E7-7A2F17B471FA" title="Get the event capabilities supported by IoT device channel.">/ISAPI/Event/IOT/channels/&lt;ID&gt;/capabilities?format=json</a> for getting the IoT device channel capability.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The event capability supported by IoT device channel is returned in <a class="xref" href="GUID-634ADF9C-E7B3-42A9-8788-DB55D461AE8E.html#GUID-634ADF9C-E7B3-42A9-8788-DB55D461AE8E" title="IOTChannelEventCap message in JSON format">JSON_IOTChannelEventCap</a>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-4F6140ED-B3D4-445F-99A8-5B04E03D6315">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-6938CCAD-C823-47BE-A8BB-FDD9364DD11A.html#GUID-6938CCAD-C823-47BE-A8BB-FDD9364DD11A" title="Get the alarm linkage configuration capability of IoT device.">/ISAPI/Event/triggersCap/IOT</a> for getting the event/alarm linkage configuration capability
+                    of IoT device.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The capability is returned in <a class="xref" href="GUID-BC3523F6-E799-4A9C-9A3F-E56E2E3B04AA.html#GUID-BC3523F6-E799-4A9C-9A3F-E56E2E3B04AA" title="IOTTriggersCap message in XML format">XML_IOTTriggersCap</a>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-E499D34B-AA21-46C9-A40A-3E0D9544CD61">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">GET</span>
+                    <a class="xref" href="GUID-6679DF52-4913-4B3D-9D91-6599DEB600E4.html#GUID-6679DF52-4913-4B3D-9D91-6599DEB600E4" title="Get the event configuration capability of IoT device.">/ISAPI/System/IOT/channels/&lt;ID&gt;/&lt;EventType&gt;/capabilities?format=json</a> for getting the event configuration capability.</span>
+                <div class="itemgroup stepresult">
+                    <p class="p">The event configuration capability is returned in <a class="xref" href="GUID-8743ED4D-CA7F-4562-A373-2E15A8253ECA.html#GUID-8743ED4D-CA7F-4562-A373-2E15A8253ECA" title="XXCap message in JSON format">JSON_XXCap</a>.</p>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-42812D15-A2FD-47A4-B026-13CF9C1B573D">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-C7678E56-FC53-4FA1-94B8-739C051EAA1C.html#GUID-C7678E56-FC53-4FA1-94B8-739C051EAA1C" title="Get or set the event/alarm parameters.">/ISAPI/System/IOT/channels/&lt;ID&gt;/&lt;EventType&gt;?format=json</a> for setting the event/alarm parameters.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-DD4808B1-C5DF-432A-A1E5-A3611A78FDA2">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-3F444EB5-056C-40CA-9302-1212E7895111.html#GUID-3F444EB5-056C-40CA-9302-1212E7895111" title="Operations about arming schedule of specified event type.">/ISAPI/Event/schedules/&lt;EventType&gt;/&lt;ID&gt;</a> for setting the arming schedule.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-A78552C9-1EC1-4669-AD0E-95E03C7A3950">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">PUT</span>
+                    <a class="xref" href="GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88.html#GUID-B52999D2-DF94-40B8-AF24-666BBCD95F88" title="Get, set, or delete the alarm linkage action by channel.">/ISAPI/Event/triggers/&lt;eventType&gt;-&lt;channelID&gt;</a> for setting the event/alarm linkage parameters.</span>
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-FB9AA957-F366-4457-B921-03AD938DD4A6">
+                <span class="ph cmd">Configure OSD.</span>
+                <ol type="a" class="ol substeps" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__SUBSTEPS_H2Z_T4J_WGB">
+                    <li class="li substep" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-AD2B8714-6806-4ADB-831D-5B05A29F7175">
+                        <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass
+                            through the URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-6B09CCE6-641F-4E00-864C-424EA3F59DBF.html#GUID-6B09CCE6-641F-4E00-864C-424EA3F59DBF" title="Get the OSD configuration capability of specified IoT device channel.">/ISAPI/System/IOT/channels/&lt;ID&gt;/OSD/capabilities?format=json</a> for getting the OSD configuration capability.</span>
+                    </li>
+
+                    <li class="li substep" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-6800C2F4-2CE5-4862-857F-6D0B9F5D5690">
+                        <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass
+                            through the URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-9A7622E1-5AFF-4AB3-8533-591F3C32A129.html#GUID-9A7622E1-5AFF-4AB3-8533-591F3C32A129" title="Get or set the OSD parameters.">/ISAPI/System/IOT/channels/&lt;ID&gt;/OSD?format=json</a> for getting the OSD parameters.</span>
+                    </li>
+
+                    <li class="li substep" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-CAAFF379-A84E-41C2-9288-8E291EEAC1B9">
+                        <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass
+                            through the URL: <span class="ph synph">PUT</span>
+                            <a class="xref" href="GUID-9A7622E1-5AFF-4AB3-8533-591F3C32A129.html#GUID-9A7622E1-5AFF-4AB3-8533-591F3C32A129" title="Get or set the OSD parameters.">/ISAPI/System/IOT/channels/&lt;ID&gt;/OSD?format=json</a> for setting the OSD parameters.</span>
+                    </li>
+
+                </ol>
+
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-5E6B33BD-98C7-4A61-A3D0-DFB206FE93F2">
+                <span class="ph cmd">Receive event/alarm information, and the alarm type is
+                    "0x4993-COMM_VCA_ALARM".</span>
+                <ul class="ul choices" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__CHOICES_DBX_B1K_WGB">
+                    <li class="li choice" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-94DD61EE-B63A-4404-AC08-989901C508D7">
+                        <p class="p">Receive event/alarm in arming mode, see details in <a class="xref" href="GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D.html#GUID-2E9A4B00-CF79-4017-B14E-A36531B1C46D" title="When the alarm is triggered or the event occurred, the secondarily developed third-party platform can automatically connect and send alarm/event uploading command to the device, and then the device uploads the alarm/event information to the platform for receiving.">Receive Alarm/Event in Arming Mode</a>.</p>
+
+                    </li>
+
+                    <li class="li choice" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-FFCD4BCC-ED4C-4126-A1E6-8401EF391771">
+                        <p class="p">Receive event/alarm in listening mode, see details in <a class="xref" href="GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1.html#GUID-0F8FE640-001D-4583-9CD3-62F91B30D0A1" title="When alarm is triggered or event occurred, the device uploads the alarm/event information automatically, so you can configure the listening address and port for listening and receiving the alarm/event in the secondarily developed third-part platform.">Receive Alarm/Event in Listening Mode</a>.</p>
+
+                    </li>
+
+                </ul>
+
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-9EA6473B-916F-480F-B37C-DF67729DA6D9">
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">POST</span>
+                    <a class="xref" href="GUID-CB0E81D2-E236-4BE5-8253-4EF233279A4F.html#GUID-CB0E81D2-E236-4BE5-8253-4EF233279A4F" title="Search for event.">/ISAPI/SDT/Management/EventSearch?format=json</a> for searching for the picture of linked event/alarm.</span>
+                <div class="itemgroup info">
+                    <div class="note note" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-A18B0C96-B5D7-4490-BA30-F7DD2A056374"><span class="notetitle">Note:</span> 
+                        <p class="p">Before searching for event, you can get the event search capability by
+                            the URL: <span class="ph synph">GET</span>
+                            <a class="xref" href="GUID-AE7D8F16-8A0F-4AB5-A279-94230644AE04.html#GUID-AE7D8F16-8A0F-4AB5-A279-94230644AE04" title="Get the event search capability.">/ISAPI/SDT/Management/EventSearch/capabilities?format=json</a>.</p>
+
+                    </div>
+
+                </div>
+            </li>
+<li class="li step stepexpand" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-7F8F7C87-DABB-4351-A78E-A770D55071F4"><strong>Optional: </strong>
+                <span class="ph cmd">Call <a class="xref" href="GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494.html#GUID-F69832FC-C943-4FCC-AA82-C64C0D25C494" title="Transmit request URL with XML or JSON format to implement some typical functions."><span class="keyword apiname">NET_DVR_STDXMLConfig</span></a> to pass through
+                    the URL: <span class="ph synph">POST</span>
+                    <a class="xref" href="GUID-EC37F776-410E-40C4-AD09-3381DF355D63.html#GUID-EC37F776-410E-40C4-AD09-3381DF355D63" title="Get the linked channel of searched event.">/ISAPI/System/IOT/linkageChannels?format=json</a> for getting linked channel of searched event.</span>
+            </li>
+</ol>
+
+        <div class="section postreq" id="GUID-A7DC010D-9EBB-4123-B546-1A1BD2D0B461__GUID-9629ACD6-B25A-4AB4-9D18-F488356EF340">
+            <p class="p">Call <a class="xref" href="GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023.html#GUID-FF96FD6A-755A-49EF-86B0-DE6067B8C023" title="Log out from devices."><span class="keyword apiname">NET_DVR_Logout</span></a> and <a class="xref" href="GUID-183BE60B-6A4D-4D46-B304-CAC198701643.html#GUID-183BE60B-6A4D-4D46-B304-CAC198701643" title="Release the resources after the program is ended."><span class="keyword apiname">NET_DVR_Cleanup</span></a> to log out and
+                release the resources.</p>
+
+        </div>
+
+</div>
+
+
+</div>
+							
+							
+							
+						</div>
+						<nav role="navigation" class="col-lg-4 col-md-4 col-sm-4 col-xs-12 navbar" id="wh_side_toc" style="display:none">
+							<div class=" wh_side_toc "><ul class="hidden-print"><li><span class="topicref"><a href="GUID-E1FAE3DB-3456-4BC1-863D-041413DE73D2.html">Device Management and Maintenance</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-A90C1F54-3082-4FA3-A535-17DE044BF184.html">Reset Password by Setting Recovery Email</a></span></li><li><span class="topicref"><a href="GUID-A2C83046-4151-44EE-8AAF-842096396C87.html">Remotely Upgrade Device</a></span></li><li><span class="topicref"><a href="GUID-9ACABDCE-8FA2-4997-8591-336BCA75C3E2.html">Search for Logs</a></span></li><li><span class="topicref"><a href="GUID-45D13B20-C8B7-4DC5-B1BF-4887BB41B1C2.html">Configure Log Storage Mode</a></span></li><li><span class="topicref"><a href="GUID-CFE07B8B-3827-4831-AA73-11197C3FD6C5.html">IoT Devices Access</a></span><ul class="nav nav-list"><li><span class="topicref"><a href="GUID-EC1F8C09-1A4A-472C-BD64-9A04E114553E.html">Add IoT Device to NVR/DVR</a></span></li><li class="active"><span class="topicref">Configure Alarm of IoT Device</span></li></ul></li><li><span class="topicref"><a href="GUID-B7B257B4-A905-49D5-BFA9-4482947A03D0.html">Online Upgrade Device via Guarding Vision</a></span></li><li><span class="topicref"><a href="GUID-4215F6AA-1953-4AB0-981F-0DBECFF60FB0.html">Configuration and Maintenance</a></span></li></ul></li></ul></div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="daksys-webhelp/resources/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="daksys-webhelp/resources/js/hik_topic.js"></script>
+		<!-- <script type="text/javascript" src="${daksys-webhelp-template-dir}/resources/js/wt_default.js?buildId=${daksys-webhelp-build-number}" /> -->
+		<!-- Expand/collapse support -->
+		<script type="text/javascript" src="daksys-webhelp/template/resources/js/wt_expand.js?buildId=2017042020"></script>
+		
+		
+	</body>
+</html>
