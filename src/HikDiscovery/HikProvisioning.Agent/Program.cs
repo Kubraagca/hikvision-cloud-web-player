@@ -307,7 +307,8 @@ static async Task RunCloudRegisterAsync(AgentTaskStore taskStore, string taskId,
                 deviceInfo.ShortSerial,
                 verificationCode,
                 alias,
-                request.AreaName ?? string.Empty),
+                request.AreaName ?? string.Empty,
+                request.AreaId ?? string.Empty),
             token).ConfigureAwait(false);
 
         if (!backendResult.Success)
@@ -761,6 +762,7 @@ internal sealed record ProvisionAgentRequest(
     string Password,
     string BackendUrl,
     string? AreaName,
+    string? AreaId,
     string? Alias,
     string? GatewayOverride,
     string? PrimaryDns,

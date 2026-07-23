@@ -33,6 +33,16 @@ app.MapPost("/api/team-devices/add", async (
         : Results.BadRequest(result);
 });
 
+app.MapGet("/api/team-areas", async (
+    HikConnectGatewayService service,
+    CancellationToken cancellationToken) =>
+{
+    var result = await service.GetAreasListAsync(cancellationToken);
+    return result.Success
+        ? Results.Ok(result)
+        : Results.BadRequest(result);
+});
+
 app.Run();
 
 internal sealed class HikConnectGatewayService
@@ -56,7 +66,9 @@ internal sealed class HikConnectGatewayService
                 ? alias
                 : request.AreaName.Trim();
 
-            var area = await EnsureAreaAsync(areaName, cancellationToken);
+            var area = string.IsNullOrWhiteSpace(request.AreaId)
+                ? await EnsureAreaAsync(areaName, cancellationToken)
+                : await GetAreaByIdAsync(request.AreaId.Trim(), areaName, cancellationToken);
             var existingDetail = await _client.TryGetDeviceDetailAsync(request.ShortSerial, cancellationToken);
 
             var deviceAdded = false;
@@ -232,6 +244,35 @@ internal sealed class HikConnectGatewayService
                 "Cihaz ekleme asamasi tamamlanamadi.",
                 "Kanal import asamasi baslatilamadi.");
         }
+    }
+
+    public async Task<TeamAreasResult> GetAreasListAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var areas = await GetAreasAsync(cancellationToken);
+            return new TeamAreasResult(true, "0", string.Empty, areas);
+        }
+        catch (HikConnectApiException exception)
+        {
+            return new TeamAreasResult(false, exception.ErrorCode, exception.Message, []);
+        }
+        catch (Exception exception)
+        {
+            return new TeamAreasResult(false, "UNEXPECTED", exception.Message, []);
+        }
+    }
+
+    private async Task<AreaInfo> GetAreaByIdAsync(string areaId, string fallbackAreaName, CancellationToken cancellationToken)
+    {
+        var areas = await GetAreasAsync(cancellationToken);
+        var existing = areas.FirstOrDefault(area => string.Equals(area.AreaId, areaId, StringComparison.OrdinalIgnoreCase));
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        throw new HikConnectApiException("AREA_NOT_FOUND", $"Secilen area bulunamadi. areaId={areaId}, areaName={fallbackAreaName}");
     }
 
     private async Task<AreaInfo> EnsureAreaAsync(string areaName, CancellationToken cancellationToken)
@@ -787,7 +828,14 @@ internal sealed record TeamDeviceAddRequest(
     string ShortSerial,
     string VerificationCode,
     string? Alias,
-    string? AreaName);
+    string? AreaName,
+    string? AreaId);
+
+internal sealed record TeamAreasResult(
+    bool Success,
+    string ErrorCode,
+    string Message,
+    IReadOnlyList<AreaInfo> Areas);
 
 internal sealed record TeamDeviceAddResult(
     bool Success,

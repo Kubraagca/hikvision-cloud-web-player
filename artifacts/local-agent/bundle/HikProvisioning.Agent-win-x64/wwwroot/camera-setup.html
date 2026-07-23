@@ -249,7 +249,7 @@
 <header>
   <div>
     <h1>Yerel Kamera Kurulum</h1>
-    <div class="sub">SADP benzeri adim adim akis: kamerayi tara, sec, aktive et, ag ayarlarini uygula ve Team hesabina ekle.</div>
+    <div class="sub">SADP benzeri adim adim akis: kamerayi tara, sec, aktive et, ag ayarlarini uygula. Buluta ekleme ayri adimdir.</div>
   </div>
   <div style="display:flex; gap:10px;">
     <a class="button-link" id="cloud-panel-link" href="#">Bulut Panele Don</a>
@@ -345,7 +345,7 @@
         <div class="step-badge">3</div>
         <div>
           <h2>Secilen Kamera</h2>
-          <div class="panel-sub">Baglandigin kameranin temel kimlik ve sonuc bilgileri burada gorunur.</div>
+          <div class="panel-sub">Baglandigin kameranin temel kimlik, mevcut IP ve bulut sonuc bilgileri burada gorunur.</div>
         </div>
       </div>
 
@@ -359,7 +359,7 @@
       </div>
 
       <div class="status-line">
-        <div class="pill">Akis: Tara -> Sec -> Aktive Et ve Baglan -> Bastan Sona Kurulum</div>
+        <div class="pill">Akis: Tara -> Sec -> Aktive Et ve Baglan -> Kamera Ayarlarini Uygula -> Buluta Ekle</div>
       </div>
     </section>
 
@@ -368,7 +368,7 @@
         <div class="step-badge">4</div>
         <div>
           <h2>Kurulum Ayarlari</h2>
-          <div class="panel-sub">Ag, EZVIZ ve Team backend icin gerekli alanlar.</div>
+          <div class="panel-sub">Ag, verification code ve bulut kaydi icin gerekli alanlar.</div>
         </div>
       </div>
 
@@ -409,7 +409,8 @@
       </label>
 
       <div class="actions">
-        <button id="start-btn" class="primary" type="button">Bastan Sona Kurulum</button>
+        <button id="start-btn" class="primary" type="button">Kamera Ayarlarini Uygula</button>
+        <button id="cloud-register-btn" class="accent" type="button">Hik-Connect / Team'e Ekle</button>
       </div>
     </section>
 
@@ -418,7 +419,7 @@
         <div class="step-badge">5</div>
         <div>
           <h2>Kurulum Asamalari</h2>
-          <div class="panel-sub">Her adimin durumu ve hata detayi burada listelenir.</div>
+          <div class="panel-sub">Yerel ayar veya bulut kaydi sirasindaki adimlar ve hata detaylari burada listelenir.</div>
         </div>
       </div>
 
@@ -651,12 +652,18 @@
 
     if ((task.status || "").toLowerCase() === "completed") {
       clearPolling();
-      setStatus(task.taskKind === "connect" ? "Aktivasyon ve baglanti tamamlandi." : "Kurulum tamamlandi.");
+      setStatus(
+        task.taskKind === "connect"
+          ? "Aktivasyon ve baglanti tamamlandi."
+          : task.taskKind === "cloudRegister"
+            ? "Bulut kaydi tamamlandi."
+            : "Kamera ayarlari tamamlandi."
+      );
     } else if ((task.status || "").toLowerCase() === "failed") {
       clearPolling();
-      setStatus(`Kurulum basarisiz: ${payload?.error || task.message || "Bilinmeyen hata"}`);
+      setStatus(`Islem basarisiz: ${payload?.error || task.message || "Bilinmeyen hata"}`);
     } else {
-      setStatus(`Kurulum suruyor. Son guncelleme: ${new Date(task.updatedAtUtc).toLocaleTimeString("tr-TR")}`);
+      setStatus(`Islem suruyor. Son guncelleme: ${new Date(task.updatedAtUtc).toLocaleTimeString("tr-TR")}`);
     }
   }
 
@@ -718,7 +725,7 @@
       return;
     }
 
-    setStatus("Kurulum baslatiliyor...");
+    setStatus("Kamera ayarlari baslatiliyor...");
     renderResult(null);
     try {
       const response = await fetch("/agent/provision/start", {
@@ -728,7 +735,39 @@
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || "Kurulum baslatilamadi.");
+        throw new Error(data.error || "Kamera ayarlari baslatilamadi.");
+      }
+      startPolling(data.taskId);
+    } catch (err) {
+      setStatus(err.message);
+    }
+  });
+
+  document.getElementById("cloud-register-btn").addEventListener("click", async () => {
+    const payload = getPayload();
+    if (!payload.cameraAddress) {
+      setStatus("Kamera IP zorunlu.");
+      return;
+    }
+    if (!payload.password) {
+      setStatus("Parola zorunlu.");
+      return;
+    }
+    if (!payload.verificationCode) {
+      setStatus("Buluta ekleme icin verification code gir.");
+      return;
+    }
+
+    setStatus("Bulut kaydi baslatiliyor...");
+    try {
+      const response = await fetch("/agent/cloud-register/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Bulut kaydi baslatilamadi.");
       }
       startPolling(data.taskId);
     } catch (err) {

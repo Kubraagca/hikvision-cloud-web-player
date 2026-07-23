@@ -127,6 +127,14 @@
     background: #fbfdff;
     color: var(--text);
   }
+  .field select {
+    width: 100%;
+    padding: 12px 13px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fbfdff;
+    color: var(--text);
+  }
   .field input:focus {
     outline: none;
     border-color: #8db5de;
@@ -378,6 +386,12 @@
           <input id="backend-url" type="text" />
         </div>
         <div class="field">
+          <label for="area-select">Alan Listesi</label>
+          <select id="area-select">
+            <option value="">Once Alanlari Getir</option>
+          </select>
+        </div>
+        <div class="field">
           <label for="area-name">Area Adi</label>
           <input id="area-name" type="text" placeholder="Bos birakilirsa CAM-{shortSerial}" />
         </div>
@@ -409,6 +423,7 @@
       </label>
 
       <div class="actions">
+        <button id="load-areas-btn" type="button">Alanlari Getir</button>
         <button id="start-btn" class="primary" type="button">Kamera Ayarlarini Uygula</button>
         <button id="cloud-register-btn" class="accent" type="button">Hik-Connect / Team'e Ekle</button>
       </div>
@@ -469,6 +484,7 @@
   const stageBody = document.getElementById("stage-body");
   const networkBody = document.getElementById("network-body");
   const backendUrlInput = document.getElementById("backend-url");
+  const areaSelect = document.getElementById("area-select");
   const cloudPanelLink = document.getElementById("cloud-panel-link");
   const modelEl = document.getElementById("meta-model");
   const shortSerialEl = document.getElementById("meta-short-serial");
@@ -480,6 +496,7 @@
   let activeTaskId = null;
   let pollTimer = null;
   let discoveredDevices = [];
+  let availableAreas = [];
 
   const qs = new URLSearchParams(window.location.search);
   const backendUrl = qs.get("backendUrl") || qs.get("backend") || "https://hikvision-cloud-web-player.onrender.com";
@@ -580,6 +597,23 @@
       </tr>`).join("");
   }
 
+  function renderAreas(areas) {
+    availableAreas = Array.isArray(areas) ? areas : [];
+    areaSelect.innerHTML = "";
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = availableAreas.length ? "Alan secin" : "Alan bulunamadi";
+    areaSelect.appendChild(defaultOption);
+
+    for (const area of availableAreas) {
+      const option = document.createElement("option");
+      option.value = pick(area, "areaId", "AreaId");
+      option.textContent = pick(area, "areaName", "AreaName");
+      areaSelect.appendChild(option);
+    }
+  }
+
   function applyDevice(index) {
     const device = discoveredDevices[index];
     if (!device) return;
@@ -595,6 +629,22 @@
       throw new Error(data.error || "Yerel servis hazir degil.");
     }
     setAgentStatus(`Yerel servis hazir. CLI: ${data.cli?.found ? "evet" : "hayir"}, HCNetSDK: ${data.cli?.sdkDllFound ? "evet" : "hayir"}`);
+  }
+
+  async function loadAreas() {
+    const backendUrl = backendUrlInput.value.trim();
+    if (!backendUrl) {
+      throw new Error("Backend URL zorunlu.");
+    }
+
+    const response = await fetch(`${backendUrl.replace(/\/$/, "")}/api/team-areas`);
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || data.error || "Alan listesi alinamadi.");
+    }
+
+    renderAreas(data.areas || []);
+    setStatus(`${(data.areas || []).length} alan yüklendi.`);
   }
 
   async function discover() {
@@ -684,12 +734,14 @@
   }
 
   function getPayload() {
+    const selectedArea = availableAreas.find((item) => pick(item, "areaId", "AreaId") === areaSelect.value);
     return {
       cameraAddress: document.getElementById("camera-ip").value.trim(),
       userName: document.getElementById("username").value.trim() || "admin",
       password: document.getElementById("password").value,
       backendUrl: backendUrlInput.value.trim(),
-      areaName: document.getElementById("area-name").value.trim(),
+      areaName: document.getElementById("area-name").value.trim() || pick(selectedArea, "areaName", "AreaName"),
+      areaId: areaSelect.value || "",
       alias: document.getElementById("alias").value.trim(),
       gatewayOverride: document.getElementById("gateway-override").value.trim(),
       primaryDns: document.getElementById("primary-dns").value.trim() || "8.8.8.8",
@@ -706,6 +758,17 @@
 
   document.getElementById("discover-btn").addEventListener("click", () => {
     discover().catch((err) => setStatus(err.message));
+  });
+
+  document.getElementById("load-areas-btn").addEventListener("click", () => {
+    loadAreas().catch((err) => setStatus(err.message));
+  });
+
+  areaSelect.addEventListener("change", () => {
+    const selectedArea = availableAreas.find((item) => pick(item, "areaId", "AreaId") === areaSelect.value);
+    if (selectedArea && !document.getElementById("area-name").value.trim()) {
+      document.getElementById("area-name").value = pick(selectedArea, "areaName", "AreaName");
+    }
   });
 
   discoverBody.addEventListener("click", (event) => {

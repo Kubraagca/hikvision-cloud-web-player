@@ -35,7 +35,11 @@ internal sealed record AgentBackendAddDeviceRequest(
     string ShortSerial,
     string VerificationCode,
     string Alias,
-    string AreaName);
+    string AreaName,
+    string AreaId);
+
+internal sealed record AgentBackendAreaInfo(string AreaId, string AreaName);
+internal sealed record AgentBackendAreasResult(bool Success, string ErrorCode, string Message, IReadOnlyList<AgentBackendAreaInfo> Areas);
 
 internal sealed record AgentBackendAddDeviceResult(
     bool Success,
@@ -113,6 +117,24 @@ internal sealed class AgentTeamBackendClient : IDisposable
         });
 
         return result ?? throw new InvalidOperationException("Backend yaniti okunamadi.");
+    }
+
+    public async Task<AgentBackendAreasResult> GetAreasAsync(CancellationToken cancellationToken)
+    {
+        using var response = await _httpClient.GetAsync("api/team-areas", cancellationToken).ConfigureAwait(false);
+        var responseBody = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException(
+                $"Backend alan listesi istegi basarisiz. HTTP {(int)response.StatusCode} ({response.StatusCode}). Yanit: {Summarize(responseBody)}");
+        }
+
+        var result = JsonSerializer.Deserialize<AgentBackendAreasResult>(responseBody, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        return result ?? throw new InvalidOperationException("Backend alan listesi yaniti okunamadi.");
     }
 
     public void Dispose()
