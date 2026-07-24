@@ -144,6 +144,14 @@
         <label for="area-name">Area Adi</label>
         <input id="area-name" type="text" placeholder="Bos ise alias kullanilir" />
       </div>
+      <div class="field">
+        <label for="user-name">Kullanici Adi</label>
+        <input id="user-name" type="text" value="admin" placeholder="Genelde admin" />
+      </div>
+      <div class="field">
+        <label for="device-password">Kamera Parolasi</label>
+        <input id="device-password" type="password" placeholder="Opsiyonel ama bu test icin doldurun" />
+      </div>
     </div>
 
     <div class="actions">
@@ -199,7 +207,9 @@
       shortSerial: document.getElementById("short-serial").value.trim(),
       verificationCode: document.getElementById("verification-code").value.trim(),
       alias: document.getElementById("alias").value.trim(),
-      areaName: document.getElementById("area-name").value.trim()
+      areaName: document.getElementById("area-name").value.trim(),
+      userName: document.getElementById("user-name").value.trim(),
+      password: document.getElementById("device-password").value
     };
 
     if (!payload.shortSerial) {

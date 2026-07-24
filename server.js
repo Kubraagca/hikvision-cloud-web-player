@@ -159,6 +159,8 @@ function sanitizeMessage(message) {
     output = output.replaceAll(APP_SECRET, "***");
   }
   return output
+    .replace(/"password"\s*:\s*"[^"]*"/gi, '"password":"***"')
+    .replace(/"userName"\s*:\s*"[^"]*"/gi, '"userName":"***"')
     .replace(/"token"\s*:\s*"[^"]+"/gi, '"token":"***"')
     .replace(/"accessToken"\s*:\s*"[^"]+"/gi, '"accessToken":"***"')
     .replace(/Token:\s*[^\s,]+/gi, "Token: ***");
@@ -1022,7 +1024,7 @@ async function getDeviceDetail(shortSerial) {
   };
 }
 
-async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias, areaId }) {
+async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias, areaId, userName, password }) {
   const existingDetail = await getDeviceDetail(shortSerial);
   let deviceAdded = false;
   let deviceId = existingDetail.deviceId;
@@ -1031,14 +1033,14 @@ async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias
   if (!existingDetail.exists) {
     const data = await postOpenApi("/api/hccgw/resource/v1/devices/add", {
       deviceCategory: "encodingDevice",
-      deviceInfo: {
-        name: alias,
-        ezvizSerialNo: shortSerial,
-        ezvizVerifyCode: verificationCode,
-        userName: "",
-        password: "",
-        streamSecretKey: "",
-      },
+        deviceInfo: {
+          name: alias,
+          ezvizSerialNo: shortSerial,
+          ezvizVerifyCode: verificationCode,
+          userName: String(userName || "").trim(),
+          password: String(password || ""),
+          streamSecretKey: "",
+        },
       importToArea: {
         areaID: areaId,
         enable: "1",
@@ -1479,6 +1481,8 @@ async function runProvisioningTask(task, input) {
     verificationCode,
     alias,
     areaId: area.areaId,
+    userName: normalizedUser,
+    password: input.password,
   });
   updateTaskStage(task, "Team Hesabina Ekleme", "Tamam", teamResult.deviceStatusMessage);
   updateTaskStage(task, "Kanal Aktarimi", "Tamam", teamResult.channelStatusMessage);
@@ -1770,6 +1774,8 @@ app.post("/api/team-devices/add", async (req, res) => {
     alias: String(req.body.alias || "").trim(),
     areaName: String(req.body.areaName || "").trim(),
     areaId: String(req.body.areaId || "").trim(),
+    userName: String(req.body.userName || "").trim(),
+    password: String(req.body.password || ""),
   };
 
   if (!input.shortSerial) {
@@ -1807,6 +1813,8 @@ app.post("/api/provisioning/team-register", async (req, res) => {
     alias: String(req.body.alias || "").trim(),
     areaName: String(req.body.areaName || "").trim(),
     areaId: String(req.body.areaId || "").trim(),
+    userName: String(req.body.userName || "").trim(),
+    password: String(req.body.password || ""),
     model: String(req.body.model || "").trim(),
     serialNumber: String(req.body.serialNumber || "").trim(),
     subSerialNumber: String(req.body.subSerialNumber || "").trim(),
@@ -1830,6 +1838,8 @@ app.post("/api/provisioning/team-register", async (req, res) => {
       alias: input.alias,
       areaName: input.areaName,
       areaId: input.areaId,
+      userName: input.userName,
+      password: input.password,
     });
 
     return res.status(200).json({

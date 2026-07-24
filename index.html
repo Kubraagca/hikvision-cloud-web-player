@@ -221,7 +221,7 @@
 <header>
   <div>
     <h1>Hikvision Cloud Izleme Paneli</h1>
-    <div class="sub">Kameralari listele ve Hikvision JSDecoder SDK ile cloud canli yayina hazirla.</div>
+    <div class="sub">Kameralari listele ve HLS proxy uzerinden cloud canli yayini oynat.</div>
   </div>
   <div style="display:flex; gap:10px; align-items:center;">
     <a class="button-link" href="/team-device-add">Kamera Ekle</a>
@@ -242,7 +242,7 @@
       </select>
     </div>
     <div class="health">
-      Web uzerinden HLS oynatma kullaniliyor. Dokumana gore HLS icin kamera yayin sifrelemesi kapali olmali.
+      HLS icin kamera stream codec'i H.264 olmali ve kamera cloud tarafinda online gorunmelidir.
     </div>
     <div class="placeholder" id="camera-placeholder">Kameralar yukleniyor...</div>
   </aside>
@@ -293,6 +293,13 @@
       healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}<br><strong>Mod:</strong> HLS proxy`;
     } catch (err) {
       healthEl.innerHTML = `<strong>Durum:</strong> hata<br>${err.message}`;
+    }
+  }
+
+  function destroyHls() {
+    if (hls) {
+      hls.destroy();
+      hls = null;
     }
   }
 
@@ -370,6 +377,7 @@
         data.protocol === 1 ? "EZOPEN" :
         data.protocol === 3 ? "RTMP" :
         `Protocol ${data.protocol}`;
+
       playHls(data.url);
       statusEl.textContent = `${cam.name} - HLS oynatma baslatiliyor.`;
 
@@ -382,46 +390,8 @@
     }
   }
 
-  async function playSdkUrl(url, secretKey) {
-    if (!sdkReady || !sdkPlayer || !url) {
-      return false;
-    }
-
-    try {
-      if (!sdkOptionsReady && typeof sdkPlayer.JS_SetOptions === "function") {
-        await sdkPlayer.JS_SetOptions({});
-        sdkOptionsReady = true;
-      }
-
-      if (secretKey && typeof sdkPlayer.JS_SetSecretKey === "function") {
-        sdkPlayer.JS_SetSecretKey(sdkWindowIndex, secretKey);
-      }
-
-      await sdkPlayer.JS_Play(
-        url,
-        {
-          playURL: url,
-          auth: "",
-          mode: "media",
-          token: ""
-        },
-        sdkWindowIndex
-      );
-
-      protocolMetaEl.textContent = "EZOPEN / JSDecoder";
-      return true;
-    } catch (err) {
-      console.error("sdk play failed", err);
-      sdkBoxEl.innerHTML = `<strong>SDK:</strong> oynatma basarisiz<br>${err.message}`;
-      return false;
-    }
-  }
-
   function playHls(url) {
-    if (hls) {
-      hls.destroy();
-      hls = null;
-    }
+    destroyHls();
 
     videoEl.pause();
     videoEl.removeAttribute("src");
