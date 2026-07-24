@@ -108,6 +108,7 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
         new AgentTaskStage("Erisim", "Bekliyor", string.Empty),
         new AgentTaskStage("Aktivasyon", "Bekliyor", string.Empty),
         new AgentTaskStage("Giris", "Bekliyor", string.Empty),
+        new AgentTaskStage("Yayin Sifreleme", "Bekliyor", string.Empty),
         new AgentTaskStage("Ag Ayari", "Bekliyor", string.Empty),
         new AgentTaskStage("Hik-Connect Online", "Bekliyor", string.Empty),
         new AgentTaskStage("Tamamlandi", "Bekliyor", string.Empty)
@@ -174,6 +175,39 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
             if (!loginResult.Success)
             {
                 throw new InvalidOperationException($"NET_DVR_Login_V40 basarisiz. NET_DVR_GetLastError={loginResult.ErrorCode}, Message={loginResult.ErrorMessage}");
+            }
+
+            taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Calisiyor", "HCNetSDK ile stream encryption durumu okunuyor.");
+            var encryptionStatus = session.GetStreamEncryption();
+            if (!encryptionStatus.Success)
+            {
+                throw new InvalidOperationException($"NET_DVR_GetDeviceConfig(NET_DVR_GET_STREAMENCRYPTION) basarisiz. NET_DVR_GetLastError={encryptionStatus.ErrorCode}, Message={encryptionStatus.ErrorMessage}");
+            }
+
+            if (encryptionStatus.Enabled)
+            {
+                var disableResult = session.SetStreamEncryption(enabled: false);
+                if (!disableResult.Success)
+                {
+                    throw new InvalidOperationException($"NET_DVR_SetDeviceConfig(NET_DVR_SET_STREAMENCRYPTION) basarisiz. NET_DVR_GetLastError={disableResult.ErrorCode}, Message={disableResult.ErrorMessage}");
+                }
+
+                var verifyResult = session.GetStreamEncryption();
+                if (!verifyResult.Success)
+                {
+                    throw new InvalidOperationException($"NET_DVR_GetDeviceConfig(NET_DVR_GET_STREAMENCRYPTION) dogrulama basarisiz. NET_DVR_GetLastError={verifyResult.ErrorCode}, Message={verifyResult.ErrorMessage}");
+                }
+
+                if (verifyResult.Enabled)
+                {
+                    throw new InvalidOperationException("HCNetSDK stream encryption kapatma komutu basarili dondu ancak durum hala acik gorunuyor.");
+                }
+
+                taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Tamam", "Stream encryption kapatildi.");
+            }
+            else
+            {
+                taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Atlandi", "Stream encryption zaten kapali.");
             }
         }
 
@@ -363,7 +397,8 @@ static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, Provi
     [
         new AgentTaskStage("Erisim", "Bekliyor", string.Empty),
         new AgentTaskStage("Aktivasyon", "Bekliyor", string.Empty),
-        new AgentTaskStage("Giris", "Bekliyor", string.Empty)
+        new AgentTaskStage("Giris", "Bekliyor", string.Empty),
+        new AgentTaskStage("Yayin Sifreleme", "Bekliyor", string.Empty)
     ]);
 
     try
@@ -428,6 +463,21 @@ static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, Provi
             {
                 throw new InvalidOperationException($"NET_DVR_Login_V40 basarisiz. NET_DVR_GetLastError={loginResult.ErrorCode}, Message={loginResult.ErrorMessage}");
             }
+
+            taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Calisiyor", "HCNetSDK ile stream encryption durumu kontrol ediliyor.");
+            var encryptionStatus = session.GetStreamEncryption();
+            if (!encryptionStatus.Success)
+            {
+                throw new InvalidOperationException($"NET_DVR_GetDeviceConfig(NET_DVR_GET_STREAMENCRYPTION) basarisiz. NET_DVR_GetLastError={encryptionStatus.ErrorCode}, Message={encryptionStatus.ErrorMessage}");
+            }
+
+            taskStore.UpdateStage(
+                taskId,
+                "Yayin Sifreleme",
+                encryptionStatus.Enabled ? "Uyari" : "Tamam",
+                encryptionStatus.Enabled
+                    ? "Stream encryption acik. HLS izleme icin kapatilmasi gerekir."
+                    : "Stream encryption kapali.");
         }
 
         var networkInterfaces = await client.GetNetworkInterfacesAsync(token).ConfigureAwait(false);

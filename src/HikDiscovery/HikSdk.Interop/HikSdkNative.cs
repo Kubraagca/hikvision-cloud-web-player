@@ -5,6 +5,8 @@ namespace HikSdk.Interop;
 public static class HikSdkNative
 {
     private const string DllName = "HCNetSDK.dll";
+    public const uint NET_DVR_GET_STREAMENCRYPTION = 3749;
+    public const uint NET_DVR_SET_STREAMENCRYPTION = 3750;
 
     public enum NET_SDK_INIT_CFG_TYPE
     {
@@ -74,4 +76,28 @@ public static class HikSdkNative
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool NET_DVR_Logout_V30(int lUserID);
+
+    [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool NET_DVR_GetDeviceConfig(
+        int lUserID,
+        uint dwCommand,
+        uint dwCount,
+        ref NET_DVR_STREAMENCRYPTION_COND lpInBuffer,
+        uint dwInBufferSize,
+        ref uint lpStatusList,
+        ref NET_DVR_STREAMENCRYPTION_CFG lpOutBuffer,
+        uint dwOutBufferSize);
+
+    [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool NET_DVR_SetDeviceConfig(
+        int lUserID,
+        uint dwCommand,
+        uint dwCount,
+        ref NET_DVR_STREAMENCRYPTION_COND lpInBuffer,
+        uint dwInBufferSize,
+        ref uint lpStatusList,
+        ref NET_DVR_STREAMENCRYPTION_CFG lpInParamBuffer,
+        uint dwInParamBufferSize);
 }

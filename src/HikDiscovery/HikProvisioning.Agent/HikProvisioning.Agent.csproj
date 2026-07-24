@@ -10,10 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="HikSdk.Interop">
-      <HintPath>..\HikSdk.Interop\bin\x64\Release\net9.0-windows\HikSdk.Interop.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
+    <ProjectReference Include="..\HikSdk.Interop\HikSdk.Interop.csproj" />
   </ItemGroup>
 
   <ItemGroup>

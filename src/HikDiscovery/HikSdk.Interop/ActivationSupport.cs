@@ -5,6 +5,7 @@ namespace HikSdk.Interop;
 public sealed record ActivationResult(bool Success, uint ErrorCode, string ErrorMessage);
 
 public sealed record LoginResult(bool Success, int UserId, uint ErrorCode, string ErrorMessage);
+public sealed record StreamEncryptionResult(bool Success, bool Enabled, uint ErrorCode, string ErrorMessage);
 
 public sealed class HikActivationSession : IDisposable
 {
@@ -80,6 +81,63 @@ public sealed class HikActivationSession : IDisposable
         return new LoginResult(false, -1, error.ErrorCode, $"{error.ErrorSymbol}: {error.ErrorMessage}");
     }
 
+    public StreamEncryptionResult GetStreamEncryption(uint channel = 1)
+    {
+        EnsureInitialized();
+        EnsureLoggedIn();
+
+        var condition = NET_DVR_STREAMENCRYPTION_COND.Create(channel);
+        var config = NET_DVR_STREAMENCRYPTION_CFG.Create();
+        uint status = 0;
+
+        var success = HikSdkNative.NET_DVR_GetDeviceConfig(
+            _userId,
+            HikSdkNative.NET_DVR_GET_STREAMENCRYPTION,
+            1,
+            ref condition,
+            (uint)System.Runtime.InteropServices.Marshal.SizeOf<NET_DVR_STREAMENCRYPTION_COND>(),
+            ref status,
+            ref config,
+            (uint)System.Runtime.InteropServices.Marshal.SizeOf<NET_DVR_STREAMENCRYPTION_CFG>());
+
+        if (success)
+        {
+            return new StreamEncryptionResult(true, config.byEnable != 0, 0, string.Empty);
+        }
+
+        var error = HikSdkSession.CaptureLastError();
+        return new StreamEncryptionResult(false, false, error.ErrorCode, $"{error.ErrorSymbol}: {error.ErrorMessage}");
+    }
+
+    public StreamEncryptionResult SetStreamEncryption(bool enabled, uint channel = 1)
+    {
+        EnsureInitialized();
+        EnsureLoggedIn();
+
+        var condition = NET_DVR_STREAMENCRYPTION_COND.Create(channel);
+        var config = NET_DVR_STREAMENCRYPTION_CFG.Create();
+        config.byEnable = enabled ? (byte)1 : (byte)0;
+        uint status = 0;
+
+        var success = HikSdkNative.NET_DVR_SetDeviceConfig(
+            _userId,
+            HikSdkNative.NET_DVR_SET_STREAMENCRYPTION,
+            1,
+            ref condition,
+            (uint)System.Runtime.InteropServices.Marshal.SizeOf<NET_DVR_STREAMENCRYPTION_COND>(),
+            ref status,
+            ref config,
+            (uint)System.Runtime.InteropServices.Marshal.SizeOf<NET_DVR_STREAMENCRYPTION_CFG>());
+
+        if (success)
+        {
+            return new StreamEncryptionResult(true, enabled, 0, string.Empty);
+        }
+
+        var error = HikSdkSession.CaptureLastError();
+        return new StreamEncryptionResult(false, enabled, error.ErrorCode, $"{error.ErrorSymbol}: {error.ErrorMessage}");
+    }
+
     public void Dispose()
     {
         LogoutIfNeeded();
@@ -96,6 +154,14 @@ public sealed class HikActivationSession : IDisposable
         if (!_initialized)
         {
             throw new InvalidOperationException("HCNetSDK oturumu baslatilmadi.");
+        }
+    }
+
+    private void EnsureLoggedIn()
+    {
+        if (_userId < 0)
+        {
+            throw new InvalidOperationException("HCNetSDK login oturumu yok.");
         }
     }
 
