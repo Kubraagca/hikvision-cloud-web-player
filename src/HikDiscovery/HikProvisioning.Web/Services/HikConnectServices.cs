@@ -346,9 +346,20 @@ public sealed class HikConnectGatewayService
 
     private async Task<IReadOnlyList<AreaInfo>> GetAreasAsync(CancellationToken cancellationToken)
     {
+        var payload = new JsonObject
+        {
+            ["pageIndex"] = "1",
+            ["pageSize"] = "500",
+            ["filter"] = new JsonObject
+            {
+                ["parentAreaID"] = "-1",
+                ["includeSubArea"] = 1
+            }
+        };
+
         var response = await _client.PostWithTokenRetryAsync(
             "/api/hccgw/resource/v1/areas/get",
-            new JsonObject(),
+            payload,
             cancellationToken);
 
         HikConnectResponseParser.EnsureSuccess(response, "areas/get");
@@ -551,12 +562,13 @@ internal static class HikConnectResponseParser
         var outerMessage = GetOuterMessage(response);
 
         var data = response["data"]?.AsObject();
-        var succeeded = data?["succeeded"]?.GetValue<int?>() ?? 0;
-        var failed = data?["failed"]?.GetValue<int?>() ?? 0;
+        var addDeviceResponse = data?["addDeviceResponse"]?.AsObject() ?? data;
+        var succeeded = addDeviceResponse?["succeeded"]?.GetValue<int?>() ?? 0;
+        var failed = addDeviceResponse?["failed"]?.GetValue<int?>() ?? 0;
 
-        var deviceId = ExtractDeviceId(data);
+        var deviceId = ExtractDeviceId(addDeviceResponse);
         var success = outerErrorCode == "0" && failed == 0 && succeeded == 1 && !string.IsNullOrWhiteSpace(deviceId);
-        var effectiveErrorCode = success ? "0" : FirstInnerErrorCode(data) ?? outerErrorCode;
+        var effectiveErrorCode = success ? "0" : FirstInnerErrorCode(addDeviceResponse) ?? outerErrorCode;
         var userMessage = success
             ? "Cihaz Team hesabina basariyla eklendi."
             : ToFriendlyMessage(effectiveErrorCode, outerMessage);

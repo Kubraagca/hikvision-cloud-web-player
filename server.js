@@ -971,6 +971,21 @@ async function ensureArea(areaName) {
     throw new Error(friendlyOpenApiError(addErrorCode, addData.errorMsg || addData.msg || "Alan olusturulamadi."));
   }
 
+  const createdArea = parseAreas(addData)[0];
+  if (createdArea) {
+    return createdArea;
+  }
+
+  const createdAreaId =
+    addData?.data?.areaID != null && String(addData.data.areaID).trim()
+      ? String(addData.data.areaID).trim()
+      : addData?.data?.id != null && String(addData.data.id).trim()
+        ? String(addData.data.id).trim()
+        : "";
+  if (createdAreaId) {
+    return { areaId: createdAreaId, areaName };
+  }
+
   areas = await getAreas();
   const created = areas.find((item) => item.areaName.toLowerCase() === areaName.toLowerCase());
   if (!created) {
@@ -1035,12 +1050,13 @@ async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias
     });
 
     const errorCode = String(data.errorCode || data.code || "");
-    const succeeded = Number(data.data?.succeeded || 0);
-    const failed = Number(data.data?.failed || 0);
-    deviceId = extractDeviceId(data.data);
+    const addDeviceResponse = data.data?.addDeviceResponse || data.data || {};
+    const succeeded = Number(addDeviceResponse.succeeded || 0);
+    const failed = Number(addDeviceResponse.failed || 0);
+    deviceId = extractDeviceId(addDeviceResponse);
 
     if (errorCode !== "0" || failed !== 0 || succeeded !== 1 || !deviceId) {
-      const effectiveErrorCode = firstInnerErrorCode(data.data) || errorCode;
+      const effectiveErrorCode = firstInnerErrorCode(addDeviceResponse) || errorCode;
       throw new Error(friendlyOpenApiError(effectiveErrorCode, data.errorMsg || data.msg || "Cihaz Team hesabina eklenemedi."));
     }
 
