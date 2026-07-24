@@ -179,13 +179,8 @@ public sealed class IsapiClient : IDisposable
 
     public async Task<EnableEzvizResult> EnableEzvizAsync(string verificationCode, TimeSpan pollInterval, TimeSpan timeout, CancellationToken cancellationToken)
     {
-        var requestXml = $"""
-<?xml version="1.0" encoding="UTF-8"?>
-<EZVIZ version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
-  <enabled>true</enabled>
-  <verificationCode>{SecurityElement.Escape(verificationCode)}</verificationCode>
-</EZVIZ>
-""";
+        var currentDocument = await GetXmlAsync("/ISAPI/System/Network/EZVIZ", cancellationToken).ConfigureAwait(false);
+        var requestXml = BuildEzvizUpdateXml(currentDocument, verificationCode);
 
         await PutXmlAsync("/ISAPI/System/Network/EZVIZ", requestXml, cancellationToken).ConfigureAwait(false);
 
@@ -398,6 +393,34 @@ public sealed class IsapiClient : IDisposable
         var verificationCode = GetValue(document.Root, "verificationCode");
 
         return new EzvizStatusModel(TryParseBoolean(enabledValue), TryParseBoolean(registerStatusValue), !string.IsNullOrWhiteSpace(verificationCode));
+    }
+
+    private static string BuildEzvizUpdateXml(XDocument currentDocument, string verificationCode)
+    {
+        var currentRoot = currentDocument.Root ?? throw new InvalidOperationException("EZVIZ XML okunamadi.");
+        var ns = currentRoot.Name.Namespace;
+        var version = currentRoot.Attribute("version")?.Value ?? "2.0";
+        var redirectValue = GetValue(currentRoot, "redirect");
+        var redirectEnabled = string.Equals(redirectValue, "true", StringComparison.OrdinalIgnoreCase) || redirectValue == "1";
+        var serverAddress = currentRoot.Elements().FirstOrDefault(element => element.Name.LocalName == "serverAddress");
+
+        var requestRoot = new XElement(ns + "EZVIZ",
+            new XAttribute("version", version),
+            new XElement(ns + "enabled", "true"),
+            new XElement(ns + "redirect", redirectEnabled ? "true" : "false"));
+
+        if (serverAddress is not null)
+        {
+            requestRoot.Add(new XElement(serverAddress));
+        }
+
+        requestRoot.Add(
+            new XElement(ns + "verificationCode", verificationCode),
+            new XElement(ns + "streamEncrypteEnabled", "false"),
+            new XElement(ns + "convergenceCloudEnabled", "false"));
+
+        var requestDocument = new XDocument(new XDeclaration("1.0", "UTF-8", null), requestRoot);
+        return requestDocument.ToString(SaveOptions.DisableFormatting);
     }
 
     private static Uri BuildBaseUri(string cameraAddress)

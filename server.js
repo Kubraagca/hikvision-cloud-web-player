@@ -304,6 +304,14 @@ function replaceXmlValue(xml, names, value) {
   return updated;
 }
 
+function getXmlBlock(xml, name) {
+  const match = new RegExp(
+    `<(?:\\w+:)?${name}\\b[^>]*>[\\s\\S]*?<\\/(?:\\w+:)?${name}>`,
+    "i"
+  ).exec(xml);
+  return match ? match[0].trim() : "";
+}
+
 function decodeXml(value) {
   return value
     .replaceAll("&lt;", "<")
@@ -449,6 +457,39 @@ function parseEzvizStatus(xml) {
     registerStatus:
       ["true", "1"].includes(registerRaw) ? true : ["false", "0"].includes(registerRaw) ? false : null,
   };
+}
+
+function updateEzvizXml(xml, verificationCode) {
+  const namespaceMatch = /<EZVIZ\b[^>]*xmlns="([^"]+)"/i.exec(xml);
+  const namespace = namespaceMatch?.[1] || "http://www.hikvision.com/ver20/XMLSchema";
+  const versionMatch = /<EZVIZ\b[^>]*version="([^"]+)"/i.exec(xml);
+  const version = versionMatch?.[1] || "2.0";
+  const redirectRaw = getXmlValue(xml, ["redirect"]).toLowerCase();
+  const redirectValue = ["true", "1"].includes(redirectRaw) ? "true" : "false";
+  const serverAddressBlock = getXmlBlock(xml, "serverAddress");
+
+  const lines = [
+    `<?xml version="1.0" encoding="UTF-8"?>`,
+    `<EZVIZ version="${escapeXml(version)}" xmlns="${escapeXml(namespace)}">`,
+    `  <enabled>true</enabled>`,
+    `  <redirect>${redirectValue}</redirect>`,
+  ];
+
+  if (serverAddressBlock) {
+    lines.push(
+      serverAddressBlock
+        .split(/\r?\n/)
+        .map((line) => `  ${line.trim()}`)
+        .join("\n")
+    );
+  }
+
+  lines.push(`  <verificationCode>${escapeXml(verificationCode)}</verificationCode>`);
+  lines.push(`  <streamEncrypteEnabled>false</streamEncrypteEnabled>`);
+  lines.push(`  <convergenceCloudEnabled>false</convergenceCloudEnabled>`);
+  lines.push(`</EZVIZ>`);
+
+  return lines.join("\n");
 }
 
 function createVerificationCode(length = 12) {
@@ -1436,11 +1477,7 @@ async function runProvisioningTask(task, input) {
 
   updateTaskStage(task, "Hik-Connect Ayari", "Calisiyor", "EZVIZ/Hik-Connect ayari yapiliyor.");
   const verificationCode = createVerificationCode(12);
-  const enableEzvizXml = `<?xml version="1.0" encoding="UTF-8"?>
-<EZVIZ version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">
-  <enabled>true</enabled>
-  <verificationCode>${escapeXml(verificationCode)}</verificationCode>
-</EZVIZ>`;
+  const enableEzvizXml = updateEzvizXml(ezvizXml, verificationCode);
   await putIsapiXml(
     activeCameraIp,
     "/ISAPI/System/Network/EZVIZ",
