@@ -565,8 +565,8 @@ internal static class HikConnectResponseParser
                 continue;
             }
 
-            var areaId = GetString(obj, "areaID");
-            var areaName = GetString(obj, "areaName");
+            var areaId = GetString(obj, "areaID") ?? GetString(obj, "id");
+            var areaName = GetString(obj, "areaName") ?? GetString(obj, "name");
             if (string.IsNullOrWhiteSpace(areaId) || string.IsNullOrWhiteSpace(areaName))
             {
                 continue;
