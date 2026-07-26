@@ -15,6 +15,8 @@ $bundleDir = Join-Path $artifactsRoot "bundle\HikProvisioning.Agent-$Runtime"
 $bundleToolsDir = Join-Path $bundleDir "tools\HikSdk.ProvisioningCli"
 $downloadDir = Join-Path $srcRoot "HikProvisioning.Web\wwwroot\downloads\local-agent"
 $zipPath = Join-Path $downloadDir "HikProvisioning.Agent-$Runtime.zip"
+$setupExePath = Join-Path $downloadDir "HikProvisioning.Agent-$Runtime-Setup.exe"
+$iexpressDir = Join-Path $artifactsRoot "iexpress"
 
 Write-Host "Temizlik yapiliyor..."
 Remove-Item -LiteralPath $artifactsRoot -Recurse -Force -ErrorAction SilentlyContinue
@@ -23,6 +25,7 @@ Remove-Item -LiteralPath $downloadDir -Recurse -Force -ErrorAction SilentlyConti
 New-Item -ItemType Directory -Path $bundleDir -Force | Out-Null
 New-Item -ItemType Directory -Path $bundleToolsDir -Force | Out-Null
 New-Item -ItemType Directory -Path $downloadDir -Force | Out-Null
+New-Item -ItemType Directory -Path $iexpressDir -Force | Out-Null
 
 $agentProject = Join-Path $srcRoot "HikProvisioning.Agent\HikProvisioning.Agent.csproj"
 $cliProject = Join-Path $srcRoot "HikSdk.ProvisioningCli\HikSdk.ProvisioningCli.csproj"
@@ -114,17 +117,26 @@ pause
 "@
 Set-Content -LiteralPath $installCmdPath -Value $installCmdContent -Encoding ASCII
 
+$silentInstallCmdPath = Join-Path $bundleDir "install-agent-silent.cmd"
+$silentInstallCmdContent = @"
+@echo off
+cd /d %~dp0
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0install-agent.ps1"
+"@
+Set-Content -LiteralPath $silentInstallCmdPath -Value $silentInstallCmdContent -Encoding ASCII
+
 $readmePath = Join-Path $bundleDir "README.txt"
 $readmeContent = @"
 HikProvisioning.Agent
 
-1. install-agent.cmd dosyasina bir kez cift tiklayin.
-2. Kurulum dosyalari su klasore kopyalanir:
+1. HikProvisioning.Agent-$Runtime-Setup.exe dosyasina cift tiklayin.
+2. Alternatif olarak zip paketini acip install-agent.cmd dosyasina bir kez cift tiklayin.
+3. Kurulum dosyalari su klasore kopyalanir:
    %LOCALAPPDATA%\HikProvisioningAgent
-3. Masaustune kisayol birakilir ve agent baslatilir.
-4. Agent localhost uzerinde su adreste dinler:
+4. Masaustune kisayol birakilir ve agent baslatilir.
+5. Agent localhost uzerinde su adreste dinler:
    http://127.0.0.1:47831
-5. Ardindan web panelde /LocalAgent sayfasini acin.
+6. Ardindan web panelde /LocalAgent sayfasini acin.
 
 Notlar:
 - Bu paket HikSdk.ProvisioningCli ve gerekli HCNetSDK dosyalarini icerir.
@@ -140,6 +152,63 @@ if (Test-Path $zipPath) {
 tar.exe -a -c -f $zipPath -C $bundleDir .
 if ($LASTEXITCODE -ne 0) { throw "ZIP olusturma basarisiz." }
 
+$iexpressPayloadZip = Join-Path $iexpressDir "payload.zip"
+Copy-Item -LiteralPath $zipPath -Destination $iexpressPayloadZip -Force
+
+$iexpressInstallCmd = Join-Path $iexpressDir "install-from-package.cmd"
+$iexpressInstallCmdContent = @"
+@echo off
+setlocal
+set "PAYLOAD_DIR=%~dp0payload"
+if exist "%PAYLOAD_DIR%" rmdir /s /q "%PAYLOAD_DIR%"
+mkdir "%PAYLOAD_DIR%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%~dp0payload.zip' -DestinationPath '%~dp0payload' -Force"
+if errorlevel 1 exit /b 1
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PAYLOAD_DIR%\install-agent.ps1"
+endlocal
+"@
+Set-Content -LiteralPath $iexpressInstallCmd -Value $iexpressInstallCmdContent -Encoding ASCII
+
+$sedPath = Join-Path $iexpressDir "HikProvisioning.Agent-$Runtime.sed"
+$sedContent = @"
+[Version]
+Class=IEXPRESS
+SEDVersion=3
+[Options]
+PackagePurpose=InstallApp
+ShowInstallProgramWindow=1
+HideExtractAnimation=0
+UseLongFileName=1
+InsideCompressed=0
+CAB_FixedSize=0
+CAB_ResvCodeSigning=0
+RebootMode=N
+InstallPrompt=
+DisplayLicense=
+FinishMessage=Kurulum tamamlandi.
+TargetName=$setupExePath
+FriendlyName=HikProvisioning.Agent
+AppLaunched=cmd /c install-from-package.cmd
+PostInstallCmd=<None>
+AdminQuietInstCmd=cmd /c install-from-package.cmd
+UserQuietInstCmd=cmd /c install-from-package.cmd
+SourceFiles=SourceFiles
+[Strings]
+FILE0="payload.zip"
+FILE1="install-from-package.cmd"
+[SourceFiles]
+SourceFiles0=$iexpressDir\
+[SourceFiles0]
+%FILE0%=
+%FILE1%=
+"@
+Set-Content -LiteralPath $sedPath -Value $sedContent -Encoding ASCII
+
+Write-Host "Kurulum EXE'si uretiliyor..."
+& "$env:WINDIR\System32\iexpress.exe" /N $sedPath
+if ($LASTEXITCODE -ne 0) { throw "IExpress EXE olusturma basarisiz." }
+
 Write-Host "Tamamlandi:"
 Write-Host "Bundle: $bundleDir"
 Write-Host "Zip:    $zipPath"
+Write-Host "Setup:  $setupExePath"

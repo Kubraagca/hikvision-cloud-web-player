@@ -30,6 +30,7 @@ Bu surum su akisi kurar:
 15. Team OpenAPI AK/SK ve token akisi backend'de kalir; yerel agent sadece bizim backend endpoint'imizi cagirir.
 16. Paketleme script'i: `scripts/Publish-LocalAgent.ps1`
 17. Uretilen zip yolu: `src/HikDiscovery/HikProvisioning.Web/wwwroot/downloads/local-agent/HikProvisioning.Agent-win-x64.zip`
+18. Tek tik Windows kurulum dosyasi: `src/HikDiscovery/HikProvisioning.Web/wwwroot/downloads/local-agent/HikProvisioning.Agent-win-x64-Setup.exe`
 
 ## JSDecoder SDK notu
 
@@ -150,7 +151,13 @@ powershell -ExecutionPolicy Bypass -File scripts/Publish-LocalAgent.ps1
 Agent paketini calistirmak icin:
 
 ```text
-artifacts/local-agent/bundle/HikProvisioning.Agent-win-x64/start-agent.cmd
+src/HikDiscovery/HikProvisioning.Web/wwwroot/downloads/local-agent/HikProvisioning.Agent-win-x64-Setup.exe
+```
+
+Zip paketini elle acmak isterseniz alternatif olarak:
+
+```text
+artifacts/local-agent/bundle/HikProvisioning.Agent-win-x64/install-agent.cmd
 ```
 
 ## API'ler
