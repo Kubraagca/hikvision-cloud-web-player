@@ -3,176 +3,268 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Team Hesabina Kamera Ekle</title>
+<title>Team'e Kamera Ekle</title>
 <style>
   :root {
-    --bg: #f1efe8;
-    --panel: #fffaf1;
-    --border: #d8cfc0;
-    --text: #231f1a;
-    --muted: #766c60;
-    --accent: #005f73;
-    --ok: #16a34a;
-    --err: #dc2626;
+    --bg: #eef1f5;
+    --panel: #ffffff;
+    --panel-alt: #f7f9fc;
+    --border: #cfd6df;
+    --border-strong: #b6c0cc;
+    --text: #1c2733;
+    --muted: #5f6c7b;
+    --accent: #1f5f99;
+    --ok: #0f8a4b;
+    --err: #c62828;
   }
+
   * { box-sizing: border-box; }
+
   body {
     margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: var(--bg);
     color: var(--text);
-    font-family: Georgia, "Segoe UI", serif;
-    background:
-      radial-gradient(circle at top left, #fff4d6 0, transparent 30%),
-      linear-gradient(180deg, #f8f2e7 0%, #efe5d5 100%);
   }
+
   header {
-    padding: 20px 24px;
+    background: var(--panel);
     border-bottom: 1px solid var(--border);
-    background: rgba(255, 250, 241, 0.82);
+    padding: 14px 18px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     gap: 12px;
   }
-  h1 { margin: 0; font-size: 20px; }
-  .sub { margin-top: 4px; font-size: 12px; color: var(--muted); }
-  a, button, input { font: inherit; }
-  a.button-link, button {
-    border: 1px solid var(--border);
-    background: white;
+
+  h1, h2, p {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  a, button, input {
+    font: inherit;
+  }
+
+  a.button-link,
+  button {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    background: #fff;
     color: var(--text);
-    border-radius: 8px;
-    padding: 9px 12px;
     text-decoration: none;
     cursor: pointer;
   }
-  .primary { background: var(--accent); color: white; border-color: var(--accent); }
+
+  button.primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
   main {
+    padding: 16px;
+  }
+
+  .layout {
     display: grid;
-    grid-template-columns: 420px 1fr;
-    gap: 18px;
-    padding: 18px;
+    grid-template-columns: 360px 1fr;
+    gap: 16px;
   }
-  @media (max-width: 980px) { main { grid-template-columns: 1fr; } }
+
+  @media (max-width: 920px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .panel {
+    background: var(--panel);
     border: 1px solid var(--border);
-    background: rgba(255,255,255,0.72);
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 16px 40px rgba(70, 50, 20, 0.08);
   }
-  .grid { display: grid; gap: 12px; }
+
+  .panel-head {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-alt);
+  }
+
+  .panel-head h2 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .panel-body {
+    padding: 12px;
+  }
+
+  .field-grid {
+    display: grid;
+    gap: 10px;
+  }
+
   .field label {
     display: block;
     font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 6px;
+    font-weight: 600;
+    margin-bottom: 4px;
   }
+
+  .field small {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
   .field input {
     width: 100%;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: #fffdf8;
+    height: 36px;
+    padding: 7px 9px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
   }
-  .actions {
+
+  .action-row {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    margin-top: 12px;
     flex-wrap: wrap;
-    margin-top: 8px;
   }
-  .status-box, .result-card {
-    margin-top: 14px;
-    padding: 12px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.58);
+
+  .status-box,
+  .result-card {
+    margin-top: 10px;
+    padding: 10px;
     border: 1px solid var(--border);
-    font-size: 13px;
+    background: var(--panel-alt);
+    font-size: 12px;
+    line-height: 1.5;
     white-space: pre-wrap;
   }
-  .meta-grid {
+
+  .summary-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
-  .meta-card {
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.5);
-    border-radius: 12px;
-    padding: 12px;
+
+  @media (max-width: 640px) {
+    .summary-grid {
+      grid-template-columns: 1fr;
+    }
   }
-  .meta-card span {
+
+  .summary-item {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+
+  .summary-item span {
     display: block;
+    margin-bottom: 4px;
+    color: var(--muted);
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    margin-bottom: 6px;
+    letter-spacing: 0.04em;
   }
-  .ok { color: var(--ok); }
-  .err { color: var(--err); }
+
+  .err {
+    color: var(--err);
+  }
 </style>
 </head>
 <body>
 <header>
   <div>
-    <h1>Team Hesabina Kamera Ekle</h1>
-    <div class="sub">Frontend sadece bizim backend'imizi cagirir. AK/SK ve token tarayiciya gelmez.</div>
+    <h1>Team'e Kamera Ekle</h1>
+    <div class="sub">Bu ekran sadece backend uzerinden istek gonderir. AK/SK ve token tarayiciya gelmez.</div>
   </div>
-  <div style="display:flex; gap:10px;">
-    <a class="button-link" href="/">Izleme Paneli</a>
-    <a class="button-link" href="/camera-setup">Kamera Kurulum</a>
+  <div class="toolbar">
+    <a class="button-link" href="/">Izleme</a>
+    <a class="button-link" href="/camera-setup">Kurulum</a>
   </div>
 </header>
 
 <main>
-  <section class="panel">
-    <h2>Kayit Formu</h2>
-    <div class="grid">
-      <div class="field">
-        <label for="short-serial">Kisa Seri No</label>
-        <input id="short-serial" type="text" placeholder="subSerialNumber veya kisa seri" />
+  <div class="layout">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Cihaz Bilgileri</h2>
       </div>
-      <div class="field">
-        <label for="verification-code">Verification Code</label>
-        <input id="verification-code" type="text" placeholder="12 karakterli cihaz verification code" />
-      </div>
-      <div class="field">
-        <label for="alias">Cihaz Adi / Alias</label>
-        <input id="alias" type="text" placeholder="Bos ise CAM-{shortSerial}" />
-      </div>
-      <div class="field">
-        <label for="area-name">Area Adi</label>
-        <input id="area-name" type="text" placeholder="Bos ise alias kullanilir" />
-      </div>
-      <div class="field">
-        <label for="user-name">Kullanici Adi</label>
-        <input id="user-name" type="text" value="admin" placeholder="Genelde admin" />
-      </div>
-      <div class="field">
-        <label for="device-password">Kamera Parolasi</label>
-        <input id="device-password" type="password" placeholder="Opsiyonel ama bu test icin doldurun" />
-      </div>
-    </div>
+      <div class="panel-body">
+        <div class="field-grid">
+          <div class="field">
+            <label for="short-serial">Kisa Seri No</label>
+            <input id="short-serial" type="text" placeholder="Orn. ABCD123456" />
+          </div>
+          <div class="field">
+            <label for="verification-code">Verification Code</label>
+            <input id="verification-code" type="text" placeholder="12 karakter" />
+          </div>
+          <div class="field">
+            <label for="alias">Cihaz Adi</label>
+            <input id="alias" type="text" placeholder="Bos ise CAM-{shortSerial}" />
+          </div>
+          <div class="field">
+            <label for="area-name">Area Adi</label>
+            <input id="area-name" type="text" placeholder="Orn. Merkez Ofis" />
+          </div>
+          <div class="field">
+            <label for="user-name">Kullanici Adi</label>
+            <input id="user-name" type="text" value="admin" />
+            <small>Test icin kullanilir. Gerekli degilse bos birakilabilir.</small>
+          </div>
+          <div class="field">
+            <label for="device-password">Kamera Parolasi</label>
+            <input id="device-password" type="password" />
+          </div>
+        </div>
 
-    <div class="actions">
-      <button id="submit-btn" class="primary">Kamerayi Team'e Ekle</button>
-    </div>
+        <div class="action-row">
+          <button id="submit-btn" class="primary">Team'e Ekle</button>
+        </div>
 
-    <div class="status-box" id="status-box">Hazir.</div>
-  </section>
+        <div class="status-box" id="status-box">Hazir.</div>
+      </div>
+    </section>
 
-  <section class="panel">
-    <h2>Sonuc</h2>
-    <div class="meta-grid">
-      <div class="meta-card"><span>Alias</span><strong id="alias-value">-</strong></div>
-      <div class="meta-card"><span>Kisa Seri</span><strong id="serial-value">-</strong></div>
-      <div class="meta-card"><span>Area</span><strong id="area-value">-</strong></div>
-      <div class="meta-card"><span>Device ID</span><strong id="device-id-value">-</strong></div>
-      <div class="meta-card"><span>Cihaz Durumu</span><strong id="device-status-value">-</strong></div>
-      <div class="meta-card"><span>Kanal Durumu</span><strong id="channel-status-value">-</strong></div>
-    </div>
-    <div class="result-card" id="result-box">Henuz istek gonderilmedi.</div>
-  </section>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Sonuc</h2>
+      </div>
+      <div class="panel-body">
+        <div class="summary-grid">
+          <div class="summary-item"><span>Alias</span><strong id="alias-value">-</strong></div>
+          <div class="summary-item"><span>Kisa Seri</span><strong id="serial-value">-</strong></div>
+          <div class="summary-item"><span>Area</span><strong id="area-value">-</strong></div>
+          <div class="summary-item"><span>Device ID</span><strong id="device-id-value">-</strong></div>
+          <div class="summary-item"><span>Cihaz Durumu</span><strong id="device-status-value">-</strong></div>
+          <div class="summary-item"><span>Kanal Durumu</span><strong id="channel-status-value">-</strong></div>
+        </div>
+        <div class="result-card" id="result-box">Henuz istek gonderilmedi.</div>
+      </div>
+    </section>
+  </div>
 </main>
 
 <script>

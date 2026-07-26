@@ -3,63 +3,73 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Hikvision Cloud Izleme Paneli</title>
+<title>Hikvision Izleme</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.15/hls.min.js"></script>
 <style>
   :root {
-    --bg: #f3efe7;
-    --panel: #fffaf1;
-    --border: #d8cfc0;
-    --text: #231f1a;
-    --muted: #766c60;
-    --accent: #005f73;
-    --ok: #22c55e;
-    --off: #6b7280;
-    --err: #ef4444;
+    --bg: #eef1f5;
+    --panel: #ffffff;
+    --panel-alt: #f7f9fc;
+    --border: #cfd6df;
+    --border-strong: #b6c0cc;
+    --text: #1c2733;
+    --muted: #5f6c7b;
+    --accent: #1f5f99;
+    --ok: #0f8a4b;
+    --off: #7a8694;
+    --err: #c62828;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    font-family: Georgia, "Segoe UI", serif;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: var(--bg);
     color: var(--text);
-    background:
-      radial-gradient(circle at top left, #fff4d6 0, transparent 32%),
-      linear-gradient(180deg, #f7f1e6 0%, #efe6d6 100%);
   }
 
   header {
-    padding: 20px 24px;
+    background: var(--panel);
     border-bottom: 1px solid var(--border);
+    padding: 14px 18px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    background: rgba(255, 250, 241, 0.82);
-    backdrop-filter: blur(8px);
+    align-items: center;
+    gap: 12px;
   }
 
-  header h1 {
+  h1, h2, p {
     margin: 0;
-    font-size: 18px;
-    font-weight: 700;
   }
 
-  header .sub {
+  h1 {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .sub {
     margin-top: 4px;
     font-size: 12px;
     color: var(--muted);
   }
 
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
   button,
   a.button-link,
   select {
-    border: 1px solid var(--border);
-    background: white;
-    color: var(--text);
-    border-radius: 8px;
+    min-height: 36px;
     padding: 8px 12px;
-    font-size: 13px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
   }
 
   button {
@@ -73,81 +83,78 @@
   }
 
   main {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    min-height: calc(100vh - 73px);
+    padding: 16px;
   }
 
-  @media (max-width: 760px) {
-    main {
+  .layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 860px) {
+    .layout {
       grid-template-columns: 1fr;
     }
   }
 
-  #camera-list {
-    padding: 14px;
-    border-right: 1px solid var(--border);
-    background: rgba(255, 250, 241, 0.6);
-    overflow-y: auto;
-  }
-
-  .health,
-  .toolbar,
-  .cam-item,
-  #video-wrap {
+  .panel {
+    background: var(--panel);
     border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.72);
   }
 
-  .health,
-  .toolbar {
-    border-radius: 10px;
+  .panel-head {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-alt);
+  }
+
+  .panel-head h2 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .panel-body {
     padding: 12px;
-    margin-bottom: 12px;
+  }
+
+  .side-stack {
+    display: grid;
+    gap: 12px;
+  }
+
+  .info-box {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel-alt);
     font-size: 12px;
+    line-height: 1.5;
     color: var(--muted);
   }
 
-  .health strong {
-    color: var(--text);
-  }
-
-  .toolbar {
-    display: flex;
+  .cam-list {
+    display: grid;
     gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .placeholder {
-    color: var(--muted);
-    text-align: center;
-    padding: 40px 12px;
-    font-size: 13px;
   }
 
   .cam-item {
     display: flex;
-    gap: 8px;
     align-items: center;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 8px;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
     cursor: pointer;
   }
 
-  .cam-item:hover {
-    background: rgba(255, 255, 255, 0.95);
-  }
-
   .cam-item.active {
-    outline: 1px solid var(--accent);
-    background: rgba(255, 255, 255, 0.98);
+    border-color: var(--accent);
+    background: #f1f7fe;
   }
 
   .dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -157,115 +164,126 @@
 
   .cam-name {
     flex: 1;
+    font-size: 13px;
   }
 
-  #stage {
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #video-wrap {
-    width: 100%;
-    max-width: 980px;
-    border-radius: 18px;
-    padding: 18px;
-    box-shadow: 0 22px 60px rgba(70, 50, 20, 0.12);
+  .empty-state {
+    padding: 18px 8px;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
   }
 
   video {
     width: 100%;
     aspect-ratio: 16 / 9;
     display: block;
-    border-radius: 12px;
-    background: black;
+    background: #000;
   }
 
-  .status-line {
-    margin-top: 12px;
+  .player-status {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
+    margin-top: 10px;
     font-size: 12px;
     color: var(--muted);
   }
 
-  .meta {
-    margin-top: 14px;
+  .summary-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+    margin-top: 12px;
   }
 
-  .meta-card {
-    border: 1px solid var(--border);
-    border-radius: 10px;
+  .summary-item {
     padding: 10px;
-    background: rgba(255, 255, 255, 0.58);
-    font-size: 13px;
+    border: 1px solid var(--border);
+    background: #fff;
   }
 
-  .meta-card span {
+  .summary-item span {
     display: block;
     margin-bottom: 4px;
-    font-size: 11px;
     color: var(--muted);
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
   }
 </style>
 </head>
 <body>
 <header>
   <div>
-    <h1>Hikvision Cloud Izleme Paneli</h1>
-    <div class="sub">Kameralari listele ve HLS proxy uzerinden cloud canli yayini oynat.</div>
+    <h1>Hikvision Izleme</h1>
+    <div class="sub">Cloud kamera listesi ve HLS izleme.</div>
   </div>
-  <div style="display:flex; gap:10px; align-items:center;">
-    <a class="button-link" href="/team-device-add">Kamera Ekle</a>
-    <a class="button-link" href="/camera-setup">Kamera Kurulum</a>
+  <div class="toolbar">
+    <a class="button-link" href="/camera-setup">Kurulum</a>
+    <a class="button-link" href="/team-device-add">Team'e Ekle</a>
     <a class="button-link" href="/camera-browser-test">Tarayici Testi</a>
-    <button id="refresh-btn">Listeyi yenile</button>
+    <button id="refresh-btn">Listeyi Yenile</button>
   </div>
 </header>
 
 <main>
-  <aside id="camera-list">
-    <div class="health" id="health-box">Baglanti kontrol ediliyor...</div>
-    <div class="toolbar">
-      <label for="quality-select">Kalite</label>
-      <select id="quality-select">
-        <option value="1">HD</option>
-        <option value="2">Akici</option>
-      </select>
-    </div>
-    <div class="health">
-      HLS icin kamera stream codec'i H.264 olmali ve kamera cloud tarafinda online gorunmelidir.
-    </div>
-    <div class="placeholder" id="camera-placeholder">Kameralar yukleniyor...</div>
-  </aside>
+  <div class="layout">
+    <section class="side-stack">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Baglanti</h2>
+        </div>
+        <div class="panel-body">
+          <div class="info-box" id="health-box">Baglanti kontrol ediliyor...</div>
+        </div>
+      </div>
 
-  <section id="stage">
-    <div id="video-wrap">
-      <video id="player" controls muted playsinline></video>
-      <div class="status-line">
-        <span id="status-text">Bir kamera secin</span>
-        <span id="expire-text"></span>
-      </div>
-      <div class="meta">
-        <div class="meta-card">
-          <span>Kamera</span>
-          <strong id="camera-meta">Secim yok</strong>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Liste</h2>
         </div>
-        <div class="meta-card">
-          <span>Protokol</span>
-          <strong id="protocol-meta">HLS</strong>
+        <div class="panel-body">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+            <label for="quality-select" style="font-size:12px; font-weight:600;">Kalite</label>
+            <select id="quality-select">
+              <option value="1">HD</option>
+              <option value="2">Akici</option>
+            </select>
+          </div>
+          <div class="info-box" style="margin-bottom:10px;">
+            Kamera cloud tarafinda online ve H.264 uyumlu olmali.
+          </div>
+          <div class="cam-list" id="camera-list"></div>
+          <div class="empty-state" id="camera-placeholder">Kameralar yukleniyor...</div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Canli Yayin</h2>
+      </div>
+      <div class="panel-body">
+        <video id="player" controls muted playsinline></video>
+        <div class="player-status">
+          <span id="status-text">Bir kamera secin</span>
+          <span id="expire-text"></span>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span>Kamera</span>
+            <strong id="camera-meta">Secim yok</strong>
+          </div>
+          <div class="summary-item">
+            <span>Protokol</span>
+            <strong id="protocol-meta">HLS</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </main>
 
 <script>
@@ -304,7 +322,7 @@
   }
 
   async function loadCameras() {
-    listEl.querySelectorAll(".cam-item").forEach((el) => el.remove());
+    listEl.innerHTML = "";
     placeholderEl.style.display = "block";
     placeholderEl.textContent = "Kameralar yukleniyor...";
     placeholderEl.style.color = "var(--muted)";
@@ -368,7 +386,6 @@
 
       if (!res.ok) {
         statusEl.textContent = `Hata: ${data.error || "Yayin alinamadi"}`;
-        console.error("stream error", data);
         return;
       }
 
@@ -403,7 +420,6 @@
       hls.attachMedia(videoEl);
       hls.on(Hls.Events.MANIFEST_PARSED, () => videoEl.play().catch(() => {}));
       hls.on(Hls.Events.ERROR, (_event, data) => {
-        console.error("hls error", data);
         statusEl.textContent = `HLS oynatma hatasi: ${data?.details || "bilinmeyen hata"}`;
       });
       return;
