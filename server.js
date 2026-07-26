@@ -57,6 +57,16 @@ const LOCAL_AGENT_ZIP_PATH = path.join(
   "local-agent",
   "HikProvisioning.Agent-win-x64.zip"
 );
+const LOCAL_AGENT_SETUP_EXE_PATH = path.join(
+  __dirname,
+  "src",
+  "HikDiscovery",
+  "HikProvisioning.Web",
+  "wwwroot",
+  "downloads",
+  "local-agent",
+  "HikProvisioning.Agent-win-x64-Setup.exe"
+);
 
 function ensureCredentials(res) {
   if (!APP_KEY || !APP_SECRET) {
@@ -1924,6 +1934,14 @@ app.get("/downloads/local-agent/HikProvisioning.Agent-win-x64.zip", (req, res) =
   }
 
   res.download(LOCAL_AGENT_ZIP_PATH, "HikProvisioning.Agent-win-x64.zip");
+});
+
+app.get("/downloads/local-agent/HikProvisioning.Agent-win-x64-Setup.exe", (req, res) => {
+  if (!fs.existsSync(LOCAL_AGENT_SETUP_EXE_PATH)) {
+    return res.status(404).send("Windows kurulum dosyasi henuz uretilmedi.");
+  }
+
+  res.download(LOCAL_AGENT_SETUP_EXE_PATH, "HikProvisioning.Agent-win-x64-Setup.exe");
 });
 
 app.get("/camera-setup", (req, res) => {
