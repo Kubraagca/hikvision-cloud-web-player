@@ -169,10 +169,10 @@
   }
 
   body.embed-mode header,
-  body.embed-mode .stage > .panel:first-child,
+  body.embed-mode main > .stage:first-child,
   body.embed-mode .hint,
   body.embed-mode #timeBar,
-  body.embed-mode .stage > .panel:last-child {
+  body.embed-mode main > .stage:last-child > .panel:last-child {
     display: none;
   }
 
@@ -183,10 +183,15 @@
   body.embed-mode main {
     padding: 0;
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
   body.embed-mode .stage {
     gap: 0;
+  }
+
+  body.embed-mode main > .stage:last-child {
+    min-height: 100vh;
   }
 
   body.embed-mode .panel {
