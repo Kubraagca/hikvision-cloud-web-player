@@ -208,8 +208,26 @@
   }
 
   body.embed-mode #playWind {
+    width: 100%;
     aspect-ratio: auto;
     height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  body.embed-mode #playWind > * {
+    width: 100% !important;
+    height: 100% !important;
+    flex: 1 1 auto;
+  }
+
+  body.embed-mode #playWind canvas,
+  body.embed-mode #playWind video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
   }
 </style>
 </head>
@@ -359,6 +377,26 @@
     return value === "1" || value.toLowerCase() === "true";
   }
 
+  function applyEmbedPlayerFill() {
+    if (!isEmbedMode()) return;
+    const playWind = document.getElementById("playWind");
+    if (!playWind) return;
+
+    playWind.style.width = "100%";
+    playWind.style.height = "100vh";
+    playWind.style.overflow = "hidden";
+
+    const children = playWind.querySelectorAll("*");
+    children.forEach((node) => {
+      if (!(node instanceof HTMLElement)) return;
+      node.style.width = "100%";
+      node.style.height = "100%";
+      if (node.tagName === "CANVAS" || node.tagName === "VIDEO") {
+        node.style.objectFit = "cover";
+      }
+    });
+  }
+
   async function startLiveView() {
     const secretKey = getValue("secretKey");
     const qualitySuffix = ".live";
@@ -388,6 +426,7 @@
       ),
       "Canli izleme"
     );
+    applyEmbedPlayerFill();
   }
 
   async function callSdk(action, label) {
@@ -493,7 +532,14 @@
   window.addEventListener("load", () => {
     if (isEmbedMode()) {
       document.body.classList.add("embed-mode");
+      const playWind = document.getElementById("playWind");
+      if (playWind && typeof MutationObserver === "function") {
+        const observer = new MutationObserver(() => applyEmbedPlayerFill());
+        observer.observe(playWind, { childList: true, subtree: true, attributes: true });
+      }
     }
+
+    applyEmbedPlayerFill();
 
     const resourceId = getQuery("resourceId");
     const deviceSerial = getQuery("deviceSerial");
