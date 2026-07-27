@@ -449,6 +449,13 @@
   }
 
   function buildSdkPlayArgs(inputUrl) {
+    if (inputUrl.startsWith("ezopen://")) {
+      return {
+        mode: "ezopen",
+        url: inputUrl,
+      };
+    }
+
     if (!inputUrl || !inputUrl.includes("?")) {
       throw new Error("SDK oynatma icin URL beklenen formatta degil.");
     }
@@ -468,6 +475,7 @@
     }
 
     return {
+      mode: "ws",
       websocketConnectUrl,
       websocketStreamingParam,
     };
@@ -590,6 +598,12 @@
 
     const sdkArgs = buildSdkPlayArgs(data.sourceUrl || data.url);
     statusEl.textContent = `${cam.name} - EZOPEN oynatma baslatiliyor...`;
+
+    if (sdkArgs.mode === "ezopen") {
+      await toPromise(sdkPlugin.JS_Play(sdkArgs.url, {}, 0));
+      return;
+    }
+
     await toPromise(
       sdkPlugin.JS_Play(
         sdkArgs.websocketConnectUrl,
