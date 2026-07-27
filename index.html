@@ -448,6 +448,31 @@
     }
   }
 
+  function buildSdkPlayArgs(inputUrl) {
+    if (!inputUrl || !inputUrl.includes("?")) {
+      throw new Error("SDK oynatma icin URL beklenen formatta degil.");
+    }
+
+    const baseUrl = inputUrl.split("?")[0];
+    const query = inputUrl.split("?")[1];
+    const websocketConnectUrl = baseUrl.replace("/live", "").replace("/playback", "");
+    let websocketStreamingParam =
+      (inputUrl.indexOf("/live") === -1
+        ? inputUrl.indexOf("cloudplayback") !== -1
+          ? "/cloudplayback?"
+          : "/playback?"
+        : "/live?") + query;
+
+    if (websocketStreamingParam.indexOf("/playback") !== -1) {
+      websocketStreamingParam = websocketStreamingParam.replace("stream=2", "stream=1");
+    }
+
+    return {
+      websocketConnectUrl,
+      websocketStreamingParam,
+    };
+  }
+
   async function loadCameras() {
     listEl.innerHTML = "";
     placeholderEl.style.display = "block";
@@ -563,8 +588,15 @@
       await toPromise(sdkPlugin.JS_SetSecretKey(0, verificationCode));
     }
 
+    const sdkArgs = buildSdkPlayArgs(data.sourceUrl || data.url);
     statusEl.textContent = `${cam.name} - EZOPEN oynatma baslatiliyor...`;
-    await toPromise(sdkPlugin.JS_Play(data.url, {}, 0));
+    await toPromise(
+      sdkPlugin.JS_Play(
+        sdkArgs.websocketConnectUrl,
+        { playURL: sdkArgs.websocketStreamingParam },
+        0
+      )
+    );
   }
 
   async function playHls(url) {
