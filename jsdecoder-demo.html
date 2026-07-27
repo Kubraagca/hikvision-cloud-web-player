@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>jsDecoder Demo</title>
+<script src="/sdk/dist/jsPlugin-3.0.0.min.js?v=20260727-2"></script>
+<script src="/sdk/dist/timeBar.js"></script>
+<style>
+  :root {
+    --bg: #eef2f6;
+    --panel: #ffffff;
+    --line: #cfd7e3;
+    --text: #1d2935;
+    --muted: #607080;
+    --accent: #175b96;
+    --danger: #b73333;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  h1, h2, p {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  main {
+    padding: 16px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: minmax(340px, 460px) 1fr;
+  }
+
+  @media (max-width: 980px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .panel {
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  .panel h2 {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    background: #f7f9fc;
+  }
+
+  .panel-body {
+    padding: 12px;
+  }
+
+  .form-grid {
+    display: grid;
+    gap: 10px;
+  }
+
+  label {
+    display: grid;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  input,
+  select,
+  button,
+  textarea {
+    width: 100%;
+    min-height: 36px;
+    padding: 8px 10px;
+    border: 1px solid #b9c4d0;
+    border-radius: 4px;
+    font: inherit;
+  }
+
+  textarea {
+    min-height: 84px;
+    resize: vertical;
+  }
+
+  .button-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .button-row3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  button {
+    background: #fff;
+    cursor: pointer;
+  }
+
+  button.primary {
+    color: #fff;
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  button.danger {
+    color: var(--danger);
+  }
+
+  .stage {
+    display: grid;
+    gap: 10px;
+  }
+
+  #playWind {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+
+  #timeBar {
+    width: 100%;
+    height: 42px;
+    border-top: 1px solid var(--line);
+    display: block;
+  }
+
+  .hint {
+    padding: 10px;
+    border: 1px solid var(--line);
+    background: #f7f9fc;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  #status {
+    min-height: 40px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 12px;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>jsDecoder Demo</h1>
+  <p class="sub">Resmi demo paketindeki runtime ile canli izleme, playback ve temel SDK testleri.</p>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="panel">
+      <h2>EZUI Live View</h2>
+      <div class="panel-body form-grid">
+        <label>Access Token
+          <input id="accessToken" type="text" placeholder="at...." />
+        </label>
+        <label>App Key
+          <input id="appKey" type="text" placeholder="stream appKey" />
+        </label>
+        <label>Domain
+          <input id="domain" type="text" placeholder="https://isgpopen.ezvizlife.com" />
+        </label>
+        <label>Serial Number
+          <input id="deviceSerial" type="text" placeholder="K12345678" />
+        </label>
+        <label>Channel Number
+          <input id="channelNo" type="number" value="1" />
+        </label>
+        <label>Secret Key
+          <input id="secretKey" type="text" placeholder="Verification code" />
+        </label>
+        <div class="button-row">
+          <button id="fillBtn">Backend'ten Doldur</button>
+          <button id="liveBtn" class="primary">Canli Baslat</button>
+          <button id="stopBtn" class="danger">Durdur</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Manual Play</h2>
+      <div class="panel-body form-grid">
+        <label>Connect URL
+          <input id="connectUrl" type="text" placeholder="ws://host:port/101" />
+        </label>
+        <label>playURL / stream param
+          <input id="playUrl" type="text" placeholder="/live?serial=... veya file/vag://..." />
+        </label>
+        <label>Token
+          <input id="streamToken" type="text" placeholder="EAAAA...." />
+        </label>
+        <label>Auth
+          <input id="auth" type="text" placeholder="user:password" />
+        </label>
+        <label>Proxy
+          <input id="proxy" type="text" placeholder="10.5.6.8" />
+        </label>
+        <div class="button-row">
+          <button id="manualBtn">Manual Play</button>
+          <button id="osdBtn">OSD Time</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Playback</h2>
+      <div class="panel-body form-grid">
+        <label>Start Time
+          <input id="startTime" type="text" value="20240725T162700Z" />
+        </label>
+        <label>End Time
+          <input id="endTime" type="text" value="20240725T163000Z" />
+        </label>
+        <div class="button-row3">
+          <button id="pauseBtn">Pause</button>
+          <button id="resumeBtn">Resume</button>
+          <button id="seekBtn">Seek</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hint">
+      Bu sayfa `/sdk/dist` altindaki dosyalari kullanir. `timeBar.js`, `talkEzui/*` ve `PlayCtrlWasm/playctrlV3/*` artik proje icine alinmistir.
+    </div>
+  </section>
+
+  <section class="stage">
+    <div class="panel">
+      <h2>Player</h2>
+      <div class="panel-body">
+        <div id="playWind"></div>
+        <canvas id="timeBar"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Status</h2>
+      <div class="panel-body">
+        <div id="status">Hazir.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const statusEl = document.getElementById("status");
+  const oPlugin = new JSPlugin({
+    szId: "playWind",
+    iType: 2,
+    iWidth: Math.max(960, window.innerWidth - 520),
+    iHeight: 540,
+    iMaxSplit: 4,
+    iCurrentSplit: 1,
+    szBasePath: "/sdk/dist",
+    openDebug: true,
+    openLogInfo: true,
+    oStyle: {
+      border: "#343434",
+      borderSelect: "red",
+      background: "#4C4B4B"
+    }
+  });
+
+  function setStatus(message) {
+    statusEl.textContent = message;
+  }
+
+  function getValue(id) {
+    return document.getElementById(id).value.trim();
+  }
+
+  function getWnd() {
+    return 0;
+  }
+
+  function setValue(id, value) {
+    document.getElementById(id).value = value ?? "";
+  }
+
+  function getQuery(name) {
+    return new URLSearchParams(window.location.search).get(name) || "";
+  }
+
+  async function startLiveView() {
+    const secretKey = getValue("secretKey");
+    const qualitySuffix = ".live";
+    const manualUrl = getValue("playUrl");
+    const ezopenUrl =
+      manualUrl && manualUrl.startsWith("ezopen://")
+        ? manualUrl
+        : `ezopen://open.ezviz.com/${getValue("deviceSerial")}/${Number(getValue("channelNo") || "1")}${qualitySuffix}`;
+    if (secretKey && oPlugin.JS_SetSecretKey) {
+      await callSdk(() => oPlugin.JS_SetSecretKey(getWnd(), secretKey), "Secret key ayari");
+    }
+
+    await callSdk(
+      () => oPlugin.JS_Play(
+        ezopenUrl,
+        {
+          ezuikit: true,
+          playURL: ezopenUrl,
+          accessToken: getValue("accessToken"),
+          appKey: getValue("appKey"),
+          mode: "media",
+          env: {
+            domain: getValue("domain")
+          }
+        },
+        getWnd()
+      ),
+      "Canli izleme"
+    );
+  }
+
+  async function callSdk(action, label) {
+    try {
+      const result = await action();
+      setStatus(`${label} basarili.`);
+      return result;
+    } catch (error) {
+      setStatus(`${label} hatasi:\n${error?.message || error}`);
+      throw error;
+    }
+  }
+
+  async function fillFromBackend() {
+    const resourceId = getQuery("resourceId");
+    const deviceSerial = getQuery("deviceSerial") || getValue("deviceSerial");
+    const code = getQuery("code") || getValue("secretKey");
+    const channelNo = getQuery("channelNo") || getValue("channelNo") || "1";
+    const quality = getQuery("quality") || "1";
+
+    if (!resourceId || !deviceSerial) {
+      setStatus("Backend'ten doldurmak icin query'de resourceId ve deviceSerial gerekli.");
+      return;
+    }
+
+    const params = new URLSearchParams({
+      resourceId,
+      deviceSerial,
+      channelNo: String(channelNo),
+      quality: String(quality),
+    });
+    if (code) {
+      params.set("code", code);
+    }
+
+    const response = await fetch(`/api/sdk-live-input?${params.toString()}`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data?.error || "SDK live input alinamadi.");
+    }
+
+    setValue("accessToken", data.accessToken || "");
+    setValue("appKey", data.appKey || "");
+    setValue("domain", data.domain || "");
+    setValue("deviceSerial", data.deviceSerial || deviceSerial);
+    setValue("channelNo", String(data.channelNo || channelNo || "1"));
+    setValue("playUrl", data.sourceUrl || "");
+    if (code) {
+      setValue("secretKey", code);
+    }
+    window.__sdkLiveInput = data;
+    console.log("[SDK LIVE INPUT]", data);
+    setStatus("Backend verileri dolduruldu.");
+  }
+
+  document.getElementById("fillBtn").addEventListener("click", async () => {
+    try {
+      await fillFromBackend();
+    } catch (error) {
+      setStatus(`Backend doldurma hatasi:\n${error?.message || error}`);
+    }
+  });
+
+  document.getElementById("liveBtn").addEventListener("click", async () => {
+    await startLiveView();
+  });
+
+  document.getElementById("manualBtn").addEventListener("click", async () => {
+    const secretKey = getValue("secretKey");
+    if (secretKey && oPlugin.JS_SetSecretKey) {
+      await callSdk(() => oPlugin.JS_SetSecretKey(getWnd(), secretKey), "Secret key ayari");
+    }
+
+    const playArgs = {
+      playURL: getValue("playUrl")
+    };
+    if (getValue("streamToken")) {
+      playArgs.token = getValue("streamToken");
+    }
+    if (getValue("auth")) {
+      playArgs.auth = getValue("auth");
+    }
+    if (getValue("proxy")) {
+      playArgs.proxy = getValue("proxy");
+    }
+
+    await callSdk(
+      () => oPlugin.JS_Play(
+        getValue("connectUrl"),
+        playArgs,
+        getWnd(),
+        getValue("startTime") || undefined,
+        getValue("endTime") || undefined
+      ),
+      "Manual play"
+    );
+  });
+
+  document.getElementById("stopBtn").addEventListener("click", async () => {
+    await callSdk(() => oPlugin.JS_Stop(getWnd()), "Durdurma");
+  });
+
+  window.addEventListener("load", () => {
+    const resourceId = getQuery("resourceId");
+    const deviceSerial = getQuery("deviceSerial");
+    const channelNo = getQuery("channelNo");
+    const code = getQuery("code");
+    const autoPlay = getQuery("autoplay");
+    if (deviceSerial) setValue("deviceSerial", deviceSerial);
+    if (channelNo) setValue("channelNo", channelNo);
+    if (code) setValue("secretKey", code);
+    if (resourceId && deviceSerial) {
+      fillFromBackend()
+        .then(async () => {
+          if (autoPlay === "1" || autoPlay.toLowerCase() === "true") {
+            await startLiveView();
+          }
+        })
+        .catch((error) => {
+          setStatus(`Backend doldurma hatasi:\n${error?.message || error}`);
+        });
+    }
+  });
+
+  document.getElementById("pauseBtn").addEventListener("click", async () => {
+    await callSdk(() => oPlugin.JS_Pause(getWnd()), "Pause");
+  });
+
+  document.getElementById("resumeBtn").addEventListener("click", async () => {
+    await callSdk(() => oPlugin.JS_Resume(getWnd()), "Resume");
+  });
+
+  document.getElementById("seekBtn").addEventListener("click", async () => {
+    await callSdk(
+      () => oPlugin.JS_Seek(getWnd(), getValue("startTime"), getValue("endTime")),
+      "Seek"
+    );
+  });
+
+  document.getElementById("osdBtn").addEventListener("click", async () => {
+    try {
+      const osd = await oPlugin.JS_GetOSDTime(getWnd(), "standard");
+      setStatus(`OSD time:\n${JSON.stringify(osd, null, 2)}`);
+    } catch (error) {
+      setStatus(`OSD time hatasi:\n${error?.message || error}`);
+    }
+  });
+</script>
+</body>
+</html>

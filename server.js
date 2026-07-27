@@ -25,6 +25,13 @@ let tokenCache = {
   areaDomain: null,
   expireTime: 0,
 };
+let streamTokenCache = {
+  appToken: null,
+  appKey: null,
+  streamAreaDomain: null,
+  areaDomain: null,
+  fetchedAt: 0,
+};
 
 const teamOpenApiService = createTeamOpenApiService({
   appKey: APP_KEY,
@@ -44,8 +51,27 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(__dirname));
-app.use(SDK_BASE_PATH, express.static(path.join(__dirname, "sdk")));
+const staticOptions = {
+  etag: false,
+  lastModified: false,
+  setHeaders(res, filePath) {
+    const ext = path.extname(filePath).toLowerCase();
+    if (
+      ext === ".html" ||
+      ext === ".js" ||
+      ext === ".css" ||
+      ext === ".json" ||
+      ext === ".wasm"
+    ) {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+    }
+  },
+};
+
+app.use(express.static(__dirname, staticOptions));
+app.use(SDK_BASE_PATH, express.static(path.join(__dirname, "sdk"), staticOptions));
 
 const LOCAL_AGENT_ZIP_PATH = path.join(
   __dirname,
@@ -828,6 +854,77 @@ async function getToken(forceRefresh = false) {
 
   tokenCache = extractTokenInfo(data);
   return tokenCache;
+}
+
+function extractStreamTokenInfo(data, fallbackAreaDomain) {
+  return {
+    appToken: data.data?.appToken || data.data?.accessToken || data.data?.token || null,
+    appKey: data.data?.appKey || null,
+    streamAreaDomain:
+      data.data?.streamAreaDomain ||
+      data.data?.ezvizAreaDomain ||
+      data.data?.ezvizDomain ||
+      data.data?.areaDomain ||
+      null,
+    areaDomain: data.data?.areaDomain || fallbackAreaDomain || null,
+    fetchedAt: Date.now(),
+  };
+}
+
+async function getStreamToken(forceRefresh = false) {
+  const nowMs = Date.now();
+  if (
+    !forceRefresh &&
+    streamTokenCache.appToken &&
+    streamTokenCache.streamAreaDomain &&
+    nowMs - streamTokenCache.fetchedAt < 10 * 60 * 1000
+  ) {
+    return streamTokenCache;
+  }
+
+  let token = await getToken(forceRefresh);
+  const call = async () => {
+    const response = await fetch(`${token.areaDomain}/api/hccgw/platform/v1/streamtoken/get`, {
+      method: "GET",
+      headers: {
+        Token: token.accessToken,
+      },
+    });
+
+    const rawText = await response.text();
+    let data = {};
+    try {
+      data = rawText ? JSON.parse(rawText) : {};
+    } catch {
+      throw new Error(`streamtoken/get JSON donmedi: ${rawText.slice(0, 300)}`);
+    }
+    return { response, data };
+  };
+
+  let { response, data } = await call();
+  let errorCode = String(data.errorCode || data.code || "");
+  if (errorCode === "OPEN000007" && !forceRefresh) {
+    token = await getToken(true);
+    ({ response, data } = await call());
+    errorCode = String(data.errorCode || data.code || "");
+  }
+
+  if (!response.ok || errorCode !== "0") {
+    throw new Error(
+      `streamtoken alinamadi. ${friendlyOpenApiError(
+        errorCode,
+        data.errorMsg || data.msg || "JSDecoder stream token istegi basarisiz."
+      )}`
+    );
+  }
+
+  const parsed = extractStreamTokenInfo(data, token.areaDomain);
+  if (!parsed.appToken || !parsed.streamAreaDomain) {
+    throw new Error("streamtoken yanitinda appToken veya streamAreaDomain eksik.");
+  }
+
+  streamTokenCache = parsed;
+  return streamTokenCache;
 }
 
 async function postOpenApi(pathName, payload, forceRefresh = false) {
@@ -1673,17 +1770,67 @@ app.get("/api/sdk-config", async (req, res) => {
 
   try {
     const token = await getToken();
+    const streamToken = await getStreamToken();
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
     res.json({
       sdkBasePath: SDK_BASE_PATH,
       areaDomain: token.areaDomain,
-      ezvizEnvDomain: toEzvizEnvDomain(token.areaDomain),
-      accessToken: token.accessToken,
+      ezvizEnvDomain:
+        streamToken.streamAreaDomain || toEzvizEnvDomain(token.areaDomain),
+      accessToken: streamToken.appToken,
+      streamAppKey: streamToken.appKey,
+      apiAccessToken: token.accessToken,
       expiresAt: normalizeExpireTime(token.expireTime),
       sdkInstalled: isSdkInstalled(),
-      note: "Bu accessToken yalnizca yerel SDK/EZOPEN tani testi icin donuyor. Uretimde frontend'e uzun omurlu kimlik bilgisi verilmemelidir.",
+      note: "Bu accessToken JSDecoder/EZOPEN icin streamtoken/get endpointinden gelen appToken'dir.",
     });
   } catch (err) {
     res.status(500).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.get("/api/sdk-live-input", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const resourceId = String(req.query.resourceId || "").trim();
+  const deviceSerial = String(req.query.deviceSerial || "").trim();
+  const code = String(req.query.code || "").trim();
+  const quality = Number(req.query.quality || 1);
+  const channelNo = Number(req.query.channelNo || 1);
+
+  if (!resourceId || !deviceSerial) {
+    return res.status(400).json({
+      error: "resourceId ve deviceSerial parametreleri zorunlu.",
+    });
+  }
+
+  try {
+    const [streamToken, stream] = await Promise.all([
+      getStreamToken(),
+      getCachedStreamSource({
+        resourceId,
+        deviceSerial,
+        quality,
+        protocol: 1,
+        code,
+      }),
+    ]);
+
+    return res.json({
+      accessToken: streamToken.appToken,
+      appKey: streamToken.appKey,
+      domain: streamToken.streamAreaDomain,
+      sourceUrl: stream.url,
+      deviceSerial,
+      channelNo,
+      quality,
+      expireTime: stream.expireTime,
+      raw: stream.raw,
+    });
+  } catch (err) {
+    return res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
   }
 });
 

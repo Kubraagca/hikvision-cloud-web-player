@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hikvision Izleme</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.15/hls.min.js"></script>
-<script src="/sdk/dist/jsPlugin-3.0.0.min.js"></script>
+<script src="/sdk/dist/jsPlugin-3.0.0.min.js?v=20260727-2"></script>
 <style>
   :root {
     --bg: #eef1f5;
@@ -190,6 +190,14 @@
     overflow: hidden;
   }
 
+  .sdk-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: none;
+    border: 0;
+    background: #000;
+  }
+
   .player-status {
     display: flex;
     justify-content: space-between;
@@ -227,12 +235,13 @@
 <header>
   <div>
     <h1>Hikvision Izleme</h1>
-    <div class="sub">Cloud kamera listesi ve HLS izleme.</div>
+    <div class="sub">Cloud kamera listesi, HLS ve jsDecoder SDK izleme.</div>
   </div>
   <div class="toolbar">
     <a class="button-link" href="/camera-setup">Kurulum</a>
     <a class="button-link" href="/team-device-add">Team'e Ekle</a>
     <a class="button-link" href="/camera-browser-test">Tarayici Testi</a>
+    <a class="button-link" href="/jsdecoder-demo.html">jsDecoder Demo</a>
     <button id="refresh-btn">Listeyi Yenile</button>
   </div>
 </header>
@@ -289,6 +298,7 @@
       <div class="panel-body">
         <video id="player" controls muted playsinline></video>
         <div id="sdk-player" class="sdk-host"></div>
+        <iframe id="sdk-frame" class="sdk-frame" title="jsDecoder Player"></iframe>
         <div class="player-status">
           <span id="status-text">Bir kamera secin</span>
           <span id="expire-text"></span>
@@ -313,6 +323,7 @@
   const placeholderEl = document.getElementById("camera-placeholder");
   const videoEl = document.getElementById("player");
   const sdkHostEl = document.getElementById("sdk-player");
+  const sdkFrameEl = document.getElementById("sdk-frame");
   const statusEl = document.getElementById("status-text");
   const expireEl = document.getElementById("expire-text");
   const healthEl = document.getElementById("health-box");
@@ -336,12 +347,20 @@
 
   function showHlsPlayer() {
     sdkHostEl.style.display = "none";
+    sdkFrameEl.style.display = "none";
     videoEl.style.display = "block";
   }
 
   function showSdkPlayer() {
     videoEl.style.display = "none";
     sdkHostEl.style.display = "block";
+    sdkFrameEl.style.display = "none";
+  }
+
+  function showSdkFrame() {
+    videoEl.style.display = "none";
+    sdkHostEl.style.display = "none";
+    sdkFrameEl.style.display = "block";
   }
 
   async function loadHealth() {
@@ -395,6 +414,12 @@
     }
   }
 
+  function stopSdkFrame() {
+    if (sdkFrameEl) {
+      sdkFrameEl.removeAttribute("src");
+    }
+  }
+
   async function ensureSdkPlayer() {
     if (!sdkConfig?.sdkInstalled) {
       throw new Error("SDK dosyalari backendte bulunamadi.");
@@ -421,11 +446,16 @@
 
       await toPromise(
         sdkPlugin.JS_SetWindowControlCallback({
-          onPluginEventHandler(wndIndex, errorCode, detail) {
-            statusEl.textContent = `SDK hata [wnd=${wndIndex}]: ${errorCode}${detail ? ` - ${detail}` : ""}`;
+          windowEventSelect(wndIndex) {
+            console.log("[SDK windowEventSelect]", wndIndex);
           },
-          onSecretKeyError(wndIndex) {
+          secretKeyError(wndIndex) {
             statusEl.textContent = `SDK secret key hatasi [wnd=${wndIndex}]`;
+            console.error("[SDK secretKeyError]", { wndIndex });
+          },
+          pluginErrorHandler(wndIndex, errorCode, detail) {
+            statusEl.textContent = `SDK hata [wnd=${wndIndex}]: ${errorCode}${detail ? ` - ${detail}` : ""}`;
+            console.error("[SDK pluginErrorHandler]", { wndIndex, errorCode, detail });
           },
           onFirstFrameDisplay() {
             statusEl.textContent = `${selectedCamera?.name || "Kamera"} - EZOPEN yayini basladi.`;
@@ -537,27 +567,46 @@
     try {
       const selectedMode = playModeEl.value;
       const verificationCode = verifyCodeEl.value.trim();
-      const protocol =
-        selectedMode === "ezopen" ? "1" :
-        selectedMode === "hls" ? "2" :
-        (sdkConfig?.sdkInstalled && verificationCode ? "1" : "2");
+      const preferredProtocol =
+        selectedMode === "ezopen" ? 1 :
+        selectedMode === "hls" ? 2 :
+        (sdkConfig?.sdkInstalled && verificationCode ? 1 : 2);
 
-      const params = new URLSearchParams({
-        resourceId: cam.resourceId,
-        deviceSerial: cam.deviceSerial,
-        quality: qualityEl.value,
-        protocol,
-      });
-      if (verificationCode) {
-        params.set("code", verificationCode);
-      }
+      let data;
 
-      const res = await fetch(`/api/stream?${params}`);
-      const data = await res.json();
+      try {
+        data = await fetchStream({
+          resourceId: cam.resourceId,
+          deviceSerial: cam.deviceSerial,
+          quality: qualityEl.value,
+          protocol: preferredProtocol,
+          code: verificationCode,
+        });
+      } catch (err) {
+        const encryptionBlocked = String(err?.error || "").includes("stream encryption acik");
+        const canFallbackToSdk =
+          selectedMode === "auto" &&
+          preferredProtocol === 2 &&
+          sdkConfig?.sdkInstalled &&
+          verificationCode;
 
-      if (!res.ok) {
-        statusEl.textContent = `Hata: ${data.error || "Yayin alinamadi"}`;
-        return;
+        if (encryptionBlocked && canFallbackToSdk) {
+          statusEl.textContent = `${cam.name} - HLS encryption'a takildi, jsDecoder deneniyor...`;
+          data = await fetchStream({
+            resourceId: cam.resourceId,
+            deviceSerial: cam.deviceSerial,
+            quality: qualityEl.value,
+            protocol: 1,
+            code: verificationCode,
+          });
+        } else if (encryptionBlocked && !verificationCode) {
+          statusEl.textContent =
+            "HLS adresi encryption nedeniyle acilamadi. Verification Code girip Otomatik veya EZOPEN + SDK modunu deneyin.";
+          return;
+        } else {
+          statusEl.textContent = `Hata: ${err?.error || err?.message || "Yayin alinamadi"}`;
+          return;
+        }
       }
 
       protocolMetaEl.textContent =
@@ -583,54 +632,31 @@
   }
 
   async function playSdk(data, cam, verificationCode) {
+    const params = new URLSearchParams({
+      resourceId: cam.resourceId,
+      deviceSerial: cam.deviceSerial,
+      channelNo: String(Number(cam.channelNo || 1)),
+      quality: String(qualityEl.value),
+      autoplay: "1",
+    });
+    if (verificationCode) {
+      params.set("code", verificationCode);
+    }
+
+    await stopSdkPlayer();
     destroyHls();
     videoEl.pause();
     videoEl.removeAttribute("src");
     videoEl.load();
-    showSdkPlayer();
-
-    await ensureSdkPlayer();
-    await stopSdkPlayer();
-    statusEl.textContent = `${cam.name} - EZOPEN oynatma baslatiliyor...`;
-
-    if (verificationCode && sdkPlugin.JS_SetSecretKey) {
-      await toPromise(sdkPlugin.JS_SetSecretKey(0, verificationCode));
-    }
-
-    const sdkArgs = buildSdkPlayArgs(data.sourceUrl || data.url);
-
-    if (sdkArgs.mode === "ezopen") {
-      if (!sdkConfig?.accessToken || !sdkConfig?.areaDomain) {
-        throw new Error("SDK EZOPEN oynatma icin accessToken veya areaDomain eksik.");
-      }
-
-      await toPromise(
-        sdkPlugin.JS_Play(
-          sdkArgs.url,
-          {
-            ezuikit: true,
-            accessToken: sdkConfig.accessToken,
-            env: {
-              domain: sdkConfig.areaDomain,
-            },
-          },
-          0
-        )
-      );
-      return;
-    }
-
-    await toPromise(
-      sdkPlugin.JS_Play(
-        sdkArgs.websocketConnectUrl,
-        { playURL: sdkArgs.websocketStreamingParam },
-        0
-      )
-    );
+    stopSdkFrame();
+    showSdkFrame();
+    sdkFrameEl.src = `/jsdecoder-demo.html?${params.toString()}`;
+    statusEl.textContent = `${cam.name} - EZOPEN oynatma gomulu jsDecoder ile baslatiliyor...`;
   }
 
   async function playHls(url) {
     await stopSdkPlayer();
+    stopSdkFrame();
     destroyHls();
     showHlsPlayer();
 
@@ -656,6 +682,25 @@
     }
 
     statusEl.textContent = "Tarayiciniz HLS oynatmayi desteklemiyor.";
+  }
+
+  async function fetchStream({ resourceId, deviceSerial, quality, protocol, code }) {
+    const params = new URLSearchParams({
+      resourceId,
+      deviceSerial,
+      quality: String(quality),
+      protocol: String(protocol),
+    });
+    if (code) {
+      params.set("code", code);
+    }
+
+    const res = await fetch(`/api/stream?${params}`);
+    const data = await res.json();
+    if (!res.ok) {
+      throw data;
+    }
+    return data;
   }
 
   document.getElementById("refresh-btn").addEventListener("click", loadCameras);
