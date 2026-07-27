@@ -1661,9 +1661,10 @@ app.get("/api/sdk-config", async (req, res) => {
     res.json({
       sdkBasePath: SDK_BASE_PATH,
       areaDomain: token.areaDomain,
+      accessToken: token.accessToken,
       expiresAt: normalizeExpireTime(token.expireTime),
       sdkInstalled: isSdkInstalled(),
-      note: "Hikvision token frontend'e gonderilmez. JSDecoder benzeri entegrasyonlar backend proxy veya yerel SDK katmani uzerinden ilerlemelidir.",
+      note: "Bu accessToken yalnizca yerel SDK/EZOPEN tani testi icin donuyor. Uretimde frontend'e uzun omurlu kimlik bilgisi verilmemelidir.",
     });
   } catch (err) {
     res.status(500).json({ error: sanitizeMessage(err.message) });

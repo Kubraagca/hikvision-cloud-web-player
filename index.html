@@ -600,7 +600,23 @@
     statusEl.textContent = `${cam.name} - EZOPEN oynatma baslatiliyor...`;
 
     if (sdkArgs.mode === "ezopen") {
-      await toPromise(sdkPlugin.JS_Play(sdkArgs.url, {}, 0));
+      if (!sdkConfig?.accessToken || !sdkConfig?.areaDomain) {
+        throw new Error("SDK EZOPEN oynatma icin accessToken veya areaDomain eksik.");
+      }
+
+      await toPromise(
+        sdkPlugin.JS_Play(
+          sdkArgs.url,
+          {
+            ezuikit: true,
+            accessToken: sdkConfig.accessToken,
+            env: {
+              domain: sdkConfig.areaDomain,
+            },
+          },
+          0
+        )
+      );
       return;
     }
 
