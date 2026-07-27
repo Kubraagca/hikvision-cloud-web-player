@@ -167,6 +167,45 @@
     font-size: 12px;
     white-space: pre-wrap;
   }
+
+  body.embed-mode header,
+  body.embed-mode .stage > .panel:first-child,
+  body.embed-mode .hint,
+  body.embed-mode #timeBar,
+  body.embed-mode .stage > .panel:last-child {
+    display: none;
+  }
+
+  body.embed-mode {
+    background: #000;
+  }
+
+  body.embed-mode main {
+    padding: 0;
+    grid-template-columns: 1fr;
+  }
+
+  body.embed-mode .stage {
+    gap: 0;
+  }
+
+  body.embed-mode .panel {
+    border: 0;
+    background: #000;
+  }
+
+  body.embed-mode .panel h2 {
+    display: none;
+  }
+
+  body.embed-mode .panel-body {
+    padding: 0;
+  }
+
+  body.embed-mode #playWind {
+    aspect-ratio: auto;
+    height: 100vh;
+  }
 </style>
 </head>
 <body>
@@ -310,6 +349,11 @@
     return new URLSearchParams(window.location.search).get(name) || "";
   }
 
+  function isEmbedMode() {
+    const value = getQuery("embed");
+    return value === "1" || value.toLowerCase() === "true";
+  }
+
   async function startLiveView() {
     const secretKey = getValue("secretKey");
     const qualitySuffix = ".live";
@@ -442,6 +486,10 @@
   });
 
   window.addEventListener("load", () => {
+    if (isEmbedMode()) {
+      document.body.classList.add("embed-mode");
+    }
+
     const resourceId = getQuery("resourceId");
     const deviceSerial = getQuery("deviceSerial");
     const channelNo = getQuery("channelNo");
