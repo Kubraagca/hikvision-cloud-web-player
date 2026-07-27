@@ -334,13 +334,6 @@
     return { width, height };
   }
 
-  async function toPromise(value) {
-    if (value && typeof value.then === "function") {
-      return value;
-    }
-    return Promise.resolve(value);
-  }
-
   function showHlsPlayer() {
     sdkHostEl.style.display = "none";
     videoEl.style.display = "block";
@@ -360,7 +353,7 @@
         return;
       }
 
-      healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}<br><strong>SDK:</strong> ${data.sdkInstalled ? "hazir" : "yok"}<br><strong>Mod:</strong> HLS + EZOPEN`;
+      healthEl.innerHTML = `<strong>Durum:</strong> bagli<br><strong>Area domain:</strong> ${data.areaDomain || "Henuz alinmadi"}<br><strong>EZUIKit env:</strong> ${data.ezvizEnvDomain || "-"}<br><strong>SDK:</strong> ${data.sdkInstalled ? "hazir" : "test"}<br><strong>Mod:</strong> HLS + EZOPEN`;
     } catch (err) {
       healthEl.innerHTML = `<strong>Durum:</strong> hata<br>${err.message}`;
     }
@@ -385,6 +378,13 @@
       hls.destroy();
       hls = null;
     }
+  }
+
+  async function toPromise(value) {
+    if (value && typeof value.then === "function") {
+      return value;
+    }
+    return Promise.resolve(value);
   }
 
   async function stopSdkPlayer() {
@@ -591,13 +591,13 @@
 
     await ensureSdkPlayer();
     await stopSdkPlayer();
+    statusEl.textContent = `${cam.name} - EZOPEN oynatma baslatiliyor...`;
 
     if (verificationCode && sdkPlugin.JS_SetSecretKey) {
       await toPromise(sdkPlugin.JS_SetSecretKey(0, verificationCode));
     }
 
     const sdkArgs = buildSdkPlayArgs(data.sourceUrl || data.url);
-    statusEl.textContent = `${cam.name} - EZOPEN oynatma baslatiliyor...`;
 
     if (sdkArgs.mode === "ezopen") {
       if (!sdkConfig?.accessToken || !sdkConfig?.areaDomain) {

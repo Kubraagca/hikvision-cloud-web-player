@@ -871,6 +871,20 @@ function toPhysicalResourceDomain(areaDomain) {
   return url.origin;
 }
 
+function toEzvizEnvDomain(areaDomain) {
+  if (!areaDomain) {
+    return null;
+  }
+
+  const hostname = new URL(areaDomain).hostname.toLowerCase();
+  if (hostname.startsWith("isgp.")) return "https://isgpopen.ezvizlife.com";
+  if (hostname.startsWith("ieu.")) return "https://ieuopen.ezvizlife.com";
+  if (hostname.startsWith("iindia.")) return "https://iindiaopen.ezvizlife.com";
+  if (hostname.startsWith("ius.")) return "https://iusopen.ezvizlife.com";
+  if (hostname.startsWith("isa.")) return "https://isaopen.ezvizlife.com";
+  return null;
+}
+
 async function disableStreamEncryption({ deviceId, alias }) {
   if (!deviceId) {
     throw new Error("Stream encryption kapatmak icin deviceId bulunamadi.");
@@ -1637,6 +1651,7 @@ app.get("/api/health", async (req, res) => {
       configured: true,
       initialServer: INITIAL_SERVER,
       areaDomain: token.areaDomain,
+      ezvizEnvDomain: toEzvizEnvDomain(token.areaDomain),
       expiresAt: normalizeExpireTime(token.expireTime),
       sdkMode: true,
       sdkBasePath: SDK_BASE_PATH,
@@ -1661,6 +1676,7 @@ app.get("/api/sdk-config", async (req, res) => {
     res.json({
       sdkBasePath: SDK_BASE_PATH,
       areaDomain: token.areaDomain,
+      ezvizEnvDomain: toEzvizEnvDomain(token.areaDomain),
       accessToken: token.accessToken,
       expiresAt: normalizeExpireTime(token.expireTime),
       sdkInstalled: isSdkInstalled(),
@@ -1677,6 +1693,83 @@ app.get("/api/team-areas", async (req, res) => {
   try {
     const areas = await teamOpenApiService.getAreas();
     return res.status(200).json({ success: true, areas });
+  } catch (err) {
+    return res.status(502).json({
+      success: false,
+      error: sanitizeMessage(err.message),
+    });
+  }
+});
+
+app.get("/api/team-devices/detail", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const shortSerial = String(req.query.shortSerial || "").trim();
+  if (!shortSerial) {
+    return res.status(400).json({ error: "shortSerial zorunlu." });
+  }
+
+  try {
+    const detail = await teamOpenApiService.getDeviceDetail(shortSerial);
+    return res.status(200).json({
+      success: true,
+      ...detail,
+    });
+  } catch (err) {
+    return res.status(502).json({
+      success: false,
+      error: sanitizeMessage(err.message),
+    });
+  }
+});
+
+app.post("/api/team-devices/disable-encryption", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const shortSerial = String(req.body.shortSerial || "").trim();
+  const alias = String(req.body.alias || "").trim();
+  const deviceId = String(req.body.deviceId || "").trim();
+
+  if (!shortSerial && !deviceId) {
+    return res.status(400).json({ error: "shortSerial veya deviceId zorunlu." });
+  }
+
+  try {
+    let effectiveDeviceId = deviceId;
+    let effectiveAlias = alias;
+
+    if (!effectiveDeviceId) {
+      const detail = await teamOpenApiService.getDeviceDetail(shortSerial);
+      effectiveDeviceId = detail.deviceId;
+      if (!effectiveAlias) {
+        const firstChannelName = detail.cameraChannels?.[0]?.name || "";
+        effectiveAlias = firstChannelName || `CAM-${shortSerial}`;
+      }
+    }
+
+    if (!effectiveDeviceId) {
+      return res.status(404).json({
+        success: false,
+        error: "Device ID bulunamadi.",
+      });
+    }
+
+    await teamOpenApiService.disableStreamEncryption({
+      deviceId: effectiveDeviceId,
+      alias: effectiveAlias || `CAM-${shortSerial || effectiveDeviceId}`,
+    });
+
+    const refreshed = shortSerial
+      ? await teamOpenApiService.getDeviceDetail(shortSerial)
+      : null;
+
+    return res.status(200).json({
+      success: true,
+      message: "Encryption kapatma istegi gonderildi.",
+      deviceId: effectiveDeviceId,
+      alias: effectiveAlias || "",
+      detail: refreshed,
+    });
   } catch (err) {
     return res.status(502).json({
       success: false,
