@@ -863,6 +863,65 @@ async function postOpenApi(pathName, payload, forceRefresh = false) {
   return data;
 }
 
+function toPhysicalResourceDomain(areaDomain) {
+  const url = new URL(areaDomain);
+  if (url.hostname.includes("hikcentralconnect.com") && !url.hostname.includes("-team.")) {
+    url.hostname = url.hostname.replace(/^([^.]+)/, "$1-team");
+  }
+  return url.origin;
+}
+
+async function disableStreamEncryption({ deviceId, alias }) {
+  if (!deviceId) {
+    throw new Error("Stream encryption kapatmak icin deviceId bulunamadi.");
+  }
+
+  const token = await getToken(false);
+  const physicalResourceDomain = toPhysicalResourceDomain(token.areaDomain);
+  const payload = {
+    singleDevicePutRequest: {
+      baseInfo: {
+        userName: "",
+        alias,
+        encryptEnable: 0,
+      },
+      eventReportConfig: {
+        subscribeType: [3],
+        enableAppPush: 1,
+      },
+      timeZoneInfo: {
+        ID: 26,
+        autoApply: 1,
+      },
+    },
+  };
+
+  const response = await fetch(
+    `${physicalResourceDomain}/hcc/resource/v1/physicalresource/devices/${encodeURIComponent(deviceId)}/modify`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: token.accessToken,
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  const data = await response.json();
+  const errorCode = String(data.errorCode || data.code || "");
+  if (!response.ok || (errorCode && errorCode !== "0")) {
+    throw new Error(
+      `Stream encryption kapatma istegi basarisiz. ${friendlyOpenApiError(
+        errorCode,
+        data.errorMsg || data.msg || "physicalresource/devices/modify basarisiz."
+      )}`
+    );
+  }
+
+  return data;
+}
+
 function friendlyOpenApiError(errorCode, fallback) {
   switch (errorCode) {
     case "OPEN000007":
@@ -1124,6 +1183,11 @@ async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias
   if (channels.length === 0) {
     throw new Error("devicedetail/get yanitinda cameraChannel listesi bulunamadi.");
   }
+
+  await disableStreamEncryption({
+    deviceId: deviceId || detail.deviceId || "",
+    alias,
+  });
 
   let importedChannelCount = 0;
   let channelStatusMessage = "";

@@ -85,8 +85,8 @@ internal sealed class HikConnectGatewayService
                         ["name"] = alias,
                         ["ezvizSerialNo"] = request.ShortSerial,
                         ["ezvizVerifyCode"] = request.VerificationCode,
-                        ["userName"] = "",
-                        ["password"] = "",
+                        ["userName"] = request.UserName ?? string.Empty,
+                        ["password"] = request.Password ?? string.Empty,
                         ["streamSecretKey"] = ""
                     },
                     ["importToArea"] = new JsonObject
@@ -151,6 +151,8 @@ internal sealed class HikConnectGatewayService
                     deviceStatusMessage,
                     "Kamera kanali bulunamadi.");
             }
+
+            await _client.DisableStreamEncryptionAsync(deviceId, alias, cancellationToken);
 
             var importedChannelCount = 0;
             string channelStatusMessage;
@@ -422,6 +424,44 @@ internal sealed class HikConnectGatewayClient
         return detail;
     }
 
+    public async Task DisableStreamEncryptionAsync(string deviceId, string alias, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(deviceId))
+        {
+            throw new InvalidOperationException("Stream encryption kapatmak icin deviceId bulunamadi.");
+        }
+
+        var payload = new JsonObject
+        {
+            ["singleDevicePutRequest"] = new JsonObject
+            {
+                ["baseInfo"] = new JsonObject
+                {
+                    ["userName"] = "",
+                    ["alias"] = alias,
+                    ["encryptEnable"] = 0
+                },
+                ["eventReportConfig"] = new JsonObject
+                {
+                    ["subscribeType"] = new JsonArray(3),
+                    ["enableAppPush"] = 1
+                },
+                ["timeZoneInfo"] = new JsonObject
+                {
+                    ["ID"] = 26,
+                    ["autoApply"] = 1
+                }
+            }
+        };
+
+        var response = await PostPhysicalResourceWithTokenRetryAsync(
+            $"/hcc/resource/v1/physicalresource/devices/{Uri.EscapeDataString(deviceId)}/modify",
+            payload,
+            cancellationToken);
+
+        HikConnectResponseParser.EnsureSuccess(response, "physicalresource/devices/modify");
+    }
+
     private async Task<HikConnectTokenInfo> GetTokenAsync(bool forceRefresh, CancellationToken cancellationToken)
     {
         if (!forceRefresh && _cache.TryGetValue(CacheKey, out HikConnectTokenInfo? cached) && cached is not null)
@@ -484,9 +524,34 @@ internal sealed class HikConnectGatewayClient
         return JsonNode.Parse(body)?.AsObject() ?? throw new InvalidOperationException("Hik-Connect yaniti parse edilemedi.");
     }
 
+    private async Task<JsonObject> PostPhysicalResourceWithTokenRetryAsync(string path, JsonObject payload, CancellationToken cancellationToken)
+    {
+        var tokenInfo = await GetTokenAsync(forceRefresh: false, cancellationToken);
+        var domain = ToPhysicalResourceDomain(tokenInfo.AreaDomain);
+        var response = await PostAsync(domain, path, payload, tokenInfo.Token, cancellationToken);
+        var outerCode = HikConnectResponseParser.GetOuterErrorCode(response);
+
+        if (string.Equals(outerCode, "OPEN000007", StringComparison.OrdinalIgnoreCase))
+        {
+            tokenInfo = await GetTokenAsync(forceRefresh: true, cancellationToken);
+            response = await PostAsync(domain, path, payload, tokenInfo.Token, cancellationToken);
+        }
+
+        return response;
+    }
+
     private static string CombineUrl(string baseUrl, string path)
     {
         return $"{baseUrl.TrimEnd('/')}/{path.TrimStart('/')}";
+    }
+
+    private static string ToPhysicalResourceDomain(string areaDomain)
+    {
+        var uri = new Uri(areaDomain);
+        var host = uri.Host.Contains("-team.", StringComparison.OrdinalIgnoreCase)
+            ? uri.Host
+            : System.Text.RegularExpressions.Regex.Replace(uri.Host, "^([^.]+)", "$1-team");
+        return $"{uri.Scheme}://{host}";
     }
 }
 
@@ -830,7 +895,9 @@ internal sealed record TeamDeviceAddRequest(
     string VerificationCode,
     string? Alias,
     string? AreaName,
-    string? AreaId);
+    string? AreaId,
+    string? UserName,
+    string? Password);
 
 internal sealed record TeamAreasResult(
     bool Success,
