@@ -363,6 +363,7 @@ internal sealed class AgentCameraIsapiClient : IDisposable
 
     public async Task<AgentEnableEzvizInfo> EnableEzvizAsync(
         string verificationCode,
+        string? hikConnectServerAddress,
         TimeSpan pollInterval,
         TimeSpan timeout,
         CancellationToken cancellationToken)
@@ -370,7 +371,7 @@ internal sealed class AgentCameraIsapiClient : IDisposable
         ArgumentException.ThrowIfNullOrWhiteSpace(verificationCode);
 
         var currentDocument = await GetXmlAsync("/ISAPI/System/Network/EZVIZ", cancellationToken).ConfigureAwait(false);
-        var requestXml = BuildEzvizUpdateXml(currentDocument, verificationCode);
+        var requestXml = BuildEzvizUpdateXml(currentDocument, verificationCode, hikConnectServerAddress);
 
         await PutXmlAsync("/ISAPI/System/Network/EZVIZ", requestXml, cancellationToken).ConfigureAwait(false);
 
@@ -633,7 +634,7 @@ internal sealed class AgentCameraIsapiClient : IDisposable
             !string.IsNullOrWhiteSpace(verificationCode));
     }
 
-    private static string BuildEzvizUpdateXml(XDocument currentDocument, string verificationCode)
+    private static string BuildEzvizUpdateXml(XDocument currentDocument, string verificationCode, string? hikConnectServerAddress)
     {
         var currentRoot = currentDocument.Root ?? throw new InvalidOperationException("EZVIZ XML okunamadi.");
         var ns = currentRoot.Name.Namespace;
@@ -641,6 +642,7 @@ internal sealed class AgentCameraIsapiClient : IDisposable
         var redirectValue = GetValue(currentRoot, "redirect");
         var redirectEnabled = string.Equals(redirectValue, "true", StringComparison.OrdinalIgnoreCase) || redirectValue == "1";
         var serverAddress = currentRoot.Elements().FirstOrDefault(element => element.Name.LocalName == "serverAddress");
+        var manualServerAddress = (hikConnectServerAddress ?? string.Empty).Trim();
 
         var requestRoot = new XElement(ns + "EZVIZ",
             new XAttribute("version", version),
@@ -649,7 +651,39 @@ internal sealed class AgentCameraIsapiClient : IDisposable
 
         if (serverAddress is not null)
         {
-            requestRoot.Add(new XElement(serverAddress));
+            var clonedServerAddress = new XElement(serverAddress);
+            if (!string.IsNullOrWhiteSpace(manualServerAddress))
+            {
+                if (clonedServerAddress.HasElements)
+                {
+                    var target = clonedServerAddress
+                        .DescendantsAndSelf()
+                        .FirstOrDefault(item =>
+                            item.Name.LocalName.Equals("ipAddress", StringComparison.OrdinalIgnoreCase) ||
+                            item.Name.LocalName.Equals("address", StringComparison.OrdinalIgnoreCase) ||
+                            item.Name.LocalName.Equals("hostName", StringComparison.OrdinalIgnoreCase) ||
+                            item.Name.LocalName.Equals("host", StringComparison.OrdinalIgnoreCase));
+
+                    if (target is not null)
+                    {
+                        target.Value = manualServerAddress;
+                    }
+                    else
+                    {
+                        clonedServerAddress.Value = manualServerAddress;
+                    }
+                }
+                else
+                {
+                    clonedServerAddress.Value = manualServerAddress;
+                }
+            }
+
+            requestRoot.Add(clonedServerAddress);
+        }
+        else if (!string.IsNullOrWhiteSpace(manualServerAddress))
+        {
+            requestRoot.Add(new XElement(ns + "serverAddress", manualServerAddress));
         }
 
         requestRoot.Add(

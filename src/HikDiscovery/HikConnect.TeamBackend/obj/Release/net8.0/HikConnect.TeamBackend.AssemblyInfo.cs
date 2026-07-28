@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HikConnect.TeamBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2733c93c223f8337930f7a997d9459b894882446")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73a574e1e1723022eecc21afc7704a8b53664f51")]
 [assembly: System.Reflection.AssemblyProductAttribute("HikConnect.TeamBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HikConnect.TeamBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

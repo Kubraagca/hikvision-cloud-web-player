@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 internal sealed class LocalDiscoveryService
@@ -26,7 +27,7 @@ internal sealed class LocalDiscoveryService
         _requestTimeout = requestTimeout ?? TimeSpan.FromMilliseconds(450);
     }
 
-    public async Task<LocalDiscoveryResult> DiscoverAsync(string? subnetPrefix, int concurrency, int scanSeconds, CancellationToken cancellationToken)
+    public async Task<LocalDiscoveryResult> DiscoverAsync(string? subnetPrefix, int concurrency, int scanSeconds, bool fullScan, CancellationToken cancellationToken)
     {
         using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         timeoutCts.CancelAfter(TimeSpan.FromSeconds(Math.Max(3, scanSeconds)));
@@ -41,14 +42,22 @@ internal sealed class LocalDiscoveryService
                 ? GetCandidateSubnets()
                 : [CreateManualCandidate(subnetPrefix.Trim())];
 
-            foreach (var candidate in candidates)
+            if (fullScan)
             {
-                if (timeoutCts.IsCancellationRequested)
+                foreach (var candidate in candidates)
                 {
-                    break;
-                }
+                    if (timeoutCts.IsCancellationRequested)
+                    {
+                        break;
+                    }
 
-                results.AddRange(await ScanSubnetAsync(candidate, Math.Max(8, concurrency), timeoutCts.Token).ConfigureAwait(false));
+                    results.AddRange(await ScanSubnetAsync(candidate, Math.Max(8, concurrency), timeoutCts.Token).ConfigureAwait(false));
+                }
+            }
+
+            foreach (var arpDevice in GetArpCacheCandidates(candidates))
+            {
+                results.Add(arpDevice);
             }
         }
         catch (OperationCanceledException) when (timeoutCts.IsCancellationRequested)
@@ -127,14 +136,14 @@ internal sealed class LocalDiscoveryService
         var port80Open = port80Task.Result;
         var port554Open = port554Task.Result;
         var port8000Open = port8000Task.Result;
+        var macAddress = TryResolveMac(ipAddress);
 
-        if (!pingSucceeded && !port80Open && !port554Open && !port8000Open)
+        if (!pingSucceeded && !port80Open && !port554Open && !port8000Open && string.IsNullOrWhiteSpace(macAddress))
         {
             return null;
         }
 
         var baseUri = $"http://{ipAddress}";
-        var macAddress = TryResolveMac(ipAddress);
         var activationProbe = (IsHikvision: false, ActivationStatus: string.Empty);
         var deviceInfoProbe = (IsHikvision: false, Authenticated: false, Model: string.Empty, SerialNumber: string.Empty, MacAddress: string.Empty);
 
@@ -152,6 +161,7 @@ internal sealed class LocalDiscoveryService
             isHikvision ||
             port554Open ||
             port8000Open ||
+            !string.IsNullOrWhiteSpace(macAddress) ||
             ipAddress.EndsWith(".64", StringComparison.Ordinal) ||
             ipAddress.EndsWith(".65", StringComparison.Ordinal);
         if (!looksLikeCamera)
@@ -283,7 +293,8 @@ internal sealed class LocalDiscoveryService
         var handler = new HttpClientHandler
         {
             PreAuthenticate = false,
-            AllowAutoRedirect = false
+            AllowAutoRedirect = false,
+            UseProxy = false
         };
 
         var client = new HttpClient(handler, disposeHandler: true)
@@ -648,6 +659,95 @@ internal sealed class LocalDiscoveryService
     private static extern int SendARP(int destIp, int srcIp, byte[] macAddr, ref int physicalAddrLen);
 
     private sealed record SubnetCandidate(uint StartAddress, int HostCount);
+
+    private static IReadOnlyList<LocalDiscoveredDevice> GetArpCacheCandidates(IReadOnlyList<SubnetCandidate> candidates)
+    {
+        try
+        {
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "arp",
+                    Arguments = "-a",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.Start();
+            var output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit(3000);
+
+            if (string.IsNullOrWhiteSpace(output))
+            {
+                return Array.Empty<LocalDiscoveredDevice>();
+            }
+
+            var ranges = candidates
+                .Select(candidate => (Start: candidate.StartAddress, End: candidate.StartAddress + (uint)Math.Max(0, candidate.HostCount - 1)))
+                .ToArray();
+
+            return output
+                .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Select(ParseArpLine)
+                .Where(entry => entry is not null)
+                .Select(entry => entry!.Value)
+                .Where(entry => ranges.Any(range => IsIpInRange(entry.IpAddress, range.Start, range.End)))
+                .Select(entry => new LocalDiscoveredDevice(
+                    IpAddress: entry.IpAddress,
+                    MacAddress: entry.MacAddress,
+                    SerialNumber: "-",
+                    Model: "-",
+                    ActivationStatus: "Unknown",
+                    IsHikvision: false,
+                    SupportsIsapi: false,
+                    SupportsSdkPort: false))
+                .ToArray();
+        }
+        catch
+        {
+            return Array.Empty<LocalDiscoveredDevice>();
+        }
+    }
+
+    private static (string IpAddress, string MacAddress)? ParseArpLine(string line)
+    {
+        var parts = line.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (parts.Length < 3)
+        {
+            return null;
+        }
+
+        var ipAddress = parts[0];
+        var macAddress = parts[1];
+        if (!IPAddress.TryParse(ipAddress, out var parsedIp) || parsedIp.AddressFamily != AddressFamily.InterNetwork)
+        {
+            return null;
+        }
+
+        if (string.Equals(macAddress, "ff-ff-ff-ff-ff-ff", StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return (ipAddress, macAddress.ToUpperInvariant());
+    }
+
+    private static bool IsIpInRange(string ipAddress, uint start, uint end)
+    {
+        try
+        {
+            var value = ToUInt32FromString(ipAddress);
+            return value >= start && value <= end;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }
 
 internal sealed record LocalDiscoveryResult(IReadOnlyList<LocalDiscoveredDevice> Devices, bool TimedOut);

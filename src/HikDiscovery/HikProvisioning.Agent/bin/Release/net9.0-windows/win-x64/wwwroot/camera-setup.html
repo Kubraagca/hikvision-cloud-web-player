@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yerel Kamera Kurulum</title>
+<style>
+  :root {
+    --bg: #edf2f7;
+    --panel: #ffffff;
+    --panel-soft: #f8fafc;
+    --border: #cfd8e3;
+    --text: #17212b;
+    --muted: #617384;
+    --accent: #1473c9;
+    --accent-soft: #eaf3fc;
+    --success: #0b8f6a;
+    --warning: #d97706;
+    --ok: #15803d;
+    --warn: #b45309;
+    --err: #dc2626;
+    --shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+  }
+  header {
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  h1 { margin: 0; font-size: 26px; font-weight: 700; }
+  .sub { margin-top: 6px; font-size: 14px; color: var(--muted); max-width: 860px; }
+  a, button, input { font: inherit; }
+  a.button-link, button {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease, background .14s ease;
+  }
+  a.button-link:hover, button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    border-color: #bfd0e1;
+  }
+  main { padding: 18px 22px 28px; }
+  .single-col {
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .panel {
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .panel h2 { margin: 0; font-size: 22px; font-weight: 700; }
+  .panel-sub {
+    margin-top: 4px;
+    margin-bottom: 14px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .step-badge {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .top-strip {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  @media (max-width: 1100px) {
+    .form-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 900px) {
+    .top-strip { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .form-grid { grid-template-columns: 1fr; }
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .field input[type="text"], .field input[type="password"], .field input[type="number"] {
+    width: 100%;
+    padding: 12px 13px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fbfdff;
+    color: var(--text);
+  }
+  .field select {
+    width: 100%;
+    padding: 12px 13px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fbfdff;
+    color: var(--text);
+  }
+  .field input:focus {
+    outline: none;
+    border-color: #8db5de;
+    box-shadow: 0 0 0 4px rgba(20,115,201,0.12);
+  }
+  .field.checkbox { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .primary { background: var(--warning); color: white; border-color: var(--warning); }
+  .accent { background: var(--accent); color: white; border-color: var(--accent); }
+  .success { background: var(--success); color: white; border-color: var(--success); }
+  .status-box, .hint-box {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    white-space: pre-wrap;
+  }
+  .status-box { background: rgba(255,255,255,0.7); }
+  .hint-box { background: var(--accent-soft); border-color: #c6d9ef; color: #20496f; }
+  .mini-card {
+    border: 1px solid var(--border);
+    background: var(--panel-soft);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .mini-card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+  }
+  .table-wrap {
+    max-height: 340px;
+    overflow: auto;
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.95);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td {
+    text-align: left;
+    padding: 11px 9px;
+    border-bottom: 1px solid #e8edf3;
+    vertical-align: top;
+  }
+  th {
+    position: sticky;
+    top: 0;
+    background: #f7fafc;
+    z-index: 1;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  @media (max-width: 1100px) {
+    .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .meta-grid { grid-template-columns: 1fr; }
+  }
+  .meta-card {
+    border: 1px solid var(--border);
+    background: var(--panel-soft);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .meta-card span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .select-button, .tag {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    padding: 6px 10px;
+  }
+  .tag {
+    font-size: 11px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+  }
+  .stage-waiting { color: var(--muted); }
+  .stage-running { color: var(--accent); }
+  .stage-done { color: var(--ok); }
+  .stage-skip { color: var(--warn); }
+  .stage-error { color: var(--err); }
+  .status-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f7fafc;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Yerel Kamera Kurulum</h1>
+    <div class="sub">SADP benzeri adim adim akis: kamerayi tara, sec, aktive et, ag ayarlarini uygula. Buluta ekleme ayri adimdir.</div>
+  </div>
+  <div style="display:flex; gap:10px;">
+    <a class="button-link" id="cloud-panel-link" href="#">Bulut Panele Don</a>
+  </div>
+</header>
+
+<main>
+  <div class="single-col">
+    <section class="panel">
+      <div class="step-header">
+        <div class="step-badge">1</div>
+        <div>
+          <h2>Servis ve Tarama</h2>
+          <div class="panel-sub">Yerel servisi kontrol et, sonra agdaki kameralari tara ve listeden sec.</div>
+        </div>
+      </div>
+
+      <div class="top-strip">
+        <div class="mini-card">
+          <h3>Yerel Servis</h3>
+          <div class="actions" style="margin-top:0;">
+            <button id="agent-health-btn" type="button" class="accent">Servis Durumu</button>
+            <button id="discover-btn" type="button">Hizli Tara</button>
+            <button id="discover-full-btn" type="button">Tum Agi Tara</button>
+          </div>
+          <div class="status-box" id="agent-status-box">Yerel servis hazir durumda bekliyor.</div>
+        </div>
+        <div class="mini-card">
+          <h3>Tarama Notu</h3>
+          <div class="hint-box" style="margin-top:0;">
+            Hizli tarama once yaygin adresleri ve ARP tablosundaki yerel adaylari listeler. Yalnizca gerekirse Tum Agi Tara ile tam /24 tarama yap.
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sec</th>
+              <th>IP</th>
+              <th>Model</th>
+              <th>Seri</th>
+              <th>MAC</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody id="discover-body">
+            <tr><td colspan="6">Henuz tarama yapilmadi.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="step-header">
+        <div class="step-badge">2</div>
+        <div>
+          <h2>Kamera Baglantisi</h2>
+          <div class="panel-sub">Kamera secildikten sonra IP, kullanici ve parolayi kontrol et. Once aktive et ve baglan akisini calistir.</div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="camera-ip">Kamera IP</label>
+          <input id="camera-ip" type="text" value="192.168.1.64" />
+        </div>
+        <div class="field">
+          <label for="sdk-port">SDK Port</label>
+          <input id="sdk-port" type="number" value="8000" min="1" max="65535" />
+        </div>
+        <div class="field">
+          <label for="username">Kullanici Adi</label>
+          <input id="username" type="text" value="admin" />
+        </div>
+        <div class="field">
+          <label for="password">Parola</label>
+          <input id="password" type="password" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="connect-btn" type="button" class="success">Aktive Et ve Baglan</button>
+        <button id="reload-btn" type="button">Durumu Yenile</button>
+        <button id="cancel-btn" type="button">Iptal</button>
+      </div>
+
+      <div class="status-box" id="status-box">Hazir.</div>
+    </section>
+
+    <section class="panel">
+      <div class="step-header">
+        <div class="step-badge">3</div>
+        <div>
+          <h2>Secilen Kamera</h2>
+          <div class="panel-sub">Baglandigin kameranin temel kimlik, mevcut IP ve bulut sonuc bilgileri burada gorunur.</div>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-card"><span>Model</span><strong id="meta-model">-</strong></div>
+        <div class="meta-card"><span>Kisa Seri</span><strong id="meta-short-serial">-</strong></div>
+        <div class="meta-card"><span>MAC</span><strong id="meta-mac">-</strong></div>
+        <div class="meta-card"><span>Guncel IP</span><strong id="meta-ip">-</strong></div>
+        <div class="meta-card"><span>Area</span><strong id="meta-area">-</strong></div>
+        <div class="meta-card"><span>Device ID</span><strong id="meta-device-id">-</strong></div>
+      </div>
+
+      <div class="status-line">
+        <div class="pill">Akis: Tara -> Sec -> Aktive Et ve Baglan -> Kamera Ayarlarini Uygula -> Buluta Ekle</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="step-header">
+        <div class="step-badge">4</div>
+        <div>
+          <h2>Kurulum Ayarlari</h2>
+          <div class="panel-sub">Ag, verification code ve bulut kaydi icin gerekli alanlar.</div>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="backend-url">Bulut Backend URL</label>
+          <input id="backend-url" type="text" />
+        </div>
+        <div class="field">
+          <label for="area-select">Alan Listesi</label>
+          <select id="area-select">
+            <option value="">Once Alanlari Getir</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="area-name">Area Adi</label>
+          <input id="area-name" type="text" placeholder="Bos birakilirsa CAM-{shortSerial}" />
+        </div>
+        <div class="field">
+          <label for="alias">Cihaz Adi / Alias</label>
+          <input id="alias" type="text" placeholder="Bos ise CAM-{shortSerial}" />
+        </div>
+        <div class="field">
+          <label for="gateway-override">Gateway Override</label>
+          <input id="gateway-override" type="text" placeholder="Bos ise mevcut cihaz XML'inden gelir" />
+        </div>
+        <div class="field">
+          <label for="primary-dns">DNS 1</label>
+          <input id="primary-dns" type="text" value="8.8.8.8" />
+        </div>
+        <div class="field">
+          <label for="secondary-dns">DNS 2</label>
+          <input id="secondary-dns" type="text" value="1.1.1.1" />
+        </div>
+        <div class="field">
+          <label for="verification-code">Verification Code</label>
+          <input id="verification-code" type="text" placeholder="Bos ise akista olusturulur" />
+        </div>
+      </div>
+
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer; font-weight:600;">Gelişmis Hik-Connect Alanlari (Opsiyonel)</summary>
+        <div class="form-grid" style="margin-top:12px;">
+          <div class="field">
+            <label for="hik-connect-server-address">Hik-Connect Sunucu Adresi</label>
+            <input id="hik-connect-server-address" type="text" placeholder="Ornek: litedev.hik-connect.com" />
+          </div>
+        </div>
+        <div class="panel-sub" style="margin-top:8px;">
+          Bu alanlar sadece bazi modellerde manuel mudahale gerektiginde kullanilir. Bos birakilirsa mevcut otomatik akis devam eder.
+        </div>
+      </details>
+
+      <label class="field checkbox" style="margin-top:10px;">
+        <input id="enable-dhcp" type="checkbox" />
+        DHCP etkinlestir ve IP degisirse kamerayi ayni /24 aginda yeniden bul
+      </label>
+
+      <div class="actions">
+        <button id="load-areas-btn" type="button">Alanlari Getir</button>
+        <button id="hik-connect-enable-btn" class="success" type="button">Hik-Connect'i Etkinlestir</button>
+        <button id="start-btn" class="primary" type="button">Kamera Ayarlarini Uygula</button>
+        <button id="cloud-register-btn" class="accent" type="button">Hik-Connect / Team'e Ekle</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="step-header">
+        <div class="step-badge">5</div>
+        <div>
+          <h2>Kurulum Asamalari</h2>
+          <div class="panel-sub">Yerel ayar veya bulut kaydi sirasindaki adimlar ve hata detaylari burada listelenir.</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>Asama</th><th>Durum</th><th>Detay</th></tr>
+        </thead>
+        <tbody id="stage-body">
+          <tr><td colspan="3">Kurulum baslatilmadi.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <div class="step-header">
+        <div class="step-badge">6</div>
+        <div>
+          <h2>Ag Bilgileri</h2>
+          <div class="panel-sub">ISAPI’den okunan guncel arayuz, gateway, DNS ve DHCP bilgileri.</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Arayuz</th>
+            <th>IP</th>
+            <th>Subnet</th>
+            <th>Gateway</th>
+            <th>DNS1</th>
+            <th>DNS2</th>
+            <th>DHCP</th>
+          </tr>
+        </thead>
+        <tbody id="network-body">
+          <tr><td colspan="7">Ag bilgisi henuz yok.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</main>
+
+<script>
+  const agentStatusBox = document.getElementById("agent-status-box");
+  const statusBox = document.getElementById("status-box");
+  const discoverBody = document.getElementById("discover-body");
+  const stageBody = document.getElementById("stage-body");
+  const networkBody = document.getElementById("network-body");
+  const backendUrlInput = document.getElementById("backend-url");
+  const areaSelect = document.getElementById("area-select");
+  const cloudPanelLink = document.getElementById("cloud-panel-link");
+  const modelEl = document.getElementById("meta-model");
+  const shortSerialEl = document.getElementById("meta-short-serial");
+  const macEl = document.getElementById("meta-mac");
+  const ipEl = document.getElementById("meta-ip");
+  const areaEl = document.getElementById("meta-area");
+  const deviceIdEl = document.getElementById("meta-device-id");
+
+  let activeTaskId = null;
+  let pollTimer = null;
+  let discoveredDevices = [];
+  let availableAreas = [];
+
+  const qs = new URLSearchParams(window.location.search);
+  const backendUrl = qs.get("backendUrl") || qs.get("backend") || "https://hikvision-cloud-web-player.onrender.com";
+  const cloudUrl = qs.get("cloudUrl") || backendUrl;
+  backendUrlInput.value = backendUrl;
+  cloudPanelLink.href = cloudUrl.includes("/camera-setup") ? cloudUrl : `${cloudUrl.replace(/\/$/, "")}/camera-setup`;
+
+  function setAgentStatus(text) { agentStatusBox.textContent = text; }
+  function setStatus(text) { statusBox.textContent = text; }
+  function pick(obj, ...keys) {
+    for (const key of keys) {
+      const value = obj?.[key];
+      if (value !== undefined && value !== null && value !== "") {
+        return value;
+      }
+    }
+    return "";
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function stageClass(status) {
+    switch ((status || "").toLowerCase()) {
+      case "tamam": return "stage-done";
+      case "completed": return "stage-done";
+      case "calisiyor": return "stage-running";
+      case "running": return "stage-running";
+      case "atlandi": return "stage-skip";
+      case "failed": return "stage-error";
+      case "hata": return "stage-error";
+      default: return "stage-waiting";
+    }
+  }
+
+  function renderStages(stages) {
+    if (!stages || !stages.length) {
+      stageBody.innerHTML = "<tr><td colspan='3'>Asama bilgisi yok.</td></tr>";
+      return;
+    }
+    stageBody.innerHTML = stages.map((stage) => `
+      <tr>
+        <td>${escapeHtml(stage.name || "-")}</td>
+        <td class="${stageClass(stage.status)}">${escapeHtml(stage.status || "-")}</td>
+        <td>${escapeHtml(stage.detail || stage.message || "-")}</td>
+      </tr>`).join("");
+  }
+
+  function renderNetwork(interfaces) {
+    if (!interfaces || !interfaces.length) {
+      networkBody.innerHTML = "<tr><td colspan='7'>Ag bilgisi henuz yok.</td></tr>";
+      return;
+    }
+    networkBody.innerHTML = interfaces.map((item) => `
+      <tr>
+        <td>${escapeHtml(pick(item, "id", "Id") || "-")}</td>
+        <td>${escapeHtml(pick(item, "ipAddress", "IpAddress") || "-")}</td>
+        <td>${escapeHtml(pick(item, "subnetMask", "SubnetMask") || "-")}</td>
+        <td>${escapeHtml(pick(item, "gateway", "Gateway") || "-")}</td>
+        <td>${escapeHtml(pick(item, "primaryDns", "PrimaryDns") || "-")}</td>
+        <td>${escapeHtml(pick(item, "secondaryDns", "SecondaryDns") || "-")}</td>
+        <td>${escapeHtml(pick(item, "dhcpMode", "DhcpMode") || "-")}</td>
+      </tr>`).join("");
+  }
+
+  function renderResult(result) {
+    modelEl.textContent = pick(result, "model", "Model") || "-";
+    shortSerialEl.textContent = pick(result, "shortSerial", "ShortSerial") || "-";
+    macEl.textContent = pick(result, "macAddress", "MacAddress") || "-";
+    ipEl.textContent = pick(result, "cameraIp", "CurrentIpAddress") || "-";
+    const areaName = pick(result, "areaName", "AreaName");
+    const areaId = pick(result, "areaId", "AreaId");
+    areaEl.textContent = areaName ? `${areaName} (${areaId || "-"})` : "-";
+    deviceIdEl.textContent = pick(result, "deviceId", "DeviceId") || "-";
+    renderNetwork(result?.networkInterfaces || result?.NetworkInterfaces || []);
+  }
+
+  function renderDiscoveredDevices(devices) {
+    discoveredDevices = Array.isArray(devices) ? devices : [];
+    if (!discoveredDevices.length) {
+      discoverBody.innerHTML = "<tr><td colspan='6'>Kamera bulunamadi.</td></tr>";
+      return;
+    }
+    discoverBody.innerHTML = discoveredDevices.map((device, index) => `
+      <tr>
+        <td><button class="select-button" type="button" data-index="${index}">Sec</button></td>
+        <td>${escapeHtml(pick(device, "ipAddress", "IpAddress") || "-")}</td>
+        <td>${escapeHtml(pick(device, "model", "Model") || "-")}</td>
+        <td>${escapeHtml(pick(device, "serialNumber", "SerialNumber") || "-")}</td>
+        <td>${escapeHtml(pick(device, "macAddress", "MacAddress") || "-")}</td>
+        <td><span class="tag">${escapeHtml(pick(device, "activationStatus", "ActivationStatus") || "-")}</span></td>
+      </tr>`).join("");
+  }
+
+  function renderAreas(areas) {
+    availableAreas = Array.isArray(areas) ? areas : [];
+    areaSelect.innerHTML = "";
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = availableAreas.length ? "Alan secin" : "Alan bulunamadi";
+    areaSelect.appendChild(defaultOption);
+
+    for (const area of availableAreas) {
+      const option = document.createElement("option");
+      option.value = pick(area, "areaId", "AreaId");
+      option.textContent = pick(area, "areaName", "AreaName");
+      areaSelect.appendChild(option);
+    }
+  }
+
+  function applyDevice(index) {
+    const device = discoveredDevices[index];
+    if (!device) return;
+    document.getElementById("camera-ip").value = pick(device, "ipAddress", "IpAddress") || "";
+    document.getElementById("username").value = "admin";
+    setStatus(`Secilen kamera: ${pick(device, "ipAddress", "IpAddress") || "-"} | ${pick(device, "model", "Model") || "-"} | ${pick(device, "activationStatus", "ActivationStatus") || "-"}`);
+  }
+
+  async function checkHealth() {
+    const response = await fetch("/agent/health");
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || "Yerel servis hazir degil.");
+    }
+    setAgentStatus(`Yerel servis hazir. CLI: ${data.cli?.found ? "evet" : "hayir"}, HCNetSDK: ${data.cli?.sdkDllFound ? "evet" : "hayir"}`);
+  }
+
+  async function loadAreas() {
+    const backendUrl = backendUrlInput.value.trim();
+    if (!backendUrl) {
+      throw new Error("Backend URL zorunlu.");
+    }
+
+    const response = await fetch(`${backendUrl.replace(/\/$/, "")}/api/team-areas`);
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || data.error || "Alan listesi alinamadi.");
+    }
+
+    renderAreas(data.areas || []);
+    setStatus(`${(data.areas || []).length} alan yüklendi.`);
+  }
+
+  async function discover(fullScan = false) {
+    setStatus(fullScan ? "Tam ag taramasi baslatiliyor..." : "Hizli kamera taramasi baslatiliyor...");
+    const response = await fetch("/agent/discover", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        scanSeconds: fullScan ? 15 : 4,
+        concurrency: fullScan ? 64 : 24,
+        fullScan
+      })
+    });
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || "Tarama basarisiz.");
+    }
+    renderDiscoveredDevices(data.devices || []);
+    const count = Array.isArray(data.devices) ? data.devices.length : 0;
+    setStatus(data.timedOut
+      ? `Tarama suresi doldu. ${count} aday bulundu.`
+      : `${fullScan ? "Tam ag taramasi" : "Hizli tarama"} tamamlandi. ${count} aday bulundu.`);
+  }
+
+  function parseResultJson(text) {
+    try { return text ? JSON.parse(text) : null; } catch { return null; }
+  }
+
+  async function loadTask(taskId) {
+    const response = await fetch(`/agent/tasks/${encodeURIComponent(taskId)}`);
+    const task = await response.json();
+    if (!response.ok) {
+      throw new Error(task.error || "Task okunamadi.");
+    }
+
+    const payload = parseResultJson(task.resultJson);
+    renderStages(task.stages?.length
+      ? task.stages
+      : [
+          {
+            name: task.taskKind === "connect"
+              ? "Aktive Et ve Baglan"
+              : task.taskKind === "hikConnectEnable"
+                ? "Hik-Connect Etkinlestirme"
+                : "Yerel Kurulum",
+            status: task.status,
+            detail: payload?.error || task.message || "-"
+          }
+        ]);
+
+    if (payload?.device || payload?.backend) {
+      renderResult({
+        model: pick(payload?.device, "model", "Model") || "-",
+        shortSerial: pick(payload?.device, "shortSerial", "ShortSerial") || "-",
+        macAddress: pick(payload?.device, "macAddress", "MacAddress") || "-",
+        cameraIp: pick(payload?.device, "currentIpAddress", "CurrentIpAddress") || task.cameraAddress || "-",
+        areaName: pick(payload?.backend, "areaName", "AreaName") || "-",
+        areaId: pick(payload?.backend, "areaId", "AreaId") || "-",
+        deviceId: pick(payload?.backend, "deviceId", "DeviceId") || "-",
+        networkInterfaces: payload?.network || payload?.Network || []
+      });
+    }
+
+    if ((task.status || "").toLowerCase() === "completed") {
+      clearPolling();
+      setStatus(
+        task.taskKind === "connect"
+          ? "Aktivasyon ve baglanti tamamlandi."
+          : task.taskKind === "hikConnectEnable"
+            ? "Hik-Connect cihaz uzerinde etkinlestirildi."
+          : task.taskKind === "cloudRegister"
+            ? "Bulut kaydi tamamlandi."
+            : "Kamera ayarlari tamamlandi."
+      );
+    } else if ((task.status || "").toLowerCase() === "failed") {
+      clearPolling();
+      setStatus(`Islem basarisiz: ${payload?.error || task.message || "Bilinmeyen hata"}`);
+    } else {
+      setStatus(`Islem suruyor. Son guncelleme: ${new Date(task.updatedAtUtc).toLocaleTimeString("tr-TR")}`);
+    }
+  }
+
+  function clearPolling() {
+    if (pollTimer) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  function startPolling(taskId) {
+    activeTaskId = taskId;
+    clearPolling();
+    loadTask(taskId).catch((err) => setStatus(err.message));
+    pollTimer = setInterval(() => {
+      loadTask(taskId).catch((err) => setStatus(err.message));
+    }, 1500);
+  }
+
+  function getPayload() {
+    const selectedArea = availableAreas.find((item) => pick(item, "areaId", "AreaId") === areaSelect.value);
+    return {
+      cameraAddress: document.getElementById("camera-ip").value.trim(),
+      userName: document.getElementById("username").value.trim() || "admin",
+      password: document.getElementById("password").value,
+      backendUrl: backendUrlInput.value.trim(),
+      areaName: document.getElementById("area-name").value.trim() || pick(selectedArea, "areaName", "AreaName"),
+      areaId: areaSelect.value || "",
+      alias: document.getElementById("alias").value.trim(),
+      gatewayOverride: document.getElementById("gateway-override").value.trim(),
+      primaryDns: document.getElementById("primary-dns").value.trim() || "8.8.8.8",
+      secondaryDns: document.getElementById("secondary-dns").value.trim() || "1.1.1.1",
+      verificationCode: document.getElementById("verification-code").value.trim(),
+      hikConnectServerAddress: document.getElementById("hik-connect-server-address").value.trim(),
+      enableDhcp: document.getElementById("enable-dhcp").checked,
+      sdkPort: Number(document.getElementById("sdk-port").value || 8000)
+    };
+  }
+
+  document.getElementById("agent-health-btn").addEventListener("click", () => {
+    checkHealth().catch((err) => setAgentStatus(err.message));
+  });
+
+  document.getElementById("discover-btn").addEventListener("click", () => {
+    discover(false).catch((err) => setStatus(err.message));
+  });
+
+  document.getElementById("discover-full-btn").addEventListener("click", () => {
+    discover(true).catch((err) => setStatus(err.message));
+  });
+
+  document.getElementById("load-areas-btn").addEventListener("click", () => {
+    loadAreas().catch((err) => setStatus(err.message));
+  });
+
+  areaSelect.addEventListener("change", () => {
+    const selectedArea = availableAreas.find((item) => pick(item, "areaId", "AreaId") === areaSelect.value);
+    if (selectedArea && !document.getElementById("area-name").value.trim()) {
+      document.getElementById("area-name").value = pick(selectedArea, "areaName", "AreaName");
+    }
+  });
+
+  discoverBody.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-index]");
+    if (!button) return;
+    applyDevice(Number(button.getAttribute("data-index")));
+  });
+
+  document.getElementById("start-btn").addEventListener("click", async () => {
+    const payload = getPayload();
+    if (!payload.cameraAddress) {
+      setStatus("Kamera IP zorunlu.");
+      return;
+    }
+    if (!payload.password) {
+      setStatus("Parola zorunlu.");
+      return;
+    }
+
+    setStatus("Kamera ayarlari baslatiliyor...");
+    renderResult(null);
+    try {
+      const response = await fetch("/agent/provision/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Kamera ayarlari baslatilamadi.");
+      }
+      startPolling(data.taskId);
+    } catch (err) {
+      setStatus(err.message);
+    }
+  });
+
+  document.getElementById("cloud-register-btn").addEventListener("click", async () => {
+    const payload = getPayload();
+    if (!payload.cameraAddress) {
+      setStatus("Kamera IP zorunlu.");
+      return;
+    }
+    if (!payload.password) {
+      setStatus("Parola zorunlu.");
+      return;
+    }
+    if (!payload.verificationCode) {
+      setStatus("Buluta ekleme icin verification code gir.");
+      return;
+    }
+
+    setStatus("Bulut kaydi baslatiliyor...");
+    try {
+      const response = await fetch("/agent/cloud-register/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Bulut kaydi baslatilamadi.");
+      }
+      startPolling(data.taskId);
+    } catch (err) {
+      setStatus(err.message);
+    }
+  });
+
+  document.getElementById("hik-connect-enable-btn").addEventListener("click", async () => {
+    const payload = getPayload();
+    if (!payload.cameraAddress) {
+      setStatus("Kamera IP zorunlu.");
+      return;
+    }
+    if (!payload.password) {
+      setStatus("Parola zorunlu.");
+      return;
+    }
+
+    setStatus("Hik-Connect cihaz uzerinde etkinlestiriliyor...");
+    try {
+      const response = await fetch("/agent/hik-connect-enable/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Hik-Connect etkinlestirme baslatilamadi.");
+      }
+      startPolling(data.taskId);
+    } catch (err) {
+      setStatus(err.message);
+    }
+  });
+
+  document.getElementById("connect-btn").addEventListener("click", async () => {
+    const payload = getPayload();
+    if (!payload.cameraAddress) {
+      setStatus("Kamera IP zorunlu.");
+      return;
+    }
+    if (!payload.password) {
+      setStatus("Parola zorunlu.");
+      return;
+    }
+
+    setStatus("Aktive et ve baglan akisi baslatiliyor...");
+    renderResult(null);
+    renderNetwork([]);
+    try {
+      const response = await fetch("/agent/connect/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Aktive et ve baglan baslatilamadi.");
+      }
+      startPolling(data.taskId);
+    } catch (err) {
+      setStatus(err.message);
+    }
+  });
+
+  document.getElementById("cancel-btn").addEventListener("click", async () => {
+    if (!activeTaskId) {
+      setStatus("Aktif task yok.");
+      return;
+    }
+
+    try {
+      await fetch(`/agent/tasks/${encodeURIComponent(activeTaskId)}/cancel`, { method: "POST" });
+      clearPolling();
+      setStatus("Iptal istendi.");
+    } catch (err) {
+      setStatus(err.message);
+    }
+  });
+
+  document.getElementById("reload-btn").addEventListener("click", () => {
+    if (!activeTaskId) {
+      setStatus("Aktif task yok.");
+      return;
+    }
+    loadTask(activeTaskId).catch((err) => setStatus(err.message));
+  });
+
+  checkHealth().catch((err) => setAgentStatus(err.message));
+</script>
+</body>
+</html>

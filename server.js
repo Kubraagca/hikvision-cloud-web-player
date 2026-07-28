@@ -588,6 +588,27 @@ function compactResponseText(text) {
     .slice(0, 240);
 }
 
+function looksLikeAlreadyActiveActivateStatusFailure(status, body) {
+  const normalizedBody = String(body || "").toLowerCase();
+
+  if (status === 401) {
+    return normalizedBody.includes("unauthorized") || normalizedBody.includes("authentication error");
+  }
+
+  if (status === 404) {
+    return normalizedBody.includes("not found") || normalizedBody.includes("can't find process for service");
+  }
+
+  if (status === 403) {
+    return (
+      !normalizedBody.includes("notactivated") &&
+      (normalizedBody.includes("invalid operation") || normalizedBody.includes("invalidoperation"))
+    );
+  }
+
+  return false;
+}
+
 async function waitForDeviceInfo(cameraIp, userName, password, timeoutMs) {
   const deadline = Date.now() + timeoutMs;
   let lastError = null;
@@ -1033,6 +1054,11 @@ async function disableStreamEncryption({ deviceId, alias }) {
   return data;
 }
 
+function isIgnorableStreamEncryptionError(error) {
+  const text = String(error?.message || "");
+  return text.includes("errorCode=VMS002004");
+}
+
 function friendlyOpenApiError(errorCode, fallback) {
   switch (errorCode) {
     case "OPEN000007":
@@ -1294,11 +1320,6 @@ async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias
   if (channels.length === 0) {
     throw new Error("devicedetail/get yanitinda cameraChannel listesi bulunamadi.");
   }
-
-  await disableStreamEncryption({
-    deviceId: deviceId || detail.deviceId || "",
-    alias,
-  });
 
   let importedChannelCount = 0;
   let channelStatusMessage = "";
@@ -1565,6 +1586,19 @@ async function runProvisioningTask(task, input) {
     if (subStatusCode.toLowerCase() === "notactivated") {
       isInactive = true;
       updateTaskStage(task, "Erisim", "Tamam", "Kamera inactive olarak algilandi.");
+    } else if (
+      looksLikeAlreadyActiveActivateStatusFailure(
+        activateStatusResponse.status,
+        activateStatusResponse.body
+      )
+    ) {
+      isInactive = false;
+      updateTaskStage(
+        task,
+        "Erisim",
+        "Tamam",
+        "activateStatus dogrudan okunamadi, cihaz aktif varsayilarak deviceInfo ve Hik-Connect ayarina geciliyor."
+      );
     } else {
       throw new Error(
         `Kamera erisimi basarisiz. HTTP 403. subStatusCode=${subStatusCode || "-"}`
@@ -1578,6 +1612,19 @@ async function runProvisioningTask(task, input) {
       "Erisim",
       "Tamam",
       isInactive ? "Kamera inactive olarak algilandi." : "Kamera aktif."
+    );
+  } else if (
+    looksLikeAlreadyActiveActivateStatusFailure(
+      activateStatusResponse.status,
+      activateStatusResponse.body
+    )
+  ) {
+    isInactive = false;
+    updateTaskStage(
+      task,
+      "Erisim",
+      "Tamam",
+      `activateStatus HTTP ${activateStatusResponse.status} dondu; cihaz aktif varsayilarak kurulum ve Hik-Connect etkinlestirme adimina devam ediliyor.`
     );
   } else {
     throw new Error(
@@ -1660,7 +1707,7 @@ async function runProvisioningTask(task, input) {
   networkInterfaces = parseNetworkInterfaces(refreshedNetworkXml);
   updateTaskStage(task, "Ag Ayarlari", "Tamam", `Guncel IP=${activeCameraIp}`);
 
-  updateTaskStage(task, "Hik-Connect Ayari", "Calisiyor", "EZVIZ/Hik-Connect ayari yapiliyor.");
+  updateTaskStage(task, "Hik-Connect Ayari", "Calisiyor", "EZVIZ/Hik-Connect servisi etkinlestiriliyor ve registerStatus=true bekleniyor.");
   const verificationCode = createVerificationCode(12);
   const enableEzvizXml = updateEzvizXml(ezvizXml, verificationCode);
   await putIsapiXml(

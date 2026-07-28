@@ -10,7 +10,7 @@
         "projectUniqueName": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
         "projectName": "HikSdk.Interop",
         "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\HikSdk.Interop.csproj",
-        "packagesPath": "C:\\Users\\CodexSandboxOffline\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Kubra\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.Interop\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
@@ -111,6 +111,11 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
         }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        }
       }
     },
     "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.ProvisioningCli\\HikSdk.ProvisioningCli.csproj": {
@@ -119,7 +124,7 @@
         "projectUniqueName": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.ProvisioningCli\\HikSdk.ProvisioningCli.csproj",
         "projectName": "HikSdk.ProvisioningCli",
         "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.ProvisioningCli\\HikSdk.ProvisioningCli.csproj",
-        "packagesPath": "C:\\Users\\CodexSandboxOffline\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Kubra\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.ProvisioningCli\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
@@ -181,6 +186,11 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }

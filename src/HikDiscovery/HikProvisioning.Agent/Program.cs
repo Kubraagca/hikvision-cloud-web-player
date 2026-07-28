@@ -6,6 +6,8 @@ using System.Text.Json.Serialization;
 using HikSdk.Interop;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddSimpleConsole();
 builder.WebHost.UseUrls("http://127.0.0.1:47831");
 builder.Services.AddCors(options =>
 {
@@ -40,6 +42,7 @@ app.MapPost("/agent/discover", async (DiscoverAgentRequest? request, LocalDiscov
         request?.SubnetPrefix,
         request?.Concurrency ?? 32,
         request?.ScanSeconds ?? 12,
+        request?.FullScan ?? false,
         cancellationToken);
 
     return Results.Json(new
@@ -67,21 +70,28 @@ app.MapPost("/agent/provision/start", (ProvisionAgentRequest request, AgentTaskS
 {
     var task = taskStore.Create("localSetup", request);
     _ = Task.Run(() => RunProvisionAsync(taskStore, task.TaskId, request));
-    return Results.Accepted($"/agent/tasks/{task.TaskId}", new { taskId = task.TaskId });
+    return Results.Ok(new { taskId = task.TaskId });
 });
 
 app.MapPost("/agent/cloud-register/start", (ProvisionAgentRequest request, AgentTaskStore taskStore) =>
 {
     var task = taskStore.Create("cloudRegister", request);
     _ = Task.Run(() => RunCloudRegisterAsync(taskStore, task.TaskId, request));
-    return Results.Accepted($"/agent/tasks/{task.TaskId}", new { taskId = task.TaskId });
+    return Results.Ok(new { taskId = task.TaskId });
 });
 
 app.MapPost("/agent/connect/start", (ProvisionAgentRequest request, AgentTaskStore taskStore) =>
 {
     var task = taskStore.Create("connect", request);
     _ = Task.Run(() => RunConnectAsync(taskStore, task.TaskId, request));
-    return Results.Accepted($"/agent/tasks/{task.TaskId}", new { taskId = task.TaskId });
+    return Results.Ok(new { taskId = task.TaskId });
+});
+
+app.MapPost("/agent/hik-connect-enable/start", (ProvisionAgentRequest request, AgentTaskStore taskStore) =>
+{
+    var task = taskStore.Create("hikConnectEnable", request);
+    _ = Task.Run(() => RunHikConnectEnableAsync(taskStore, task.TaskId, request));
+    return Results.Ok(new { taskId = task.TaskId });
 });
 
 app.MapGet("/agent/tasks/{taskId}", (string taskId, AgentTaskStore taskStore) =>
@@ -99,6 +109,11 @@ app.MapPost("/agent/tasks/{taskId}/cancel", (string taskId, AgentTaskStore taskS
 });
 
 app.Run();
+
+static bool ShouldSkipStreamEncryptionStage(StreamEncryptionResult result)
+{
+    return !result.Success && result.ErrorCode == 17;
+}
 
 static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, ProvisionAgentRequest request)
 {
@@ -125,6 +140,7 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
 
         var currentIpAddress = options.CameraAddress;
         var activationRequired = false;
+        var activateStatusUnsupported = false;
 
         using var initialClient = new AgentCameraIsapiClient(options);
         try
@@ -141,9 +157,16 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
         catch (AgentCameraIsapiException exception) when (LooksLikeAlreadyActiveActivateStatusFailure(exception))
         {
             activationRequired = false;
+            activateStatusUnsupported = exception.StatusCode == HttpStatusCode.NotFound;
         }
 
-        taskStore.UpdateStage(taskId, "Erisim", "Tamam", activationRequired ? "Kamera inactive bulundu." : "Kamera aktif.");
+        taskStore.UpdateStage(
+            taskId,
+            "Erisim",
+            "Tamam",
+            activateStatusUnsupported
+                ? "Bu model /ISAPI/System/activateStatus endpoint'ini desteklemiyor; cihaz aktif varsayilarak devam edildi."
+                : activationRequired ? "Kamera inactive bulundu." : "Kamera aktif.");
 
         if (activationRequired)
         {
@@ -179,12 +202,15 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
 
             taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Calisiyor", "HCNetSDK ile stream encryption durumu okunuyor.");
             var encryptionStatus = session.GetStreamEncryption();
-            if (!encryptionStatus.Success)
+            if (ShouldSkipStreamEncryptionStage(encryptionStatus))
+            {
+                taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Atlandi", "Bu model stream encryption config API'sini desteklemiyor; adim atlandi.");
+            }
+            else if (!encryptionStatus.Success)
             {
                 throw new InvalidOperationException($"NET_DVR_GetDeviceConfig(NET_DVR_GET_STREAMENCRYPTION) basarisiz. NET_DVR_GetLastError={encryptionStatus.ErrorCode}, Message={encryptionStatus.ErrorMessage}");
             }
-
-            if (encryptionStatus.Enabled)
+            else if (encryptionStatus.Enabled)
             {
                 var disableResult = session.SetStreamEncryption(enabled: false);
                 if (!disableResult.Success)
@@ -250,6 +276,7 @@ static async Task RunProvisionAsync(AgentTaskStore taskStore, string taskId, Pro
         taskStore.UpdateStage(taskId, "Hik-Connect Online", "Calisiyor", "EZVIZ/Hik-Connect etkinlestiriliyor.");
         var ezvizResult = await activeClient.EnableEzvizAsync(
             verificationCode,
+            request.HikConnectServerAddress,
             TimeSpan.FromSeconds(5),
             TimeSpan.FromMinutes(2),
             token).ConfigureAwait(false);
@@ -390,6 +417,81 @@ static async Task RunCloudRegisterAsync(AgentTaskStore taskStore, string taskId,
     }
 }
 
+static async Task RunHikConnectEnableAsync(AgentTaskStore taskStore, string taskId, ProvisionAgentRequest request)
+{
+    taskStore.Update(taskId, status: "running", message: "Hik-Connect etkinlestirme akisi baslatildi.");
+    taskStore.SetStages(taskId,
+    [
+        new AgentTaskStage("Giris", "Bekliyor", string.Empty),
+        new AgentTaskStage("Hik-Connect Ayari", "Bekliyor", string.Empty),
+        new AgentTaskStage("Tamamlandi", "Bekliyor", string.Empty)
+    ]);
+
+    try
+    {
+        var token = taskStore.GetCancellation(taskId).Token;
+        var options = new AgentCameraConnectionOptions(
+            request.CameraAddress.Trim(),
+            string.IsNullOrWhiteSpace(request.UserName) ? "admin" : request.UserName.Trim(),
+            request.Password);
+
+        using var client = new AgentCameraIsapiClient(options);
+
+        taskStore.UpdateStage(taskId, "Giris", "Calisiyor", "deviceInfo okunuyor.");
+        var deviceInfo = await client.GetDeviceInfoAsync(token).ConfigureAwait(false);
+        var currentStatus = await client.GetEzvizStatusAsync(token).ConfigureAwait(false);
+        taskStore.UpdateStage(taskId, "Giris", "Tamam", $"Model={deviceInfo.Model}, KisaSeri={deviceInfo.ShortSerial}");
+
+        var verificationCode = string.IsNullOrWhiteSpace(request.VerificationCode)
+            ? AgentCameraIsapiClient.CreateVerificationCode(12)
+            : request.VerificationCode.Trim();
+
+        taskStore.UpdateStage(taskId, "Hik-Connect Ayari", "Calisiyor", "Platform Access / Hik-Connect aciliyor.");
+        var ezvizResult = await client.EnableEzvizAsync(
+            verificationCode,
+            request.HikConnectServerAddress,
+            TimeSpan.FromSeconds(5),
+            TimeSpan.FromMinutes(2),
+            token).ConfigureAwait(false);
+
+        if (ezvizResult.TimedOut)
+        {
+            throw new InvalidOperationException("Hik-Connect acildi ancak registerStatus iki dakika icinde true olmadi. Gateway, DNS ve internet erisimini kontrol edin.");
+        }
+
+        taskStore.UpdateStage(taskId, "Hik-Connect Ayari", "Tamam", "registerStatus=true oldu.");
+        taskStore.UpdateStage(taskId, "Tamamlandi", "Tamam", "Hik-Connect etkinlestirme tamamlandi.");
+
+        taskStore.Complete(taskId, "completed", JsonSerializer.Serialize(new
+        {
+            success = true,
+            mode = "hikConnectEnable",
+            device = new
+            {
+                deviceInfo.Model,
+                deviceInfo.SerialNumber,
+                deviceInfo.ShortSerial,
+                deviceInfo.SubSerialNumber,
+                deviceInfo.FirmwareVersion,
+                deviceInfo.MacAddress,
+                CurrentIpAddress = options.CameraAddress
+            },
+            ezvizBefore = currentStatus,
+            ezviz = ezvizResult.FinalStatus,
+            verificationCode,
+            message = "Hik-Connect ayari cihaz uzerinden acildi."
+        }));
+    }
+    catch (OperationCanceledException)
+    {
+        taskStore.Complete(taskId, "cancelled", "{\"success\":false,\"error\":\"cancelled\"}");
+    }
+    catch (Exception exception)
+    {
+        taskStore.Complete(taskId, "failed", JsonSerializer.Serialize(new { success = false, error = exception.Message }));
+    }
+}
+
 static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, ProvisionAgentRequest request)
 {
     taskStore.Update(taskId, status: "running", message: "Aktive et ve baglan akisi baslatildi.");
@@ -411,6 +513,8 @@ static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, Provi
 
         var currentIpAddress = options.CameraAddress;
         var activationRequired = false;
+        var activateStatusUnsupported = false;
+        var httpUnavailable = false;
         taskStore.UpdateStage(taskId, "Erisim", "Calisiyor", "Kamera erisimi ve aktivasyon durumu kontrol ediliyor.");
 
         using var client = new AgentCameraIsapiClient(options);
@@ -428,9 +532,46 @@ static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, Provi
         catch (AgentCameraIsapiException exception) when (LooksLikeAlreadyActiveActivateStatusFailure(exception))
         {
             activationRequired = false;
+            activateStatusUnsupported = exception.StatusCode == HttpStatusCode.NotFound;
+        }
+        catch (Exception exception) when (LooksLikeSocketAccessFailure(exception))
+        {
+            httpUnavailable = true;
         }
 
-        taskStore.UpdateStage(taskId, "Erisim", "Tamam", activationRequired ? "Kamera inactive bulundu." : "Kamera aktif.");
+        if (httpUnavailable)
+        {
+            using var session = new HikSdk.Interop.HikActivationSession();
+            session.Initialize(Path.Combine(AppContext.BaseDirectory, "sdk-logs"));
+
+            var loginResult = session.Login(currentIpAddress, request.SdkPort, options.UserName, options.Password);
+            if (loginResult.Success)
+            {
+                activationRequired = false;
+            }
+            else
+            {
+                var activationResult = session.ActivateDevice(currentIpAddress, request.SdkPort, options.Password);
+                if (!activationResult.Success)
+                {
+                    throw new InvalidOperationException(
+                        $"HTTP/ISAPI erisimi acilamadi, HCNetSDK login da basarisiz oldu. " +
+                        $"NET_DVR_Login_V40/NET_DVR_ActivateDevice sonucu: {loginResult.ErrorMessage}; {activationResult.ErrorMessage}");
+                }
+
+                activationRequired = true;
+            }
+        }
+
+        taskStore.UpdateStage(
+            taskId,
+            "Erisim",
+            "Tamam",
+            httpUnavailable
+                ? "HTTP/ISAPI erisimi acilamadi; HCNetSDK fallback kullaniliyor."
+                : activateStatusUnsupported
+                    ? "Bu model /ISAPI/System/activateStatus endpoint'ini desteklemiyor; cihaz aktif varsayilarak devam edildi."
+                : activationRequired ? "Kamera inactive bulundu." : "Kamera aktif.");
 
         if (activationRequired)
         {
@@ -450,10 +591,17 @@ static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, Provi
             taskStore.UpdateStage(taskId, "Aktivasyon", "Atlandi", "Kamera zaten aktif.");
         }
 
-        taskStore.UpdateStage(taskId, "Giris", "Calisiyor", "deviceInfo okunuyor ve SDK login dogrulaniyor.");
-        var deviceInfo = activationRequired
-            ? await client.WaitForDeviceInfoAsync(TimeSpan.FromSeconds(90), TimeSpan.FromSeconds(3), token).ConfigureAwait(false)
-            : await client.GetDeviceInfoAsync(token).ConfigureAwait(false);
+        taskStore.UpdateStage(taskId, "Giris", "Calisiyor", httpUnavailable
+            ? "HCNetSDK login dogrulaniyor."
+            : "deviceInfo okunuyor ve SDK login dogrulaniyor.");
+
+        AgentDeviceInfoInfo? deviceInfo = null;
+        if (!httpUnavailable)
+        {
+            deviceInfo = activationRequired
+                ? await client.WaitForDeviceInfoAsync(TimeSpan.FromSeconds(90), TimeSpan.FromSeconds(3), token).ConfigureAwait(false)
+                : await client.GetDeviceInfoAsync(token).ConfigureAwait(false);
+        }
 
         using (var session = new HikSdk.Interop.HikActivationSession())
         {
@@ -466,47 +614,67 @@ static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, Provi
 
             taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Calisiyor", "HCNetSDK ile stream encryption durumu kontrol ediliyor.");
             var encryptionStatus = session.GetStreamEncryption();
-            if (!encryptionStatus.Success)
+            if (ShouldSkipStreamEncryptionStage(encryptionStatus))
+            {
+                taskStore.UpdateStage(taskId, "Yayin Sifreleme", "Atlandi", "Bu model stream encryption config API'sini desteklemiyor; adim atlandi.");
+            }
+            else if (!encryptionStatus.Success)
             {
                 throw new InvalidOperationException($"NET_DVR_GetDeviceConfig(NET_DVR_GET_STREAMENCRYPTION) basarisiz. NET_DVR_GetLastError={encryptionStatus.ErrorCode}, Message={encryptionStatus.ErrorMessage}");
             }
-
-            taskStore.UpdateStage(
-                taskId,
-                "Yayin Sifreleme",
-                encryptionStatus.Enabled ? "Uyari" : "Tamam",
-                encryptionStatus.Enabled
-                    ? "Stream encryption acik. HLS izleme icin kapatilmasi gerekir."
-                    : "Stream encryption kapali.");
+            else
+            {
+                taskStore.UpdateStage(
+                    taskId,
+                    "Yayin Sifreleme",
+                    encryptionStatus.Enabled ? "Uyari" : "Tamam",
+                    encryptionStatus.Enabled
+                        ? "Stream encryption acik. HLS izleme icin kapatilmasi gerekir."
+                        : "Stream encryption kapali.");
+            }
         }
 
-        var networkInterfaces = await client.GetNetworkInterfacesAsync(token).ConfigureAwait(false);
+        IReadOnlyList<AgentNetworkInterfaceInfo> networkInterfaces = [];
         AgentEzvizStatusInfo? ezvizStatus = null;
-        try
+        if (!httpUnavailable)
         {
-            ezvizStatus = await client.GetEzvizStatusAsync(token).ConfigureAwait(false);
-        }
-        catch
-        {
+            networkInterfaces = await client.GetNetworkInterfacesAsync(token).ConfigureAwait(false);
+            try
+            {
+                ezvizStatus = await client.GetEzvizStatusAsync(token).ConfigureAwait(false);
+            }
+            catch
+            {
+            }
         }
 
-        taskStore.UpdateStage(taskId, "Giris", "Tamam", $"Model={deviceInfo.Model}, KisaSeri={deviceInfo.ShortSerial}");
+        taskStore.UpdateStage(
+            taskId,
+            "Giris",
+            "Tamam",
+            httpUnavailable
+                ? "HCNetSDK login basarili. HTTP/ISAPI bilgileri atlandi."
+                : $"Model={deviceInfo!.Model}, KisaSeri={deviceInfo.ShortSerial}");
         taskStore.Complete(taskId, "completed", JsonSerializer.Serialize(new
         {
             success = true,
             mode = "connect",
+            partial = httpUnavailable,
             device = new
             {
-                deviceInfo.Model,
-                deviceInfo.SerialNumber,
-                deviceInfo.ShortSerial,
-                deviceInfo.SubSerialNumber,
-                deviceInfo.FirmwareVersion,
-                deviceInfo.MacAddress,
+                Model = deviceInfo?.Model ?? "-",
+                SerialNumber = deviceInfo?.SerialNumber ?? "-",
+                ShortSerial = deviceInfo?.ShortSerial ?? "-",
+                SubSerialNumber = deviceInfo?.SubSerialNumber ?? "-",
+                FirmwareVersion = deviceInfo?.FirmwareVersion ?? "-",
+                MacAddress = deviceInfo?.MacAddress ?? "-",
                 CurrentIpAddress = currentIpAddress
             },
             network = networkInterfaces,
-            ezviz = ezvizStatus
+            ezviz = ezvizStatus,
+            message = httpUnavailable
+                ? "HTTP/ISAPI acilamadi ancak HCNetSDK ile baglanti/aktivasyon tamamlandi."
+                : "Aktivasyon ve baglanti tamamlandi."
         }));
     }
     catch (OperationCanceledException)
@@ -521,6 +689,18 @@ static async Task RunConnectAsync(AgentTaskStore taskStore, string taskId, Provi
 
 static bool LooksLikeAlreadyActiveActivateStatusFailure(AgentCameraIsapiException exception)
 {
+    if (exception.StatusCode == HttpStatusCode.Unauthorized)
+    {
+        return exception.ResponseBody.Contains("Unauthorized", StringComparison.OrdinalIgnoreCase) ||
+               exception.ResponseBody.Contains("Authentication Error", StringComparison.OrdinalIgnoreCase);
+    }
+
+    if (exception.StatusCode == HttpStatusCode.NotFound)
+    {
+        return exception.ResponseBody.Contains("Not Found", StringComparison.OrdinalIgnoreCase) ||
+               exception.ResponseBody.Contains("Can't find process for service", StringComparison.OrdinalIgnoreCase);
+    }
+
     if (exception.StatusCode != HttpStatusCode.Forbidden)
     {
         return false;
@@ -534,6 +714,15 @@ static bool LooksLikeAlreadyActiveActivateStatusFailure(AgentCameraIsapiExceptio
     return exception.ResponseBody.Contains("Invalid Operation", StringComparison.OrdinalIgnoreCase) ||
            exception.ResponseBody.Contains("invalidOperation", StringComparison.OrdinalIgnoreCase) ||
            exception.ResponseBody.Contains("invalid operation", StringComparison.OrdinalIgnoreCase);
+}
+
+static bool LooksLikeSocketAccessFailure(Exception exception)
+{
+    var message = exception.Message ?? string.Empty;
+    return message.Contains("bir yuvaya erişilmeye çalışıldı", StringComparison.OrdinalIgnoreCase) ||
+           message.Contains("uzak sunucuya bağlanılamıyor", StringComparison.OrdinalIgnoreCase) ||
+           message.Contains("No connection could be made", StringComparison.OrdinalIgnoreCase) ||
+           message.Contains("actively refused", StringComparison.OrdinalIgnoreCase);
 }
 
 internal static class CliRunner
@@ -804,7 +993,7 @@ internal sealed record AgentTaskResponse(
     string ResultJson,
     IReadOnlyList<AgentTaskStage> Stages);
 
-internal sealed record DiscoverAgentRequest(int? ScanSeconds, int? Concurrency, string? SubnetPrefix);
+internal sealed record DiscoverAgentRequest(int? ScanSeconds, int? Concurrency, string? SubnetPrefix, bool? FullScan);
 
 internal sealed record ProvisionAgentRequest(
     string CameraAddress,
@@ -818,6 +1007,7 @@ internal sealed record ProvisionAgentRequest(
     string? PrimaryDns,
     string? SecondaryDns,
     string? VerificationCode,
+    string? HikConnectServerAddress,
     bool EnableDhcp,
     ushort SdkPort = 8000);
 

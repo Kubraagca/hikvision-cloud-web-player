@@ -1,0 +1,2 @@
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikProvisioning.AgentInstaller\bin\x64\Release\net9.0-windows\win-x64\publish\HikProvisioning.Agent-win-x64-Setup.pdb
+C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikProvisioning.AgentInstaller\bin\x64\Release\net9.0-windows\win-x64\publish\HikProvisioning.Agent-win-x64-Setup.exe

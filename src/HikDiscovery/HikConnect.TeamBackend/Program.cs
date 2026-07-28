@@ -152,8 +152,6 @@ internal sealed class HikConnectGatewayService
                     "Kamera kanali bulunamadi.");
             }
 
-            await _client.DisableStreamEncryptionAsync(deviceId, alias, cancellationToken);
-
             var importedChannelCount = 0;
             string channelStatusMessage;
 

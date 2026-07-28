@@ -9,14 +9,19 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $srcRoot = Join-Path $root "src\HikDiscovery"
 $artifactsRoot = Join-Path $root "artifacts\local-agent"
-$agentBuildDir = Join-Path $srcRoot "HikProvisioning.Agent\bin\x64\$Configuration\net9.0-windows"
-$cliBuildDir = Join-Path $srcRoot "HikSdk.ProvisioningCli\bin\x64\$Configuration\net9.0-windows"
+$agentPublishDir = Join-Path $srcRoot "HikProvisioning.Agent\bin\$Configuration\net9.0-windows\$Runtime\publish"
+$cliPublishDir = Join-Path $srcRoot "HikSdk.ProvisioningCli\bin\$Configuration\net9.0-windows\$Runtime\publish"
+$agentPublishDirAlt = Join-Path $srcRoot "HikProvisioning.Agent\bin\x64\$Configuration\net9.0-windows\$Runtime\publish"
+$cliPublishDirAlt = Join-Path $srcRoot "HikSdk.ProvisioningCli\bin\x64\$Configuration\net9.0-windows\$Runtime\publish"
 $bundleDir = Join-Path $artifactsRoot "bundle\HikProvisioning.Agent-$Runtime"
 $bundleToolsDir = Join-Path $bundleDir "tools\HikSdk.ProvisioningCli"
 $downloadDir = Join-Path $srcRoot "HikProvisioning.Web\wwwroot\downloads\local-agent"
 $zipPath = Join-Path $downloadDir "HikProvisioning.Agent-$Runtime.zip"
 $setupExePath = Join-Path $downloadDir "HikProvisioning.Agent-$Runtime-Setup.exe"
 $iexpressDir = Join-Path $artifactsRoot "iexpress"
+$installerProject = Join-Path $srcRoot "HikProvisioning.AgentInstaller\HikProvisioning.AgentInstaller.csproj"
+$installerPublishDir = Join-Path $srcRoot "HikProvisioning.AgentInstaller\bin\$Configuration\net9.0-windows\$Runtime\publish"
+$installerPublishDirAlt = Join-Path $srcRoot "HikProvisioning.AgentInstaller\bin\x64\$Configuration\net9.0-windows\$Runtime\publish"
 
 Write-Host "Temizlik yapiliyor..."
 Remove-Item -LiteralPath $artifactsRoot -Recurse -Force -ErrorAction SilentlyContinue
@@ -32,25 +37,28 @@ $cliProject = Join-Path $srcRoot "HikSdk.ProvisioningCli\HikSdk.ProvisioningCli.
 
 if (-not $SkipBuild)
 {
-    Write-Host "CLI build aliniyor..."
-    dotnet build $cliProject -c $Configuration --no-restore -p:Platform=x64 -p:RestoreIgnoreFailedSources=true -p:NuGetAudit=false
-    if ($LASTEXITCODE -ne 0) { throw "CLI build basarisiz." }
+    Write-Host "CLI publish aliniyor..."
+    dotnet publish $cliProject -c $Configuration -r $Runtime --self-contained false --no-restore -p:Platform=x64 -p:RestoreIgnoreFailedSources=true -p:NuGetAudit=false
+    if ($LASTEXITCODE -ne 0) { throw "CLI publish basarisiz." }
 
-    Write-Host "Agent build aliniyor..."
-    dotnet build $agentProject -c $Configuration --no-restore -p:Platform=x64 -p:RestoreIgnoreFailedSources=true -p:NuGetAudit=false
-    if ($LASTEXITCODE -ne 0) { throw "Agent build basarisiz." }
+    Write-Host "Agent publish aliniyor..."
+    dotnet publish $agentProject -c $Configuration -r $Runtime --self-contained false --no-restore -p:Platform=x64 -p:RestoreIgnoreFailedSources=true -p:NuGetAudit=false
+    if ($LASTEXITCODE -ne 0) { throw "Agent publish basarisiz." }
 }
 else
 {
-    Write-Host "Mevcut build ciktisi kullaniliyor..."
+    Write-Host "Mevcut publish ciktisi kullaniliyor..."
 }
 
-if (!(Test-Path $cliBuildDir)) { throw "CLI build klasoru bulunamadi: $cliBuildDir" }
-if (!(Test-Path $agentBuildDir)) { throw "Agent build klasoru bulunamadi: $agentBuildDir" }
+if (!(Test-Path $cliPublishDir) -and (Test-Path $cliPublishDirAlt)) { $cliPublishDir = $cliPublishDirAlt }
+if (!(Test-Path $agentPublishDir) -and (Test-Path $agentPublishDirAlt)) { $agentPublishDir = $agentPublishDirAlt }
+
+if (!(Test-Path $cliPublishDir)) { throw "CLI publish klasoru bulunamadi: $cliPublishDir" }
+if (!(Test-Path $agentPublishDir)) { throw "Agent publish klasoru bulunamadi: $agentPublishDir" }
 
 Write-Host "Bundle hazirlaniyor..."
-Copy-Item -Path (Join-Path $agentBuildDir "*") -Destination $bundleDir -Recurse -Force
-Copy-Item -Path (Join-Path $cliBuildDir "*") -Destination $bundleToolsDir -Recurse -Force
+Copy-Item -Path (Join-Path $agentPublishDir "*") -Destination $bundleDir -Recurse -Force
+Copy-Item -Path (Join-Path $cliPublishDir "*") -Destination $bundleToolsDir -Recurse -Force
 
 $cmdPath = Join-Path $bundleDir "start-agent.cmd"
 $cmdContent = @"
@@ -155,58 +163,17 @@ if ($LASTEXITCODE -ne 0) { throw "ZIP olusturma basarisiz." }
 $iexpressPayloadZip = Join-Path $iexpressDir "payload.zip"
 Copy-Item -LiteralPath $zipPath -Destination $iexpressPayloadZip -Force
 
-$iexpressInstallCmd = Join-Path $iexpressDir "install-from-package.cmd"
-$iexpressInstallCmdContent = @"
-@echo off
-setlocal
-set "PAYLOAD_DIR=%~dp0payload"
-if exist "%PAYLOAD_DIR%" rmdir /s /q "%PAYLOAD_DIR%"
-mkdir "%PAYLOAD_DIR%"
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%~dp0payload.zip' -DestinationPath '%~dp0payload' -Force"
-if errorlevel 1 exit /b 1
-powershell -NoProfile -ExecutionPolicy Bypass -File "%PAYLOAD_DIR%\install-agent.ps1"
-endlocal
-"@
-Set-Content -LiteralPath $iexpressInstallCmd -Value $iexpressInstallCmdContent -Encoding ASCII
+Write-Host "Tek dosya Setup EXE uretiliyor..."
+dotnet publish $installerProject -c $Configuration -r $Runtime --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:Platform=x64
+if ($LASTEXITCODE -ne 0) { throw "Setup EXE publish basarisiz." }
 
-$sedPath = Join-Path $iexpressDir "HikProvisioning.Agent-$Runtime.sed"
-$sedContent = @"
-[Version]
-Class=IEXPRESS
-SEDVersion=3
-[Options]
-PackagePurpose=InstallApp
-ShowInstallProgramWindow=1
-HideExtractAnimation=0
-UseLongFileName=1
-InsideCompressed=0
-CAB_FixedSize=0
-CAB_ResvCodeSigning=0
-RebootMode=N
-InstallPrompt=
-DisplayLicense=
-FinishMessage=Kurulum tamamlandi.
-TargetName=$setupExePath
-FriendlyName=HikProvisioning.Agent
-AppLaunched=cmd /c install-from-package.cmd
-PostInstallCmd=<None>
-AdminQuietInstCmd=cmd /c install-from-package.cmd
-UserQuietInstCmd=cmd /c install-from-package.cmd
-SourceFiles=SourceFiles
-[Strings]
-FILE0="payload.zip"
-FILE1="install-from-package.cmd"
-[SourceFiles]
-SourceFiles0=$iexpressDir\
-[SourceFiles0]
-%FILE0%=
-%FILE1%=
-"@
-Set-Content -LiteralPath $sedPath -Value $sedContent -Encoding ASCII
+if (!(Test-Path $installerPublishDir) -and (Test-Path $installerPublishDirAlt)) { $installerPublishDir = $installerPublishDirAlt }
+if (!(Test-Path $installerPublishDir)) { throw "Installer publish klasoru bulunamadi: $installerPublishDir" }
 
-Write-Host "Kurulum EXE'si uretiliyor..."
-& "$env:WINDIR\System32\iexpress.exe" /N $sedPath
-if ($LASTEXITCODE -ne 0) { throw "IExpress EXE olusturma basarisiz." }
+$publishedSetupExe = Join-Path $installerPublishDir "HikProvisioning.Agent-win-x64-Setup.exe"
+if (!(Test-Path $publishedSetupExe)) { throw "Setup EXE bulunamadi: $publishedSetupExe" }
+
+Copy-Item -LiteralPath $publishedSetupExe -Destination $setupExePath -Force
 
 Write-Host "Tamamlandi:"
 Write-Host "Bundle: $bundleDir"

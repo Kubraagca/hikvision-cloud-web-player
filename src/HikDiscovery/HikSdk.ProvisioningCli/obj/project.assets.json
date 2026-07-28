@@ -12,6 +12,18 @@
           "bin/placeholder/HikSdk.Interop.dll": {}
         }
       }
+    },
+    "net9.0-windows/win-x64": {
+      "HikSdk.Interop/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/HikSdk.Interop.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HikSdk.Interop.dll": {}
+        }
+      }
     }
   },
   "libraries": {
@@ -27,7 +39,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\CodexSandboxOffline\\.nuget\\packages\\": {},
+    "C:\\Users\\Kubra\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -36,7 +48,7 @@
       "projectUniqueName": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.ProvisioningCli\\HikSdk.ProvisioningCli.csproj",
       "projectName": "HikSdk.ProvisioningCli",
       "projectPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.ProvisioningCli\\HikSdk.ProvisioningCli.csproj",
-      "packagesPath": "C:\\Users\\CodexSandboxOffline\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\Kubra\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikSdk.ProvisioningCli\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
@@ -98,6 +110,11 @@
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
+      }
+    },
+    "runtimes": {
+      "win-x64": {
+        "#import": []
       }
     }
   }
