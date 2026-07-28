@@ -164,6 +164,21 @@
   </div>
 
   <section class="panel" style="margin-top:16px;">
+    <div class="panel-head"><h2>Hik-Connect / EZVIZ</h2></div>
+    <div class="panel-body grid">
+      <div class="summary">
+        <div class="item"><span>Enabled</span><strong id="ezviz-enabled-meta">-</strong></div>
+        <div class="item"><span>Register Status</span><strong id="ezviz-register-meta">-</strong></div>
+      </div>
+      <label>Verification Code <input id="verification-input" type="text" /></label>
+      <div class="row">
+        <button id="load-ezviz-btn" type="button">Verification Oku</button>
+        <button id="save-ezviz-btn" type="button">Verification Kaydet</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:16px;">
     <div class="panel-head"><h2>Ham XML</h2></div>
     <div class="panel-body">
       <textarea id="xml-output" readonly></textarea>
@@ -189,11 +204,14 @@
   const dhcpMetaEl = document.getElementById("dhcp-meta");
   const statusBoxEl = document.getElementById("status-box");
   const xmlOutputEl = document.getElementById("xml-output");
+  const ezvizEnabledMetaEl = document.getElementById("ezviz-enabled-meta");
+  const ezvizRegisterMetaEl = document.getElementById("ezviz-register-meta");
   const ipInputEl = document.getElementById("ip-input");
   const maskInputEl = document.getElementById("mask-input");
   const gatewayInputEl = document.getElementById("gateway-input");
   const dns1InputEl = document.getElementById("dns1-input");
   const dns2InputEl = document.getElementById("dns2-input");
+  const verificationInputEl = document.getElementById("verification-input");
 
   function setStatus(text, kind = "") {
     statusBoxEl.textContent = text;
@@ -274,6 +292,56 @@
     setStatus("IP ayarlari kaydedildi.", "ok");
   }
 
+  async function loadEzviz() {
+    if (!state.deviceId) {
+      setStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    setStatus("Verification ayarlari okunuyor...");
+    const res = await fetch(`/api/device-config/ezviz?deviceId=${encodeURIComponent(state.deviceId)}`);
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "EZVIZ ayarlari alinamadi.");
+    }
+
+    xmlOutputEl.value = data.xml || xmlOutputEl.value;
+    ezvizEnabledMetaEl.textContent = data.enabled === null ? "-" : (data.enabled ? "true" : "false");
+    ezvizRegisterMetaEl.textContent = data.registerStatus === null ? "-" : (data.registerStatus ? "true" : "false");
+    verificationInputEl.value = data.verificationCode || "";
+    setStatus("Verification ayarlari okundu.", "ok");
+  }
+
+  async function saveEzviz() {
+    if (!state.deviceId) {
+      setStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    const verificationCode = verificationInputEl.value.trim();
+    if (!verificationCode) {
+      throw new Error("Verification Code zorunlu.");
+    }
+
+    setStatus("Verification ayari kaydediliyor...");
+    const res = await fetch("/api/device-config/ezviz", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deviceId: state.deviceId,
+        verificationCode,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Verification ayari kaydedilemedi.");
+    }
+
+    xmlOutputEl.value = data.appliedXml || xmlOutputEl.value;
+    setStatus("Verification ayari kaydedildi.", "ok");
+    await loadEzviz();
+  }
+
   async function rebootDevice(options = {}) {
     const silent = Boolean(options.silent);
     if (!state.deviceId) {
@@ -313,10 +381,17 @@
   document.getElementById("reboot-btn").addEventListener("click", () => {
     rebootDevice().catch((err) => setStatus(err.message, "err"));
   });
+  document.getElementById("load-ezviz-btn").addEventListener("click", () => {
+    loadEzviz().catch((err) => setStatus(err.message, "err"));
+  });
+  document.getElementById("save-ezviz-btn").addEventListener("click", () => {
+    saveEzviz().catch((err) => setStatus(err.message, "err"));
+  });
 
   syncMeta();
   if (state.deviceId) {
     loadNetwork().catch((err) => setStatus(err.message, "err"));
+    loadEzviz().catch((err) => setStatus(err.message, "err"));
   } else {
     setStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
   }

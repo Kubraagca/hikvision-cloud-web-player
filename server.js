@@ -2404,18 +2404,7 @@ app.post("/api/ptz/continuous", async (req, res) => {
       result,
     });
   } catch (err) {
-    return res.status(502).json({
-      error: sanitizeMessage(err.message),
-      request: {
-        deviceId,
-        interfaceId,
-        ipAddress,
-        subnetMask,
-        gateway,
-        primaryDns,
-        secondaryDns,
-      },
-    });
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
   }
 });
 
@@ -2441,6 +2430,79 @@ app.get("/api/device-config/network", async (req, res) => {
       deviceId,
       xml,
       interfaces: parseNetworkInterfaces(xml),
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.get("/api/device-config/ezviz", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.query.deviceId || "").trim();
+  if (!deviceId) {
+    return res.status(400).json({ error: "deviceId zorunlu." });
+  }
+
+  try {
+    const result = await callIsapiProxyPass({
+      deviceId,
+      method: "GET",
+      url: "/ISAPI/System/Network/EZVIZ",
+      contentType: "application/xml",
+      body: "",
+    });
+    const xml = decodeXml(String(result.data || ""));
+    const status = parseEzvizStatus(xml);
+    const verificationCode = getXmlValue(xml, ["verificationCode"]);
+    return res.json({
+      success: true,
+      deviceId,
+      xml,
+      enabled: status.enabled,
+      registerStatus: status.registerStatus,
+      verificationCode,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.put("/api/device-config/ezviz", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.body.deviceId || "").trim();
+  const verificationCode = String(req.body.verificationCode || "").trim();
+
+  if (!deviceId || !verificationCode) {
+    return res.status(400).json({ error: "deviceId ve verificationCode zorunlu." });
+  }
+
+  try {
+    const current = await callIsapiProxyPass({
+      deviceId,
+      method: "GET",
+      url: "/ISAPI/System/Network/EZVIZ",
+      contentType: "application/xml",
+      body: "",
+    });
+    const currentXml = decodeXml(String(current.data || ""));
+    const updatedXml = updateEzvizXml(currentXml, verificationCode);
+
+    const result = await callIsapiProxyPass({
+      deviceId,
+      method: "PUT",
+      url: "/ISAPI/System/Network/EZVIZ",
+      contentType: "application/xml",
+      body: updatedXml,
+    });
+
+    return res.json({
+      success: true,
+      deviceId,
+      verificationCode,
+      appliedXml: updatedXml,
+      result,
     });
   } catch (err) {
     return res.status(502).json({ error: sanitizeMessage(err.message) });
