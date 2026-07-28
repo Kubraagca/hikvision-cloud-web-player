@@ -169,6 +169,31 @@ function createProvisioningTask(input) {
   return task;
 }
 
+function createActivationTask(input) {
+  const taskId = crypto.randomUUID();
+  const task = {
+    taskId,
+    status: "running",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    input: {
+      cameraIp: input.cameraIp,
+      userName: input.userName,
+    },
+    stages: [
+      createStage("Erisim"),
+      createStage("Aktivasyon"),
+      createStage("Cihaz Bilgileri"),
+      createStage("Tamamlandi"),
+    ],
+    result: null,
+    error: null,
+  };
+
+  provisioningTasks.set(taskId, task);
+  return task;
+}
+
 function createStage(name) {
   return { name, status: "Bekliyor", detail: "" };
 }
@@ -848,6 +873,18 @@ function resolveSdkHelperCommand() {
   }
 
   const exeCandidates = [
+    path.join(
+      __dirname,
+      "src",
+      "HikDiscovery",
+      "HikSdk.SadpConsole",
+      "bin",
+      "Release",
+      "net8.0-windows",
+      "win-x64",
+      "publish",
+      "HikSdk.SadpConsole.exe"
+    ),
     path.join(
       __dirname,
       "src",
@@ -2113,6 +2150,98 @@ async function runProvisioningTask(task, input) {
   });
 }
 
+async function runActivationTask(task, input) {
+  const normalizedUser = (input.userName || "admin").trim() || "admin";
+  const normalizedIp = input.cameraIp.trim();
+  const sdkPort = Number(input.sdkPort || 8000);
+
+  updateTaskStage(task, "Erisim", "Calisiyor", "Kameraya erisim ve aktivasyon durumu kontrol ediliyor.");
+  const activateStatusResponse = await readActivateStatus(normalizedIp);
+  let isInactive = false;
+
+  if (activateStatusResponse.status === 403) {
+    const subStatusCode = extractSubStatusCode(activateStatusResponse.body);
+    if (subStatusCode.toLowerCase() === "notactivated") {
+      isInactive = true;
+      updateTaskStage(task, "Erisim", "Tamam", "Kamera inactive olarak algilandi.");
+    } else if (
+      looksLikeAlreadyActiveActivateStatusFailure(
+        activateStatusResponse.status,
+        activateStatusResponse.body
+      )
+    ) {
+      isInactive = false;
+      updateTaskStage(task, "Erisim", "Tamam", "activateStatus dogrudan okunamadi, cihaz aktif varsayildi.");
+    } else {
+      throw new Error(
+        `Kamera erisimi basarisiz. HTTP 403. subStatusCode=${subStatusCode || "-"}`
+      );
+    }
+  } else if (activateStatusResponse.status >= 200 && activateStatusResponse.status < 300) {
+    const activateStatus = parseActivateStatus(activateStatusResponse.body);
+    isInactive = activateStatus.isInactive;
+    updateTaskStage(
+      task,
+      "Erisim",
+      "Tamam",
+      isInactive ? "Kamera inactive olarak algilandi." : "Kamera aktif."
+    );
+  } else if (
+    looksLikeAlreadyActiveActivateStatusFailure(
+      activateStatusResponse.status,
+      activateStatusResponse.body
+    )
+  ) {
+    isInactive = false;
+    updateTaskStage(
+      task,
+      "Erisim",
+      "Tamam",
+      `activateStatus HTTP ${activateStatusResponse.status} dondu; cihaz aktif varsayildi.`
+    );
+  } else {
+    throw new Error(
+      `Kamera erisimi basarisiz. HTTP ${activateStatusResponse.status}. ${compactResponseText(
+        activateStatusResponse.body
+      )}`
+    );
+  }
+
+  if (isInactive) {
+    updateTaskStage(task, "Aktivasyon", "Calisiyor", "HCNetSDK ile kamera aktive ediliyor.");
+    const activationResult = await activateCameraWithSdk(normalizedIp, sdkPort, input.password);
+    if (!activationResult.success) {
+      throw new Error(
+        `NET_DVR_ActivateDevice basarisiz. NET_DVR_GetLastError=${activationResult.errorCode}, Message=${activationResult.errorMessage || "-"}`
+      );
+    }
+
+    updateTaskStage(task, "Aktivasyon", "Tamam", "Kamera aktive edildi.");
+  } else {
+    updateTaskStage(task, "Aktivasyon", "Atlandi", "Kamera zaten aktif.");
+  }
+
+  updateTaskStage(task, "Cihaz Bilgileri", "Calisiyor", "DeviceInfo okunuyor.");
+  const deviceInfo = isInactive
+    ? await waitForDeviceInfo(normalizedIp, normalizedUser, input.password, 90_000)
+    : parseDeviceInfo(
+        await requestIsapiXml(normalizedIp, "/ISAPI/System/deviceInfo", normalizedUser, input.password)
+      );
+  updateTaskStage(task, "Cihaz Bilgileri", "Tamam", `Model=${deviceInfo.model || "-"}, Seri=${deviceInfo.shortSerial || "-"}`);
+
+  updateTaskStage(task, "Tamamlandi", "Tamam", "Aktivasyon tamamlandi.");
+  markTaskSucceeded(task, {
+    cameraIp: normalizedIp,
+    model: deviceInfo.model,
+    macAddress: deviceInfo.macAddress,
+    serialNumber: deviceInfo.serialNumber,
+    shortSerial: deviceInfo.shortSerial,
+    subSerialNumber: deviceInfo.subSerialNumber,
+    firmwareVersion: deviceInfo.firmwareVersion,
+    activated: true,
+  });
+}
+
 app.get("/api/health", async (req, res) => {
   if (!APP_KEY || !APP_SECRET) {
     return res.status(200).json({
@@ -2807,6 +2936,30 @@ app.post("/api/provision/start", async (req, res) => {
 
   const task = createProvisioningTask(input);
   runProvisioningTask(task, input).catch((error) => {
+    markTaskFailed(task, error);
+  });
+
+  res.status(202).json({ taskId: task.taskId });
+});
+
+app.post("/api/provision/activate", async (req, res) => {
+  const input = {
+    cameraIp: String(req.body.cameraIp || "").trim(),
+    userName: String(req.body.userName || "admin").trim() || "admin",
+    password: String(req.body.password || ""),
+    sdkPort: Number(req.body.sdkPort || 8000),
+  };
+
+  if (!input.cameraIp) {
+    return res.status(400).json({ error: "cameraIp zorunlu." });
+  }
+
+  if (!input.password) {
+    return res.status(400).json({ error: "password zorunlu." });
+  }
+
+  const task = createActivationTask(input);
+  runActivationTask(task, input).catch((error) => {
     markTaskFailed(task, error);
   });
 

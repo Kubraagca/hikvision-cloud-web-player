@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Xml.Linq;
+using HikSdk.Interop;
 
 internal sealed class LocalDiscoveryService
 {
@@ -36,6 +37,7 @@ internal sealed class LocalDiscoveryService
 
         try
         {
+            results.AddRange(GetSadpCandidates());
             results.AddRange(await ProbePriorityAddressesAsync(timeoutCts.Token).ConfigureAwait(false));
 
             var candidates = string.IsNullOrWhiteSpace(subnetPrefix)
@@ -66,7 +68,7 @@ internal sealed class LocalDiscoveryService
 
         var devices = results
             .GroupBy(item => item.IpAddress, StringComparer.OrdinalIgnoreCase)
-            .Select(group => group.First())
+            .Select(group => MergeDevices(group))
             .OrderBy(item => ParseLastOctet(item.IpAddress))
             .ToArray();
 
@@ -534,6 +536,26 @@ internal sealed class LocalDiscoveryService
     private static string FirstNonEmpty(params string[] values) =>
         values.FirstOrDefault(value => !string.IsNullOrWhiteSpace(value)) ?? string.Empty;
 
+    private static LocalDiscoveredDevice MergeDevices(IEnumerable<LocalDiscoveredDevice> devices)
+    {
+        var items = devices.ToArray();
+        var first = items[0];
+        return new LocalDiscoveredDevice(
+            IpAddress: first.IpAddress,
+            MacAddress: FirstNonEmpty(items.Select(item => item.MacAddress).Where(IsMeaningfulValue).Append(first.MacAddress).ToArray()),
+            SerialNumber: FirstNonEmpty(items.Select(item => item.SerialNumber).Where(IsMeaningfulValue).Append(first.SerialNumber).ToArray()),
+            Model: FirstNonEmpty(items.Select(item => item.Model).Where(IsMeaningfulValue).Append(first.Model).ToArray()),
+            ActivationStatus: FirstNonEmpty(items.Select(item => item.ActivationStatus).Where(IsMeaningfulValue).Append(first.ActivationStatus).ToArray()),
+            IsHikvision: items.Any(item => item.IsHikvision),
+            SupportsIsapi: items.Any(item => item.SupportsIsapi),
+            SupportsSdkPort: items.Any(item => item.SupportsSdkPort));
+    }
+
+    private static bool IsMeaningfulValue(string? value) =>
+        !string.IsNullOrWhiteSpace(value) &&
+        !string.Equals(value, "-", StringComparison.OrdinalIgnoreCase) &&
+        !string.Equals(value, "Unknown", StringComparison.OrdinalIgnoreCase);
+
     private static int ParseLastOctet(string ipAddress)
     {
         var lastSegment = ipAddress.Split('.').LastOrDefault();
@@ -746,6 +768,37 @@ internal sealed class LocalDiscoveryService
         catch
         {
             return false;
+        }
+    }
+
+    private static IReadOnlyList<LocalDiscoveredDevice> GetSadpCandidates()
+    {
+        try
+        {
+            using var sdk = new HikSdkSession();
+            sdk.Initialize();
+            var poll = sdk.PollSadpDevices();
+            if (!poll.Success || poll.Devices.Count == 0)
+            {
+                return Array.Empty<LocalDiscoveredDevice>();
+            }
+
+            return poll.Devices
+                .Where(device => !string.IsNullOrWhiteSpace(device.IpAddress))
+                .Select(device => new LocalDiscoveredDevice(
+                    IpAddress: device.IpAddress,
+                    MacAddress: FirstNonEmpty(device.MacAddress, "-"),
+                    SerialNumber: FirstNonEmpty(device.SerialNumber, "-"),
+                    Model: FirstNonEmpty(device.Model, "-"),
+                    ActivationStatus: FirstNonEmpty(device.ActivationStatus, "Unknown"),
+                    IsHikvision: true,
+                    SupportsIsapi: true,
+                    SupportsSdkPort: true))
+                .ToArray();
+        }
+        catch
+        {
+            return Array.Empty<LocalDiscoveredDevice>();
         }
     }
 }

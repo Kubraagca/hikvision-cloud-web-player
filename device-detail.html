@@ -179,6 +179,24 @@
   </section>
 
   <section class="panel" style="margin-top:16px;">
+    <div class="panel-head"><h2>Kamera Ayarlari</h2></div>
+    <div class="panel-body grid">
+      <label>Kamera IP <input id="provision-ip-input" type="text" /></label>
+      <label>Kullanici Adi <input id="provision-username-input" type="text" value="admin" /></label>
+      <label>Parola <input id="provision-password-input" type="password" /></label>
+      <label>Alan Adi <input id="provision-area-input" type="text" /></label>
+      <label>Gateway Override <input id="provision-gateway-input" type="text" /></label>
+      <label>SDK Port <input id="provision-sdk-port-input" type="number" value="8000" /></label>
+      <label><input id="provision-dhcp-input" type="checkbox" /> DHCP etkinlestir</label>
+      <div class="row">
+        <button id="start-provision-btn" type="button">Kamera Ayarlarini Uygula</button>
+      </div>
+      <div id="provision-status-box" class="status">Hazir.</div>
+      <textarea id="provision-result-output" readonly></textarea>
+    </div>
+  </section>
+
+  <section class="panel" style="margin-top:16px;">
     <div class="panel-head"><h2>Ham XML</h2></div>
     <div class="panel-body">
       <textarea id="xml-output" readonly></textarea>
@@ -212,10 +230,25 @@
   const dns1InputEl = document.getElementById("dns1-input");
   const dns2InputEl = document.getElementById("dns2-input");
   const verificationInputEl = document.getElementById("verification-input");
+  const provisionIpInputEl = document.getElementById("provision-ip-input");
+  const provisionUserInputEl = document.getElementById("provision-username-input");
+  const provisionPasswordInputEl = document.getElementById("provision-password-input");
+  const provisionAreaInputEl = document.getElementById("provision-area-input");
+  const provisionGatewayInputEl = document.getElementById("provision-gateway-input");
+  const provisionSdkPortInputEl = document.getElementById("provision-sdk-port-input");
+  const provisionDhcpInputEl = document.getElementById("provision-dhcp-input");
+  const provisionStatusBoxEl = document.getElementById("provision-status-box");
+  const provisionResultOutputEl = document.getElementById("provision-result-output");
+  let provisionPollTimer = null;
 
   function setStatus(text, kind = "") {
     statusBoxEl.textContent = text;
     statusBoxEl.className = `status ${kind}`.trim();
+  }
+
+  function setProvisionStatus(text, kind = "") {
+    provisionStatusBoxEl.textContent = text;
+    provisionStatusBoxEl.className = `status ${kind}`.trim();
   }
 
   function syncMeta() {
@@ -253,6 +286,10 @@
     gatewayInputEl.value = current.gateway === "-" ? "" : current.gateway;
     dns1InputEl.value = current.primaryDns === "-" ? "" : current.primaryDns;
     dns2InputEl.value = current.secondaryDns === "-" ? "" : current.secondaryDns;
+    provisionIpInputEl.value = current.ipAddress === "-" ? "" : current.ipAddress;
+    if (!provisionGatewayInputEl.value.trim()) {
+      provisionGatewayInputEl.value = current.gateway === "-" ? "" : current.gateway;
+    }
     setStatus("Network ayarlari okundu.", "ok");
   }
 
@@ -372,6 +409,87 @@
     }
   }
 
+  function clearProvisionPolling() {
+    if (provisionPollTimer) {
+      clearInterval(provisionPollTimer);
+      provisionPollTimer = null;
+    }
+  }
+
+  async function loadProvisionTask(taskId) {
+    const res = await fetch(`/api/provision/tasks/${encodeURIComponent(taskId)}`);
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Task bilgisi alinamadi.");
+    }
+
+    const lines = [];
+    if (Array.isArray(data.stages)) {
+      for (const stage of data.stages) {
+        lines.push(`${stage.name}: ${stage.status}${stage.detail ? ` - ${stage.detail}` : ""}`);
+      }
+    }
+    if (data.result) {
+      lines.push("");
+      lines.push(`Result: ${JSON.stringify(data.result, null, 2)}`);
+    }
+    if (data.error) {
+      lines.push("");
+      lines.push(`Error: ${data.error}`);
+    }
+    provisionResultOutputEl.value = lines.join("\n");
+
+    if (data.status === "completed") {
+      clearProvisionPolling();
+      setProvisionStatus("Kamera ayarlari tamamlandi.", "ok");
+    } else if (data.status === "failed") {
+      clearProvisionPolling();
+      setProvisionStatus(data.error || "Kamera ayarlari basarisiz.", "err");
+    } else {
+      setProvisionStatus("Kamera ayarlari suruyor...");
+    }
+  }
+
+  async function startProvision() {
+    const payload = {
+      cameraIp: provisionIpInputEl.value.trim(),
+      userName: provisionUserInputEl.value.trim() || "admin",
+      password: provisionPasswordInputEl.value,
+      areaName: provisionAreaInputEl.value.trim(),
+      gatewayOverride: provisionGatewayInputEl.value.trim(),
+      sdkPort: Number(provisionSdkPortInputEl.value || 8000),
+      enableDhcp: provisionDhcpInputEl.checked,
+    };
+
+    if (!payload.cameraIp) {
+      throw new Error("Kamera IP zorunlu.");
+    }
+    if (!payload.password) {
+      throw new Error("Parola zorunlu.");
+    }
+
+    setProvisionStatus("Kamera ayarlari baslatiliyor...");
+    provisionResultOutputEl.value = "";
+    const res = await fetch("/api/provision/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Kamera ayarlari baslatilamadi.");
+    }
+
+    clearProvisionPolling();
+    await loadProvisionTask(data.taskId);
+    provisionPollTimer = setInterval(() => {
+      loadProvisionTask(data.taskId).catch((err) => {
+        clearProvisionPolling();
+        setProvisionStatus(err.message, "err");
+      });
+    }, 1500);
+  }
+
   document.getElementById("load-btn").addEventListener("click", () => {
     loadNetwork().catch((err) => setStatus(err.message, "err"));
   });
@@ -386,6 +504,9 @@
   });
   document.getElementById("save-ezviz-btn").addEventListener("click", () => {
     saveEzviz().catch((err) => setStatus(err.message, "err"));
+  });
+  document.getElementById("start-provision-btn").addEventListener("click", () => {
+    startProvision().catch((err) => setProvisionStatus(err.message, "err"));
   });
 
   syncMeta();

@@ -1,116 +1,171 @@
-# KAMERA
+# Kamera Projesi
 
-Hikvision cloud uzerinden kamera listesini alip secilen kameranin canli yayin adresini alan basit bir Node.js baslangic projesi.
+Bu proje, Hikvision / HikCentral Connect Team OpenAPI ile cloud kamera izleme, yerel ağdaki cihazları kurma ve cihazları Team hesabına ekleme akışlarını tek bir Node.js uygulamasında toplar.
 
-Bu surum su akisi kurar:
+## Projenin Bugünkü Kapsamı
 
-1. `HIK_APP_KEY` ve `HIK_APP_SECRET` ile token alir.
-2. Kamera listesini `/api/cameras` uzerinden doner.
-3. Secilen kamera icin `/api/stream` uzerinden HLS oynatma linki alir.
-4. `index.html` bu linki `hls.js` ile tarayicida oynatir.
+Proje şu işleri yapar:
 
-22 Temmuz 2026 itibariyla projede ayri bir web sayfasi daha vardir:
+1. Hikvision Team OpenAPI ile token alır.
+2. Cloud kamera listesini çeker.
+3. Kamerayı HLS veya JSDecoder / EZOPEN akışı ile izletir.
+4. Yerel ağdaki kamerayı aktive eder.
+5. Kamera ağ ayarlarını uygular.
+6. Kamera üzerinde Hik-Connect / EZVIZ kaydını açar.
+7. Kamerayı Team hesabına ekler.
+8. Kamera kanallarını ilgili area altına bağlar.
+9. Cihaz detay ekranından cloud proxypass ile IP, reboot, verification code ve bazı cihaz ayarlarını yönetir.
 
-5. `/camera-setup` uzerinden kamera aktivasyon ve provisioning akisi calistirilir.
-6. Linux ortaminda resmi `HCNetSDK` paketiyle native helper kullanilarak `NET_DVR_ActivateDevice` cagrilir.
-7. ISAPI ile `deviceInfo`, ag ayarlari ve `EZVIZ` durumu yonetilir.
-8. `registerStatus=true` olduktan sonra Team OpenAPI ile cihaz eklenir ve kamera kanallari area'ya otomatik aktarilir.
+## Temel Sayfalar
 
-23 Temmuz 2026 itibariyla projede Team OpenAPI'yi ayri bir web akisi olarak kullanan ek ekran da vardir:
+- `/`
+  Cloud kamera listesi ve izleme ekranı
 
-9. `/team-device-add` ekraninda kullanici `shortSerial`, `verificationCode`, `alias` ve `areaName` bilgilerini girer.
-10. Frontend sadece bizim backend endpoint'imizi cagirir: `POST /api/team-devices/add`
-11. Backend Team token alma, cihaz ekleme, area bulma/olusturma, `devicedetail/get` ve `areas/resources/add` adimlarini kendi tarafinda yurutur.
-12. Hikvision token, AK, SK, admin parola ve verification code frontend'e veya loglara yazilmaz.
+- `/camera-setup`
+  Kurulum ekranı
+  Önce `Sadece Aktiflestir`, sonra `Kamera Ayarlarini Uygula` akışı burada çalışır
 
-24 Temmuz 2026 oncesi yerel kurulum yardimcisi olarak Windows x64 icin indirilebilir bir agent paketi de hazirlandi:
+- `/team-device-add`
+  Sadece Team hesabına cihaz ekleme ekranı
 
-13. `/LocalAgent` sayfasi tarayicidan `http://127.0.0.1:47831` uzerindeki yerel agent ile konusur.
-14. Agent, kamerayla ayni yerel agdaki Windows bilgisayarda calisir; kamera aktivasyon ve ISAPI provisioning islerini yerelde yapar.
-15. Team OpenAPI AK/SK ve token akisi backend'de kalir; yerel agent sadece bizim backend endpoint'imizi cagirir.
-16. Paketleme script'i: `scripts/Publish-LocalAgent.ps1`
-17. Uretilen zip yolu: `src/HikDiscovery/HikProvisioning.Web/wwwroot/downloads/local-agent/HikProvisioning.Agent-win-x64.zip`
-18. Tek tik Windows kurulum dosyasi: `src/HikDiscovery/HikProvisioning.Web/wwwroot/downloads/local-agent/HikProvisioning.Agent-win-x64-Setup.exe`
+- `/device-detail`
+  Seçili cihaz için network, reboot, verification code ve cloud proxypass tabanlı cihaz detay ekranı
 
-## JSDecoder SDK notu
+- `/camera-browser-test`
+  Tarayıcı / ağ davranışı testi
 
-Bu projede cloud akisinin Hikvision tarafinda sifreli gelmesi nedeniyle nihai hedef `WASM / JSDecoder SDK` entegrasyonudur.
+- `/jsdecoder-demo.html`
+  EZOPEN / JSDecoder demo sayfası
 
-Su an proje:
+## Cloud ve Yerel İşlerin Ayrımı
 
-- token alma
-- kamera listeleme
-- stream endpoint deneme
-- SDK config hazirlama
+Projede iki farklı dünya vardır:
 
-adimlarini yapar.
+### 1. Cloud tarafı
 
-Tam entegrasyon icin TPP'den indirdiginiz `WASM (JSDecoder) Develop Kit` dosyalarini proje altinda su klasore koymaniz gerekir:
+Cloud tarafında şu işlemler yapılır:
 
-```text
-/sdk
-```
+- Team token alma
+- Kamera listesi çekme
+- Stream alma
+- PTZ için cloud veya proxypass tabanlı çağrılar
+- Team hesabına cihaz ekleme
+- Area / channel ilişkilendirme
 
-Beklenen tipik dosyalar:
+### 2. Yerel cihaz tarafı
 
-- `*.js`
-- `*.wasm`
-- `*.worker.js`
+Yerel cihaz tarafında şu işlemler yapılır:
 
-Bu dosyalar geldikten sonra frontend tarafi Hikvision'in resmi player akisina gecirilecektir.
+- `activateStatus` okuma
+- inactive cihazı aktive etme
+- IP / gateway / DNS / DHCP ayarlama
+- Hik-Connect / EZVIZ enable etme
 
-## Gereken ortam degiskenleri
+Kritik kural:
 
-| Degisken | Aciklama |
-|---|---|
-| `HIK_APP_KEY` | Hikvision / HikCentral Connect AppKey |
-| `HIK_APP_SECRET` | Hikvision / HikCentral Connect AppSecret |
-| `HIK_INITIAL_SERVER` | Ilk token sunucusu. Varsayilan: `https://ieu.hikcentralconnect.com` |
-| `PORT` | Opsiyonel. Varsayilan: `3000` |
+- Cloud tarafı inactive cihazı ilk kez aktive etmez.
+- İlk aktivasyon yerel ağdan, kameraya doğrudan erişen bir katmanla yapılır.
+- Bizim web tool bunu backend üzerinden başlatır.
 
-Ornek `.env` icin:
+## Aktivasyon Nasıl Çalışır
 
-```text
-.env.example
-```
+Aktivasyon iki parçalıdır:
 
-## Linux provisioning notu
-
-Eger projeyi Linux sunucuda ve kamera ile ayni yerel agda calistiracaksaniz:
-
-- resmi Linux SDK paketi workspace altinda su dizinde olmalidir:
+1. Durum kontrolü HTTP / ISAPI ile yapılır:
 
 ```text
-/third_party/hcnetsdk_linux64/EN-HCNetSDKV6.1.9.48_build20230410_linux64
+GET http://<kamera-ip>/ISAPI/System/activateStatus
 ```
 
-- native helper'i derleyin:
-
-```bash
-npm run build:linux-helper
-```
-
-Bu komut su binary'yi uretir:
+2. Gerçek aktivasyon Hikvision SDK üzerinden yapılır:
 
 ```text
-/native/hik_activation_helper_linux/build/hik_activation_helper
+NET_DVR_ActivateDevice(ip, 8000, activateCfg)
 ```
 
-Sunucuda ayrica sunlar gerekli:
+Yani:
 
-- `g++` / `make`
-- `Node.js 18+`
-- kameraya HTTP (`80`) ve SDK (`8000`) erisimi
-- backend ile kameranin ayni yerel agda olmasi
+- `activateStatus` = HTTP
+- `aktivasyon komutu` = SDK özel protokolü / cihaz servis portu
 
-## Yerelde calistirma
+Bu yüzden aynı ağda olsanız bile ilk aktivasyon için yalnız browser yeterli değildir; backend veya native SDK katmanı gerekir.
 
-```bash
-npm install
-HIK_APP_KEY=xxxx HIK_APP_SECRET=xxxx npm start
-```
+## Kurulum Sayfası Akışı
 
-Windows PowerShell icin:
+`/camera-setup` ekranında iki temel buton vardır:
+
+### `Sadece Aktiflestir`
+
+Bu akış:
+
+1. kameranın `activateStatus` bilgisini okur
+2. cihaz inactive ise SDK ile aktivasyon dener
+3. aktivasyon sonrası `deviceInfo` okur
+
+Bu aşamada Team’e cihaz ekleme yapılmaz.
+
+### `Kamera Ayarlarini Uygula`
+
+Bu akış:
+
+1. gerekirse aktivasyon yapar
+2. ağ ayarlarını uygular
+3. DNS’i arka planda sabit yollar
+4. Hik-Connect / EZVIZ ayarını açar
+5. Team hesabına cihaz ekler
+6. kanal aktarımını tamamlar
+
+Şu an arka planda sabit gönderilen DNS:
+
+- `8.8.8.8`
+- `1.1.1.1`
+
+## Cihaz Detay Sayfası
+
+`/device-detail` ekranı seçili cihaz üzerinde cloud proxypass ile şu işleri yapar:
+
+- network oku
+- IP ayarını kaydet
+- cihazı reboot et
+- verification code oku
+- verification code kaydet
+- aynı sayfadan provisioning task başlat
+
+Bu ekran inactive cihaz aktivasyonu için değil, aktif ve Team tarafında görünür cihaza yönelik yönetim ekranıdır.
+
+## Team’e Ekleme Akışı
+
+Team’e ekleme iki şekilde yapılabilir:
+
+1. Kurulum akışının sonunda otomatik
+2. `/team-device-add` ekranından manuel
+
+Backend bu akışta şunları yapar:
+
+- area bulur veya oluşturur
+- cihazı ekler
+- cihaz zaten varsa tekrar eklemeye çalışmaz
+- eksik kamera kanallarını ilgili area’ya bağlar
+
+## PTZ ve Cihaz Konfigürasyonu
+
+Projede iki farklı kontrol seviyesi vardır:
+
+- Cloud video kontrolü
+- Proxypass ile cihaz ISAPI çağrıları
+
+Özellikle bazı cihaz fonksiyonları için `resourceId` değil `physical deviceId` gerekir.
+
+## Ortam Değişkenleri
+
+Gerekli değişkenler:
+
+- `HIK_APP_KEY`
+- `HIK_APP_SECRET`
+- `HIK_INITIAL_SERVER`
+- `PORT`
+
+Örnek:
 
 ```powershell
 $env:HIK_APP_KEY="xxxx"
@@ -118,150 +173,54 @@ $env:HIK_APP_SECRET="xxxx"
 npm start
 ```
 
-Sonra tarayicida:
+## Çalıştırma
+
+```bash
+npm install
+npm start
+```
+
+Varsayılan adres:
 
 ```text
 http://localhost:3000
 ```
 
-Provisioning sayfasi:
+Önemli ekranlar:
 
 ```text
+http://localhost:3000/
 http://localhost:3000/camera-setup
-```
-
-Team cihaz ekleme sayfasi:
-
-```text
 http://localhost:3000/team-device-add
+http://localhost:3000/device-detail
 ```
 
-Yerel agent sayfasi:
+## Önemli Notlar
 
-```text
-http://localhost:3000/LocalAgent
-```
+- İlk aktivasyon cloud üzerinden değil, yerel ağ erişimiyle yapılır.
+- Kamera ayarları ve verification code değişimi hem yerelden hem de uygun durumlarda cloud proxypass ile yapılabilir.
+- Şifreli yayınlarda HLS her zaman yeterli değildir; bu nedenle projede JSDecoder / EZOPEN akışı da vardır.
+- Aktivasyon tarafında sorun yaşanırsa problem çoğu zaman kameradan değil, SDK helper / native runtime tarafından çıkar.
 
-Yerel agent paketini uretmek icin:
+## Dosya Haritası
 
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/Publish-LocalAgent.ps1
-```
+- `server.js`
+  Ana backend
 
-Agent paketini calistirmak icin:
+- `index.html`
+  İzleme ekranı
 
-```text
-src/HikDiscovery/HikProvisioning.Web/wwwroot/downloads/local-agent/HikProvisioning.Agent-win-x64-Setup.exe
-```
+- `provisioning.html`
+  Kurulum ekranı
 
-Zip paketini elle acmak isterseniz alternatif olarak:
+- `device-detail.html`
+  Cihaz detay ekranı
 
-```text
-artifacts/local-agent/bundle/HikProvisioning.Agent-win-x64/install-agent.cmd
-```
+- `team-device-add.html`
+  Team’e cihaz ekleme ekranı
 
-## API'ler
+- `PROJE_DETAYLI_DOKUMAN.md`
+  Daha ayrıntılı mimari doküman
 
-### `GET /api/health`
-
-Sunucunun token alip alamadigini ve area domain bilgisini dondurur.
-
-### `GET /api/cameras`
-
-Kamera listesini dondurur.
-
-Ornek cevap:
-
-```json
-{
-  "cameras": [
-    {
-      "name": "On Giris",
-      "online": true,
-      "resourceId": "xxx",
-      "cameraIndexCode": "xxx",
-      "deviceSerial": "FB....",
-      "channelNo": "1"
-    }
-  ]
-}
-```
-
-### `GET /api/stream`
-
-Zorunlu query parametreleri:
-
-- `resourceId`
-- `deviceSerial`
-
-Opsiyonel query parametreleri:
-
-- `quality=1` -> HD
-- `quality=2` -> Akici
-- `protocol=2` -> HLS
-
-Ornek:
-
-```text
-/api/stream?resourceId=xxx&deviceSerial=yyy&quality=1
-```
-
-### `POST /api/team-devices/add`
-
-Kamerayi Team hesabina ekler, area'yi bulur/olusturur ve eksik kamera kanallarini ilgili area'ya aktarir.
-
-Istek:
-
-```json
-{
-  "shortSerial": "ABCD123456",
-  "verificationCode": "VERIFY123456",
-  "alias": "CAM-ABCD123456",
-  "areaName": "Musteri - Sube 1"
-}
-```
-
-Ornek cevap:
-
-```json
-{
-  "message": "Cihaz Team hesabina eklendi ve kanal import akisi tamamlandi.",
-  "result": {
-    "success": true,
-    "shortSerial": "ABCD123456",
-    "alias": "CAM-ABCD123456",
-    "areaId": "1001",
-    "areaName": "Musteri - Sube 1",
-    "deviceId": "device-123",
-    "deviceAdded": true,
-    "importedChannelCount": 0,
-    "totalChannelCount": 1,
-    "deviceStatusMessage": "Cihaz eklendi.",
-    "channelStatusMessage": "Cihaz importToArea enable=1 ile eklendi; portalda manuel import gerekmiyor."
-  }
-}
-```
-
-Bu akista frontend Hikvision'a dogrudan istek gondermez.
-
-## Testler
-
-Gercek Hikvision API'sine cikmadan mock ile test etmek icin:
-
-```bash
-npm test
-```
-
-Test kapsaminda:
-
-- token alma ve yenileme
-- area yoksa olusturma
-- mevcut cihazda sadece eksik kanallari import etme
-- Hikvision hata kodunu guvenli mesajla yuzeye cikarabilme
-
-## Notlar
-
-- Bu proje su an bir baslangic iskeleti. Kullanici yonetimi, yetkilendirme ve rate limiting gibi production ihtiyaclari henuz ekli degil.
-- Bazi Hikvision ortamlari HLS yerine farkli protokoller donebilir. O durumda `/api/stream` parametreleri veya player tarafi uyarlanmalidir.
-- Uzun sureli kullanim icin stream linkinin suresi dolmadan once otomatik yenilenmesi gerekir.
-- Workspace icinde Postman collection dosyasi bulunmadi. Bu nedenle backend entegrasyonu, repoda zaten kullanilan Team OpenAPI endpoint'leri ve `Hik-Connect for Teams OpenAPI Developer Guide_V2.15.0_20260306.pdf` dosyasinin repo referansina gore duzenlendi.
+- `SDK_INCELEME_RAPORU.md`
+  HCNetSDK odaklı teknik inceleme notları

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Yerel Kamera Kurulum</title>
+<title>Kamera Kurulum</title>
 <style>
   :root {
     --bg: #eef1f5;
@@ -37,9 +37,7 @@
     gap: 12px;
   }
 
-  h1, h2, p {
-    margin: 0;
-  }
+  h1, h2, p { margin: 0; }
 
   h1 {
     font-size: 19px;
@@ -58,7 +56,7 @@
     flex-wrap: wrap;
   }
 
-  a, button {
+  a, button, input, textarea {
     font: inherit;
   }
 
@@ -86,7 +84,7 @@
 
   .layout {
     display: grid;
-    grid-template-columns: 380px 1fr;
+    grid-template-columns: 420px 1fr;
     gap: 16px;
   }
 
@@ -94,6 +92,11 @@
     .layout {
       grid-template-columns: 1fr;
     }
+  }
+
+  .stack {
+    display: grid;
+    gap: 16px;
   }
 
   .panel {
@@ -116,9 +119,64 @@
     padding: 12px;
   }
 
-  .stack {
+  .form-grid {
     display: grid;
-    gap: 16px;
+    gap: 10px;
+  }
+
+  .advanced {
+    padding: 10px;
+    border: 1px dashed var(--border);
+    background: var(--panel-alt);
+  }
+
+  .advanced summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  label {
+    display: grid;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  input, textarea {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+  }
+
+  textarea {
+    min-height: 520px;
+    resize: vertical;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12px;
+  }
+
+  .inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .inline input[type="checkbox"] {
+    width: auto;
+    min-height: auto;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
   .info-box {
@@ -126,9 +184,12 @@
     border: 1px solid var(--border);
     background: var(--panel-alt);
     font-size: 12px;
-    line-height: 1.5;
+    line-height: 1.6;
     white-space: pre-wrap;
   }
+
+  .status-ok { color: var(--ok); }
+  .status-err { color: var(--err); }
 
   .steps {
     margin: 0;
@@ -140,43 +201,13 @@
   .steps li + li {
     margin-top: 4px;
   }
-
-  .action-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-  }
-
-  .frame-wrap {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    min-height: 760px;
-  }
-
-  iframe {
-    width: 100%;
-    height: 760px;
-    border: 0;
-    background: #fff;
-  }
-
-  .placeholder {
-    padding: 28px;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .status-ok { color: var(--ok); }
-  .status-err { color: var(--err); }
 </style>
 </head>
 <body>
 <header>
   <div>
     <h1>Kamera Kurulum</h1>
-    <div class="sub">Kurulum arayuzu web sayfasinda degil, yerel agent ekraninda calisir. Bu sayfa agent'i acmak icin kullanilir.</div>
+    <div class="sub">Servisteki kurulum akisi bu sayfadan da calisir: aktivasyon, ag ayari, Hik-Connect etkinlestirme ve Team'e ekleme.</div>
   </div>
   <div class="toolbar">
     <a class="button-link" href="/">Izleme</a>
@@ -189,15 +220,44 @@
     <section class="stack">
       <div class="panel">
         <div class="panel-head">
-          <h2>Durum</h2>
+          <h2>Kurulum Formu</h2>
         </div>
-        <div class="panel-body">
-          <div id="agent-status" class="info-box">Yerel agent kontrol ediliyor...</div>
+        <div class="panel-body form-grid">
+          <label>Kamera IP
+            <input id="camera-ip-input" type="text" placeholder="192.168.1.64" />
+          </label>
+          <label>Kullanici Adi
+            <input id="username-input" type="text" value="admin" />
+          </label>
+          <label>Parola
+            <input id="password-input" type="password" />
+          </label>
+          <label>Alan Adi
+            <input id="area-name-input" type="text" placeholder="ofis kamerasi" />
+          </label>
+          <label class="inline">
+            <input id="dhcp-input" type="checkbox" />
+            DHCP etkinlestir
+          </label>
+          <details class="advanced">
+            <summary>Gelismis alanlar</summary>
+            <div class="form-grid" style="margin-top:10px;">
+              <label>Gateway Override
+                <input id="gateway-input" type="text" placeholder="192.168.1.1" />
+              </label>
+              <label>SDK Port
+                <input id="sdk-port-input" type="number" value="8000" />
+              </label>
+            </div>
+          </details>
           <div class="action-row">
-            <a class="button-link" href="/downloads/local-agent/HikProvisioning.Agent-win-x64-Setup.exe">Windows Kurulumunu Indir</a>
+            <button id="activate-btn" type="button">Sadece Aktiflestir</button>
+            <button id="start-btn" type="button" class="primary">Kamera Ayarlarini Uygula</button>
+            <button id="open-agent-setup-btn" type="button">Yerel Agent ile Kurulum</button>
             <button id="check-agent-btn" type="button">Agent Kontrol Et</button>
-            <button id="open-agent-btn" type="button" class="primary">Yerel Kurulum Ekranini Ac</button>
+            <a class="button-link" href="/downloads/local-agent/HikProvisioning.Agent-win-x64-Setup.exe">Agent Indir</a>
           </div>
+          <div id="status-box" class="info-box">Hazir.</div>
         </div>
       </div>
 
@@ -207,26 +267,33 @@
         </div>
         <div class="panel-body">
           <ol class="steps">
-            <li>Windows kurulum dosyasini indir ve calistir.</li>
-            <li>Yerel agent `127.0.0.1:47831` adresinde ayaga kalkar.</li>
-            <li>`Yerel Kurulum Ekranini Ac` ile SADP benzeri ekrana gecilir.</li>
-            <li>Kamera tarama, secme, aktivasyon ve ag ayarlari yerel agent ekranindan yapilir.</li>
+            <li>Cihaza erisim ve aktivasyon durumu kontrol edilir.</li>
+            <li>Gerekirse cihaz HCNetSDK ile aktive edilir.</li>
+            <li>Ag ayarlari uygulanir.</li>
+            <li>DNS arka planda otomatik olarak 8.8.8.8 / 1.1.1.1 gonderilir.</li>
+            <li>Hik-Connect / EZVIZ etkinlestirilir.</li>
+            <li>Cihaz Team hesabina eklenir ve kanal aktarimi yapilir.</li>
           </ol>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Agent Durumu</h2>
+        </div>
+        <div class="panel-body">
+          <div id="agent-status" class="info-box">Yedek secenek olarak yerel agent kontrol edilebilir.</div>
         </div>
       </div>
     </section>
 
-    <section class="frame-wrap">
-      <div id="frame-placeholder" class="placeholder">
-        Yerel agent ekranı bu alanda acilacak.
-
-        Agent hazir degilse:
-        1. Kurulum dosyasini indir.
-        2. Kurulumu tamamla.
-        3. `Agent Kontrol Et` butonuna bas.
-        4. Ardindan `Yerel Kurulum Ekranini Ac` ile devam et.
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Kurulum Ciktisi</h2>
       </div>
-      <iframe id="agent-frame" title="Yerel Kamera Kurulum" hidden></iframe>
+      <div class="panel-body">
+        <textarea id="result-output" readonly></textarea>
+      </div>
     </section>
   </div>
 </main>
@@ -234,14 +301,151 @@
 <script>
   const agentBaseUrl = "http://127.0.0.1:47831";
   const backendUrl = window.location.origin;
+  const cameraIpInput = document.getElementById("camera-ip-input");
+  const usernameInput = document.getElementById("username-input");
+  const passwordInput = document.getElementById("password-input");
+  const areaNameInput = document.getElementById("area-name-input");
+  const gatewayInput = document.getElementById("gateway-input");
+  const sdkPortInput = document.getElementById("sdk-port-input");
+  const dhcpInput = document.getElementById("dhcp-input");
+  const statusBox = document.getElementById("status-box");
   const agentStatus = document.getElementById("agent-status");
+  const resultOutput = document.getElementById("result-output");
+  const activateBtn = document.getElementById("activate-btn");
+  const startBtn = document.getElementById("start-btn");
+  const openAgentSetupBtn = document.getElementById("open-agent-setup-btn");
   const checkAgentBtn = document.getElementById("check-agent-btn");
-  const openAgentBtn = document.getElementById("open-agent-btn");
-  const agentFrame = document.getElementById("agent-frame");
-  const framePlaceholder = document.getElementById("frame-placeholder");
 
-  function getAgentSetupUrl() {
-    return `${agentBaseUrl}/camera-setup.html?backendUrl=${encodeURIComponent(backendUrl)}&cloudUrl=${encodeURIComponent(backendUrl)}`;
+  let pollTimer = null;
+
+  function setStatus(text, kind = "") {
+    statusBox.innerHTML = kind ? `<span class="status-${kind}">${text}</span>` : text;
+  }
+
+  function clearPolling() {
+    if (pollTimer) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+
+  function renderTask(data) {
+    const lines = [];
+    if (Array.isArray(data.stages)) {
+      for (const stage of data.stages) {
+        lines.push(`${stage.name}: ${stage.status}${stage.detail ? ` - ${stage.detail}` : ""}`);
+      }
+    }
+    if (data.result) {
+      lines.push("");
+      lines.push(JSON.stringify(data.result, null, 2));
+    }
+    if (data.error) {
+      lines.push("");
+      lines.push(`Hata: ${data.error}`);
+    }
+    resultOutput.value = lines.join("\n");
+  }
+
+  async function loadTask(taskId) {
+    const response = await fetch(`/api/provision/tasks/${encodeURIComponent(taskId)}`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || "Task bilgisi alinamadi.");
+    }
+
+    renderTask(data);
+
+    if (data.status === "completed") {
+      clearPolling();
+      setStatus("Kurulum tamamlandi.", "ok");
+    } else if (data.status === "failed") {
+      clearPolling();
+      setStatus(data.error || "Kurulum basarisiz.", "err");
+    } else {
+      setStatus("Kurulum suruyor...");
+    }
+  }
+
+  async function startProvision() {
+    const payload = {
+      cameraIp: cameraIpInput.value.trim(),
+      userName: usernameInput.value.trim() || "admin",
+      password: passwordInput.value,
+      areaName: areaNameInput.value.trim(),
+      gatewayOverride: gatewayInput.value.trim(),
+      sdkPort: Number(sdkPortInput.value || 8000),
+      enableDhcp: dhcpInput.checked
+    };
+
+    if (!payload.cameraIp) {
+      throw new Error("Kamera IP zorunlu.");
+    }
+
+    if (!payload.password) {
+      throw new Error("Parola zorunlu.");
+    }
+
+    setStatus("Kurulum baslatiliyor...");
+    resultOutput.value = "";
+
+    const response = await fetch("/api/provision/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || "Kurulum baslatilamadi.");
+    }
+
+    clearPolling();
+    await loadTask(data.taskId);
+    pollTimer = setInterval(() => {
+      loadTask(data.taskId).catch((error) => {
+        clearPolling();
+        setStatus(error.message, "err");
+      });
+    }, 1500);
+  }
+
+  async function startActivation() {
+    const payload = {
+      cameraIp: cameraIpInput.value.trim(),
+      userName: usernameInput.value.trim() || "admin",
+      password: passwordInput.value,
+      sdkPort: Number(sdkPortInput.value || 8000)
+    };
+
+    if (!payload.cameraIp) {
+      throw new Error("Kamera IP zorunlu.");
+    }
+
+    if (!payload.password) {
+      throw new Error("Parola zorunlu.");
+    }
+
+    setStatus("Aktivasyon baslatiliyor...");
+    resultOutput.value = "";
+
+    const response = await fetch("/api/provision/activate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || "Aktivasyon baslatilamadi.");
+    }
+
+    clearPolling();
+    await loadTask(data.taskId);
+    pollTimer = setInterval(() => {
+      loadTask(data.taskId).catch((error) => {
+        clearPolling();
+        setStatus(error.message, "err");
+      });
+    }, 1500);
   }
 
   async function checkAgent() {
@@ -258,33 +462,46 @@
         `Surum: ${data.version || "-"}\n` +
         `CLI: ${data.cli?.found ? "evet" : "hayir"}\n` +
         `SDK DLL: ${data.cli?.sdkDllFound ? "evet" : "hayir"}`;
-      return true;
     } catch (error) {
       agentStatus.innerHTML =
         `<span class="status-err">Agent ulasilamiyor</span>\n` +
         `${error.message}`;
-      return false;
     }
   }
 
-  async function openAgentScreen() {
-    const ok = await checkAgent();
-    if (!ok) {
-      return;
-    }
-
-    agentFrame.src = getAgentSetupUrl();
-    agentFrame.hidden = false;
-    framePlaceholder.hidden = true;
-    window.open(getAgentSetupUrl(), "_blank", "noopener,noreferrer");
+  function getAgentSetupUrl() {
+    return `${agentBaseUrl}/camera-setup.html?backendUrl=${encodeURIComponent(backendUrl)}&cloudUrl=${encodeURIComponent(backendUrl)}`;
   }
+
+  async function openLocalAgentSetup() {
+    try {
+      const response = await fetch(`${agentBaseUrl}/agent/health`);
+      const data = await response.json();
+      if (!response.ok || !data?.ok) {
+        throw new Error(data?.error || "Agent cevap vermedi.");
+      }
+
+      window.open(getAgentSetupUrl(), "_blank", "noopener,noreferrer");
+      setStatus("Yerel agent kurulum ekrani acildi.", "ok");
+    } catch (error) {
+      setStatus(`Yerel agent acilamadi. Once agent'i baslatin. ${error.message}`, "err");
+    }
+  }
+
+  activateBtn.addEventListener("click", () => {
+    startActivation().catch((error) => setStatus(error.message, "err"));
+  });
+
+  startBtn.addEventListener("click", () => {
+    startProvision().catch((error) => setStatus(error.message, "err"));
+  });
+
+  openAgentSetupBtn.addEventListener("click", () => {
+    openLocalAgentSetup();
+  });
 
   checkAgentBtn.addEventListener("click", () => {
     checkAgent();
-  });
-
-  openAgentBtn.addEventListener("click", () => {
-    openAgentScreen();
   });
 
   checkAgent();
