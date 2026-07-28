@@ -1,8 +1,10 @@
 const crypto = require("crypto");
 const express = require("express");
 const fs = require("fs");
+const net = require("node:net");
 const path = require("path");
 const { spawn } = require("child_process");
+const { XMLParser } = require("fast-xml-parser");
 const { createTeamOpenApiService } = require("./lib/team-openapi-service");
 
 const app = express();
@@ -42,6 +44,15 @@ const teamOpenApiService = createTeamOpenApiService({
       console.error(JSON.stringify(entry));
     },
   },
+});
+
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  removeNSPrefix: true,
+  trimValues: true,
+  parseTagValue: false,
+  preserveOrder: false,
+  alwaysCreateTextNode: false,
 });
 
 app.use((req, res, next) => {
@@ -370,6 +381,184 @@ function extractSubStatusCode(xml) {
   return getXmlValue(xml, ["subStatusCode"]);
 }
 
+function extractStatusCode(xml) {
+  return getXmlValue(xml, ["statusCode"]);
+}
+
+function scalar(value, fieldName) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return "";
+    }
+
+    return scalar(value[0], fieldName);
+  }
+
+  if (typeof value === "object") {
+    if (value["#text"] !== undefined) {
+      return scalar(value["#text"], fieldName);
+    }
+
+    if (value._text !== undefined) {
+      return scalar(value._text, fieldName);
+    }
+
+    if (value.text !== undefined) {
+      return scalar(value.text, fieldName);
+    }
+
+    throw new Error(
+      `${fieldName} alanı çözümlenemedi: ${JSON.stringify(value)}`
+    );
+  }
+
+  return String(value).trim();
+}
+
+function validateScalarIp(value, fieldName) {
+  if (typeof value !== "string") {
+    throw new Error(
+      `${fieldName} string değil: ${JSON.stringify(value)}`
+    );
+  }
+
+  if (net.isIP(value) !== 4) {
+    throw new Error(
+      `${fieldName} geçerli IPv4 değil: ${value}`
+    );
+  }
+}
+
+function parseResponseStatus(xml) {
+  return {
+    statusCode: extractStatusCode(xml),
+    subStatusCode: extractSubStatusCode(xml),
+    statusString: getXmlValue(xml, ["statusString"]),
+    description: getXmlValue(xml, ["description"]),
+  };
+}
+
+function parseNetworkConfig(xml) {
+  const parsed = xmlParser.parse(xml);
+
+  let networkInterface =
+    parsed?.NetworkInterfaceList?.NetworkInterface;
+
+  if (Array.isArray(networkInterface)) {
+    networkInterface =
+      networkInterface.find(
+        (item) => scalar(item?.id, "interfaceId") === "1"
+      ) || networkInterface[0];
+  }
+
+  if (!networkInterface) {
+    throw new Error("NetworkInterface bulunamadı.");
+  }
+
+  const ipConfig = networkInterface.IPAddress;
+
+  if (!ipConfig) {
+    throw new Error("IPAddress alanı bulunamadı.");
+  }
+
+  const result = {
+    interfaceId: Number(
+      scalar(networkInterface.id, "interfaceId")
+    ),
+
+    ipVersion: scalar(
+      ipConfig.ipVersion,
+      "ipVersion"
+    ),
+
+    addressingType: scalar(
+      ipConfig.addressingType,
+      "addressingType"
+    ),
+
+    ipAddress: scalar(
+      ipConfig.ipAddress,
+      "ipAddress"
+    ),
+
+    subnetMask: scalar(
+      ipConfig.subnetMask,
+      "subnetMask"
+    ),
+
+    gateway: scalar(
+      ipConfig.DefaultGateway?.ipAddress,
+      "gateway"
+    ),
+
+    primaryDns: scalar(
+      ipConfig.PrimaryDNS?.ipAddress,
+      "primaryDns"
+    ),
+
+    secondaryDns: scalar(
+      ipConfig.SecondaryDNS?.ipAddress,
+      "secondaryDns"
+    ),
+
+    macAddress: scalar(
+      networkInterface.Link?.MACAddress,
+      "macAddress"
+    )
+  };
+
+  console.log("Parse edilen ağ bilgileri:", result);
+
+  return result;
+}
+
+function buildNetworkInterfaceXml({
+  interfaceId = "1",
+  ipVersion = "dual",
+  addressingType = "static",
+  ipAddress,
+  subnetMask,
+  gateway,
+  primaryDns,
+  secondaryDns = "",
+  ipv6Address = "::",
+  ipv6BitMask = "0",
+  ipv6AddressingType = "ra",
+}) {
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>` +
+    `<NetworkInterface version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">` +
+    `<id>${escapeXml(interfaceId)}</id>` +
+    `<IPAddress version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">` +
+    `<ipVersion>${escapeXml(ipVersion)}</ipVersion>` +
+    `<addressingType>${escapeXml(addressingType)}</addressingType>` +
+    `<ipAddress>${escapeXml(ipAddress)}</ipAddress>` +
+    `<subnetMask>${escapeXml(subnetMask)}</subnetMask>` +
+    `<ipv6Address>${escapeXml(ipv6Address)}</ipv6Address>` +
+    `<bitMask>${escapeXml(ipv6BitMask)}</bitMask>` +
+    `<DefaultGateway><ipAddress>${escapeXml(gateway)}</ipAddress></DefaultGateway>` +
+    `<PrimaryDNS><ipAddress>${escapeXml(primaryDns)}</ipAddress></PrimaryDNS>` +
+    `<SecondaryDNS><ipAddress>${escapeXml(secondaryDns)}</ipAddress></SecondaryDNS>` +
+    `<Ipv6Mode>` +
+    `<ipV6AddressingType>${escapeXml(ipv6AddressingType)}</ipV6AddressingType>` +
+    `<ipv6AddressList>` +
+    `<v6Address>` +
+    `<id>1</id>` +
+    `<type>manual</type>` +
+    `<address>::</address>` +
+    `<bitMask>0</bitMask>` +
+    `</v6Address>` +
+    `</ipv6AddressList>` +
+    `</Ipv6Mode>` +
+    `</IPAddress>` +
+    `</NetworkInterface>`
+  );
+}
+
 function parseActivateStatus(xml) {
   const activateStatus = getXmlValue(xml, ["activateStatus"]).toLowerCase();
   const subStatusCode = extractSubStatusCode(xml);
@@ -418,25 +607,19 @@ function findInterfaceBlocks(xml) {
 }
 
 function parseNetworkInterfaces(xml) {
-  return findInterfaceBlocks(xml)
-    .map((block) => ({
-      id:
-        getXmlValue(block, ["id", "interfaceId", "name", "portNo"]) || "-",
-      ipAddress:
-        getXmlValue(block, ["ipAddress", "ipv4Address", "IPAddress"]) || "-",
-      subnetMask:
-        getXmlValue(block, ["subnetMask", "ipv4SubnetMask"]) || "-",
-      gateway:
-        getXmlValue(block, ["DefaultGateway", "defaultGateway", "ipv4DefaultGateway"]) || "-",
-      primaryDns:
-        getXmlValue(block, ["PrimaryDNS", "primaryDNS", "dnsServer1IpAddr", "DNS1"]) || "-",
-      secondaryDns:
-        getXmlValue(block, ["SecondaryDNS", "secondaryDNS", "dnsServer2IpAddr", "DNS2"]) || "-",
-      dhcpMode:
-        getXmlValue(block, ["addressingType", "ipAddressingType", "dhcp", "DHCP"]) || "-",
-      rawXml: block,
-    }))
-    .filter((item) => item.id !== "-" || item.ipAddress !== "-");
+  const item = parseNetworkConfig(xml);
+  return [{
+    id: String(item.interfaceId || ""),
+    ipVersion: item.ipVersion,
+    ipAddress: item.ipAddress,
+    subnetMask: item.subnetMask,
+    gateway: item.gateway,
+    primaryDns: item.primaryDns,
+    secondaryDns: item.secondaryDns,
+    dhcpMode: item.addressingType,
+    macAddress: item.macAddress,
+    rawXml: xml,
+  }];
 }
 
 function getSubnetPrefix(ipAddress) {
@@ -989,6 +1172,125 @@ function toPhysicalResourceDomain(areaDomain) {
   return url.origin;
 }
 
+async function callIsapiProxyPass({
+  deviceId,
+  method = "GET",
+  url,
+  contentType = "application/xml",
+  body = "",
+}) {
+  if (!deviceId) {
+    throw new Error("ISAPI proxypass icin deviceId zorunlu.");
+  }
+  if (!url) {
+    throw new Error("ISAPI proxypass icin url zorunlu.");
+  }
+
+  const endpoint = "https://isgp-team.hikcentralconnect.com/api/hccgw/proxy/v1/isapi/proxypass";
+  const tokenResult = await getToken(false);
+  const token =
+    typeof tokenResult === "string"
+      ? tokenResult
+      : tokenResult?.accessToken ??
+        tokenResult?.token ??
+        tokenResult?.data?.accessToken ??
+        tokenResult?.data?.token;
+
+  if (!token || typeof token !== "string") {
+    throw new Error(
+      `Hikvision token bulunamadi. Token response: ${JSON.stringify(tokenResult)}`
+    );
+  }
+
+  const cleanToken = token.trim();
+  const payload = {
+    method: String(method).toUpperCase(),
+    url,
+    id: String(deviceId),
+    contentType,
+    body,
+  };
+
+  console.log("ISAPI Proxy istegi:", {
+    endpoint,
+    tokenLength: cleanToken.length,
+    payload,
+  });
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Token: cleanToken,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const rawText = await response.text();
+  console.log("Hikvision HTTP status:", response.status);
+  console.log("Hikvision ham cevap:", rawText);
+
+  let data = {};
+  try {
+    data = rawText ? JSON.parse(rawText) : {};
+  } catch {
+    throw new Error(
+      `Hikvision JSON olmayan cevap dondurdu. HTTP ${response.status}: ${rawText}`
+    );
+  }
+
+  const errorCode = String(data.errorCode || data.code || "");
+  if (!response.ok || (errorCode && errorCode !== "0")) {
+    throw new Error(
+      `ISAPI proxypass basarisiz. HTTP=${response.status}, errorCode=${errorCode}, message=${
+        data.message || data.msg || data.errorMsg || "Aciklama yok"
+      }, data=${data.data || "Data yok"}`
+    );
+  }
+
+  return data;
+}
+
+async function continuousPtzControl({ cameraId, proxyId = "", channelNo = 1, pan = 0, tilt = 0, zoom = 0 }) {
+  const effectiveId = String(proxyId || cameraId || "").trim();
+  if (!effectiveId) {
+    throw new Error("PTZ control icin cameraId veya proxyId zorunlu.");
+  }
+
+  const proxyPayload = {
+    method: "PUT",
+    url: `/ISAPI/PTZCtrl/channels/${Number(channelNo) || 1}/continuous`,
+    contentType: "application/xml",
+    body:
+      `<PTZData version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema">` +
+      `<pan>${Number(pan) || 0}</pan>` +
+      `<tilt>${Number(tilt) || 0}</tilt>` +
+      `<zoom>${Number(zoom) || 0}</zoom>` +
+      `</PTZData>`,
+  };
+  try {
+    return await callIsapiProxyPass({
+      deviceId: effectiveId,
+      method: proxyPayload.method,
+      url: proxyPayload.url,
+      contentType: proxyPayload.contentType,
+      body: proxyPayload.body,
+    });
+  } catch (error) {
+    const detail = {
+      cameraId: String(cameraId),
+      proxyId: String(proxyId || ""),
+      effectiveId,
+      channelNo: Number(channelNo) || 1,
+      pan: Number(pan) || 0,
+      tilt: Number(tilt) || 0,
+      zoom: Number(zoom) || 0,
+    };
+    throw new Error(`PTZ control basarisiz. ${error.message} ${JSON.stringify(detail)}`);
+  }
+}
+
 function toEzvizEnvDomain(areaDomain) {
   if (!areaDomain) {
     return null;
@@ -1269,6 +1571,39 @@ async function getDeviceDetail(shortSerial) {
     deviceId: extractDeviceId(data.data),
     cameraChannels: parseCameraChannels(data),
   };
+}
+
+async function findDeviceIdBySerial(shortSerial) {
+  if (!shortSerial) {
+    return "";
+  }
+
+  const data = await postOpenApi("/api/hccgw/resource/v1/devices/get", {
+    pageIndex: 1,
+    pageSize: 10,
+    deviceCategory: "encodingDevice",
+    filter: {
+      matchKey: shortSerial,
+    },
+  });
+
+  const errorCode = String(data.errorCode || data.code || "");
+  if (errorCode !== "0") {
+    return "";
+  }
+
+  const devices = Array.isArray(data.data?.device) ? data.data.device : [];
+  const normalizedSerial = String(shortSerial).trim().toUpperCase();
+  const exact = devices.find(
+    (item) => String(item?.serialNo || "").trim().toUpperCase() === normalizedSerial
+  );
+
+  if (exact?.id) {
+    return String(exact.id).trim();
+  }
+
+  const first = devices.find((item) => item?.id);
+  return first?.id ? String(first.id).trim() : "";
 }
 
 async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias, areaId, userName, password }) {
@@ -2000,18 +2335,270 @@ app.get("/api/cameras", async (req, res) => {
       });
     }
 
-    const cameras = (data.data?.camera || []).map((cam) => ({
+    const rawCameras = (data.data?.camera || []).map((cam) => ({
       name: cam.name,
       online: cam.online === "1",
       resourceId: cam.id,
+      deviceId: cam.deviceId || cam.device?.id || cam.device?.deviceId || null,
       cameraIndexCode: cam.cameraIndexCode || null,
       deviceSerial: cam.device?.devInfo?.serialNo || null,
       channelNo: cam.device?.channelNo || cam.channelNo || null,
     }));
 
+    const cameras = await Promise.all(
+      rawCameras.map(async (cam) => {
+        if (cam.deviceId || !cam.deviceSerial) {
+          return cam;
+        }
+
+        try {
+          const searchedDeviceId = await findDeviceIdBySerial(cam.deviceSerial);
+          if (searchedDeviceId) {
+            return {
+              ...cam,
+              deviceId: searchedDeviceId,
+            };
+          }
+
+          const detail = await getDeviceDetail(cam.deviceSerial);
+          return {
+            ...cam,
+            deviceId: detail.deviceId || cam.deviceId || null,
+          };
+        } catch {
+          return cam;
+        }
+      })
+    );
+
     res.json({ cameras });
   } catch (err) {
     res.status(500).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.post("/api/ptz/continuous", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const cameraId = String(req.body.cameraId || req.body.resourceId || "").trim();
+  const proxyId = String(req.body.proxyId || "").trim();
+  const channelNo = Number(req.body.channelNo || 1);
+  const pan = Number(req.body.pan || 0);
+  const tilt = Number(req.body.tilt || 0);
+  const zoom = Number(req.body.zoom || 0);
+
+  if (!cameraId && !proxyId) {
+    return res.status(400).json({ error: "cameraId/resourceId veya proxyId zorunlu." });
+  }
+
+  try {
+    const result = await continuousPtzControl({ cameraId, proxyId, channelNo, pan, tilt, zoom });
+    return res.status(200).json({
+      success: true,
+      cameraId,
+      proxyId,
+      channelNo,
+      pan,
+      tilt,
+      zoom,
+      result,
+    });
+  } catch (err) {
+    return res.status(502).json({
+      error: sanitizeMessage(err.message),
+      request: {
+        deviceId,
+        interfaceId,
+        ipAddress,
+        subnetMask,
+        gateway,
+        primaryDns,
+        secondaryDns,
+      },
+    });
+  }
+});
+
+app.get("/api/device-config/network", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.query.deviceId || "").trim();
+  if (!deviceId) {
+    return res.status(400).json({ error: "deviceId zorunlu." });
+  }
+
+  try {
+    const result = await callIsapiProxyPass({
+      deviceId,
+      method: "GET",
+      url: "/ISAPI/System/Network/interfaces",
+      contentType: "application/xml",
+      body: "",
+    });
+    const xml = decodeXml(String(result.data || ""));
+    return res.json({
+      success: true,
+      deviceId,
+      xml,
+      interfaces: parseNetworkInterfaces(xml),
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.put("/api/device-config/network", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.body.deviceId || "").trim();
+  const interfaceId = String(req.body.interfaceId || "1").trim();
+  const ipAddress = String(req.body.ipAddress || "").trim();
+  const subnetMask = String(req.body.subnetMask || "").trim();
+  const gateway = String(req.body.gateway || "").trim();
+  const primaryDns = String(req.body.primaryDns || "").trim();
+  const secondaryDns = String(req.body.secondaryDns || "").trim();
+
+  if (!deviceId || !ipAddress || !subnetMask || !gateway || !primaryDns) {
+    return res.status(400).json({
+      error: "deviceId, ipAddress, subnetMask, gateway ve primaryDns zorunlu.",
+    });
+  }
+
+  try {
+    const current = await callIsapiProxyPass({
+      deviceId,
+      method: "GET",
+      url: "/ISAPI/System/Network/interfaces",
+      contentType: "application/xml",
+      body: "",
+    });
+
+    const currentXml = decodeXml(String(current.data || ""));
+    const currentConfig = parseNetworkConfig(currentXml);
+
+    validateScalarIp(currentConfig.ipAddress, "ipAddress");
+    validateScalarIp(currentConfig.gateway, "gateway");
+    validateScalarIp(currentConfig.primaryDns, "primaryDns");
+    validateScalarIp(currentConfig.secondaryDns, "secondaryDns");
+
+    validateScalarIp(ipAddress, "ipAddress");
+    validateScalarIp(gateway, "gateway");
+    validateScalarIp(primaryDns, "primaryDns");
+    validateScalarIp(secondaryDns, "secondaryDns");
+
+    const updatedXml = buildNetworkInterfaceXml({
+      interfaceId,
+      ipVersion: currentConfig.ipVersion || "dual",
+      addressingType: "static",
+      ipAddress,
+      subnetMask,
+      gateway,
+      primaryDns,
+      secondaryDns,
+      ipv6Address: "::",
+      ipv6BitMask: "0",
+      ipv6AddressingType: "ra",
+    });
+
+    console.log("Network XML build:", {
+      deviceId,
+      interfaceId,
+      updatedXml,
+      containsEncodedIpVersion: updatedXml.includes("&lt;ipVersion&gt;"),
+      containsEncodedIpAddress: updatedXml.includes("&lt;ipAddress&gt;"),
+      containsNestedXmlInIpAddress: /<ipAddress>\s*</i.test(updatedXml),
+    });
+
+    const applyResult = await callIsapiProxyPass({
+      deviceId,
+      method: "PUT",
+      url: `/ISAPI/System/Network/interfaces/${encodeURIComponent(interfaceId)}`,
+      contentType: "application/xml",
+      body: updatedXml,
+    });
+
+    const responseXml = decodeXml(String(applyResult.data || ""));
+    const responseStatus = parseResponseStatus(responseXml);
+    const rebootRequired =
+      responseStatus.statusCode === "7" &&
+      responseStatus.subStatusCode.toLowerCase() === "rebootrequired";
+
+    return res.json({
+      success: true,
+      deviceId,
+      interfaceId,
+      appliedXml: updatedXml,
+      result: applyResult,
+      responseStatus,
+      rebootRequired,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.post("/api/device-config/reboot", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.body.deviceId || "").trim();
+  const waitForReconnect = String(req.body.waitForReconnect || "1").trim() !== "0";
+  if (!deviceId) {
+    return res.status(400).json({ error: "deviceId zorunlu." });
+  }
+
+  try {
+    let result;
+    try {
+      result = await callIsapiProxyPass({
+        deviceId,
+        method: "PUT",
+        url: "/ISAPI/System/reboot",
+        contentType: "application/xml",
+        body: "",
+      });
+    } catch (err) {
+      const errorText = String(err?.message || "");
+      const rebootTimeout =
+        errorText.includes("OPEN000555") && errorText.includes("OPEN000019");
+      if (!rebootTimeout) {
+        throw err;
+      }
+      result = {
+        errorCode: "0",
+        data: "",
+        warning: "Reboot sirasinda cihaz response timeout verdi; gecici kabul edildi.",
+      };
+    }
+
+    let reconnected = false;
+    let reconnectAttempts = 0;
+
+    if (waitForReconnect) {
+      for (let attempt = 1; attempt <= 12; attempt += 1) {
+        reconnectAttempts = attempt;
+        await new Promise((resolve) => setTimeout(resolve, 15000));
+        try {
+          const ping = await callIsapiProxyPass({
+            deviceId,
+            method: "GET",
+            url: "/ISAPI/System/Network/interfaces",
+            contentType: "application/xml",
+            body: "",
+          });
+          const pingXml = decodeXml(String(ping.data || ""));
+          if (pingXml.includes("<NetworkInterface")) {
+            reconnected = true;
+            break;
+          }
+        } catch {
+          // reboot sonrasi cloud'a geri donus bekleniyor
+        }
+      }
+    }
+
+    return res.json({ success: true, deviceId, result, reconnected, reconnectAttempts });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
   }
 });
 
@@ -2306,6 +2893,10 @@ app.get("/camera-browser-test", (req, res) => {
 
 app.get("/team-device-add", (req, res) => {
   res.sendFile(path.join(__dirname, "team-device-add.html"));
+});
+
+app.get("/device-detail", (req, res) => {
+  res.sendFile(path.join(__dirname, "device-detail.html"));
 });
 
 app.get("/", (req, res) => {

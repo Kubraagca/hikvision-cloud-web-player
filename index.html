@@ -210,7 +210,7 @@
 
   .summary-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     margin-top: 12px;
   }
@@ -228,6 +228,17 @@
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+  }
+
+  .ptz-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .ptz-controls button {
+    min-width: 110px;
   }
 </style>
 </head>
@@ -311,6 +322,27 @@
             <span>Protokol</span>
             <strong id="protocol-meta">HLS</strong>
           </div>
+          <div class="summary-item">
+            <span>Resource ID</span>
+            <strong id="resource-id-meta">-</strong>
+          </div>
+          <div class="summary-item">
+            <span>Device ID</span>
+            <strong id="device-id-meta">-</strong>
+          </div>
+          <div class="summary-item">
+            <span>Camera Index Code</span>
+            <strong id="camera-index-meta">-</strong>
+          </div>
+          <div class="summary-item">
+            <span>Device Serial</span>
+            <strong id="device-serial-meta">-</strong>
+          </div>
+        </div>
+        <div class="ptz-controls">
+          <button id="zoom-in-btn" type="button">Zoom +</button>
+          <button id="zoom-out-btn" type="button">Zoom -</button>
+          <button id="device-detail-btn" type="button">Cihaz Detayi</button>
         </div>
       </div>
     </section>
@@ -331,6 +363,13 @@
   const verifyCodeEl = document.getElementById("verify-code-input");
   const cameraMetaEl = document.getElementById("camera-meta");
   const protocolMetaEl = document.getElementById("protocol-meta");
+  const resourceIdMetaEl = document.getElementById("resource-id-meta");
+  const deviceIdMetaEl = document.getElementById("device-id-meta");
+  const cameraIndexMetaEl = document.getElementById("camera-index-meta");
+  const deviceSerialMetaEl = document.getElementById("device-serial-meta");
+  const zoomInBtn = document.getElementById("zoom-in-btn");
+  const zoomOutBtn = document.getElementById("zoom-out-btn");
+  const deviceDetailBtn = document.getElementById("device-detail-btn");
   let hls = null;
   let activeCard = null;
   let sdkConfig = null;
@@ -555,6 +594,10 @@
     card.classList.add("active");
     activeCard = card;
     cameraMetaEl.textContent = cam.name;
+    resourceIdMetaEl.textContent = cam.resourceId || "-";
+    deviceIdMetaEl.textContent = cam.deviceId || "-";
+    cameraIndexMetaEl.textContent = cam.cameraIndexCode || "-";
+    deviceSerialMetaEl.textContent = cam.deviceSerial || "-";
     statusEl.textContent = `${cam.name} - yayin adresi aliniyor...`;
     expireEl.textContent = "";
 
@@ -703,6 +746,84 @@
     return data;
   }
 
+  async function sendPtzContinuous({ pan = 0, tilt = 0, zoom = 0 }) {
+    if (!selectedCamera?.resourceId) {
+      throw new Error("Once bir kamera secin.");
+    }
+
+    const res = await fetch("/api/ptz/continuous", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cameraId: selectedCamera.resourceId,
+        proxyId: selectedCamera.deviceId || "",
+        channelNo: Number(selectedCamera.channelNo || 1),
+        pan,
+        tilt,
+        zoom,
+      }),
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "PTZ control basarisiz.");
+    }
+
+    return data;
+  }
+
+  function bindContinuousButton(button, startPayload) {
+    let pressing = false;
+
+    const start = async (event) => {
+      event.preventDefault();
+      if (pressing) return;
+      pressing = true;
+
+      try {
+        await sendPtzContinuous(startPayload);
+        statusEl.textContent = `${selectedCamera?.name || "Kamera"} - PTZ komutu gonderildi.`;
+      } catch (err) {
+        pressing = false;
+        statusEl.textContent = `PTZ hata: ${err.message}`;
+      }
+    };
+
+    const stop = async (event) => {
+      event?.preventDefault?.();
+      if (!pressing) return;
+      pressing = false;
+
+      try {
+        await sendPtzContinuous({ pan: 0, tilt: 0, zoom: 0 });
+      } catch (err) {
+        statusEl.textContent = `PTZ stop hata: ${err.message}`;
+      }
+    };
+
+    button.addEventListener("mousedown", start);
+    button.addEventListener("mouseup", stop);
+    button.addEventListener("mouseleave", stop);
+    button.addEventListener("touchstart", start, { passive: false });
+    button.addEventListener("touchend", stop);
+    button.addEventListener("touchcancel", stop);
+  }
+
+  deviceDetailBtn.addEventListener("click", () => {
+    if (!selectedCamera) {
+      statusEl.textContent = "Once bir kamera secin.";
+      return;
+    }
+
+    const params = new URLSearchParams({
+      name: selectedCamera.name || "",
+      deviceId: selectedCamera.deviceId || "",
+      resourceId: selectedCamera.resourceId || "",
+      deviceSerial: selectedCamera.deviceSerial || "",
+    });
+    location.href = `/device-detail?${params.toString()}`;
+  });
+
   document.getElementById("refresh-btn").addEventListener("click", loadCameras);
   qualityEl.addEventListener("change", () => {
     if (selectedCamera && activeCard) {
@@ -714,6 +835,8 @@
       selectCamera(selectedCamera, activeCard);
     }
   });
+  bindContinuousButton(zoomInBtn, { pan: 0, tilt: 0, zoom: 30 });
+  bindContinuousButton(zoomOutBtn, { pan: 0, tilt: 0, zoom: -30 });
   window.addEventListener("resize", () => {
     if (sdkPlugin && sdkPlugin.JS_Resize) {
       const { width, height } = getSdkHostSize();

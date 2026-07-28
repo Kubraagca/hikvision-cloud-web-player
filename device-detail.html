@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cihaz Detayi</title>
+<style>
+  :root {
+    --bg: #eef1f5;
+    --panel: #ffffff;
+    --panel-alt: #f7f9fc;
+    --border: #cfd6df;
+    --text: #1c2733;
+    --muted: #5f6c7b;
+    --accent: #1f5f99;
+    --ok: #0f8a4b;
+    --err: #c62828;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header, main { padding: 16px; }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  h1, h2, p { margin: 0; }
+  .sub { margin-top: 4px; color: var(--muted); font-size: 12px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  button, a, input, textarea {
+    font: inherit;
+  }
+  button, a.button-link {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+  }
+  .panel-head {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-alt);
+  }
+  .panel-body { padding: 12px; }
+  .grid { display: grid; gap: 10px; }
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .item {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+  .item span {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  label {
+    display: grid;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  input, textarea {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+  }
+  textarea { min-height: 180px; resize: vertical; }
+  .status {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel-alt);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .status.ok { color: var(--ok); }
+  .status.err { color: var(--err); }
+  .row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+<header class="head">
+  <div>
+    <h1>Cihaz Detayi</h1>
+    <div class="sub">Cloud proxypass uzerinden cihaz network ayarlarini oku, guncelle ve reboot et.</div>
+  </div>
+  <div class="actions">
+    <a class="button-link" href="/">Izleme</a>
+  </div>
+</header>
+
+<main>
+  <div class="layout">
+    <section class="panel">
+      <div class="panel-head"><h2>Kimlik</h2></div>
+      <div class="panel-body grid">
+        <div class="summary">
+          <div class="item"><span>Kamera</span><strong id="name-meta">-</strong></div>
+          <div class="item"><span>Device ID</span><strong id="device-id-meta">-</strong></div>
+          <div class="item"><span>Resource ID</span><strong id="resource-id-meta">-</strong></div>
+          <div class="item"><span>Serial</span><strong id="serial-meta">-</strong></div>
+        </div>
+        <div id="status-box" class="status">Bilgiler hazirlaniyor...</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Network</h2></div>
+      <div class="panel-body grid">
+        <div class="summary">
+          <div class="item"><span>Interface ID</span><strong id="interface-id-meta">-</strong></div>
+          <div class="item"><span>DHCP</span><strong id="dhcp-meta">-</strong></div>
+        </div>
+        <label>IP Address <input id="ip-input" type="text" /></label>
+        <label>Subnet Mask <input id="mask-input" type="text" /></label>
+        <label>Gateway <input id="gateway-input" type="text" /></label>
+        <label>Primary DNS <input id="dns1-input" type="text" /></label>
+        <label>Secondary DNS <input id="dns2-input" type="text" /></label>
+        <div class="row">
+          <button id="load-btn" type="button">Network Oku</button>
+          <button id="save-btn" type="button">IP Ayarlarini Kaydet</button>
+          <button id="reboot-btn" type="button">Cihazi Reboot Et</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel" style="margin-top:16px;">
+    <div class="panel-head"><h2>Ham XML</h2></div>
+    <div class="panel-body">
+      <textarea id="xml-output" readonly></textarea>
+    </div>
+  </section>
+</main>
+
+<script>
+  const qs = new URLSearchParams(location.search);
+  const state = {
+    name: qs.get("name") || "",
+    deviceId: qs.get("deviceId") || "",
+    resourceId: qs.get("resourceId") || "",
+    deviceSerial: qs.get("deviceSerial") || "",
+    interfaceId: "1",
+  };
+
+  const nameMetaEl = document.getElementById("name-meta");
+  const deviceIdMetaEl = document.getElementById("device-id-meta");
+  const resourceIdMetaEl = document.getElementById("resource-id-meta");
+  const serialMetaEl = document.getElementById("serial-meta");
+  const interfaceIdMetaEl = document.getElementById("interface-id-meta");
+  const dhcpMetaEl = document.getElementById("dhcp-meta");
+  const statusBoxEl = document.getElementById("status-box");
+  const xmlOutputEl = document.getElementById("xml-output");
+  const ipInputEl = document.getElementById("ip-input");
+  const maskInputEl = document.getElementById("mask-input");
+  const gatewayInputEl = document.getElementById("gateway-input");
+  const dns1InputEl = document.getElementById("dns1-input");
+  const dns2InputEl = document.getElementById("dns2-input");
+
+  function setStatus(text, kind = "") {
+    statusBoxEl.textContent = text;
+    statusBoxEl.className = `status ${kind}`.trim();
+  }
+
+  function syncMeta() {
+    nameMetaEl.textContent = state.name || "-";
+    deviceIdMetaEl.textContent = state.deviceId || "-";
+    resourceIdMetaEl.textContent = state.resourceId || "-";
+    serialMetaEl.textContent = state.deviceSerial || "-";
+    interfaceIdMetaEl.textContent = state.interfaceId || "-";
+  }
+
+  async function loadNetwork() {
+    if (!state.deviceId) {
+      setStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    setStatus("Network ayarlari okunuyor...");
+    const res = await fetch(`/api/device-config/network?deviceId=${encodeURIComponent(state.deviceId)}`);
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Network ayarlari alinamadi.");
+    }
+
+    xmlOutputEl.value = data.xml || "";
+    const current = Array.isArray(data.interfaces) && data.interfaces.length ? data.interfaces[0] : null;
+    if (!current) {
+      throw new Error("Network interface bulunamadi.");
+    }
+
+    state.interfaceId = current.id || "1";
+    syncMeta();
+    dhcpMetaEl.textContent = current.dhcpMode || "-";
+    ipInputEl.value = current.ipAddress === "-" ? "" : current.ipAddress;
+    maskInputEl.value = current.subnetMask === "-" ? "" : current.subnetMask;
+    gatewayInputEl.value = current.gateway === "-" ? "" : current.gateway;
+    dns1InputEl.value = current.primaryDns === "-" ? "" : current.primaryDns;
+    dns2InputEl.value = current.secondaryDns === "-" ? "" : current.secondaryDns;
+    setStatus("Network ayarlari okundu.", "ok");
+  }
+
+  async function saveNetwork() {
+    if (!state.deviceId) {
+      setStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    setStatus("IP ayarlari guncelleniyor...");
+    const res = await fetch("/api/device-config/network", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deviceId: state.deviceId,
+        interfaceId: state.interfaceId || "1",
+        ipAddress: ipInputEl.value.trim(),
+        subnetMask: maskInputEl.value.trim(),
+        gateway: gatewayInputEl.value.trim(),
+        primaryDns: dns1InputEl.value.trim(),
+        secondaryDns: dns2InputEl.value.trim(),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "IP ayarlari guncellenemedi.");
+    }
+
+    xmlOutputEl.value = data.appliedXml || xmlOutputEl.value;
+    if (data.rebootRequired) {
+      setStatus("IP ayarlari kaydedildi. Reboot gonderiliyor...", "ok");
+      await rebootDevice({ silent: true });
+      setStatus("IP ayarlari kaydedildi. Reboot tamamlandiysa cihazi yeni IP ile kontrol edin.", "ok");
+      return;
+    }
+
+    setStatus("IP ayarlari kaydedildi.", "ok");
+  }
+
+  async function rebootDevice(options = {}) {
+    const silent = Boolean(options.silent);
+    if (!state.deviceId) {
+      setStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    if (!silent) {
+      setStatus("Cihaz reboot ediliyor...");
+    }
+    const res = await fetch("/api/device-config/reboot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ deviceId: state.deviceId, waitForReconnect: true }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Cihaz reboot edilemedi.");
+    }
+
+    if (!silent) {
+      setStatus(
+        data.reconnected
+          ? "Reboot komutu gonderildi ve cihaz cloud'a geri dondu."
+          : "Reboot komutu gonderildi. Cihazin cloud'a geri donmesi bekleniyor.",
+        "ok"
+      );
+    }
+  }
+
+  document.getElementById("load-btn").addEventListener("click", () => {
+    loadNetwork().catch((err) => setStatus(err.message, "err"));
+  });
+  document.getElementById("save-btn").addEventListener("click", () => {
+    saveNetwork().catch((err) => setStatus(err.message, "err"));
+  });
+  document.getElementById("reboot-btn").addEventListener("click", () => {
+    rebootDevice().catch((err) => setStatus(err.message, "err"));
+  });
+
+  syncMeta();
+  if (state.deviceId) {
+    loadNetwork().catch((err) => setStatus(err.message, "err"));
+  } else {
+    setStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
+  }
+</script>
+</body>
+</html>
