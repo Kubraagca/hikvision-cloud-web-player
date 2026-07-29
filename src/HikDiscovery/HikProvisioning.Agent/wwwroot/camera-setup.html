@@ -312,8 +312,8 @@
             <tr>
               <th>Sec</th>
               <th>IP</th>
-              <th>Model</th>
-              <th>Seri</th>
+              <th>Model No</th>
+              <th>Seri No</th>
               <th>MAC</th>
               <th>Durum</th>
             </tr>
@@ -625,9 +625,24 @@
   function applyDevice(index) {
     const device = discoveredDevices[index];
     if (!device) return;
-    document.getElementById("camera-ip").value = pick(device, "ipAddress", "IpAddress") || "";
+    const cameraIp = pick(device, "ipAddress", "IpAddress") || "";
+    const model = pick(device, "model", "Model") || "-";
+    const serialNumber = pick(device, "serialNumber", "SerialNumber") || "-";
+    const macAddress = pick(device, "macAddress", "MacAddress") || "-";
+    const activationStatus = pick(device, "activationStatus", "ActivationStatus") || "-";
+
+    document.getElementById("camera-ip").value = cameraIp;
     document.getElementById("username").value = "admin";
-    setStatus(`Secilen kamera: ${pick(device, "ipAddress", "IpAddress") || "-"} | ${pick(device, "model", "Model") || "-"} | ${pick(device, "activationStatus", "ActivationStatus") || "-"}`);
+    renderResult({
+      model,
+      shortSerial: serialNumber,
+      macAddress,
+      cameraIp,
+      verificationCode: "-",
+      hikConnectStatus: activationStatus,
+      networkInterfaces: []
+    });
+    setStatus(`Secilen kamera: ${cameraIp} | Model No: ${model} | Seri No: ${serialNumber} | Durum: ${activationStatus}`);
   }
 
   async function checkHealth() {
