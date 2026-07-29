@@ -390,3 +390,311 @@ Detayli SDK seviyesi inceleme gerekiyorsa:
 - `SDK_INCELEME_RAPORU.md`
 
 dosyasi referans alinmalidir.
+
+## 18. Kullanilan API, SDK ve Endpoint Listesi
+
+Bu projede tek bir API yoktur. Isleme gore farkli katmanlar kullanilir.
+
+### 18.1 Cloud / Team OpenAPI
+
+Cloud tarafinda kullanilan ana yapi:
+
+- HikCentral Connect Team OpenAPI
+
+Temel endpoint gruplari:
+
+- `POST /api/hccgw/platform/v1/token/get`
+  Team access token almak icin
+
+- `POST /api/hccgw/resource/v1/areas/cameras/get`
+  Cloud kamera listesi almak icin
+
+- `POST /api/hccgw/resource/v1/devices/get`
+  Fiziksel cihaz bilgisi ve `deviceId` bulmak icin
+
+- `POST /api/hccgw/platform/v1/streamtoken/get`
+  JSDecoder / EZOPEN icin stream app token almak icin
+
+- Team servis katmaninda kullanilan area / cihaz endpointleri
+  area bulma, area olusturma, cihaz ekleme, device detail ve kanal import icin kullanilir
+
+### 18.2 Cloud Proxypass
+
+Aktif ve Team tarafinda gorunen cihazlarda bazi ISAPI isteklerini cloud uzerinden proxypass ile gonderiyoruz:
+
+- `POST /api/hccgw/proxy/v1/isapi/proxypass`
+
+Bu endpoint icine su JSON body gider:
+
+```json
+{
+  "method": "GET|PUT|POST",
+  "url": "/ISAPI/...",
+  "id": "physicalDeviceId",
+  "contentType": "application/xml",
+  "body": "<xml>...</xml>"
+}
+```
+
+Kritik kural:
+
+- burada `id` olarak cogu durumda `resourceId` degil, fiziksel `deviceId` kullanilir
+
+### 18.3 Kamera Uzerindeki Yerel ISAPI
+
+Yerel agda cihaza dogrudan giden temel endpointler:
+
+- `GET /ISAPI/System/activateStatus`
+  aktif / inactive durumu icin
+
+- `GET /ISAPI/System/deviceInfo`
+  model, seri, MAC, firmware gibi kimlik bilgileri icin
+
+- `GET /ISAPI/System/Network/interfaces`
+  network config okumak icin
+
+- `PUT /ISAPI/System/Network/interfaces/{id}`
+  IP, subnet, gateway, DNS guncellemek icin
+
+- `PUT /ISAPI/System/reboot`
+  cihaz reboot icin
+
+- `GET /ISAPI/System/Network/EZVIZ`
+  Hik-Connect / EZVIZ durumunu okumak icin
+
+- `PUT /ISAPI/System/Network/EZVIZ`
+  Hik-Connect / EZVIZ ve verification code guncellemek icin
+
+- `GET /ISAPI/PTZCtrl/channels/1/capabilities`
+  PTZ capability okumak icin
+
+- `PUT /ISAPI/PTZCtrl/channels/1/continuous`
+  pan / tilt / zoom komutu icin
+
+### 18.4 HCNetSDK
+
+Ilk aktivasyon ve bazi yerel kesif / cihaz servis portu islemlerinde:
+
+- Hikvision `HCNetSDK`
+
+kullanilir.
+
+Bu tarafta kritik fonksiyonlar:
+
+- `NET_DVR_Init`
+- `NET_DVR_SetSDKInitCfg`
+- `NET_DVR_ActivateDevice`
+- `NET_DVR_Login_V40`
+- `NET_DVR_GetSadpInfoList`
+
+Aktivasyonun kendisi HTTP ile degil, SDK tarafinda cihaz servis portu uzerinden gider.
+
+## 19. Islem Bazinda Hangi Bilgi Gerekir
+
+Her islem icin gereken veri ayni degildir.
+
+### 19.1 Kamera listeleme
+
+Gerekenler:
+
+- `HIK_APP_KEY`
+- `HIK_APP_SECRET`
+
+Donen temel alanlar:
+
+- `name`
+- `resourceId`
+- `deviceSerial`
+- `cameraIndexCode`
+- `channelNo`
+
+### 19.2 Cloud izleme
+
+Gerekenler:
+
+- `resourceId`
+- `deviceSerial`
+- opsiyonel `quality`
+- opsiyonel `protocol`
+
+JSDecoder / EZOPEN akisinda ek olarak:
+
+- stream token endpointinden gelen `appToken`
+- `appKey`
+- `streamAreaDomain`
+
+### 19.3 Sadece aktivasyon
+
+Gerekenler:
+
+- `cameraIp`
+- `userName` genelde `admin`
+- yeni `password`
+- `sdkPort` genelde `8000`
+
+Bu asamada `areaName`, `verificationCode`, `resourceId` veya `deviceId` gerekmez.
+
+### 19.4 Kamera ayarlarini uygula
+
+Gerekenler:
+
+- `cameraIp`
+- `userName`
+- `password`
+- opsiyonel `areaName`
+- opsiyonel `gatewayOverride`
+- opsiyonel `enableDhcp`
+- `sdkPort`
+
+Arka planda otomatik kullanilanlar:
+
+- `dns1 = 8.8.8.8`
+- `dns2 = 1.1.1.1`
+- verification code bos ise sistem tarafinda uretilir
+
+### 19.5 Hik-Connect / EZVIZ ayari
+
+Gerekenler:
+
+- aktif cihaza erisim
+- `deviceId` veya yerel modda kamera IP
+- `verificationCode`
+
+Bu islem lokal ISAPI veya cloud proxypass ile yapilabilir. Inactive cihazda once aktivasyon gerekir.
+
+### 19.6 Team hesabina cihaz ekleme
+
+Gerekenler:
+
+- `shortSerial`
+- `verificationCode`
+- opsiyonel `alias`
+- `areaName` veya `areaId`
+
+Burada kamera admin parolasi bazen backend workflow icinde halen gerekir, cunku kanal import veya cihaz detail adimlari ile bagli akislar olabilir.
+
+### 19.7 PTZ
+
+Iki farkli seviye vardir:
+
+1. Cloud video seviyesinde kontrol
+2. Cihaz seviyesinde ISAPI PTZ
+
+Proxypass tabanli PTZ icin gerekenler:
+
+- `deviceId`
+- `channelNo`
+- `pan`
+- `tilt`
+- `zoom`
+
+## 20. Projedeki Onemli Backend Endpointleri
+
+Frontend'in bizim backend'imize cagridigi ana endpointler:
+
+### Izleme
+
+- `GET /api/health`
+- `GET /api/sdk-config`
+- `GET /api/cameras`
+- `GET /api/stream`
+
+### Kurulum
+
+- `POST /api/provision/activate`
+- `POST /api/provision/start`
+- `GET /api/provision/tasks/:taskId`
+
+### Team'e ekleme
+
+- `POST /api/team-devices/add`
+
+### Cihaz detay
+
+- `GET /api/device-config/network`
+- `PUT /api/device-config/network`
+- `POST /api/device-config/reboot`
+- `GET /api/device-config/ezviz`
+- `PUT /api/device-config/ezviz`
+
+### PTZ
+
+- `POST /api/ptz/continuous`
+
+## 21. Frontend Sayfa Bazinda Hangi Isler Yapilir
+
+### `/`
+
+Bu sayfa:
+
+- backend health kontrol eder
+- cloud kamera listesini alir
+- stream baslatir
+- secili kamera icin `device-detail` ekranina gecis verir
+
+### `/camera-setup`
+
+Bu sayfa:
+
+- yerel aktivasyon baslatir
+- tam kurulum task'i baslatir
+- task durumlarini gosterir
+- isterse yerel agent ekranini acar
+
+### `/team-device-add`
+
+Bu sayfa:
+
+- sadece Team ekleme formudur
+
+### `/device-detail`
+
+Bu sayfa:
+
+- secili aktif cihazin detay ayarlarini cloud proxypass ile gunceller
+
+## 22. Hangi Islemde Hangi Kimlik Kullanilir
+
+Bu kisim karismaya cok acik oldugu icin acikca ayiriyoruz.
+
+### `cameraIp`
+
+Yerel cihazla dogrudan konusurken kullanilir.
+
+### `resourceId`
+
+Cloud kamera kaydini temsil eder.
+Izleme tarafinda cok kullanilir.
+
+### `deviceId`
+
+Fiziksel cihazi temsil eder.
+Ozellikle proxypass ve bazi cihaz seviyesi cloud islemlerinde gerekir.
+
+### `deviceSerial`
+
+Cloud stream ve cihaz esleme akislarinda kullanilir.
+
+### `shortSerial`
+
+Team'e cihaz ekleme akisinda onemlidir.
+Genelde seri numaranin kisa formudur ve Team backend bu bilgiyle cihaz kaydini bulur / ekler.
+
+### `verificationCode`
+
+Hik-Connect / EZVIZ ile Team'e cihaz ekleme arasindaki baglayici degerdir.
+
+## 23. Mobil Uygulama Tarafi Icin Sonuc
+
+Eger kendi mobil uygulamanizda ayni agda aktivasyon yapmak isterseniz:
+
+- cloud API tek basina yetmez
+- yerel agda cihaza erisen bir SDK katmani gerekir
+- bunun icin dogru SDK `HCNetSDK` tarafidir
+
+Yani:
+
+- cloud izleme icin OpenAPI + JSDecoder mantigi
+- ilk aktivasyon icin HCNetSDK mantigi
+
+ayni anda dusunulmelidir.
