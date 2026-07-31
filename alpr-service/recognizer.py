@@ -57,6 +57,9 @@ class RecognizerConfig:
     min_plate_width: int = 40
     min_plate_height: int = 16
     process_every_n_frames: int = 3
+    non_turkish_min_ocr_confidence: float = 0.9
+    trusted_turkish_min_ocr_confidence: float = 0.7
+    trusted_turkish_min_detection_confidence: float = 0.35
     providers: tuple[str, ...] = ("CPUExecutionProvider",)
 
     @property
@@ -96,6 +99,9 @@ def load_config() -> RecognizerConfig:
         min_plate_width=_env_int("ALPR_MIN_PLATE_WIDTH", 40),
         min_plate_height=_env_int("ALPR_MIN_PLATE_HEIGHT", 16),
         process_every_n_frames=max(1, _env_int("ALPR_PROCESS_EVERY_N_FRAMES", 3)),
+        non_turkish_min_ocr_confidence=_env_float("ALPR_NON_TURKISH_MIN_OCR_CONFIDENCE", 0.9),
+        trusted_turkish_min_ocr_confidence=_env_float("ALPR_TRUSTED_TURKISH_MIN_OCR_CONFIDENCE", 0.7),
+        trusted_turkish_min_detection_confidence=_env_float("ALPR_TRUSTED_TURKISH_MIN_DETECTION_CONFIDENCE", 0.35),
     )
 
 
@@ -118,6 +124,70 @@ def normalize_plate_text(text: str) -> str:
 
 def is_turkish_plate(text: str) -> bool:
     return bool(re.fullmatch(r"^(0[1-9]|[1-7][0-9]|8[01])[A-Z]{1,3}[0-9]{2,4}$", text))
+
+
+LETTER_FROM_DIGIT = str.maketrans({
+    "0": "O",
+    "1": "I",
+    "2": "Z",
+    "4": "A",
+    "5": "S",
+    "6": "G",
+    "7": "T",
+    "8": "B",
+})
+
+DIGIT_FROM_LETTER = str.maketrans({
+    "O": "0",
+    "Q": "0",
+    "D": "0",
+    "I": "1",
+    "L": "1",
+    "Z": "2",
+    "S": "5",
+    "G": "6",
+    "B": "8",
+})
+
+
+def correct_turkish_plate_candidate(text: str) -> str:
+    normalized = normalize_plate_text(text)
+    if len(normalized) < 5:
+        return normalized
+
+    prefix = normalized[:2].translate(DIGIT_FROM_LETTER)
+    suffix = normalized[2:]
+    candidates: list[str] = []
+    for letter_len in (1, 2, 3):
+        if len(suffix) <= letter_len:
+            continue
+        letters = suffix[:letter_len].translate(LETTER_FROM_DIGIT)
+        digits = suffix[letter_len:].translate(DIGIT_FROM_LETTER)
+        candidate = f"{prefix}{letters}{digits}"
+        if is_turkish_plate(candidate):
+            candidates.append(candidate)
+
+    return candidates[0] if candidates else normalized
+
+
+def is_plausible_plate_text(text: str) -> bool:
+    normalized = normalize_plate_text(text)
+    if len(normalized) < 5:
+        return False
+    if normalized.isdigit() or normalized.isalpha():
+        return False
+    if len(set(normalized)) == 1:
+        return False
+    return True
+
+
+def count_char_differences(left: str, right: str) -> int:
+    left_norm = normalize_plate_text(left)
+    right_norm = normalize_plate_text(right)
+    overlap = min(len(left_norm), len(right_norm))
+    diff = sum(1 for index in range(overlap) if left_norm[index] != right_norm[index])
+    diff += abs(len(left_norm) - len(right_norm))
+    return diff
 
 
 class PlateRecognizer:
@@ -246,16 +316,29 @@ class PlateRecognizer:
                 continue
 
             raw_text = result.ocr.text if result.ocr else ""
-            normalized_text = normalize_plate_text(raw_text)
+            normalized_text = correct_turkish_plate_candidate(raw_text)
             ocr_confidence = mean_confidence(result.ocr.confidence if result.ocr else None)
             if normalized_text == "" and min_ocr > 0:
                 continue
             if ocr_confidence < min_ocr:
                 continue
+            if normalized_text and not is_plausible_plate_text(normalized_text):
+                continue
 
             turkish_plate = is_turkish_plate(normalized_text)
             if turkey_only and normalized_text and not turkish_plate:
                 continue
+
+            if turkish_plate:
+                if ocr_confidence < self.config.trusted_turkish_min_ocr_confidence:
+                    continue
+                if detection_confidence < self.config.trusted_turkish_min_detection_confidence:
+                    continue
+                if count_char_differences(raw_text, normalized_text) >= 4 and ocr_confidence < 0.9:
+                    continue
+            else:
+                if ocr_confidence < self.config.non_turkish_min_ocr_confidence:
+                    continue
 
             plates.append(
                 {
@@ -269,6 +352,14 @@ class PlateRecognizer:
                     "turkishPlateFormat": turkish_plate,
                 }
             )
+
+        plates.sort(
+            key=lambda item: (
+                0 if item.get("turkishPlateFormat") else 1,
+                -(float(item.get("ocrConfidence") or 0.0)),
+                -(float(item.get("detectionConfidence") or 0.0)),
+            )
+        )
 
         return {
             "status": "ok",
