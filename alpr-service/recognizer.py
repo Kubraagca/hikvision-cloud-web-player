@@ -57,9 +57,9 @@ class RecognizerConfig:
     min_plate_width: int = 40
     min_plate_height: int = 16
     process_every_n_frames: int = 3
-    non_turkish_min_ocr_confidence: float = 0.9
-    trusted_turkish_min_ocr_confidence: float = 0.7
-    trusted_turkish_min_detection_confidence: float = 0.35
+    non_turkish_min_ocr_confidence: float = 0.55
+    trusted_turkish_min_ocr_confidence: float = 0.45
+    trusted_turkish_min_detection_confidence: float = 0.2
     providers: tuple[str, ...] = ("CPUExecutionProvider",)
 
     @property
@@ -99,9 +99,9 @@ def load_config() -> RecognizerConfig:
         min_plate_width=_env_int("ALPR_MIN_PLATE_WIDTH", 40),
         min_plate_height=_env_int("ALPR_MIN_PLATE_HEIGHT", 16),
         process_every_n_frames=max(1, _env_int("ALPR_PROCESS_EVERY_N_FRAMES", 3)),
-        non_turkish_min_ocr_confidence=_env_float("ALPR_NON_TURKISH_MIN_OCR_CONFIDENCE", 0.9),
-        trusted_turkish_min_ocr_confidence=_env_float("ALPR_TRUSTED_TURKISH_MIN_OCR_CONFIDENCE", 0.7),
-        trusted_turkish_min_detection_confidence=_env_float("ALPR_TRUSTED_TURKISH_MIN_DETECTION_CONFIDENCE", 0.35),
+        non_turkish_min_ocr_confidence=_env_float("ALPR_NON_TURKISH_MIN_OCR_CONFIDENCE", 0.55),
+        trusted_turkish_min_ocr_confidence=_env_float("ALPR_TRUSTED_TURKISH_MIN_OCR_CONFIDENCE", 0.45),
+        trusted_turkish_min_detection_confidence=_env_float("ALPR_TRUSTED_TURKISH_MIN_DETECTION_CONFIDENCE", 0.2),
     )
 
 
@@ -429,7 +429,7 @@ class PlateRecognizer:
                     continue
                 if detection_confidence < self.config.trusted_turkish_min_detection_confidence:
                     continue
-                if count_char_differences(raw_text, normalized_text) >= 4 and ocr_confidence < 0.9:
+                if count_char_differences(raw_text, normalized_text) >= 5 and ocr_confidence < 0.75:
                     continue
             else:
                 if ocr_confidence < self.config.non_turkish_min_ocr_confidence:

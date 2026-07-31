@@ -316,6 +316,12 @@
   const stopBtnEl = document.getElementById("stop-btn");
   let sdkPlayer = null;
 
+  async function waitForNextPaint(count = 2) {
+    for (let i = 0; i < count; i += 1) {
+      await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+    }
+  }
+
   function setStatus(text, kind = "") {
     statusBoxEl.textContent = text;
     statusBoxEl.className = `status-box ${kind}`.trim();
@@ -375,7 +381,17 @@
         basePath: "/sdk/dist",
         fitMode: "contain",
         widthProvider() {
-          const width = Math.max(320, Math.floor(sdkPlayerHostEl.clientWidth || sdkPlayerHostEl.offsetWidth || 960));
+          const shellEl = sdkPlayerHostEl.parentElement;
+          const width = Math.max(
+            320,
+            Math.floor(
+              shellEl?.clientWidth ||
+              shellEl?.offsetWidth ||
+              sdkPlayerHostEl.clientWidth ||
+              sdkPlayerHostEl.offsetWidth ||
+              960
+            )
+          );
           const height = Math.max(180, Math.floor(width * 9 / 16));
           return { width, height };
         },
@@ -391,7 +407,9 @@
       });
     }
 
+    await waitForNextPaint();
     await sdkPlayer.ensureCreated();
+    await sdkPlayer.resize();
     await sdkPlayer.loadAndPlayLive(buildSdkUrl());
   }
 

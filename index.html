@@ -122,6 +122,7 @@
   .side-stack {
     display: grid;
     gap: 12px;
+    align-content: start;
   }
 
   .info-box {
@@ -139,8 +140,7 @@
   }
 
   .cam-item {
-    display: flex;
-    align-items: center;
+    display: grid;
     gap: 10px;
     padding: 10px;
     border: 1px solid var(--border);
@@ -151,6 +151,12 @@
   .cam-item.active {
     border-color: var(--accent);
     background: #f1f7fe;
+  }
+
+  .cam-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .dot {
@@ -166,6 +172,25 @@
   .cam-name {
     flex: 1;
     font-size: 13px;
+  }
+
+  .cam-verify {
+    display: none;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-top: 2px;
+  }
+
+  .cam-item.active .cam-verify {
+    display: grid;
+  }
+
+  .cam-verify input {
+    min-height: 36px;
+    padding: 8px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    font: inherit;
   }
 
   .empty-state {
@@ -208,11 +233,31 @@
     color: var(--muted);
   }
 
+  .live-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) 320px;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .live-media {
+    min-width: 0;
+  }
+
+  .live-sidebar {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+
+  .media-stage {
+    max-width: 100%;
+  }
+
   .summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 10px;
-    margin-top: 12px;
   }
 
   .summary-item {
@@ -239,6 +284,12 @@
 
   .ptz-controls button {
     min-width: 110px;
+  }
+
+  @media (max-width: 1180px) {
+    .live-layout {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 </head>
@@ -287,12 +338,8 @@
               <option value="ezopen">EZOPEN + SDK</option>
             </select>
           </div>
-          <div style="display:grid; gap:8px; margin-bottom:10px;">
-            <label for="verify-code-input" style="font-size:12px; font-weight:600;">Verification Code</label>
-            <input id="verify-code-input" type="password" placeholder="Encrypted yayin icin girin" style="min-height:36px; padding:8px 10px; border:1px solid var(--border-strong); border-radius:4px;" />
-          </div>
           <div class="info-box" style="margin-bottom:10px;">
-            HLS icin kamera cloud tarafinda online ve H.264 uyumlu olmali. Encrypted yayinlarda EZOPEN + SDK yolunu deneyebilirsiniz.
+            HLS icin kamera cloud tarafinda online ve H.264 uyumlu olmali. Encrypted yayinlarda kameraya tiklayip acilan alana verification code girerek EZOPEN + SDK yolunu deneyebilirsiniz.
           </div>
           <div class="cam-list" id="camera-list"></div>
           <div class="empty-state" id="camera-placeholder">Kameralar yukleniyor...</div>
@@ -305,53 +352,61 @@
         <h2>Canli Yayin</h2>
       </div>
       <div class="panel-body">
-        <video id="player" controls muted playsinline></video>
-        <div id="playWind" class="sdk-host"></div>
-        <iframe id="sdk-frame" class="sdk-frame" title="SDK Izleyici"></iframe>
-        <div id="sdk-live-fields" style="display:none;">
-          <input id="accessToken" type="text" />
-          <input id="appKey" type="text" />
-          <input id="domain" type="text" />
-          <input id="deviceSerial" type="text" />
-          <input id="channelNo" type="text" />
-          <input id="secretKey" type="text" />
-          <input id="playUrl" type="text" />
-        </div>
-        <div class="player-status">
-          <span id="status-text">Bir kamera secin</span>
-          <span id="expire-text"></span>
-        </div>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <span>Kamera</span>
-            <strong id="camera-meta">Secim yok</strong>
+        <div class="live-layout">
+          <div class="live-media">
+            <div class="media-stage">
+              <video id="player" controls muted playsinline></video>
+              <div id="playWind" class="sdk-host"></div>
+              <iframe id="sdk-frame" class="sdk-frame" title="SDK Izleyici"></iframe>
+            </div>
+            <div id="sdk-live-fields" style="display:none;">
+              <input id="accessToken" type="text" />
+              <input id="appKey" type="text" />
+              <input id="domain" type="text" />
+              <input id="deviceSerial" type="text" />
+              <input id="channelNo" type="text" />
+              <input id="secretKey" type="text" />
+              <input id="playUrl" type="text" />
+            </div>
+            <div class="player-status">
+              <span id="status-text">Bir kamera secin</span>
+              <span id="expire-text"></span>
+            </div>
           </div>
-          <div class="summary-item">
-            <span>Protokol</span>
-            <strong id="protocol-meta">HLS</strong>
-          </div>
-          <div class="summary-item">
-            <span>Resource ID</span>
-            <strong id="resource-id-meta">-</strong>
-          </div>
-          <div class="summary-item">
-            <span>Device ID</span>
-            <strong id="device-id-meta">-</strong>
-          </div>
-          <div class="summary-item">
-            <span>Camera Index Code</span>
-            <strong id="camera-index-meta">-</strong>
-          </div>
-          <div class="summary-item">
-            <span>Device Serial</span>
-            <strong id="device-serial-meta">-</strong>
-          </div>
-        </div>
-        <div class="ptz-controls">
-          <button id="zoom-in-btn" type="button">Zoom +</button>
-          <button id="zoom-out-btn" type="button">Zoom -</button>
-          <button id="alpr-btn" type="button">Plaka Tanima</button>
-          <button id="device-detail-btn" type="button">Cihaz Detayi</button>
+          <aside class="live-sidebar">
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Kamera</span>
+                <strong id="camera-meta">Secim yok</strong>
+              </div>
+              <div class="summary-item">
+                <span>Protokol</span>
+                <strong id="protocol-meta">HLS</strong>
+              </div>
+              <div class="summary-item">
+                <span>Resource ID</span>
+                <strong id="resource-id-meta">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Device ID</span>
+                <strong id="device-id-meta">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Camera Index Code</span>
+                <strong id="camera-index-meta">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Device Serial</span>
+                <strong id="device-serial-meta">-</strong>
+              </div>
+            </div>
+            <div class="ptz-controls">
+              <button id="zoom-in-btn" type="button">Zoom +</button>
+              <button id="zoom-out-btn" type="button">Zoom -</button>
+              <button id="alpr-btn" type="button">Plaka Tanima</button>
+              <button id="device-detail-btn" type="button">Cihaz Detayi</button>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
@@ -368,7 +423,6 @@
   const healthEl = document.getElementById("health-box");
   const qualityEl = document.getElementById("quality-select");
   const playModeEl = document.getElementById("play-mode-select");
-  const verifyCodeEl = document.getElementById("verify-code-input");
   const cameraMetaEl = document.getElementById("camera-meta");
   const protocolMetaEl = document.getElementById("protocol-meta");
   const resourceIdMetaEl = document.getElementById("resource-id-meta");
@@ -386,6 +440,22 @@
   let sdkHostObserver = null;
   let sdkSessionActive = false;
   let selectedCamera = null;
+  const cameraVerificationCodes = new Map();
+
+  function getCameraVerificationCode(cam) {
+    if (!cam?.resourceId) return "";
+    return cameraVerificationCodes.get(cam.resourceId) || "";
+  }
+
+  function setCameraVerificationCode(cam, value) {
+    if (!cam?.resourceId) return;
+    const trimmedValue = String(value || "").trim();
+    if (trimmedValue) {
+      cameraVerificationCodes.set(cam.resourceId, trimmedValue);
+    } else {
+      cameraVerificationCodes.delete(cam.resourceId);
+    }
+  }
 
   function updateAlprBridgeContext(extra = {}) {
     window.hikvisionAlprBridgeContext = {
@@ -862,10 +932,38 @@
         const card = document.createElement("div");
         card.className = "cam-item";
         card.innerHTML = `
-          <span class="dot ${cam.online ? "on" : "off"}"></span>
-          <span class="cam-name">${cam.name}</span>
+          <div class="cam-row">
+            <span class="dot ${cam.online ? "on" : "off"}"></span>
+            <span class="cam-name">${cam.name}</span>
+          </div>
+          <div class="cam-verify">
+            <input type="password" class="cam-verify-input" placeholder="Verification Code girin" />
+            <button type="button" class="cam-verify-button">Izle</button>
+          </div>
         `;
         card.addEventListener("click", () => selectCamera(cam, card));
+        const verifyInputEl = card.querySelector(".cam-verify-input");
+        const verifyButtonEl = card.querySelector(".cam-verify-button");
+
+        verifyInputEl.value = getCameraVerificationCode(cam);
+        verifyInputEl.addEventListener("click", (event) => event.stopPropagation());
+        verifyInputEl.addEventListener("input", (event) => {
+          setCameraVerificationCode(cam, event.target.value);
+        });
+        verifyInputEl.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter") return;
+          event.preventDefault();
+          event.stopPropagation();
+          setCameraVerificationCode(cam, verifyInputEl.value);
+          selectCamera(cam, card);
+        });
+
+        verifyButtonEl.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setCameraVerificationCode(cam, verifyInputEl.value);
+          selectCamera(cam, card);
+        });
         listEl.appendChild(card);
       });
     } catch (err) {
@@ -880,6 +978,10 @@
     if (activeCard) activeCard.classList.remove("active");
     card.classList.add("active");
     activeCard = card;
+    const verifyInputEl = card.querySelector(".cam-verify-input");
+    if (verifyInputEl) {
+      verifyInputEl.value = getCameraVerificationCode(cam);
+    }
     cameraMetaEl.textContent = cam.name;
     resourceIdMetaEl.textContent = cam.resourceId || "-";
     deviceIdMetaEl.textContent = cam.deviceId || "-";
@@ -895,7 +997,7 @@
 
     try {
       const selectedMode = playModeEl.value;
-      const verificationCode = verifyCodeEl.value.trim();
+      const verificationCode = getCameraVerificationCode(cam);
       const preferredProtocol =
         selectedMode === "ezopen" ? 1 :
         selectedMode === "hls" ? 2 :
@@ -1121,7 +1223,7 @@
       channelNo: String(Number(selectedCamera.channelNo || 1)),
       quality: String(qualityEl.value || "1"),
     });
-    const verificationCode = verifyCodeEl.value.trim();
+    const verificationCode = getCameraVerificationCode(selectedCamera);
     if (verificationCode) {
       params.set("code", verificationCode);
     }
