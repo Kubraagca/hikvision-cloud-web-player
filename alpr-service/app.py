@@ -14,8 +14,26 @@ from recognizer import PlateRecognizer
 
 HOST = os.environ.get("ALPR_HOST", "127.0.0.1")
 PORT = int(os.environ.get("ALPR_PORT", "53871"))
-RECOGNIZER = PlateRecognizer()
 ARTIFACTS_DIR = Path(__file__).resolve().parent / "artifacts" / "debug-captures"
+RECOGNIZER = None
+RECOGNIZER_ERROR = None
+
+
+def get_recognizer() -> PlateRecognizer:
+    global RECOGNIZER, RECOGNIZER_ERROR
+    if RECOGNIZER is not None:
+        return RECOGNIZER
+    if RECOGNIZER_ERROR is not None:
+        raise RuntimeError(RECOGNIZER_ERROR)
+    try:
+        print("ALPR recognizer is initializing...", flush=True)
+        RECOGNIZER = PlateRecognizer()
+        print("ALPR recognizer initialized.", flush=True)
+        return RECOGNIZER
+    except Exception as exc:
+        RECOGNIZER_ERROR = str(exc)
+        print(f"ALPR recognizer initialization failed: {RECOGNIZER_ERROR}", flush=True)
+        raise
 
 
 class AlprHandler(BaseHTTPRequestHandler):
@@ -40,7 +58,8 @@ class AlprHandler(BaseHTTPRequestHandler):
         return json.loads(raw.decode("utf-8"))
 
     def _save_debug_image(self, payload: dict) -> str:
-        image = RECOGNIZER.load_image(
+        recognizer = get_recognizer()
+        image = recognizer.load_image(
             image_base64=payload.get("imageBase64"),
             image_path=payload.get("imagePath"),
         )
@@ -55,7 +74,17 @@ class AlprHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802
         if self.path == "/health":
-            self._send_json(HTTPStatus.OK, RECOGNIZER.health())
+            try:
+                recognizer = get_recognizer()
+                self._send_json(HTTPStatus.OK, recognizer.health())
+            except Exception as exc:
+                self._send_json(
+                    HTTPStatus.SERVICE_UNAVAILABLE,
+                    {
+                        "status": "starting-error",
+                        "error": str(exc),
+                    },
+                )
             return
         self._send_json(HTTPStatus.NOT_FOUND, {"error": "Not found"})
 
@@ -71,7 +100,8 @@ class AlprHandler(BaseHTTPRequestHandler):
                 debug_image_path = None
                 if payload.get("debugSave"):
                     debug_image_path = self._save_debug_image(payload)
-                result = RECOGNIZER.recognize(
+                recognizer = get_recognizer()
+                result = recognizer.recognize(
                     image_base64=payload.get("imageBase64"),
                     image_path=payload.get("imagePath"),
                     frame_index=payload.get("frameIndex"),
