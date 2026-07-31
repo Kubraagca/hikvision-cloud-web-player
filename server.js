@@ -2294,6 +2294,17 @@ app.get("/api/alpr/health", async (req, res) => {
   }
 });
 
+app.post("/api/alpr/stop", async (req, res) => {
+  try {
+    const result = await alprService.stop();
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(err.status || 500).json({
+      error: sanitizeMessage(err.message),
+    });
+  }
+});
+
 async function handleAlprRecognize(req, res) {
   const payload = {
     imageBase64: typeof req.body.imageBase64 === "string" ? req.body.imageBase64 : undefined,

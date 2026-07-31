@@ -658,15 +658,56 @@
     }
   }
 
-  startBtnEl.addEventListener("click", () => {
-    appendLog("Plaka tanima baslatildi.");
-    scheduleLoop();
+  async function ensureAlprReady() {
+    const response = await fetch("/api/alpr/health?autostart=1");
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.error || "ALPR servisi baslatilamadi.");
+    }
+    return result;
+  }
+
+  async function stopAlprService() {
+    const response = await fetch("/api/alpr/stop", {
+      method: "POST",
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.error || "ALPR servisi durdurulamadi.");
+    }
+    return result;
+  }
+
+  startBtnEl.addEventListener("click", async () => {
+    try {
+      startBtnEl.disabled = true;
+      setStatus("ALPR servisi baslatiliyor...", "warn");
+      appendLog("ALPR servisi baslatiliyor...");
+      await ensureAlprReady();
+      appendLog("Plaka tanima baslatildi.");
+      setStatus("ALPR hazir. Kare analizi baslatiliyor...", "ok");
+      scheduleLoop();
+    } catch (error) {
+      setStatus(`ALPR baslatma hata: ${error.message}`, "err");
+      appendLog(`ALPR baslatma hata: ${error.message}`, "error");
+    } finally {
+      startBtnEl.disabled = false;
+    }
   });
 
-  stopBtnEl.addEventListener("click", () => {
-    clearLoop();
-    setStatus("Plaka tanima durduruldu.");
-    appendLog("Plaka tanima durduruldu.");
+  stopBtnEl.addEventListener("click", async () => {
+    try {
+      stopBtnEl.disabled = true;
+      clearLoop();
+      await stopAlprService();
+      setStatus("Plaka tanima durduruldu.");
+      appendLog("Plaka tanima durduruldu. ALPR servisi kapatildi.");
+    } catch (error) {
+      setStatus(`ALPR durdurma hata: ${error.message}`, "err");
+      appendLog(`ALPR durdurma hata: ${error.message}`, "error");
+    } finally {
+      stopBtnEl.disabled = false;
+    }
   });
 
   saveDebugBtnEl.addEventListener("click", () => {

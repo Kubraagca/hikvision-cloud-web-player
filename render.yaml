@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: hikvision-tool
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALPR_PYTHON
+        value: python3
