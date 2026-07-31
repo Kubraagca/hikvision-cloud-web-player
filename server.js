@@ -88,6 +88,26 @@ const staticOptions = {
 
 app.use(express.static(__dirname, staticOptions));
 app.use(SDK_BASE_PATH, express.static(path.join(__dirname, "sdk"), staticOptions));
+app.use(
+  `${SDK_BASE_PATH}/playctrl`,
+  express.static(path.join(__dirname, "sdk", "dist", "playctrl"), staticOptions)
+);
+app.use(
+  `${SDK_BASE_PATH}/audioMixer`,
+  express.static(path.join(__dirname, "sdk", "dist", "audioMixer"), staticOptions)
+);
+app.use(
+  `${SDK_BASE_PATH}/talkW`,
+  express.static(path.join(__dirname, "sdk", "dist", "talkW"), staticOptions)
+);
+app.use(
+  `${SDK_BASE_PATH}/talkEzui`,
+  express.static(path.join(__dirname, "sdk", "dist", "talkEzui"), staticOptions)
+);
+app.use(
+  `${SDK_BASE_PATH}/transform`,
+  express.static(path.join(__dirname, "sdk", "dist", "transform"), staticOptions)
+);
 
 const LOCAL_AGENT_ZIP_PATH = path.join(
   __dirname,

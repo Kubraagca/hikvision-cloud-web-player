@@ -306,8 +306,17 @@
       </div>
       <div class="panel-body">
         <video id="player" controls muted playsinline></video>
-        <div id="sdk-player" class="sdk-host"></div>
-        <iframe id="sdk-frame" class="sdk-frame" title="jsDecoder Player"></iframe>
+        <div id="playWind" class="sdk-host"></div>
+        <iframe id="sdk-frame" class="sdk-frame" title="SDK Izleyici"></iframe>
+        <div id="sdk-live-fields" style="display:none;">
+          <input id="accessToken" type="text" />
+          <input id="appKey" type="text" />
+          <input id="domain" type="text" />
+          <input id="deviceSerial" type="text" />
+          <input id="channelNo" type="text" />
+          <input id="secretKey" type="text" />
+          <input id="playUrl" type="text" />
+        </div>
         <div class="player-status">
           <span id="status-text">Bir kamera secin</span>
           <span id="expire-text"></span>
@@ -353,8 +362,7 @@
   const listEl = document.getElementById("camera-list");
   const placeholderEl = document.getElementById("camera-placeholder");
   const videoEl = document.getElementById("player");
-  const sdkHostEl = document.getElementById("sdk-player");
-  const sdkFrameEl = document.getElementById("sdk-frame");
+  const sdkHostEl = document.getElementById("playWind");
   const statusEl = document.getElementById("status-text");
   const expireEl = document.getElementById("expire-text");
   const healthEl = document.getElementById("health-box");
@@ -374,9 +382,34 @@
   let hls = null;
   let activeCard = null;
   let sdkConfig = null;
-  let sdkPlugin = null;
-  let sdkWindowReady = false;
+  let sdkPlayer = null;
+  let sdkHostObserver = null;
+  let sdkSessionActive = false;
   let selectedCamera = null;
+
+  function updateAlprBridgeContext(extra = {}) {
+    window.hikvisionAlprBridgeContext = {
+      name: selectedCamera?.name || "",
+      resourceId: selectedCamera?.resourceId || "",
+      deviceSerial: selectedCamera?.deviceSerial || "",
+      channelNo: String(Number(selectedCamera?.channelNo || 1)),
+      quality: String(qualityEl.value || "1"),
+      mode: playModeEl.value || "auto",
+      playerType: sdkHostEl.style.display !== "none" ? "ezopen-inline" : "hls",
+      updatedAt: Date.now(),
+      ...extra,
+    };
+  }
+
+  window.hikvisionAlprCaptureCurrentFrame = async function hikvisionAlprCaptureCurrentFrame() {
+    updateAlprBridgeContext();
+    return captureCurrentFrameFromSdk();
+  };
+
+  window.hikvisionAlprGetCurrentContext = function hikvisionAlprGetCurrentContext() {
+    updateAlprBridgeContext();
+    return window.hikvisionAlprBridgeContext;
+  };
 
   function getSdkHostSize() {
     const width = Math.max(320, Math.floor(sdkHostEl.clientWidth || sdkHostEl.offsetWidth || 960));
@@ -384,22 +417,76 @@
     return { width, height };
   }
 
+  function getDemoPluginSize() {
+    return {
+      width: Math.max(960, window.innerWidth - 520),
+      height: 540,
+    };
+  }
+
+  async function waitForNextPaint(count = 2) {
+    for (let i = 0; i < count; i += 1) {
+      await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+    }
+  }
+
   function showHlsPlayer() {
     sdkHostEl.style.display = "none";
-    sdkFrameEl.style.display = "none";
     videoEl.style.display = "block";
+    updateAlprBridgeContext({ playerType: "hls" });
   }
 
   function showSdkPlayer() {
     videoEl.style.display = "none";
     sdkHostEl.style.display = "block";
-    sdkFrameEl.style.display = "none";
+    updateAlprBridgeContext({ playerType: "ezopen-inline" });
   }
 
-  function showSdkFrame() {
-    videoEl.style.display = "none";
-    sdkHostEl.style.display = "none";
-    sdkFrameEl.style.display = "block";
+  function getWnd() {
+    return 0;
+  }
+
+  function getValue(id) {
+    return document.getElementById(id)?.value?.trim?.() || "";
+  }
+
+  function setValue(id, value) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.value = value ?? "";
+    }
+  }
+
+  function applyInlineSdkFill() {
+    sdkHostEl.style.width = "100%";
+    sdkHostEl.style.height = "100%";
+    sdkHostEl.style.overflow = "hidden";
+    const children = sdkHostEl.querySelectorAll("*");
+    children.forEach((node) => {
+      if (!(node instanceof HTMLElement)) return;
+      node.style.width = "100%";
+      node.style.height = "100%";
+      node.style.maxWidth = "100%";
+      node.style.maxHeight = "100%";
+      if (node.tagName === "CANVAS" || node.tagName === "VIDEO") {
+        node.style.objectFit = "contain";
+      }
+    });
+  }
+
+  function ensureSdkHostObserver() {
+    if (sdkHostObserver || typeof MutationObserver !== "function") {
+      return;
+    }
+
+    sdkHostObserver = new MutationObserver(() => {
+      applyInlineSdkFill();
+    });
+    sdkHostObserver.observe(sdkHostEl, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
   }
 
   async function loadHealth() {
@@ -446,17 +533,28 @@
   }
 
   async function stopSdkPlayer() {
-    if (!sdkPlugin) return;
+    if (!sdkPlayer || !sdkSessionActive) {
+      updateAlprBridgeContext({ playerType: "none" });
+      return;
+    }
     try {
-      await toPromise(sdkPlugin.JS_Stop(0));
+      const stopResult = sdkPlayer.JS_Stop(getWnd());
+      await Promise.resolve(stopResult).catch(() => {});
     } catch (_err) {
     }
+    sdkSessionActive = false;
+    updateAlprBridgeContext({ playerType: "none" });
   }
 
-  function stopSdkFrame() {
-    if (sdkFrameEl) {
-      sdkFrameEl.removeAttribute("src");
+  async function rebuildSdkPlayer() {
+    try {
+      await stopSdkPlayer();
+    } catch (_error) {
     }
+    sdkSessionActive = false;
+    sdkPlayer = null;
+    sdkHostEl.innerHTML = "";
+    await ensureSdkPlayer();
   }
 
   async function ensureSdkPlayer() {
@@ -464,89 +562,276 @@
       throw new Error("SDK dosyalari backendte bulunamadi.");
     }
 
-    if (typeof window.JSPlugin !== "function") {
-      throw new Error("JSPlugin tarayiciya yuklenemedi.");
-    }
+    ensureSdkHostObserver();
+    const { width, height } = getDemoPluginSize();
+    sdkHostEl.style.height = `${height}px`;
+    await waitForNextPaint();
 
-    const { width, height } = getSdkHostSize();
+    if (!sdkPlayer) {
+      if (typeof window.JSPlugin !== "function") {
+        throw new Error("JSPlugin tarayiciya yuklenemedi.");
+      }
 
-    if (!sdkPlugin) {
-      sdkPlugin = new window.JSPlugin({
-        szId: "sdk-player",
+      sdkHostEl.innerHTML = "";
+      sdkPlayer = new window.JSPlugin({
+        szId: "playWind",
+        iType: 2,
         iWidth: width,
         iHeight: height,
-        iMaxSplit: 1,
+        iMaxSplit: 4,
         iCurrentSplit: 1,
         szBasePath: sdkConfig.sdkBasePath || "/sdk/dist",
         openDebug: true,
         openLogInfo: true,
-        bSupporDoubleClickFull: true,
+        oStyle: {
+          border: "#343434",
+          borderSelect: "red",
+          background: "#4C4B4B",
+        },
       });
-
-      await toPromise(
-        sdkPlugin.JS_SetWindowControlCallback({
-          windowEventSelect(wndIndex) {
-            console.log("[SDK windowEventSelect]", wndIndex);
-          },
-          secretKeyError(wndIndex) {
-            statusEl.textContent = `SDK secret key hatasi [wnd=${wndIndex}]`;
-            console.error("[SDK secretKeyError]", { wndIndex });
-          },
-          pluginErrorHandler(wndIndex, errorCode, detail) {
-            statusEl.textContent = `SDK hata [wnd=${wndIndex}]: ${errorCode}${detail ? ` - ${detail}` : ""}`;
-            console.error("[SDK pluginErrorHandler]", { wndIndex, errorCode, detail });
-          },
-          onFirstFrameDisplay() {
-            statusEl.textContent = `${selectedCamera?.name || "Kamera"} - EZOPEN yayini basladi.`;
-          },
-        })
-      );
-
-      await toPromise(sdkPlugin.JS_ArrangeWindow(1));
-      sdkWindowReady = true;
-      return;
+    } else if (sdkPlayer.JS_Resize) {
+      await toPromise(sdkPlayer.JS_Resize(width, height));
     }
 
-    if (sdkPlugin.JS_Resize) {
-      await toPromise(sdkPlugin.JS_Resize(width, height));
+    applyInlineSdkFill();
+  }
+
+  async function fillSdkLiveInputFromBackend({ resourceId, deviceSerial, channelNo, quality, code }) {
+    const params = new URLSearchParams({
+      resourceId: String(resourceId),
+      deviceSerial: String(deviceSerial),
+      channelNo: String(channelNo || "1"),
+      quality: String(quality || "1"),
+    });
+    if (code) {
+      params.set("code", code);
     }
 
-    if (!sdkWindowReady && sdkPlugin.JS_ArrangeWindow) {
-      await toPromise(sdkPlugin.JS_ArrangeWindow(1));
-      sdkWindowReady = true;
+    const response = await fetch(`/api/sdk-live-input?${params.toString()}`);
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data?.error || "SDK live input alinamadi.");
+    }
+
+    setValue("accessToken", data.accessToken || "");
+    setValue("appKey", data.appKey || "");
+    setValue("domain", data.domain || "");
+    setValue("deviceSerial", data.deviceSerial || deviceSerial || "");
+    setValue("channelNo", String(data.channelNo || channelNo || "1"));
+    setValue("playUrl", data.sourceUrl || "");
+    if (code) {
+      setValue("secretKey", code);
+    }
+    window.__sdkLiveInput = data;
+    console.log("[SDK LIVE INPUT]", data);
+    return data;
+  }
+
+  function setStatus(message) {
+    statusEl.textContent = message;
+  }
+
+  async function callSdk(action, label) {
+    try {
+      const result = await action();
+      setStatus(`${label} basarili.`);
+      return result;
+    } catch (error) {
+      setStatus(`${label} hatasi: ${error?.message || error}`);
+      throw error;
     }
   }
 
-  function buildSdkPlayArgs(inputUrl) {
-    if (inputUrl.startsWith("ezopen://")) {
-      return {
-        mode: "ezopen",
-        url: inputUrl,
-      };
+  async function startSdkLiveView(code) {
+    return startSdkLiveViewAttempt(code, true);
+  }
+
+  async function startSdkLiveViewAttempt(code, allowRetry) {
+    if (!getValue("accessToken") || !getValue("appKey") || !getValue("domain")) {
+      throw new Error("SDK live input hazir degil.");
     }
 
-    if (!inputUrl || !inputUrl.includes("?")) {
-      throw new Error("SDK oynatma icin URL beklenen formatta degil.");
+    if (code) {
+      setValue("secretKey", code);
     }
 
-    const baseUrl = inputUrl.split("?")[0];
-    const query = inputUrl.split("?")[1];
-    const websocketConnectUrl = baseUrl.replace("/live", "").replace("/playback", "");
-    let websocketStreamingParam =
-      (inputUrl.indexOf("/live") === -1
-        ? inputUrl.indexOf("cloudplayback") !== -1
-          ? "/cloudplayback?"
-          : "/playback?"
-        : "/live?") + query;
+    const secretKey = getValue("secretKey");
+    const qualitySuffix = ".live";
+    const manualUrl = getValue("playUrl");
+    const ezopenUrl =
+      manualUrl && manualUrl.startsWith("ezopen://")
+        ? manualUrl
+        : `ezopen://open.ezviz.com/${getValue("deviceSerial")}/${Number(getValue("channelNo") || "1")}${qualitySuffix}`;
 
-    if (websocketStreamingParam.indexOf("/playback") !== -1) {
-      websocketStreamingParam = websocketStreamingParam.replace("stream=2", "stream=1");
+    await waitForNextPaint();
+
+    if (secretKey && sdkPlayer.JS_SetSecretKey) {
+      await callSdk(() => sdkPlayer.JS_SetSecretKey(getWnd(), secretKey), "Secret key ayari");
     }
+
+    await callSdk(
+      () => sdkPlayer.JS_Play(
+        ezopenUrl,
+        {
+          ezuikit: true,
+          playURL: ezopenUrl,
+          accessToken: getValue("accessToken"),
+          appKey: getValue("appKey"),
+          mode: "media",
+          env: {
+            domain: getValue("domain"),
+          },
+        },
+        getWnd()
+      ),
+      "Canli izleme"
+    );
+    sdkSessionActive = true;
+
+    applyInlineSdkFill();
+    const rendered = await waitForSdkFrame();
+    if (!rendered) {
+      sdkSessionActive = false;
+      if (allowRetry) {
+        setStatus("Ilk SDK denemesinde goruntu olusmadi, oynatici yeniden kuruluyor...");
+        await rebuildSdkPlayer();
+        return startSdkLiveViewAttempt(code, false);
+      }
+      setStatus("SDK oynatma komutu gonderildi ama goruntu olusmadi.");
+      return;
+    }
+    setStatus(`${selectedCamera?.name || "Kamera"} - EZOPEN yayini basladi.`);
+  }
+
+  async function waitForSdkFrame(timeoutMs = 8000) {
+    const startedAt = Date.now();
+    while (Date.now() - startedAt < timeoutMs) {
+      const source = getSdkDrawCanvas();
+      if (source?.element) {
+        const score = getElementContentScore(source.element);
+        if (score > 0) {
+          return true;
+        }
+      }
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    return false;
+  }
+
+  function getElementContentScore(sourceEl) {
+    try {
+      const width = sourceEl.videoWidth || sourceEl.naturalWidth || sourceEl.width || sourceEl.clientWidth;
+      const height = sourceEl.videoHeight || sourceEl.naturalHeight || sourceEl.height || sourceEl.clientHeight;
+      if (!width || !height) {
+        return -1;
+      }
+
+      const sampleCanvas = document.createElement("canvas");
+      const sampleWidth = Math.min(64, width);
+      const sampleHeight = Math.min(36, height);
+      sampleCanvas.width = sampleWidth;
+      sampleCanvas.height = sampleHeight;
+      const sampleCtx = sampleCanvas.getContext("2d", { willReadFrequently: true });
+      sampleCtx.drawImage(sourceEl, 0, 0, sampleWidth, sampleHeight);
+      const { data } = sampleCtx.getImageData(0, 0, sampleWidth, sampleHeight);
+
+      let score = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        score += data[i] + data[i + 1] + data[i + 2];
+      }
+      return score;
+    } catch (_error) {
+      return -1;
+    }
+  }
+
+  function getPlayableFrameElement() {
+    const candidates = Array.from(sdkHostEl.querySelectorAll("canvas, video"));
+    if (!candidates.length) {
+      return null;
+    }
+
+    let best = null;
+    let bestScore = -1;
+    for (const candidate of candidates) {
+      const score = getElementContentScore(candidate);
+      if (score > bestScore) {
+        best = candidate;
+        bestScore = score;
+      }
+    }
+
+    return best || candidates[0];
+  }
+
+  function getSdkDrawCanvas() {
+    try {
+      if (typeof sdkPlayer?.JS_GetDrawCanvasObj === "function") {
+        const canvasObj = sdkPlayer.JS_GetDrawCanvasObj(getWnd());
+        if (canvasObj instanceof HTMLCanvasElement || canvasObj instanceof HTMLVideoElement) {
+          return { element: canvasObj, method: "JS_GetDrawCanvasObj" };
+        }
+      }
+    } catch (_error) {
+    }
+
+    try {
+      if (typeof sdkPlayer?.JS_GetCanvasIDByWnd === "function") {
+        const canvasId = sdkPlayer.JS_GetCanvasIDByWnd(getWnd());
+        if (canvasId) {
+          const element = document.getElementById(String(canvasId));
+          if (element instanceof HTMLCanvasElement || element instanceof HTMLVideoElement) {
+            return { element, method: "JS_GetCanvasIDByWnd" };
+          }
+        }
+      }
+    } catch (_error) {
+    }
+
+    const fallbackEl = getPlayableFrameElement();
+    if (fallbackEl) {
+      return { element: fallbackEl, method: "DOMQuery" };
+    }
+    return null;
+  }
+
+  function captureCurrentFrameFromSdk() {
+    if (!sdkPlayer) {
+      return null;
+    }
+
+    const source = getSdkDrawCanvas();
+    if (!source?.element) {
+      return null;
+    }
+
+    const width =
+      source.element.videoWidth ||
+      source.element.naturalWidth ||
+      source.element.width ||
+      source.element.clientWidth;
+    const height =
+      source.element.videoHeight ||
+      source.element.naturalHeight ||
+      source.element.height ||
+      source.element.clientHeight;
+
+    if (!width || !height) {
+      return null;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(source.element, 0, 0, width, height);
 
     return {
-      mode: "ws",
-      websocketConnectUrl,
-      websocketStreamingParam,
+      imageBase64: canvas.toDataURL("image/jpeg", 0.92),
+      width,
+      height,
+      elementTag: source.element.tagName.toLowerCase(),
+      method: source.method,
     };
   }
 
@@ -591,6 +876,7 @@
 
   async function selectCamera(cam, card) {
     selectedCamera = cam;
+    updateAlprBridgeContext();
     if (activeCard) activeCard.classList.remove("active");
     card.classList.add("active");
     activeCard = card;
@@ -675,32 +961,29 @@
   }
 
   async function playSdk(data, cam, verificationCode) {
-    const params = new URLSearchParams({
-      resourceId: cam.resourceId,
-      deviceSerial: cam.deviceSerial,
-      channelNo: String(Number(cam.channelNo || 1)),
-      quality: String(qualityEl.value),
-      autoplay: "1",
-      embed: "1",
-    });
-    if (verificationCode) {
-      params.set("code", verificationCode);
-    }
-
     await stopSdkPlayer();
     destroyHls();
     videoEl.pause();
     videoEl.removeAttribute("src");
     videoEl.load();
-    stopSdkFrame();
-    showSdkFrame();
-    sdkFrameEl.src = `/jsdecoder-demo.html?${params.toString()}`;
-    statusEl.textContent = `${cam.name} - EZOPEN oynatma gomulu jsDecoder ile baslatiliyor...`;
+    showSdkPlayer();
+    setStatus(`${cam.name} - EZOPEN oynatma baslatiliyor...`);
+    await waitForNextPaint();
+    await ensureSdkPlayer();
+    await fillSdkLiveInputFromBackend({
+      resourceId: cam.resourceId,
+      deviceSerial: cam.deviceSerial,
+      channelNo: String(Number(cam.channelNo || 1)),
+      quality: String(qualityEl.value),
+      code: verificationCode,
+    });
+    await startSdkLiveView(verificationCode);
+    updateAlprBridgeContext({ playerType: "ezopen-inline" });
   }
 
   async function playHls(url) {
     await stopSdkPlayer();
-    stopSdkFrame();
+    sdkSessionActive = false;
     destroyHls();
     showHlsPlayer();
 
@@ -842,7 +1125,8 @@
     if (verificationCode) {
       params.set("code", verificationCode);
     }
-    window.open(`/alpr-monitor?${params.toString()}`, "_blank", "noopener");
+    updateAlprBridgeContext();
+    window.open(`/alpr-monitor?${params.toString()}`, "_blank");
   });
 
   document.getElementById("refresh-btn").addEventListener("click", loadCameras);
@@ -858,11 +1142,15 @@
   });
   bindContinuousButton(zoomInBtn, { pan: 0, tilt: 0, zoom: 30 });
   bindContinuousButton(zoomOutBtn, { pan: 0, tilt: 0, zoom: -30 });
+  ensureSdkHostObserver();
+  applyInlineSdkFill();
   window.addEventListener("resize", () => {
-    if (sdkPlugin && sdkPlugin.JS_Resize) {
-      const { width, height } = getSdkHostSize();
-      sdkPlugin.JS_Resize(width, height);
-    }
+    if (!sdkPlayer) return;
+    const { width, height } = getSdkHostSize();
+    sdkHostEl.style.height = `${height}px`;
+    toPromise(sdkPlayer.JS_Resize(width, height))
+      .catch(() => {})
+      .finally(() => applyInlineSdkFill());
   });
   loadHealth();
   loadSdkConfig();

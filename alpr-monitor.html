@@ -4,6 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Plaka Tanima Monitoru</title>
+<script src="/sdk/dist/jsPlugin-3.0.0.min.js?v=20260727-2"></script>
+<script src="/sdk-player-core.js"></script>
 <style>
   :root {
     --bg: #edf2f7;
@@ -96,7 +98,7 @@
     background: #000;
     overflow: hidden;
   }
-  .viewer-shell iframe,
+  .viewer-shell > .sdk-player-host,
   .viewer-shell canvas {
     position: absolute;
     inset: 0;
@@ -104,7 +106,7 @@
     height: 100%;
     border: 0;
   }
-  .viewer-shell iframe {
+  .viewer-shell > .sdk-player-host {
     background: #000;
     z-index: 1;
   }
@@ -176,26 +178,6 @@
     max-height: 320px;
     overflow: auto;
   }
-  .capture-preview {
-    display: grid;
-    gap: 10px;
-  }
-  .capture-preview img {
-    display: block;
-    width: 100%;
-    max-height: 260px;
-    object-fit: contain;
-    border: 1px solid var(--border);
-    background: #000;
-  }
-  .capture-meta {
-    padding: 10px;
-    border: 1px solid var(--border);
-    background: var(--panel-alt);
-    font-size: 12px;
-    color: var(--muted);
-    white-space: pre-wrap;
-  }
   .plate-card,
   .log-item {
     padding: 10px;
@@ -237,7 +219,7 @@
         <div class="panel-head"><h2>Canli Goruntu</h2></div>
         <div class="panel-body">
           <div class="viewer-shell">
-            <iframe id="sdk-frame" title="ALPR SDK Player"></iframe>
+            <div id="sdk-player" class="sdk-player-host" title="ALPR SDK Player"></div>
             <canvas id="overlay"></canvas>
           </div>
         </div>
@@ -288,16 +270,6 @@
       </div>
 
       <div class="panel">
-        <div class="panel-head"><h2>Gonderilen Kare</h2></div>
-        <div class="panel-body">
-          <div class="capture-preview">
-            <img id="capture-preview-image" alt="ALPR gonderilen kare" />
-            <div id="capture-meta" class="capture-meta">Henuz kare yakalanmadi.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
         <div class="panel-head"><h2>Log</h2></div>
         <div class="panel-body">
           <div id="log-list" class="log-list"></div>
@@ -308,8 +280,6 @@
 </main>
 
 <script>
-  const SHOW_CAPTURE_PREVIEW = false;
-
   const qs = new URLSearchParams(location.search);
   const state = {
     name: qs.get("name") || "",
@@ -329,7 +299,7 @@
     lastCapture: null,
   };
 
-  const sdkFrameEl = document.getElementById("sdk-frame");
+  const sdkPlayerHostEl = document.getElementById("sdk-player");
   const overlayEl = document.getElementById("overlay");
   const statusBoxEl = document.getElementById("status-box");
   const cameraMetaEl = document.getElementById("camera-meta");
@@ -337,8 +307,6 @@
   const lastMetaEl = document.getElementById("last-meta");
   const plateListEl = document.getElementById("plate-list");
   const logListEl = document.getElementById("log-list");
-  const capturePreviewImageEl = document.getElementById("capture-preview-image");
-  const captureMetaEl = document.getElementById("capture-meta");
   const processEveryInputEl = document.getElementById("process-every-input");
   const intervalInputEl = document.getElementById("interval-input");
   const minDetectionInputEl = document.getElementById("min-detection-input");
@@ -346,6 +314,7 @@
   const saveDebugBtnEl = document.getElementById("save-debug-btn");
   const startBtnEl = document.getElementById("start-btn");
   const stopBtnEl = document.getElementById("stop-btn");
+  let sdkPlayer = null;
 
   function setStatus(text, kind = "") {
     statusBoxEl.textContent = text;
@@ -372,34 +341,6 @@
 
   function renderCapturePreview(capture) {
     state.lastCapture = capture || null;
-    if (!SHOW_CAPTURE_PREVIEW) {
-      capturePreviewImageEl.removeAttribute("src");
-      if (!capture?.imageBase64) {
-        captureMetaEl.textContent = "Onizleme kapali. Tanima icin kare bekleniyor.";
-        return;
-      }
-
-      captureMetaEl.textContent =
-        "Onizleme kapali. Kare ALPR servisine gonderiliyor.\n" +
-        `Yontem: ${capture.method || "-"}\n` +
-        `Kaynak eleman: ${capture.elementTag || "-"}\n` +
-        `Boyut: ${capture.width || "-"} x ${capture.height || "-"}\n` +
-        `Frame: ${state.frameIndex}`;
-      return;
-    }
-
-    if (!capture?.imageBase64) {
-      capturePreviewImageEl.removeAttribute("src");
-      captureMetaEl.textContent = "Henuz kare yakalanmadi.";
-      return;
-    }
-
-    capturePreviewImageEl.src = capture.imageBase64;
-    captureMetaEl.textContent =
-      `Yontem: ${capture.method || "-"}\n` +
-      `Kaynak eleman: ${capture.elementTag || "-"}\n` +
-      `Boyut: ${capture.width || "-"} x ${capture.height || "-"}\n` +
-      `Frame: ${state.frameIndex}`;
   }
 
   function syncMeta() {
@@ -418,76 +359,52 @@
   }
 
   function buildSdkUrl() {
-    const params = new URLSearchParams({
+    return {
       resourceId: state.resourceId,
       deviceSerial: state.deviceSerial,
       channelNo: state.channelNo,
       quality: state.quality,
-      autoplay: "1",
-      embed: "1",
-      fit: "contain",
-    });
-    if (state.code) {
-      params.set("code", state.code);
+      code: state.code,
+    };
+  }
+
+  async function initSdkPlayer() {
+    if (!sdkPlayer) {
+      sdkPlayer = window.HikSdkPlayerCore.createPlayer({
+        containerId: "sdk-player",
+        basePath: "/sdk/dist",
+        fitMode: "contain",
+        widthProvider() {
+          const width = Math.max(320, Math.floor(sdkPlayerHostEl.clientWidth || sdkPlayerHostEl.offsetWidth || 960));
+          const height = Math.max(180, Math.floor(width * 9 / 16));
+          return { width, height };
+        },
+        onStatus(message) {
+          appendLog(message);
+        },
+        onFirstFrameDisplay() {
+          setStatus("Bagimsiz SDK oynatici goruntuyu gostermeye basladi.", "ok");
+        },
+        onPluginError(entry) {
+          appendLog(entry.message, "error");
+        },
+      });
     }
-    return `/jsdecoder-demo.html?${params.toString()}`;
+
+    await sdkPlayer.ensureCreated();
+    await sdkPlayer.loadAndPlayLive(buildSdkUrl());
   }
 
-  function initSdkFrame() {
-    sdkFrameEl.src = buildSdkUrl();
+  function setViewerSourceMode(mode) {
+    sdkPlayerHostEl.style.display = "block";
   }
 
-  async function captureFrameFromIframe() {
-    const frameWindow = sdkFrameEl.contentWindow;
-    if (!frameWindow) {
+  async function captureFrameFromSource() {
+    setViewerSourceMode("iframe");
+    if (!sdkPlayer) {
       return null;
     }
-
-    try {
-      if (typeof frameWindow.captureCurrentFrame === "function") {
-        return frameWindow.captureCurrentFrame();
-      }
-    } catch (error) {
-      appendLog(`Iframe capture direct call hatasi: ${error.message}`, "error");
-    }
-
-    return new Promise((resolve) => {
-      const requestId = `sdk-capture-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-      const timeoutId = window.setTimeout(() => {
-        window.removeEventListener("message", handleMessage);
-        resolve(null);
-      }, 1500);
-
-      function handleMessage(event) {
-        if (event.origin !== window.location.origin) {
-          return;
-        }
-        if (event.data?.type !== "sdk-capture-frame-response") {
-          return;
-        }
-        if (event.data?.requestId !== requestId) {
-          return;
-        }
-
-        window.clearTimeout(timeoutId);
-        window.removeEventListener("message", handleMessage);
-        if (event.data.error) {
-          appendLog(`Iframe capture response hatasi: ${event.data.error}`, "error");
-          resolve(null);
-          return;
-        }
-        resolve(event.data.payload || null);
-      }
-
-      window.addEventListener("message", handleMessage);
-      frameWindow.postMessage(
-        {
-          type: "sdk-capture-frame-request",
-          requestId,
-        },
-        window.location.origin
-      );
-    });
+    return sdkPlayer.captureCurrentFrame();
   }
 
   function ensureOverlaySize() {
@@ -574,7 +491,7 @@
     if (state.busy) return;
     state.busy = true;
     try {
-      const capture = await captureFrameFromIframe();
+      const capture = await captureFrameFromSource();
       const imageBase64 = capture?.imageBase64 || null;
       if (!imageBase64) {
         setStatus("SDK goruntusu hazir degil, kare bekleniyor...", "warn");
@@ -734,6 +651,9 @@
   });
 
   window.addEventListener("resize", () => {
+    if (sdkPlayer) {
+      sdkPlayer.resize().catch(() => {});
+    }
     drawOverlay(state.lastResult);
   });
 
@@ -744,13 +664,17 @@
   if (!state.resourceId || !state.deviceSerial) {
     setStatus("resourceId ve deviceSerial olmadan ALPR monitörü acilamaz.", "err");
   } else {
-    appendLog("ALPR monitor build 2026-07-31-2 yuklendi.");
+    appendLog("ALPR monitor build 2026-07-31-3 yuklendi.");
     syncMeta();
     renderPlateList(null);
     renderCapturePreview(null);
-    appendLog("SDK iframe yukleniyor...");
-    initSdkFrame();
-    setStatus("SDK oynatici baslatildi. Plaka Tanima Baslat ile analize gec.", "ok");
+    appendLog("ALPR sayfasi icin bagimsiz EZOPEN oynatici yukleniyor...");
+    setViewerSourceMode("iframe");
+    initSdkPlayer().catch((error) => {
+      setStatus(`Bagimsiz SDK baslatma hata: ${error.message}`, "err");
+      appendLog(`Bagimsiz SDK baslatma hata: ${error.message}`, "error");
+    });
+    setStatus("Bagimsiz SDK oynatici hazirlaniyor. Plaka Tanima Baslat ile analize gec.", "ok");
   }
 </script>
 </body>
