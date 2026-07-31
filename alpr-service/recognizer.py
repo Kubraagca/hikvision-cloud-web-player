@@ -122,8 +122,44 @@ def normalize_plate_text(text: str) -> str:
     return re.sub(r"[^A-Z0-9]", "", text.upper())
 
 
+TR_ALLOWED_LETTERS = set("ABCDEFGHIJKLMNOPRSTUVYZ")
+TR_ALLOWED_FORMATS = (
+    (1, 4),
+    (1, 5),
+    (2, 3),
+    (2, 4),
+    (3, 2),
+    (3, 3),
+)
+
+
+def is_valid_turkish_letter_group(text: str) -> bool:
+    return bool(text) and all(ch in TR_ALLOWED_LETTERS for ch in text)
+
+
+def is_valid_turkish_city_code(text: str) -> bool:
+    if not re.fullmatch(r"\d{2}", text):
+        return False
+    return 1 <= int(text) <= 81
+
+
 def is_turkish_plate(text: str) -> bool:
-    return bool(re.fullmatch(r"^(0[1-9]|[1-7][0-9]|8[01])[A-Z]{1,3}[0-9]{2,4}$", text))
+    normalized = normalize_plate_text(text)
+    if len(normalized) < 5:
+        return False
+    city_code = normalized[:2]
+    if not is_valid_turkish_city_code(city_code):
+        return False
+
+    suffix = normalized[2:]
+    for letter_count, digit_count in TR_ALLOWED_FORMATS:
+        if len(suffix) != letter_count + digit_count:
+            continue
+        letters = suffix[:letter_count]
+        digits = suffix[letter_count:]
+        if is_valid_turkish_letter_group(letters) and digits.isdigit():
+            return True
+    return False
 
 
 LETTER_FROM_DIGIT = str.maketrans({
@@ -150,24 +186,72 @@ DIGIT_FROM_LETTER = str.maketrans({
 })
 
 
+LETTER_LIKE_DIGITS = set(LETTER_FROM_DIGIT.keys())
+DIGIT_LIKE_LETTERS = set(DIGIT_FROM_LETTER.keys())
+
+
+def score_turkish_candidate(raw_suffix: str, letter_len: int, digit_len: int) -> int:
+    score = 0
+    raw_letters = raw_suffix[:letter_len]
+    raw_digits = raw_suffix[letter_len:letter_len + digit_len]
+
+    for ch in raw_letters:
+        if ch in TR_ALLOWED_LETTERS:
+            continue
+        if ch in LETTER_LIKE_DIGITS:
+            score += 1
+            continue
+        score += 4
+
+    for ch in raw_digits:
+        if ch.isdigit():
+            continue
+        if ch in DIGIT_LIKE_LETTERS:
+            score += 1
+            continue
+        score += 4
+
+    return score
+
+
 def correct_turkish_plate_candidate(text: str) -> str:
     normalized = normalize_plate_text(text)
     if len(normalized) < 5:
         return normalized
 
+    prefix_source = normalized[:2]
+    # Only attempt TR correction when the prefix already looks like a province code.
+    # This avoids forcing values like "SG4020" into "56O4020".
+    if not any(ch.isdigit() for ch in prefix_source):
+        return normalized
+    if any(ch not in "0123456789OQDILZSBG" for ch in prefix_source):
+        return normalized
+
     prefix = normalized[:2].translate(DIGIT_FROM_LETTER)
+    if not is_valid_turkish_city_code(prefix):
+        return normalized
+
     suffix = normalized[2:]
-    candidates: list[str] = []
-    for letter_len in (1, 2, 3):
-        if len(suffix) <= letter_len:
+    candidates: list[tuple[int, int, str]] = []
+    for letter_len, digit_len in TR_ALLOWED_FORMATS:
+        if len(suffix) != letter_len + digit_len:
             continue
         letters = suffix[:letter_len].translate(LETTER_FROM_DIGIT)
         digits = suffix[letter_len:].translate(DIGIT_FROM_LETTER)
+        if not is_valid_turkish_letter_group(letters):
+            continue
+        if not digits.isdigit():
+            continue
         candidate = f"{prefix}{letters}{digits}"
         if is_turkish_plate(candidate):
-            candidates.append(candidate)
+            score = score_turkish_candidate(suffix, letter_len, digit_len)
+            candidates.append((score, -letter_len, candidate))
 
-    return candidates[0] if candidates else normalized
+    if not candidates:
+        return normalized
+
+    candidates.sort(key=lambda item: (item[0], item[1], item[2]))
+    return candidates[0][2]
 
 
 def is_plausible_plate_text(text: str) -> bool:
@@ -179,6 +263,15 @@ def is_plausible_plate_text(text: str) -> bool:
     if len(set(normalized)) == 1:
         return False
     return True
+
+
+def looks_like_invalid_turkish_plate(text: str) -> bool:
+    normalized = normalize_plate_text(text)
+    if len(normalized) < 2:
+        return False
+    if not is_valid_turkish_city_code(normalized[:2]):
+        return False
+    return not is_turkish_plate(normalized)
 
 
 def count_char_differences(left: str, right: str) -> int:
@@ -323,6 +416,8 @@ class PlateRecognizer:
             if ocr_confidence < min_ocr:
                 continue
             if normalized_text and not is_plausible_plate_text(normalized_text):
+                continue
+            if normalized_text and looks_like_invalid_turkish_plate(normalized_text):
                 continue
 
             turkish_plate = is_turkish_plate(normalized_text)
