@@ -308,6 +308,8 @@
 </main>
 
 <script>
+  const SHOW_CAPTURE_PREVIEW = false;
+
   const qs = new URLSearchParams(location.search);
   const state = {
     name: qs.get("name") || "",
@@ -370,6 +372,22 @@
 
   function renderCapturePreview(capture) {
     state.lastCapture = capture || null;
+    if (!SHOW_CAPTURE_PREVIEW) {
+      capturePreviewImageEl.removeAttribute("src");
+      if (!capture?.imageBase64) {
+        captureMetaEl.textContent = "Onizleme kapali. Tanima icin kare bekleniyor.";
+        return;
+      }
+
+      captureMetaEl.textContent =
+        "Onizleme kapali. Kare ALPR servisine gonderiliyor.\n" +
+        `Yontem: ${capture.method || "-"}\n` +
+        `Kaynak eleman: ${capture.elementTag || "-"}\n` +
+        `Boyut: ${capture.width || "-"} x ${capture.height || "-"}\n` +
+        `Frame: ${state.frameIndex}`;
+      return;
+    }
+
     if (!capture?.imageBase64) {
       capturePreviewImageEl.removeAttribute("src");
       captureMetaEl.textContent = "Henuz kare yakalanmadi.";
