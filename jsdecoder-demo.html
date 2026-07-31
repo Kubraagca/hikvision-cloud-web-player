@@ -377,6 +377,11 @@
     return value === "1" || value.toLowerCase() === "true";
   }
 
+  function getEmbedFitMode() {
+    const value = getQuery("fit").toLowerCase();
+    return value === "contain" ? "contain" : "cover";
+  }
+
   function applyEmbedPlayerFill() {
     if (!isEmbedMode()) return;
     const playWind = document.getElementById("playWind");
@@ -392,10 +397,251 @@
       node.style.width = "100%";
       node.style.height = "100%";
       if (node.tagName === "CANVAS" || node.tagName === "VIDEO") {
-        node.style.objectFit = "cover";
+        node.style.objectFit = getEmbedFitMode();
       }
     });
   }
+
+  function getElementContentScore(sourceEl) {
+    try {
+      const width =
+        sourceEl.videoWidth ||
+        sourceEl.naturalWidth ||
+        sourceEl.width ||
+        sourceEl.clientWidth;
+      const height =
+        sourceEl.videoHeight ||
+        sourceEl.naturalHeight ||
+        sourceEl.height ||
+        sourceEl.clientHeight;
+
+      if (!width || !height) {
+        return -1;
+      }
+
+      const sampleCanvas = document.createElement("canvas");
+      const sampleWidth = Math.min(64, width);
+      const sampleHeight = Math.min(36, height);
+      sampleCanvas.width = sampleWidth;
+      sampleCanvas.height = sampleHeight;
+      const sampleCtx = sampleCanvas.getContext("2d", { willReadFrequently: true });
+      sampleCtx.drawImage(sourceEl, 0, 0, sampleWidth, sampleHeight);
+      const { data } = sampleCtx.getImageData(0, 0, sampleWidth, sampleHeight);
+
+      let score = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        score += data[i] + data[i + 1] + data[i + 2];
+      }
+      return score;
+    } catch (error) {
+      return -1;
+    }
+  }
+
+  function getPlayableFrameElement() {
+    const playWind = document.getElementById("playWind");
+    if (!playWind) {
+      return null;
+    }
+
+    const candidates = Array.from(playWind.querySelectorAll("canvas, video"));
+    if (!candidates.length) {
+      return null;
+    }
+
+    let best = null;
+    let bestScore = -1;
+    for (const candidate of candidates) {
+      const score = getElementContentScore(candidate);
+      if (score > bestScore) {
+        best = candidate;
+        bestScore = score;
+      }
+    }
+
+    return best || candidates[0];
+  }
+
+  function getPlayWindRect() {
+    const playWind = document.getElementById("playWind");
+    if (!playWind) {
+      return null;
+    }
+    return playWind.getBoundingClientRect();
+  }
+
+  function imageToDataUrl(image, sx, sy, sw, sh) {
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(sw));
+    canvas.height = Math.max(1, Math.round(sh));
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(image, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/jpeg", 0.92);
+  }
+
+  async function cropCaptureToPlayWind(imageBase64, method) {
+    const rect = getPlayWindRect();
+    if (!rect) {
+      return null;
+    }
+
+    const image = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error("Snapshot gorseli yuklenemedi."));
+      img.src = imageBase64;
+    });
+
+    const viewportWidth = Math.max(1, window.innerWidth);
+    const viewportHeight = Math.max(1, window.innerHeight);
+    const scaleX = image.naturalWidth / viewportWidth;
+    const scaleY = image.naturalHeight / viewportHeight;
+
+    const sx = Math.max(0, rect.left * scaleX);
+    const sy = Math.max(0, rect.top * scaleY);
+    const sw = Math.min(image.naturalWidth - sx, rect.width * scaleX);
+    const sh = Math.min(image.naturalHeight - sy, rect.height * scaleY);
+
+    if (sw <= 1 || sh <= 1) {
+      return {
+        imageBase64,
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+        elementTag: "sdk-snapshot",
+        method: `${method}:uncropped`,
+      };
+    }
+
+    return {
+      imageBase64: imageToDataUrl(image, sx, sy, sw, sh),
+      width: Math.round(sw),
+      height: Math.round(sh),
+      elementTag: "sdk-snapshot",
+      method: `${method}:playWindCrop`,
+    };
+  }
+
+  function normalizeCaptureFromElement(sourceEl, method) {
+    if (!sourceEl) {
+      return null;
+    }
+
+    const width =
+      sourceEl.videoWidth ||
+      sourceEl.naturalWidth ||
+      sourceEl.width ||
+      sourceEl.clientWidth;
+    const height =
+      sourceEl.videoHeight ||
+      sourceEl.naturalHeight ||
+      sourceEl.height ||
+      sourceEl.clientHeight;
+
+    if (!width || !height) {
+      return null;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(sourceEl, 0, 0, width, height);
+
+    return {
+      imageBase64: canvas.toDataURL("image/jpeg", 0.92),
+      width,
+      height,
+      elementTag: sourceEl.tagName.toLowerCase(),
+      method,
+    };
+  }
+
+  function getSdkDrawCanvas() {
+    try {
+      if (typeof oPlugin.JS_GetDrawCanvasObj === "function") {
+        const canvasObj = oPlugin.JS_GetDrawCanvasObj(getWnd());
+        if (canvasObj instanceof HTMLCanvasElement || canvasObj instanceof HTMLVideoElement) {
+          return {
+            element: canvasObj,
+            method: "JS_GetDrawCanvasObj",
+          };
+        }
+      }
+    } catch (error) {
+      console.warn("JS_GetDrawCanvasObj failed", error);
+    }
+
+    try {
+      if (typeof oPlugin.JS_GetCanvasIDByWnd === "function") {
+        const canvasId = oPlugin.JS_GetCanvasIDByWnd(getWnd());
+        if (canvasId) {
+          const element = document.getElementById(String(canvasId));
+          if (element instanceof HTMLCanvasElement || element instanceof HTMLVideoElement) {
+            return {
+              element,
+              method: "JS_GetCanvasIDByWnd",
+            };
+          }
+        }
+      }
+    } catch (error) {
+      console.warn("JS_GetCanvasIDByWnd failed", error);
+    }
+
+    const fallbackEl = getPlayableFrameElement();
+    if (fallbackEl) {
+      return {
+        element: fallbackEl,
+        method: "DOMQuery",
+      };
+    }
+
+    return null;
+  }
+
+  async function captureCurrentFrame() {
+    const source = getSdkDrawCanvas();
+    if (!source?.element) {
+      return null;
+    }
+
+    const capture = normalizeCaptureFromElement(source.element, source.method);
+    if (!capture) {
+      return null;
+    }
+
+    return capture;
+  }
+
+  window.captureCurrentFrame = captureCurrentFrame;
+
+  window.addEventListener("message", async (event) => {
+    if (event.origin !== window.location.origin) {
+      return;
+    }
+    if (event.data?.type !== "sdk-capture-frame-request") {
+      return;
+    }
+
+    let payload = null;
+    let error = null;
+    try {
+      payload = await captureCurrentFrame();
+    } catch (captureError) {
+      error = captureError?.message || String(captureError);
+    }
+
+    event.source?.postMessage(
+      {
+        type: "sdk-capture-frame-response",
+        requestId: event.data.requestId,
+        payload,
+        error,
+      },
+      event.origin
+    );
+  });
 
   async function startLiveView() {
     const secretKey = getValue("secretKey");

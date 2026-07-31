@@ -5,11 +5,12 @@ const net = require("node:net");
 const path = require("path");
 const { spawn } = require("child_process");
 const { XMLParser } = require("fast-xml-parser");
+const { createAlprServiceBridge } = require("./lib/alpr-service");
 const { createTeamOpenApiService } = require("./lib/team-openapi-service");
 
 const app = express();
 app.set("trust proxy", true);
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "10mb" }));
 
 const PORT = process.env.PORT || 3000;
 const APP_KEY = process.env.HIK_APP_KEY;
@@ -44,6 +45,10 @@ const teamOpenApiService = createTeamOpenApiService({
       console.error(JSON.stringify(entry));
     },
   },
+});
+const alprService = createAlprServiceBridge({
+  rootDir: __dirname,
+  logger: console,
 });
 
 const xmlParser = new XMLParser({
@@ -2276,6 +2281,59 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
+app.get("/api/alpr/health", async (req, res) => {
+  try {
+    const health = await alprService.health({
+      autoStart: String(req.query.autostart || "").trim() === "1",
+    });
+    return res.status(200).json(health);
+  } catch (err) {
+    return res.status(err.status || 503).json({
+      error: sanitizeMessage(err.message),
+    });
+  }
+});
+
+async function handleAlprRecognize(req, res) {
+  const payload = {
+    imageBase64: typeof req.body.imageBase64 === "string" ? req.body.imageBase64 : undefined,
+    imagePath: typeof req.body.imagePath === "string" ? req.body.imagePath : undefined,
+    frameIndex: Number.isInteger(req.body.frameIndex) ? req.body.frameIndex : undefined,
+    processEveryNFrames: Number.isInteger(req.body.processEveryNFrames)
+      ? req.body.processEveryNFrames
+      : undefined,
+    minDetectionConfidence:
+      typeof req.body.minDetectionConfidence === "number"
+        ? req.body.minDetectionConfidence
+        : undefined,
+    minOcrConfidence:
+      typeof req.body.minOcrConfidence === "number" ? req.body.minOcrConfidence : undefined,
+    turkeyOnly: Boolean(req.body.turkeyOnly),
+    source: typeof req.body.source === "string" ? req.body.source : undefined,
+  };
+
+  if (!payload.imageBase64 && !payload.imagePath) {
+    return res.status(400).json({
+      error: "imageBase64 veya imagePath zorunlu.",
+    });
+  }
+
+  try {
+    const result = await alprService.recognize(payload, 20000);
+    return res.status(200).json(result);
+  } catch (err) {
+    const status =
+      err.status ||
+      (String(err.message || "").toLowerCase().includes("healthy") ? 503 : 502);
+    return res.status(status).json({
+      error: sanitizeMessage(err.message),
+    });
+  }
+}
+
+app.post("/api/alpr/recognize", handleAlprRecognize);
+app.post("/api/alpr/recognize-frame", handleAlprRecognize);
+
 app.get("/api/sdk-config", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
@@ -3112,6 +3170,10 @@ app.get("/team-device-add", (req, res) => {
 
 app.get("/device-detail", (req, res) => {
   res.sendFile(path.join(__dirname, "device-detail.html"));
+});
+
+app.get("/alpr-monitor", (req, res) => {
+  res.sendFile(path.join(__dirname, "alpr-monitor.html"));
 });
 
 app.get("/", (req, res) => {

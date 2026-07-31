@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Plaka Tanima Monitoru</title>
+<style>
+  :root {
+    --bg: #edf2f7;
+    --panel: #ffffff;
+    --panel-alt: #f7f9fc;
+    --border: #cfd6df;
+    --text: #1c2733;
+    --muted: #5f6c7b;
+    --accent: #116466;
+    --ok: #0f8a4b;
+    --err: #c62828;
+    --warn: #b26a00;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  h1, h2, p { margin: 0; }
+  .sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  button, a, input {
+    font: inherit;
+  }
+  button, a.button-link {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  button.primary {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+  main {
+    padding: 16px;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.8fr);
+    gap: 16px;
+  }
+  @media (max-width: 1100px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+  }
+  .panel-head {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-alt);
+  }
+  .panel-body {
+    padding: 12px;
+  }
+  .viewer-stack {
+    display: grid;
+    gap: 12px;
+  }
+  .viewer-shell {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+  }
+  .viewer-shell iframe,
+  .viewer-shell canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .viewer-shell iframe {
+    background: #000;
+    z-index: 1;
+  }
+  .viewer-shell canvas {
+    z-index: 2;
+    pointer-events: none;
+  }
+  .status-bar {
+    display: grid;
+    gap: 8px;
+  }
+  .status-box {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel-alt);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: pre-wrap;
+  }
+  .status-box.ok { color: var(--ok); }
+  .status-box.err { color: var(--err); }
+  .status-box.warn { color: var(--warn); }
+  .control-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .control-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .control-grid label {
+    display: grid;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .control-grid input {
+    width: 100%;
+    min-height: 36px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+  }
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .metric {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+  .metric span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  .plate-list,
+  .log-list {
+    display: grid;
+    gap: 8px;
+    max-height: 320px;
+    overflow: auto;
+  }
+  .capture-preview {
+    display: grid;
+    gap: 10px;
+  }
+  .capture-preview img {
+    display: block;
+    width: 100%;
+    max-height: 260px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    background: #000;
+  }
+  .capture-meta {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel-alt);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: pre-wrap;
+  }
+  .plate-card,
+  .log-item {
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .plate-card strong,
+  .log-item strong {
+    font-size: 14px;
+  }
+  .empty {
+    color: var(--muted);
+    font-size: 12px;
+    padding: 10px;
+    border: 1px dashed var(--border);
+    background: var(--panel-alt);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Plaka Tanima Monitoru</h1>
+    <div class="sub">EZOPEN + SDK ile cozulmus goruntu uzerinden periyodik kare analizi yapar.</div>
+  </div>
+  <div class="toolbar">
+    <a class="button-link" href="/">Izleme</a>
+    <button id="start-btn" class="primary" type="button">Tanima Baslat</button>
+    <button id="stop-btn" type="button">Tanima Durdur</button>
+  </div>
+</header>
+
+<main>
+  <div class="layout">
+    <section class="viewer-stack">
+      <div class="panel">
+        <div class="panel-head"><h2>Canli Goruntu</h2></div>
+        <div class="panel-body">
+          <div class="viewer-shell">
+            <iframe id="sdk-frame" title="ALPR SDK Player"></iframe>
+            <canvas id="overlay"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Durum</h2></div>
+        <div class="panel-body status-bar">
+          <div id="status-box" class="status-box">Sayfa hazirlaniyor...</div>
+          <div class="metric-grid">
+            <div class="metric"><span>Kamera</span><strong id="camera-meta">-</strong></div>
+            <div class="metric"><span>Frame</span><strong id="frame-meta">0</strong></div>
+            <div class="metric"><span>Son Sonuc</span><strong id="last-meta">-</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="viewer-stack">
+      <div class="panel">
+        <div class="panel-head"><h2>Kontroller</h2></div>
+        <div class="panel-body">
+          <div class="control-grid">
+            <label>Her N karede isle
+              <input id="process-every-input" type="number" min="1" value="3" />
+            </label>
+            <label>Istek araligi (ms)
+              <input id="interval-input" type="number" min="300" step="100" value="1200" />
+            </label>
+            <label>Min detection confidence
+              <input id="min-detection-input" type="number" min="0" max="1" step="0.05" value="0.2" />
+            </label>
+            <label>Min OCR confidence
+              <input id="min-ocr-input" type="number" min="0" max="1" step="0.05" value="0.0" />
+            </label>
+          </div>
+          <div class="control-actions">
+            <button id="save-debug-btn" type="button">Debug Frame Kaydet</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Bulunan Plakalar</h2></div>
+        <div class="panel-body">
+          <div id="plate-list" class="plate-list"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Gonderilen Kare</h2></div>
+        <div class="panel-body">
+          <div class="capture-preview">
+            <img id="capture-preview-image" alt="ALPR gonderilen kare" />
+            <div id="capture-meta" class="capture-meta">Henuz kare yakalanmadi.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Log</h2></div>
+        <div class="panel-body">
+          <div id="log-list" class="log-list"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  const qs = new URLSearchParams(location.search);
+  const state = {
+    name: qs.get("name") || "",
+    resourceId: qs.get("resourceId") || "",
+    deviceSerial: qs.get("deviceSerial") || "",
+    channelNo: qs.get("channelNo") || "1",
+    code: qs.get("code") || "",
+    quality: qs.get("quality") || "1",
+    frameIndex: 0,
+    running: false,
+    timerId: null,
+    busy: false,
+    lastResult: null,
+    lastLoggedSignature: "",
+    debugSaveNextFrame: false,
+    autoDebugSaved: false,
+    lastCapture: null,
+  };
+
+  const sdkFrameEl = document.getElementById("sdk-frame");
+  const overlayEl = document.getElementById("overlay");
+  const statusBoxEl = document.getElementById("status-box");
+  const cameraMetaEl = document.getElementById("camera-meta");
+  const frameMetaEl = document.getElementById("frame-meta");
+  const lastMetaEl = document.getElementById("last-meta");
+  const plateListEl = document.getElementById("plate-list");
+  const logListEl = document.getElementById("log-list");
+  const capturePreviewImageEl = document.getElementById("capture-preview-image");
+  const captureMetaEl = document.getElementById("capture-meta");
+  const processEveryInputEl = document.getElementById("process-every-input");
+  const intervalInputEl = document.getElementById("interval-input");
+  const minDetectionInputEl = document.getElementById("min-detection-input");
+  const minOcrInputEl = document.getElementById("min-ocr-input");
+  const saveDebugBtnEl = document.getElementById("save-debug-btn");
+  const startBtnEl = document.getElementById("start-btn");
+  const stopBtnEl = document.getElementById("stop-btn");
+
+  function setStatus(text, kind = "") {
+    statusBoxEl.textContent = text;
+    statusBoxEl.className = `status-box ${kind}`.trim();
+  }
+
+  function formatTime(date = new Date()) {
+    return date.toLocaleTimeString("tr-TR");
+  }
+
+  function appendLog(message, kind = "info") {
+    const item = document.createElement("div");
+    item.className = "log-item";
+    item.innerHTML = `<strong>${formatTime()}</strong><br>${message}`;
+    if (kind === "error") {
+      item.style.borderColor = "#e1b0b0";
+      item.style.background = "#fff5f5";
+    }
+    logListEl.prepend(item);
+    while (logListEl.children.length > 40) {
+      logListEl.removeChild(logListEl.lastChild);
+    }
+  }
+
+  function renderCapturePreview(capture) {
+    state.lastCapture = capture || null;
+    if (!capture?.imageBase64) {
+      capturePreviewImageEl.removeAttribute("src");
+      captureMetaEl.textContent = "Henuz kare yakalanmadi.";
+      return;
+    }
+
+    capturePreviewImageEl.src = capture.imageBase64;
+    captureMetaEl.textContent =
+      `Yontem: ${capture.method || "-"}\n` +
+      `Kaynak eleman: ${capture.elementTag || "-"}\n` +
+      `Boyut: ${capture.width || "-"} x ${capture.height || "-"}\n` +
+      `Frame: ${state.frameIndex}`;
+  }
+
+  function syncMeta() {
+    cameraMetaEl.textContent = state.name || state.deviceSerial || state.resourceId || "-";
+    frameMetaEl.textContent = String(state.frameIndex);
+    if (!state.lastResult) {
+      lastMetaEl.textContent = "-";
+      return;
+    }
+    if (state.lastResult.status === "skipped") {
+      lastMetaEl.textContent = "Atlandi";
+      return;
+    }
+    const best = state.lastResult.plates?.[0];
+    lastMetaEl.textContent = best ? (best.normalizedText || best.text || "OKUNAMADI") : "Bulunamadi";
+  }
+
+  function buildSdkUrl() {
+    const params = new URLSearchParams({
+      resourceId: state.resourceId,
+      deviceSerial: state.deviceSerial,
+      channelNo: state.channelNo,
+      quality: state.quality,
+      autoplay: "1",
+      embed: "1",
+      fit: "contain",
+    });
+    if (state.code) {
+      params.set("code", state.code);
+    }
+    return `/jsdecoder-demo.html?${params.toString()}`;
+  }
+
+  function initSdkFrame() {
+    sdkFrameEl.src = buildSdkUrl();
+  }
+
+  async function captureFrameFromIframe() {
+    const frameWindow = sdkFrameEl.contentWindow;
+    if (!frameWindow) {
+      return null;
+    }
+
+    try {
+      if (typeof frameWindow.captureCurrentFrame === "function") {
+        return frameWindow.captureCurrentFrame();
+      }
+    } catch (error) {
+      appendLog(`Iframe capture direct call hatasi: ${error.message}`, "error");
+    }
+
+    return new Promise((resolve) => {
+      const requestId = `sdk-capture-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const timeoutId = window.setTimeout(() => {
+        window.removeEventListener("message", handleMessage);
+        resolve(null);
+      }, 1500);
+
+      function handleMessage(event) {
+        if (event.origin !== window.location.origin) {
+          return;
+        }
+        if (event.data?.type !== "sdk-capture-frame-response") {
+          return;
+        }
+        if (event.data?.requestId !== requestId) {
+          return;
+        }
+
+        window.clearTimeout(timeoutId);
+        window.removeEventListener("message", handleMessage);
+        if (event.data.error) {
+          appendLog(`Iframe capture response hatasi: ${event.data.error}`, "error");
+          resolve(null);
+          return;
+        }
+        resolve(event.data.payload || null);
+      }
+
+      window.addEventListener("message", handleMessage);
+      frameWindow.postMessage(
+        {
+          type: "sdk-capture-frame-request",
+          requestId,
+        },
+        window.location.origin
+      );
+    });
+  }
+
+  function ensureOverlaySize() {
+    const rect = overlayEl.getBoundingClientRect();
+    const width = Math.max(1, Math.floor(rect.width));
+    const height = Math.max(1, Math.floor(rect.height));
+    if (overlayEl.width !== width) overlayEl.width = width;
+    if (overlayEl.height !== height) overlayEl.height = height;
+  }
+
+  function clearOverlay() {
+    ensureOverlaySize();
+    const ctx = overlayEl.getContext("2d");
+    ctx.clearRect(0, 0, overlayEl.width, overlayEl.height);
+  }
+
+  function drawOverlay(result) {
+    ensureOverlaySize();
+    const ctx = overlayEl.getContext("2d");
+    ctx.clearRect(0, 0, overlayEl.width, overlayEl.height);
+
+    if (!result || result.status !== "ok" || !result.plates?.length) {
+      return;
+    }
+
+    const srcWidth = Number(result.imageSize?.width || 1);
+    const srcHeight = Number(result.imageSize?.height || 1);
+    const scaleX = overlayEl.width / srcWidth;
+    const scaleY = overlayEl.height / srcHeight;
+
+    ctx.lineWidth = 3;
+    ctx.font = "bold 20px Segoe UI";
+    ctx.textBaseline = "top";
+
+    for (const plate of result.plates) {
+      const bbox = plate.bbox || {};
+      const x = Number(bbox.x1 || 0) * scaleX;
+      const y = Number(bbox.y1 || 0) * scaleY;
+      const w = Number(bbox.width || 0) * scaleX;
+      const h = Number(bbox.height || 0) * scaleY;
+      const text = plate.normalizedText || plate.text || "OKUNAMADI";
+      const detection = Number(plate.detectionConfidence || 0).toFixed(2);
+      const ocr = Number(plate.ocrConfidence || 0).toFixed(2);
+      const label = `${text} D:${detection} O:${ocr}`;
+
+      ctx.strokeStyle = "#39ff14";
+      ctx.fillStyle = "rgba(57, 255, 20, 0.14)";
+      ctx.strokeRect(x, y, w, h);
+      ctx.fillRect(x, y, w, h);
+
+      const textWidth = ctx.measureText(label).width;
+      const labelX = Math.max(6, Math.min(x, overlayEl.width - textWidth - 14));
+      const labelY = y > 32 ? y - 28 : y + h + 6;
+      ctx.fillStyle = "rgba(0, 0, 0, 0.72)";
+      ctx.fillRect(labelX - 6, labelY - 4, textWidth + 12, 28);
+      ctx.fillStyle = "#39ff14";
+      ctx.fillText(label, labelX, labelY);
+    }
+  }
+
+  function renderPlateList(result) {
+    plateListEl.innerHTML = "";
+    if (!result || result.status !== "ok" || !result.plates?.length) {
+      plateListEl.innerHTML = `<div class="empty">Henüz okunmuş plaka yok.</div>`;
+      return;
+    }
+
+    for (const plate of result.plates) {
+      const item = document.createElement("div");
+      item.className = "plate-card";
+      item.innerHTML = `
+        <strong>${plate.normalizedText || plate.text || "OKUNAMADI"}</strong><br>
+        Detection: ${Number(plate.detectionConfidence || 0).toFixed(3)}<br>
+        OCR: ${Number(plate.ocrConfidence || 0).toFixed(3)}<br>
+        BBox: ${plate.bbox.x1}, ${plate.bbox.y1}, ${plate.bbox.x2}, ${plate.bbox.y2}<br>
+        Region: ${plate.region || "-"}<br>
+        Turk format: ${plate.turkishPlateFormat ? "evet" : "hayir"}
+      `;
+      plateListEl.appendChild(item);
+    }
+  }
+
+  async function recognizeCurrentFrame() {
+    if (state.busy) return;
+    state.busy = true;
+    try {
+      const capture = await captureFrameFromIframe();
+      const imageBase64 = capture?.imageBase64 || null;
+      if (!imageBase64) {
+        setStatus("SDK goruntusu hazir degil, kare bekleniyor...", "warn");
+        renderCapturePreview(null);
+        return;
+      }
+      renderCapturePreview(capture);
+
+      const payload = {
+        imageBase64,
+        source: "sdk-ezopen",
+        frameIndex: state.frameIndex,
+        processEveryNFrames: Math.max(1, Number(processEveryInputEl.value || 3)),
+        minDetectionConfidence: Number(minDetectionInputEl.value || 0.2),
+        minOcrConfidence: Number(minOcrInputEl.value || 0.0),
+        debugSave: state.debugSaveNextFrame || !state.autoDebugSaved,
+        debugName: `sdk-frame-${state.frameIndex}`,
+      };
+      state.debugSaveNextFrame = false;
+
+      const response = await fetch("/api/alpr/recognize-frame", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "ALPR istegi basarisiz.");
+      }
+
+      state.lastResult = result;
+      syncMeta();
+      renderPlateList(result);
+      drawOverlay(result);
+
+      if (result.debugImagePath) {
+        state.autoDebugSaved = true;
+        appendLog(
+          `Debug frame kaydedildi:<br><strong>${result.debugImagePath}</strong><br>` +
+          `Capture: ${capture.method || "-"} / ${capture.elementTag || "-"} ${capture.width || "-"}x${capture.height || "-"}`
+        );
+      }
+
+      if (result.status === "skipped") {
+        setStatus(`Frame ${state.frameIndex} atlandi. Her ${result.processEveryNFrames} kare isleniyor.`, "warn");
+        return;
+      }
+
+      setStatus(
+        `Frame ${state.frameIndex} islendi. ${result.plateCount} plaka bulundu.`,
+        result.plateCount > 0 ? "ok" : ""
+      );
+
+      const signature = JSON.stringify(
+        (result.plates || []).map((item) => ({
+          text: item.normalizedText || item.text || "",
+          bbox: item.bbox,
+        }))
+      );
+      if (signature && signature !== state.lastLoggedSignature) {
+        state.lastLoggedSignature = signature;
+        if (result.plates?.length) {
+          for (const plate of result.plates) {
+            appendLog(
+              `Plaka: <strong>${plate.normalizedText || plate.text || "OKUNAMADI"}</strong><br>` +
+                `Detection=${Number(plate.detectionConfidence || 0).toFixed(3)} OCR=${Number(plate.ocrConfidence || 0).toFixed(3)}`
+            );
+          }
+        } else {
+          appendLog(`Frame ${state.frameIndex}: plaka bulunamadi.`);
+        }
+      }
+    } catch (error) {
+      setStatus(`ALPR hata: ${error.message}`, "err");
+      appendLog(`ALPR hata: ${error.message}`, "error");
+    } finally {
+      state.busy = false;
+    }
+  }
+
+  function scheduleLoop() {
+    clearLoop();
+    state.running = true;
+    const tick = async () => {
+      if (!state.running) return;
+      state.frameIndex += 1;
+      syncMeta();
+      await recognizeCurrentFrame();
+      state.timerId = window.setTimeout(tick, Math.max(300, Number(intervalInputEl.value || 1200)));
+    };
+    tick();
+  }
+
+  function clearLoop() {
+    state.running = false;
+    if (state.timerId) {
+      window.clearTimeout(state.timerId);
+      state.timerId = null;
+    }
+  }
+
+  startBtnEl.addEventListener("click", () => {
+    appendLog("Plaka tanima baslatildi.");
+    scheduleLoop();
+  });
+
+  stopBtnEl.addEventListener("click", () => {
+    clearLoop();
+    setStatus("Plaka tanima durduruldu.");
+    appendLog("Plaka tanima durduruldu.");
+  });
+
+  saveDebugBtnEl.addEventListener("click", () => {
+    state.debugSaveNextFrame = true;
+    appendLog("Bir sonraki islenen frame debug olarak kaydedilecek.");
+  });
+
+  window.addEventListener("resize", () => {
+    drawOverlay(state.lastResult);
+  });
+
+  window.addEventListener("beforeunload", () => {
+    clearLoop();
+  });
+
+  if (!state.resourceId || !state.deviceSerial) {
+    setStatus("resourceId ve deviceSerial olmadan ALPR monitörü acilamaz.", "err");
+  } else {
+    appendLog("ALPR monitor build 2026-07-31-2 yuklendi.");
+    syncMeta();
+    renderPlateList(null);
+    renderCapturePreview(null);
+    appendLog("SDK iframe yukleniyor...");
+    initSdkFrame();
+    setStatus("SDK oynatici baslatildi. Plaka Tanima Baslat ile analize gec.", "ok");
+  }
+</script>
+</body>
+</html>

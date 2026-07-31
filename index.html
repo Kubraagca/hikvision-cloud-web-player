@@ -341,6 +341,7 @@
         <div class="ptz-controls">
           <button id="zoom-in-btn" type="button">Zoom +</button>
           <button id="zoom-out-btn" type="button">Zoom -</button>
+          <button id="alpr-btn" type="button">Plaka Tanima</button>
           <button id="device-detail-btn" type="button">Cihaz Detayi</button>
         </div>
       </div>
@@ -368,6 +369,7 @@
   const deviceSerialMetaEl = document.getElementById("device-serial-meta");
   const zoomInBtn = document.getElementById("zoom-in-btn");
   const zoomOutBtn = document.getElementById("zoom-out-btn");
+  const alprBtn = document.getElementById("alpr-btn");
   const deviceDetailBtn = document.getElementById("device-detail-btn");
   let hls = null;
   let activeCard = null;
@@ -821,6 +823,26 @@
       deviceSerial: selectedCamera.deviceSerial || "",
     });
     location.href = `/device-detail?${params.toString()}`;
+  });
+
+  alprBtn.addEventListener("click", () => {
+    if (!selectedCamera) {
+      statusEl.textContent = "Once bir kamera secin.";
+      return;
+    }
+
+    const params = new URLSearchParams({
+      name: selectedCamera.name || "",
+      resourceId: selectedCamera.resourceId || "",
+      deviceSerial: selectedCamera.deviceSerial || "",
+      channelNo: String(Number(selectedCamera.channelNo || 1)),
+      quality: String(qualityEl.value || "1"),
+    });
+    const verificationCode = verifyCodeEl.value.trim();
+    if (verificationCode) {
+      params.set("code", verificationCode);
+    }
+    window.open(`/alpr-monitor?${params.toString()}`, "_blank", "noopener");
   });
 
   document.getElementById("refresh-btn").addEventListener("click", loadCameras);
