@@ -21,7 +21,8 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
 COPY alpr-service/requirements.txt ./alpr-service/requirements.txt
-RUN pip3 install --no-cache-dir -r alpr-service/requirements.txt
+RUN python3 -m pip install --no-cache-dir --break-system-packages -r alpr-service/requirements.txt
+RUN python3 -c "import cv2, onnxruntime; print('python deps ok')"
 
 COPY . .
 
