@@ -17,14 +17,16 @@ RUN apt-get update \
     libglib2.0-0 \
   && rm -rf /var/lib/apt/lists/*
 
-COPY package.json package-lock.json ./
+COPY hikvision-web/package.json hikvision-web/package-lock.json ./hikvision-web/
+WORKDIR /opt/render/project/src/hikvision-web
 RUN npm ci --omit=dev
 
-COPY alpr-service/requirements.txt ./alpr-service/requirements.txt
-RUN python3 -m pip install --no-cache-dir --break-system-packages -r alpr-service/requirements.txt
+COPY plaka-tanima/alpr-service/requirements.txt /opt/render/project/src/plaka-tanima/alpr-service/requirements.txt
+RUN python3 -m pip install --no-cache-dir --break-system-packages -r /opt/render/project/src/plaka-tanima/alpr-service/requirements.txt
 RUN python3 -c "import cv2, onnxruntime; print('python deps ok')"
 
-COPY . .
+COPY hikvision-web /opt/render/project/src/hikvision-web
+COPY plaka-tanima /opt/render/project/src/plaka-tanima
 
 EXPOSE 10000
 

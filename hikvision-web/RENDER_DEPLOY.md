@@ -11,20 +11,21 @@ Normal `Node` runtime yerine `Docker` secilmelidir. Cunku ALPR icin Python da ay
 
 ## Repo icindeki gerekli dosyalar
 
-- `Dockerfile`
-- `render.yaml`
-- `alpr-service/`
-- `alpr-service/models/`
+- `hikvision-web/Dockerfile`
+- `hikvision-web/render.yaml`
+- `plaka-tanima/alpr-service/`
+- `plaka-tanima/alpr-service/models/`
 
 ## Render Dashboard uzerinden kurulum
 
 1. Render'da `New +` -> `Web Service` sec.
 2. GitHub repo'yu bagla.
 3. Runtime olarak `Docker` sec.
-4. `Dockerfile Path` alanini `./Dockerfile` olarak birak.
-5. Branch olarak deploy etmek istedigin branch'i sec.
-6. Gerekli environment variable'lari `Environment` ekranindan ekle.
-7. Deploy et.
+4. `Root Directory` alanini bos birak.
+5. `Dockerfile Path` alanina `./hikvision-web/Dockerfile` yaz.
+6. Branch olarak deploy etmek istedigin branch'i sec.
+7. Gerekli environment variable'lari `Environment` ekranindan ekle.
+8. Deploy et.
 
 ## Start command gerekiyor mu?
 
