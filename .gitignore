@@ -1,17 +1,18 @@
-node_modules/
+hikvision-web/node_modules/
 .env
 .venv/
 venv/
 __pycache__/
 *.pyc
-.cache/
-artifacts/
+hikvision-web/.cache/
+hikvision-web/artifacts/
+plaka-tanima/alpr-service/artifacts/
 *.mp4
 *.avi
 *.mov
 *.tmp
 *.temp
 
-!alpr-service/models/open-image-models/yolo-v9-s-608-license-plate-end2end/yolo-v9-s-608-license-plates-end2end.onnx
-!alpr-service/models/fast-plate-ocr/cct-s-v2-global-model/cct_s_v2_global.onnx
-!alpr-service/models/fast-plate-ocr/cct-s-v2-global-model/cct_s_v2_global_plate_config.yaml
+!plaka-tanima/alpr-service/models/open-image-models/yolo-v9-s-608-license-plate-end2end/yolo-v9-s-608-license-plates-end2end.onnx
+!plaka-tanima/alpr-service/models/fast-plate-ocr/cct-s-v2-global-model/cct_s_v2_global.onnx
+!plaka-tanima/alpr-service/models/fast-plate-ocr/cct-s-v2-global-model/cct_s_v2_global_plate_config.yaml
