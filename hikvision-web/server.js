@@ -19,11 +19,18 @@ const INITIAL_SERVER =
   process.env.HIK_INITIAL_SERVER || "https://ieu.hikcentralconnect.com";
 const LOCAL_SERVICE_ROOT = path.resolve(__dirname, "..", "hikvision-yerel-servis");
 const ALPR_ROOT = path.resolve(__dirname, "..", "plaka-tanima");
+const DATA_ROOT = path.join(__dirname, "data");
+const RECORDING_SYNC_ROOT = path.join(DATA_ROOT, "recording-sync");
+const RECORDING_ARCHIVE_ROOT = path.join(RECORDING_SYNC_ROOT, "archive");
+const RECORDING_SYNC_STATE_PATH = path.join(RECORDING_SYNC_ROOT, "state.json");
+const RECORDING_SYNC_CONFIG_PATH = path.join(RECORDING_SYNC_ROOT, "config.json");
 
 const SDK_BASE_PATH = "/sdk";
 const SDK_DIST_PATH = path.join(__dirname, "sdk", "dist");
 const streamCache = new Map();
 const provisioningTasks = new Map();
+let recordingSyncPromise = null;
+let recordingSyncTimer = null;
 
 let tokenCache = {
   accessToken: null,
@@ -141,6 +148,155 @@ function ensureCredentials(res) {
     return false;
   }
   return true;
+}
+
+function ensureDirectory(dirPath) {
+  fs.mkdirSync(dirPath, { recursive: true });
+}
+
+function readJsonFileSafe(filePath, fallbackValue) {
+  try {
+    if (!fs.existsSync(filePath)) {
+      return fallbackValue;
+    }
+
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch {
+    return fallbackValue;
+  }
+}
+
+function writeJsonFileSafe(filePath, value) {
+  ensureDirectory(path.dirname(filePath));
+  const tempPath = `${filePath}.tmp`;
+  fs.writeFileSync(tempPath, JSON.stringify(value, null, 2), "utf8");
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+  fs.renameSync(tempPath, filePath);
+}
+
+function buildDefaultRecordingSyncConfig() {
+  return {
+    enabled: false,
+    dailyTime: "02:00",
+    lookbackMinutes: 1440,
+    cameras: [],
+  };
+}
+
+function buildDefaultRecordingSyncState() {
+  return {
+    lastRunStartedAt: "",
+    lastRunFinishedAt: "",
+    lastRunStatus: "idle",
+    lastRunReason: "",
+    lastError: "",
+    activeRun: null,
+    lastScheduledRunKey: "",
+    lastSuccessByCameraId: {},
+    downloadedSegments: {},
+    recentRuns: [],
+  };
+}
+
+function loadRecordingSyncConfig() {
+  const raw = readJsonFileSafe(RECORDING_SYNC_CONFIG_PATH, buildDefaultRecordingSyncConfig());
+  return {
+    ...buildDefaultRecordingSyncConfig(),
+    ...raw,
+    cameras: Array.isArray(raw?.cameras) ? raw.cameras : [],
+  };
+}
+
+function saveRecordingSyncConfig(config) {
+  writeJsonFileSafe(RECORDING_SYNC_CONFIG_PATH, config);
+}
+
+function loadRecordingSyncState() {
+  const raw = readJsonFileSafe(RECORDING_SYNC_STATE_PATH, buildDefaultRecordingSyncState());
+  return {
+    ...buildDefaultRecordingSyncState(),
+    ...raw,
+    lastSuccessByCameraId:
+      raw && typeof raw.lastSuccessByCameraId === "object" && raw.lastSuccessByCameraId
+        ? raw.lastSuccessByCameraId
+        : {},
+    downloadedSegments:
+      raw && typeof raw.downloadedSegments === "object" && raw.downloadedSegments
+        ? raw.downloadedSegments
+        : {},
+    recentRuns: Array.isArray(raw?.recentRuns) ? raw.recentRuns : [],
+  };
+}
+
+function saveRecordingSyncState(state) {
+  writeJsonFileSafe(RECORDING_SYNC_STATE_PATH, state);
+}
+
+function padNumber(value) {
+  return String(value).padStart(2, "0");
+}
+
+function formatIsoOffset(date) {
+  const year = date.getFullYear();
+  const month = padNumber(date.getMonth() + 1);
+  const day = padNumber(date.getDate());
+  const hour = padNumber(date.getHours());
+  const minute = padNumber(date.getMinutes());
+  const second = padNumber(date.getSeconds());
+  const offsetMinutes = -date.getTimezoneOffset();
+  const offsetSign = offsetMinutes >= 0 ? "+" : "-";
+  const absoluteOffsetMinutes = Math.abs(offsetMinutes);
+  const offsetHour = padNumber(Math.floor(absoluteOffsetMinutes / 60));
+  const offsetMinute = padNumber(absoluteOffsetMinutes % 60);
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}${offsetSign}${offsetHour}:${offsetMinute}`;
+}
+
+function parseTimeValue(timeValue) {
+  const normalized = String(timeValue || "").trim();
+  const match = /^(\d{2}):(\d{2})$/.exec(normalized);
+  if (!match) {
+    return null;
+  }
+
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if (!Number.isInteger(hour) || !Number.isInteger(minute) || hour > 23 || minute > 59) {
+    return null;
+  }
+
+  return { hour, minute, normalized };
+}
+
+function sanitizeFileName(fileName) {
+  return String(fileName || "")
+    .replace(/[<>:"/\\|?*\u0000-\u001f]/g, "_")
+    .replace(/\s+/g, "_")
+    .slice(0, 180);
+}
+
+function createSegmentFingerprint(cameraId, beginTime, endTime, targetType) {
+  return crypto
+    .createHash("sha1")
+    .update(`${cameraId}|${beginTime}|${endTime}|${targetType}`)
+    .digest("hex");
+}
+
+function buildArchiveDirectory(camera) {
+  const serial = sanitizeFileName(camera.deviceSerial || camera.cameraId || "camera");
+  return path.join(RECORDING_ARCHIVE_ROOT, serial);
+}
+
+function buildSegmentBaseName(camera, segment) {
+  const serial = sanitizeFileName(camera.deviceSerial || camera.cameraId || "camera");
+  const begin = sanitizeFileName(String(segment.beginTime || "").replace(/[:+]/g, "-"));
+  const end = sanitizeFileName(String(segment.endTime || "").replace(/[:+]/g, "-"));
+  return `${serial}_${begin}_${end}`;
+}
+
+function mergeRecentRun(state, entry) {
+  state.recentRuns = [entry, ...(Array.isArray(state.recentRuns) ? state.recentRuns : [])].slice(0, 20);
 }
 
 function normalizeExpireTime(expireTime) {
@@ -771,6 +927,1038 @@ function createVerificationCode(length = 12) {
     output += alphabet[value % alphabet.length];
   }
   return output;
+}
+
+function firstTagValue(xml, names) {
+  for (const name of names) {
+    const value = getXmlValue(xml, [name]);
+    if (value) {
+      return value;
+    }
+  }
+  return "";
+}
+
+function containsAnyText(value, ...needles) {
+  const normalized = String(value || "").toLowerCase();
+  return needles.some((needle) => normalized.includes(String(needle).toLowerCase()));
+}
+
+function parseSpaceToMb(value) {
+  const input = String(value || "").trim();
+  if (!input) {
+    return null;
+  }
+
+  const numeric = Number(input.replace(",", "."));
+  if (Number.isFinite(numeric)) {
+    return numeric > 1024 * 1024 ? Math.round(numeric / 1024 / 1024) : Math.round(numeric);
+  }
+
+  const match = /(-?\d+(?:[.,]\d+)?)\s*([kmgt]?b)?/i.exec(input);
+  if (!match) {
+    return null;
+  }
+
+  const amount = Number(match[1].replace(",", "."));
+  if (!Number.isFinite(amount)) {
+    return null;
+  }
+
+  const unit = String(match[2] || "mb").toLowerCase();
+  switch (unit) {
+    case "kb":
+      return Math.round(amount / 1024);
+    case "gb":
+      return Math.round(amount * 1024);
+    case "tb":
+      return Math.round(amount * 1024 * 1024);
+    case "b":
+      return Math.round(amount / 1024 / 1024);
+    default:
+      return Math.round(amount);
+  }
+}
+
+function getStorageBlocks(xml) {
+  const regex =
+    /<(?:\w+:)?(?:hdd|disk|storageMedium|storage|medium)\b[\s\S]*?<\/(?:\w+:)?(?:hdd|disk|storageMedium|storage|medium)>/gi;
+  const blocks = [];
+  let match;
+  while ((match = regex.exec(xml)) !== null) {
+    blocks.push(match[0]);
+  }
+  return blocks.length > 0 ? blocks : [xml];
+}
+
+function scoreStorageBlock(xml) {
+  let score = 0;
+  if (containsAnyText(xml, "microsd", "micro sd", "sdcard", "sd card", "tfcard", "tf card", "mmc")) {
+    score += 100;
+  }
+  if (containsAnyText(xml, "emmc")) {
+    score += 25;
+  }
+  if (/<(?:\w+:)?hdd\b/i.test(xml)) {
+    score += 20;
+  }
+  if (firstTagValue(xml, ["capacity", "totalCapacity", "capacityTotal", "diskCapacity", "totalSpace", "size"])) {
+    score += 10;
+  }
+  if (firstTagValue(xml, ["status", "storageStatus", "hddStatus", "state", "statusDescription"])) {
+    score += 10;
+  }
+  return score;
+}
+
+function buildStorageStatusText(statusText, formatText, detected, formatted) {
+  if (detected === false) {
+    return "SD kart algilanmadi";
+  }
+  if (formatted === false) {
+    return "SD kart bicimlendirilmemis";
+  }
+  const combined = [statusText, formatText].filter(Boolean).join(" / ");
+  if (combined) {
+    return combined;
+  }
+  if (detected === true) {
+    return "Hazir";
+  }
+  return "Bilinmiyor";
+}
+
+function parseStorageInfo(xml, source = "ISAPI", requestUri = "") {
+  const decodedXml = decodeXml(String(xml || ""));
+  const blocks = getStorageBlocks(decodedXml);
+  const candidate = blocks
+    .map((block) => ({ block, score: scoreStorageBlock(block) }))
+    .sort((left, right) => right.score - left.score)[0]?.block || decodedXml;
+
+  const statusText = firstTagValue(candidate, [
+    "status",
+    "storageStatus",
+    "hddStatus",
+    "state",
+    "statusDescription",
+    "formatStatus",
+    "fileSystemStatus",
+    "fileSystemState",
+  ]);
+  const formatText = firstTagValue(candidate, [
+    "formatStatus",
+    "fileSystemStatus",
+    "fileSystemState",
+    "initializeStatus",
+    "initializationState",
+  ]);
+  const rawStatus = [statusText, formatText].filter(Boolean).join(" | ");
+  const capacityMb = parseSpaceToMb(
+    firstTagValue(candidate, ["capacity", "totalCapacity", "capacityTotal", "diskCapacity", "totalSpace", "size"])
+  );
+  const freeSpaceMb = parseSpaceToMb(
+    firstTagValue(candidate, ["freeSpace", "free", "remainSpace", "residualSpace", "unusedSpace", "freeCapacity"])
+  );
+  const combined = `${statusText} ${formatText} ${candidate}`.toLowerCase();
+
+  let isDetected = null;
+  if (containsAnyText(combined, "nocar", "no card", "notexist", "not exist", "absent", "unplugged", "unmounted")) {
+    isDetected = false;
+  } else if (candidate && candidate !== decodedXml || capacityMb !== null || freeSpaceMb !== null || statusText) {
+    isDetected = true;
+  }
+
+  let isFormatted = null;
+  if (isDetected !== false) {
+    if (containsAnyText(combined, "unformat", "notformat", "not format", "uninitialized", "needformat", "formatrequired")) {
+      isFormatted = false;
+    } else if (containsAnyText(combined, "normal", "ok", "ready", "mounted", "rw", "readwrite", "good")) {
+      isFormatted = true;
+    }
+  }
+
+  const warning =
+    isDetected === false
+      ? "SD kart algilanmadi"
+      : isFormatted === false
+        ? "SD kart bicimlendirilmemis"
+        : null;
+
+  return {
+    source,
+    requestUri,
+    status: buildStorageStatusText(statusText, formatText, isDetected, isFormatted),
+    capacityMb,
+    freeSpaceMb,
+    isDetected,
+    isFormatted,
+    warning,
+    rawStatus: rawStatus || `Yanitta SD kart bilgisi ayristirilamadi. URI=${requestUri || "-"}`,
+    rawXml: decodedXml,
+    diskId: firstTagValue(candidate, ["id", "diskID", "diskId", "hddID", "hddNo", "no"]),
+    loopEnable: firstTagValue(candidate, ["loopEnable", "recycle", "overwrite"]),
+    hasEntries:
+      /<(?:\w+:)?(?:hdd|disk|storageMedium|storage|medium)\b/i.test(decodedXml) &&
+      /<(?:\w+:)?(?:capacity|totalCapacity|capacityTotal|diskCapacity|totalSpace|size|freeSpace|free|remainSpace|residualSpace|unusedSpace|freeCapacity|status|storageStatus|hddStatus|state)\b/i.test(decodedXml),
+  };
+}
+
+function isMeaningfulStorageInfo(info) {
+  if (!info || typeof info !== "object") {
+    return false;
+  }
+
+  if (info.isDetected === false || info.isFormatted === false) {
+    return true;
+  }
+
+  if (info.capacityMb !== null || info.freeSpaceMb !== null) {
+    return true;
+  }
+
+  if (info.diskId || info.loopEnable) {
+    return true;
+  }
+
+  if (info.hasEntries) {
+    return true;
+  }
+
+  return false;
+}
+
+async function readStorageViaProxy(deviceId) {
+  const requestUris = [
+    "/ISAPI/ContentMgmt/Storage/hdd",
+    "/ISAPI/ContentMgmt/Storage",
+    "/ISAPI/System/Storage",
+  ];
+  const attempts = [];
+
+  for (const requestUri of requestUris) {
+    try {
+      const result = await callIsapiProxyPass({
+        deviceId,
+        method: "GET",
+        url: requestUri,
+        contentType: "application/xml",
+        body: "",
+      });
+      const xml = decodeXml(String(result.data || ""));
+      const responseStatus = parseResponseStatus(xml);
+      if (responseStatus.subStatusCode && responseStatus.subStatusCode.toLowerCase() === "notsupport") {
+        attempts.push({ requestUri, unsupported: true, responseStatus });
+        continue;
+      }
+      const info = parseStorageInfo(xml, "ISAPI", requestUri);
+      attempts.push({
+        requestUri,
+        unsupported: false,
+        meaningful: isMeaningfulStorageInfo(info),
+        rawStatus: info.rawStatus,
+      });
+      if (!isMeaningfulStorageInfo(info)) {
+        continue;
+      }
+      return { info, attempts };
+    } catch (error) {
+      const message = sanitizeMessage(error?.message || String(error));
+      const unsupported =
+        /OPEN000550|OPEN000555|notSupport|not support|not found|method not allowed/i.test(message);
+      attempts.push({ requestUri, unsupported, message });
+      if (!unsupported) {
+        throw error;
+      }
+    }
+  }
+
+  return {
+    info: {
+      source: "ISAPI",
+      requestUri: "",
+      status: "Bilinmiyor",
+      capacityMb: null,
+      freeSpaceMb: null,
+      isDetected: null,
+      isFormatted: null,
+      warning: null,
+      rawStatus: "Storage endpoint desteklenmiyor veya yanit ayristirilamadi.",
+      rawXml: "",
+      diskId: "",
+      loopEnable: "",
+    },
+    attempts,
+  };
+}
+
+function summarizeRecordSetting(recordSetting) {
+  const localStorage = recordSetting?.localStorage || {};
+  return {
+    cameraId: String(recordSetting?.cameraID || ""),
+    enableLocalStorage: Number(recordSetting?.enableLocalStorage ?? -1),
+    enableCloudStorage: Number(recordSetting?.enableCloudStorage ?? -1),
+    scheduleTemplateId: String(localStorage?.scheduleTemplateId || ""),
+    recordingStreamType: Number(localStorage?.recordingStreamType ?? -1),
+    preRecord: Number(localStorage?.preRecord ?? -1),
+    postRecordTime: Number(localStorage?.postRecordTime ?? -1),
+    anr: Number(localStorage?.anr ?? -1),
+    storageTime: Number(localStorage?.storageTime ?? -1),
+  };
+}
+
+function getTrackBlocks(xml) {
+  const regex = /<(?:\w+:)?Track\b[\s\S]*?<\/(?:\w+:)?Track>/gi;
+  const blocks = [];
+  let match;
+  while ((match = regex.exec(String(xml || ""))) !== null) {
+    blocks.push(match[0]);
+  }
+  return blocks;
+}
+
+function extractTagOptValues(xml, names) {
+  for (const name of names) {
+    const match = new RegExp(`<(?:\\w+:)?${name}\\b[^>]*\\bopt="([^"]+)"`, "i").exec(xml);
+    if (match && match[1]) {
+      return match[1]
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+  return [];
+}
+
+function splitTrackDays(trackXml) {
+  const matches = [...String(trackXml || "").matchAll(/<(?:\w+:)?DayOfWeek\b[^>]*>([\s\S]*?)<\/(?:\w+:)?DayOfWeek>/gi)];
+  return matches.map((item) => decodeXml(String(item[1] || "").trim())).filter(Boolean);
+}
+
+function inferRecordMode(recordTypeRaw) {
+  const value = String(recordTypeRaw || "").trim().toLowerCase();
+  if (!value) {
+    return "";
+  }
+  if (["cmr", "continuous", "timing", "alltime", "always"].includes(value)) {
+    return "continuous";
+  }
+  if (["motion", "vmd", "edr", "event", "alarmandmotion", "smart"].includes(value)) {
+    return "motion";
+  }
+  return value;
+}
+
+function mapRecordModeLabel(mode) {
+  switch (mode) {
+    case "continuous":
+      return "7/24";
+    case "motion":
+      return "Hareket";
+    default:
+      return "-";
+  }
+}
+
+function mapStreamTypeLabel(value) {
+  const numeric = Number(value);
+  if (numeric === 1) {
+    return "Ana akis";
+  }
+  if (numeric === 2) {
+    return "Alt akis";
+  }
+  return "-";
+}
+
+function parseTrackInfo(trackXml, trackCapabilitiesXml = "") {
+  const id = firstTagValue(trackXml, ["id", "trackID"]);
+  const enabledRaw = firstTagValue(trackXml, ["enabled", "enable"]);
+  const recordTypeRaw = firstTagValue(trackXml, ["recordType", "trackType", "recordingMode"]);
+  const supportedModes = extractTagOptValues(trackCapabilitiesXml, ["recordType", "trackType", "recordingMode"]);
+  const days = splitTrackDays(trackXml);
+  const startTime = firstTagValue(trackXml, ["ScheduleActionStartTime", "scheduleActionStartTime", "startTime", "beginTime"]);
+  const endTime = firstTagValue(trackXml, ["ScheduleActionEndTime", "scheduleActionEndTime", "endTime", "stopTime"]);
+  const normalizedMode = inferRecordMode(recordTypeRaw);
+  return {
+    id,
+    enabledRaw,
+    enabled:
+      enabledRaw === ""
+        ? null
+        : ["true", "1", "yes", "on", "enabled"].includes(enabledRaw.toLowerCase())
+          ? true
+          : ["false", "0", "no", "off", "disabled"].includes(enabledRaw.toLowerCase())
+            ? false
+            : null,
+    recordTypeRaw,
+    recordMode: normalizedMode,
+    recordModeLabel: mapRecordModeLabel(normalizedMode),
+    supportedModes,
+    days,
+    startTime,
+    endTime,
+    rawXml: decodeXml(String(trackXml || "")),
+  };
+}
+
+function parseTrackListInfo(trackListXml, capabilityXmlMap = {}) {
+  const tracks = getTrackBlocks(trackListXml).map((trackXml) =>
+    parseTrackInfo(trackXml, capabilityXmlMap[firstTagValue(trackXml, ["id", "trackID"])] || "")
+  );
+  return {
+    tracks,
+    firstTrack: tracks[0] || null,
+  };
+}
+
+async function readContentMgmtCapabilities(deviceId) {
+  return callIsapiProxyPass({
+    deviceId,
+    method: "GET",
+    url: "/ISAPI/ContentMgmt/capabilities",
+    contentType: "application/xml",
+    body: "",
+  });
+}
+
+async function readRecordTracks(deviceId) {
+  return callIsapiProxyPass({
+    deviceId,
+    method: "GET",
+    url: "/ISAPI/ContentMgmt/record/tracks",
+    contentType: "application/xml",
+    body: "",
+  });
+}
+
+async function readRecordTrackCapabilities(deviceId, trackId) {
+  return callIsapiProxyPass({
+    deviceId,
+    method: "GET",
+    url: `/ISAPI/ContentMgmt/record/tracks/${encodeURIComponent(trackId)}/capabilities`,
+    contentType: "application/xml",
+    body: "",
+  });
+}
+
+async function readRecordTrack(deviceId, trackId) {
+  return callIsapiProxyPass({
+    deviceId,
+    method: "GET",
+    url: `/ISAPI/ContentMgmt/record/tracks/${encodeURIComponent(trackId)}`,
+    contentType: "application/xml",
+    body: "",
+  });
+}
+
+async function writeRecordTrack(deviceId, trackId, xml) {
+  return callIsapiProxyPass({
+    deviceId,
+    method: "PUT",
+    url: `/ISAPI/ContentMgmt/record/tracks/${encodeURIComponent(trackId)}`,
+    contentType: "application/xml",
+    body: xml,
+  });
+}
+
+function chooseContinuousModeValue(trackInfo) {
+  const supported = Array.isArray(trackInfo?.supportedModes) ? trackInfo.supportedModes.map((item) => item.toLowerCase()) : [];
+  const mapping = [
+    ["cmr", "CMR"],
+    ["continuous", "continuous"],
+    ["timing", "timing"],
+    ["alltime", "alltime"],
+  ];
+  for (const [candidate, output] of mapping) {
+    if (supported.includes(candidate)) {
+      return output;
+    }
+  }
+
+  const current = String(trackInfo?.recordTypeRaw || "").trim();
+  if (inferRecordMode(current) === "continuous") {
+    return current;
+  }
+
+  return "";
+}
+
+function patchTrackEnabled(trackXml, enabled) {
+  let updated = String(trackXml || "");
+  const enabledTagPresent =
+    /<(?:\w+:)?enabled\b/i.test(updated) || /<(?:\w+:)?enable\b/i.test(updated);
+  if (!enabledTagPresent) {
+    throw new Error("Track XML icinde enabled/enable alani bulunamadi.");
+  }
+
+  updated = replaceXmlValue(updated, ["enabled", "enable"], enabled ? "true" : "false");
+  return updated;
+}
+
+function patchTrackContinuous(trackXml, trackInfo) {
+  let updated = String(trackXml || "");
+  const continuousModeValue = chooseContinuousModeValue(trackInfo);
+  if (!continuousModeValue) {
+    throw new Error("Track capability icinde dogrulanmis 7/24 record mode bulunamadi.");
+  }
+
+  if (
+    !/(<(?:\w+:)?recordType\b|<(?:\w+:)?trackType\b|<(?:\w+:)?recordingMode\b)/i.test(updated)
+  ) {
+    throw new Error("Track XML icinde record type alani bulunamadi.");
+  }
+
+  updated = patchTrackEnabled(updated, true);
+  updated = replaceXmlValue(updated, ["recordType", "trackType", "recordingMode"], continuousModeValue);
+
+  const replacements = [
+    ["ScheduleActionStartTime", "00:00:00"],
+    ["scheduleActionStartTime", "00:00:00"],
+    ["ScheduleActionEndTime", "24:00:00"],
+    ["scheduleActionEndTime", "24:00:00"],
+  ];
+
+  let replacedAnyTime = false;
+  for (const [tagName, value] of replacements) {
+    const regex = new RegExp(`<(?:\\w+:)?${tagName}\\b`, "i");
+    if (regex.test(updated)) {
+      updated = replaceXmlValue(updated, [tagName], value);
+      replacedAnyTime = true;
+    }
+  }
+
+  if (!replacedAnyTime) {
+    throw new Error("Track XML icinde 7/24 icin guncellenebilir zaman alanlari bulunamadi.");
+  }
+
+  return updated;
+}
+
+async function readRecordingIsapiState(deviceId) {
+  const contentMgmtCapabilitiesResult = await readContentMgmtCapabilities(deviceId);
+  const contentMgmtCapabilitiesXml = decodeXml(String(contentMgmtCapabilitiesResult.data || ""));
+  const tracksResult = await readRecordTracks(deviceId);
+  const trackListXml = decodeXml(String(tracksResult.data || ""));
+  const trackBlocks = getTrackBlocks(trackListXml);
+  const capabilityXmlMap = {};
+
+  for (const trackXml of trackBlocks) {
+    const trackId = firstTagValue(trackXml, ["id", "trackID"]);
+    if (!trackId) {
+      continue;
+    }
+
+    try {
+      const capabilityResult = await readRecordTrackCapabilities(deviceId, trackId);
+      capabilityXmlMap[trackId] = decodeXml(String(capabilityResult.data || ""));
+    } catch (error) {
+      capabilityXmlMap[trackId] = `ERROR: ${sanitizeMessage(error?.message || String(error))}`;
+    }
+  }
+
+  const parsedTrackList = parseTrackListInfo(trackListXml, capabilityXmlMap);
+  const firstTrack = parsedTrackList.firstTrack;
+  return {
+    contentMgmtCapabilitiesXml,
+    trackListXml,
+    trackCapabilitiesXmlMap: capabilityXmlMap,
+    trackList: parsedTrackList.tracks,
+    firstTrack,
+    supportsTrackManagement:
+      /record\/tracks/i.test(contentMgmtCapabilitiesXml) || parsedTrackList.tracks.length > 0,
+  };
+}
+
+async function applyLocalRecordOperation(deviceId, action) {
+  const before = await readRecordingIsapiState(deviceId);
+  const trackId = String(before.firstTrack?.id || "").trim();
+  if (!trackId) {
+    throw new Error("Yazilabilir record track bulunamadi.");
+  }
+
+  const currentTrackResult = await readRecordTrack(deviceId, trackId);
+  const currentTrackXml = decodeXml(String(currentTrackResult.data || ""));
+  const currentTrackInfo = parseTrackInfo(currentTrackXml, before.trackCapabilitiesXmlMap[trackId] || "");
+
+  let nextTrackXml = currentTrackXml;
+  if (action === "enable") {
+    nextTrackXml = patchTrackEnabled(currentTrackXml, true);
+  } else if (action === "disable") {
+    nextTrackXml = patchTrackEnabled(currentTrackXml, false);
+  } else if (action === "continuous") {
+    nextTrackXml = patchTrackContinuous(currentTrackXml, currentTrackInfo);
+  } else {
+    throw new Error(`Desteklenmeyen local record action: ${action}`);
+  }
+
+  const writeResult = await writeRecordTrack(deviceId, trackId, nextTrackXml);
+  const after = await readRecordingIsapiState(deviceId);
+  return {
+    action,
+    trackId,
+    before,
+    currentTrackInfo,
+    appliedTrackXml: nextTrackXml,
+    writeResult,
+    after,
+  };
+}
+
+async function tryFormatStorage(deviceId, diskId) {
+  const normalizedDiskId = String(diskId || "").trim() || "1";
+  const attempts = [
+    {
+      method: "PUT",
+      url: `/ISAPI/ContentMgmt/Storage/hdd/${encodeURIComponent(normalizedDiskId)}/format`,
+      contentType: "application/xml",
+      body: "",
+    },
+    {
+      method: "POST",
+      url: `/ISAPI/ContentMgmt/Storage/hdd/${encodeURIComponent(normalizedDiskId)}/format`,
+      contentType: "application/xml",
+      body: "",
+    },
+  ];
+
+  let lastError = null;
+  for (const attempt of attempts) {
+    try {
+      const result = await callIsapiProxyPass({ deviceId, ...attempt });
+      return { result, attempt };
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError || new Error("SD kart bicimlendirme istegi basarisiz.");
+}
+
+async function searchCameraRecordings({
+  cameraId,
+  beginTime,
+  endTime,
+  pageIndex = 1,
+  pageSize = 50,
+  targetType = 0,
+  timeType = 1,
+}) {
+  const data = await postOpenApi("/api/hccgw/video/v1/record/search", {
+    pageSize,
+    pageIndex,
+    cameraId,
+    filter: {
+      timeType,
+      beginTime,
+      endTime,
+      targetType,
+    },
+  });
+
+  const errorCode = String(data.errorCode || data.code || "");
+  if (errorCode !== "0") {
+    throw new Error(
+      friendlyOpenApiError(
+        errorCode,
+        data.errorMsg || data.msg || "Kayit arama basarisiz."
+      )
+    );
+  }
+
+  return {
+    pageIndex: Number(data?.data?.pageIndex || pageIndex),
+    pageSize: Number(data?.data?.pageSize || pageSize),
+    recordList: Array.isArray(data?.data?.recordList) ? data.data.recordList : [],
+  };
+}
+
+async function searchAllCameraRecordings({ cameraId, beginTime, endTime, targetType = 0, timeType = 1 }) {
+  const pageSize = 50;
+  const segments = [];
+
+  for (let pageIndex = 1; pageIndex <= 20; pageIndex += 1) {
+    const page = await searchCameraRecordings({
+      cameraId,
+      beginTime,
+      endTime,
+      pageIndex,
+      pageSize,
+      targetType,
+      timeType,
+    });
+    segments.push(...page.recordList);
+    if (page.recordList.length < pageSize) {
+      break;
+    }
+  }
+
+  return segments;
+}
+
+async function requestRecordingExport(cameraId, beginTime, endTime, voiceSwitch = 2) {
+  const data = await postOpenApi("/api/hccgw/video/v1/video/save", {
+    cameraId,
+    beginTime,
+    endTime,
+    voiceSwitch,
+  });
+
+  const errorCode = String(data.errorCode || data.code || "");
+  if (errorCode !== "0") {
+    throw new Error(
+      friendlyOpenApiError(
+        errorCode,
+        data.errorMsg || data.msg || "Kayit export istegi basarisiz."
+      )
+    );
+  }
+
+  const taskId = String(data?.data?.taskId || data.taskId || "").trim();
+  if (!taskId) {
+    throw new Error("video/save yanitinda taskId bulunamadi.");
+  }
+
+  return taskId;
+}
+
+async function getRecordingDownloadUrl(taskId) {
+  const data = await postOpenApi("/api/hccgw/video/v1/video/download/url", { taskId });
+  const errorCode = String(data.errorCode || data.code || "");
+  if (errorCode !== "0") {
+    throw new Error(
+      friendlyOpenApiError(
+        errorCode,
+        data.errorMsg || data.msg || "Kayit indirme URL bilgisi alinamadi."
+      )
+    );
+  }
+
+  return {
+    status: Number(data?.data?.status ?? -1),
+    expireTime: Number(data?.data?.expireTime || 0),
+    urls: Array.isArray(data?.data?.urls) ? data.data.urls : [],
+  };
+}
+
+async function waitForRecordingDownloadUrl(taskId, options = {}) {
+  const timeoutMs = Number(options.timeoutMs || 180000);
+  const pollIntervalMs = Number(options.pollIntervalMs || 3000);
+  const startedAt = Date.now();
+  let lastResult = null;
+
+  while (Date.now() - startedAt < timeoutMs) {
+    lastResult = await getRecordingDownloadUrl(taskId);
+    if (lastResult.status === 0 && lastResult.urls.length > 0) {
+      return lastResult;
+    }
+
+    if ([2, 3, 4].includes(lastResult.status)) {
+      throw new Error(`Kayit dosyasi hazirlanamadi. status=${lastResult.status}`);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+  }
+
+  throw new Error(
+    `Kayit indirme URL bekleme zamani doldu. taskId=${taskId}, sonDurum=${JSON.stringify(lastResult)}`
+  );
+}
+
+async function downloadRecordingFile(downloadUrl, outputPath) {
+  const response = await fetch(downloadUrl);
+  if (!response.ok) {
+    throw new Error(`Kayit dosyasi indirilemedi. HTTP ${response.status}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  ensureDirectory(path.dirname(outputPath));
+  fs.writeFileSync(outputPath, Buffer.from(arrayBuffer));
+}
+
+function buildRecordingSyncStatus(cameraId = "") {
+  const config = loadRecordingSyncConfig();
+  const state = loadRecordingSyncState();
+  const camera = String(cameraId || "").trim();
+  const matchedCamera = camera ? config.cameras.find((item) => item.cameraId === camera) || null : null;
+
+  return {
+    archiveRoot: RECORDING_ARCHIVE_ROOT,
+    runInProgress: Boolean(recordingSyncPromise),
+    config: {
+      enabled: Boolean(config.enabled),
+      dailyTime: config.dailyTime,
+      lookbackMinutes: Number(config.lookbackMinutes || 0),
+      camera: matchedCamera,
+    },
+    state: {
+      lastRunStartedAt: state.lastRunStartedAt,
+      lastRunFinishedAt: state.lastRunFinishedAt,
+      lastRunStatus: state.lastRunStatus,
+      lastRunReason: state.lastRunReason,
+      lastError: state.lastError,
+      lastSuccessAt: camera ? state.lastSuccessByCameraId?.[camera] || "" : "",
+      recentRuns: state.recentRuns,
+    },
+  };
+}
+
+function normalizeRecordingSyncConfigInput(body) {
+  const cameraId = String(body.cameraId || "").trim();
+  const deviceId = String(body.deviceId || "").trim();
+  const deviceSerial = String(body.deviceSerial || "").trim();
+  const name = String(body.name || "").trim();
+  const dailyTime = String(body.dailyTime || "").trim();
+  const timeParts = parseTimeValue(dailyTime);
+  if (!cameraId) {
+    throw new Error("cameraId zorunlu.");
+  }
+  if (!deviceId) {
+    throw new Error("deviceId zorunlu.");
+  }
+  if (!timeParts) {
+    throw new Error("dailyTime HH:MM formatinda olmali.");
+  }
+
+  const lookbackMinutes = Number(body.lookbackMinutes || 1440);
+  if (!Number.isFinite(lookbackMinutes) || lookbackMinutes < 10 || lookbackMinutes > 10080) {
+    throw new Error("lookbackMinutes 10 ile 10080 arasinda olmali.");
+  }
+
+  return {
+    cameraId,
+    deviceId,
+    deviceSerial,
+    name,
+    enabled: Boolean(body.enabled),
+    dailyTime: timeParts.normalized,
+    lookbackMinutes: Math.round(lookbackMinutes),
+  };
+}
+
+async function runRecordingSync(options = {}) {
+  if (recordingSyncPromise) {
+    return recordingSyncPromise;
+  }
+
+  recordingSyncPromise = (async () => {
+    ensureDirectory(RECORDING_ARCHIVE_ROOT);
+
+    const state = loadRecordingSyncState();
+    const config = loadRecordingSyncConfig();
+    const startedAt = new Date();
+    const runId = crypto.randomUUID();
+    const requestedCameraId = String(options.cameraId || "").trim();
+    const beginTimeOverride = String(options.beginTime || "").trim();
+    const endTimeOverride = String(options.endTime || "").trim();
+    const fallbackCameras = Array.isArray(options.cameras) ? options.cameras : [];
+    const selectedCameras = config.cameras.filter(
+      (camera) => camera && camera.cameraId && (!requestedCameraId || camera.cameraId === requestedCameraId)
+    );
+    if (selectedCameras.length === 0 && fallbackCameras.length > 0) {
+      selectedCameras.push(
+        ...fallbackCameras.filter(
+          (camera) => camera && camera.cameraId && (!requestedCameraId || camera.cameraId === requestedCameraId)
+        )
+      );
+    }
+
+    if (selectedCameras.length === 0) {
+      throw new Error("Kayit senkronu icin kayitli kamera bulunamadi.");
+    }
+
+    state.activeRun = {
+      runId,
+      startedAt: startedAt.toISOString(),
+      reason: String(options.reason || "manual"),
+      cameraIds: selectedCameras.map((camera) => camera.cameraId),
+    };
+    state.lastRunStartedAt = startedAt.toISOString();
+    state.lastRunFinishedAt = "";
+    state.lastRunStatus = "running";
+    state.lastRunReason = String(options.reason || "manual");
+    state.lastError = "";
+    saveRecordingSyncState(state);
+
+    const result = {
+      runId,
+      startedAt: startedAt.toISOString(),
+      reason: state.lastRunReason,
+      cameras: [],
+    };
+
+    try {
+      for (const camera of selectedCameras) {
+        const lastSuccess = state.lastSuccessByCameraId?.[camera.cameraId] || "";
+        const now = new Date();
+        const defaultBeginTime = new Date(now.getTime() - Number(config.lookbackMinutes || 1440) * 60 * 1000);
+        const beginTime = beginTimeOverride || lastSuccess || formatIsoOffset(defaultBeginTime);
+        const endTime = endTimeOverride || formatIsoOffset(now);
+
+        const recordList = await searchAllCameraRecordings({
+          cameraId: camera.cameraId,
+          beginTime,
+          endTime,
+          targetType: 0,
+          timeType: 1,
+        });
+
+        const cameraResult = {
+          cameraId: camera.cameraId,
+          deviceId: camera.deviceId,
+          deviceSerial: camera.deviceSerial,
+          name: camera.name || "",
+          beginTime,
+          endTime,
+          foundSegments: recordList.length,
+          downloadedSegments: [],
+          skippedSegments: [],
+        };
+
+        for (const segment of recordList) {
+          const segmentBeginTime = String(segment.beginTime || "").trim();
+          const segmentEndTime = String(segment.endTime || "").trim();
+          const targetType = Number(segment.targetType || 0);
+          if (!segmentBeginTime || !segmentEndTime) {
+            continue;
+          }
+
+          const fingerprint = createSegmentFingerprint(
+            camera.cameraId,
+            segmentBeginTime,
+            segmentEndTime,
+            targetType
+          );
+          if (state.downloadedSegments[fingerprint]) {
+            cameraResult.skippedSegments.push({
+              beginTime: segmentBeginTime,
+              endTime: segmentEndTime,
+              reason: "already-downloaded",
+            });
+            continue;
+          }
+
+          const taskId = await requestRecordingExport(
+            camera.cameraId,
+            segmentBeginTime,
+            segmentEndTime
+          );
+          const downloadInfo = await waitForRecordingDownloadUrl(taskId);
+          const outputDir = buildArchiveDirectory(camera);
+          const baseName = buildSegmentBaseName(camera, segment);
+          const downloadedFiles = [];
+
+          for (const [index, downloadUrl] of downloadInfo.urls.entries()) {
+            const extension = path.extname(new URL(downloadUrl).pathname) || ".mp4";
+            const fileName =
+              downloadInfo.urls.length > 1
+                ? `${baseName}_${index + 1}${extension}`
+                : `${baseName}${extension}`;
+            const outputPath = path.join(outputDir, fileName);
+            await downloadRecordingFile(downloadUrl, outputPath);
+            downloadedFiles.push(outputPath);
+          }
+
+          state.downloadedSegments[fingerprint] = {
+            cameraId: camera.cameraId,
+            beginTime: segmentBeginTime,
+            endTime: segmentEndTime,
+            targetType,
+            downloadedAt: new Date().toISOString(),
+            files: downloadedFiles,
+          };
+          state.lastSuccessByCameraId[camera.cameraId] = segmentEndTime;
+          saveRecordingSyncState(state);
+
+          cameraResult.downloadedSegments.push({
+            beginTime: segmentBeginTime,
+            endTime: segmentEndTime,
+            taskId,
+            files: downloadedFiles,
+          });
+        }
+
+        result.cameras.push(cameraResult);
+      }
+
+      state.lastRunStatus = "completed";
+      state.lastRunFinishedAt = new Date().toISOString();
+      state.activeRun = null;
+      if (options.scheduleKey) {
+        state.lastScheduledRunKey = String(options.scheduleKey);
+      }
+      mergeRecentRun(state, {
+        runId,
+        startedAt: result.startedAt,
+        finishedAt: state.lastRunFinishedAt,
+        status: "completed",
+        reason: result.reason,
+        cameraCount: result.cameras.length,
+      });
+      saveRecordingSyncState(state);
+      result.finishedAt = state.lastRunFinishedAt;
+      result.status = "completed";
+      return result;
+    } catch (error) {
+      state.lastRunStatus = "failed";
+      state.lastRunFinishedAt = new Date().toISOString();
+      state.activeRun = null;
+      state.lastError = sanitizeMessage(error?.message || String(error));
+      mergeRecentRun(state, {
+        runId,
+        startedAt: result.startedAt,
+        finishedAt: state.lastRunFinishedAt,
+        status: "failed",
+        reason: result.reason,
+        error: state.lastError,
+      });
+      saveRecordingSyncState(state);
+      throw error;
+    }
+  })();
+
+  try {
+    return await recordingSyncPromise;
+  } finally {
+    recordingSyncPromise = null;
+  }
+}
+
+function scheduleRecordingSyncLoop() {
+  if (recordingSyncTimer) {
+    clearInterval(recordingSyncTimer);
+  }
+
+  recordingSyncTimer = setInterval(async () => {
+    const config = loadRecordingSyncConfig();
+    if (!config.enabled || recordingSyncPromise) {
+      return;
+    }
+
+    const parsedTime = parseTimeValue(config.dailyTime);
+    if (!parsedTime) {
+      return;
+    }
+
+    const now = new Date();
+    const scheduled = new Date(now);
+    scheduled.setHours(parsedTime.hour, parsedTime.minute, 0, 0);
+    const scheduleKey = `${scheduled.getFullYear()}-${padNumber(scheduled.getMonth() + 1)}-${padNumber(
+      scheduled.getDate()
+    )}@${parsedTime.normalized}`;
+    const state = loadRecordingSyncState();
+    if (now < scheduled || state.lastScheduledRunKey === scheduleKey) {
+      return;
+    }
+
+    try {
+      await runRecordingSync({
+        reason: "scheduled",
+        scheduleKey,
+      });
+    } catch (error) {
+      console.error("Kayit senkronu zamanlanmis calismada hata:", sanitizeMessage(error?.message || String(error)));
+    }
+  }, 30000);
 }
 
 async function requestIsapiXml(cameraIp, pathName, userName, password) {
@@ -2454,15 +3642,29 @@ app.get("/api/team-devices/detail", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
   const shortSerial = String(req.query.shortSerial || "").trim();
+  const includeRaw = String(req.query.includeRaw || "0").trim() === "1";
   if (!shortSerial) {
     return res.status(400).json({ error: "shortSerial zorunlu." });
   }
 
   try {
     const detail = await teamOpenApiService.getDeviceDetail(shortSerial);
-    return res.status(200).json({
+    const responsePayload = {
       success: true,
-      ...detail,
+      exists: detail.exists,
+      errorCode: detail.errorCode,
+      errorMessage: detail.errorMessage,
+      deviceId: detail.deviceId,
+      cameraChannels: detail.cameraChannels,
+      detailSummary: detail.detailSummary,
+    };
+
+    if (includeRaw) {
+      responsePayload.rawData = detail.rawData;
+    }
+
+    return res.status(200).json({
+      ...responsePayload,
     });
   } catch (err) {
     return res.status(502).json({
@@ -2685,6 +3887,265 @@ app.get("/api/device-config/ezviz", async (req, res) => {
     });
   } catch (err) {
     return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.get("/api/device-config/storage", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.query.deviceId || "").trim();
+  const cameraId = String(req.query.cameraId || "").trim();
+  if (!deviceId) {
+    return res.status(400).json({ error: "deviceId zorunlu." });
+  }
+
+  try {
+    const { info, attempts } = await readStorageViaProxy(deviceId);
+    let recordSetting = null;
+    let recordingIsapi = null;
+
+    if (cameraId) {
+      try {
+        const settings = await teamOpenApiService.getRecordSettings([cameraId]);
+        recordSetting = settings.length > 0 ? summarizeRecordSetting(settings[0]) : null;
+      } catch (error) {
+        recordSetting = {
+          error: sanitizeMessage(error.message),
+        };
+      }
+    }
+
+    try {
+      recordingIsapi = await readRecordingIsapiState(deviceId);
+    } catch (error) {
+      recordingIsapi = {
+        error: sanitizeMessage(error?.message || String(error)),
+      };
+    }
+
+    return res.json({
+      success: true,
+      deviceId,
+      cameraId,
+      storage: info,
+      recordSetting,
+      recordingIsapi,
+      attempts,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.post("/api/device-config/storage/format", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.body.deviceId || "").trim();
+  const confirmed = Boolean(req.body.confirmed);
+  const diskId = String(req.body.diskId || "").trim();
+
+  if (!deviceId) {
+    return res.status(400).json({ error: "deviceId zorunlu." });
+  }
+  if (!confirmed) {
+    return res.status(400).json({ error: "SD kart bicimlendirme icin onay gerekli." });
+  }
+
+  try {
+    const before = await readStorageViaProxy(deviceId);
+    const formatResult = await tryFormatStorage(deviceId, diskId || before.info.diskId);
+    const after = await readStorageViaProxy(deviceId);
+
+    return res.json({
+      success: true,
+      deviceId,
+      diskId: diskId || before.info.diskId || "1",
+      formatResult,
+      before: before.info,
+      after: after.info,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.get("/api/device-config/record-settings", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const cameraId = String(req.query.cameraId || "").trim();
+  if (!cameraId) {
+    return res.status(400).json({ error: "cameraId zorunlu." });
+  }
+
+  try {
+    const settings = await teamOpenApiService.getRecordSettings([cameraId]);
+    return res.json({
+      success: true,
+      cameraId,
+      recordSetting: settings.length > 0 ? summarizeRecordSetting(settings[0]) : null,
+      raw: settings[0] || null,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.post("/api/device-config/record-settings/continuous", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const cameraId = String(req.body.cameraId || "").trim();
+  const deviceId = String(req.body.deviceId || "").trim();
+
+  if (!cameraId || !deviceId) {
+    return res.status(400).json({ error: "cameraId ve deviceId zorunlu." });
+  }
+
+  try {
+    const settings = await teamOpenApiService.getRecordSettings([cameraId]);
+    const current = settings.length > 0 ? summarizeRecordSetting(settings[0]) : null;
+
+    if (current?.enableLocalStorage === 1 && current?.scheduleTemplateId === "1") {
+      return res.json({
+        success: true,
+        cameraId,
+        deviceId,
+        alreadyContinuous: true,
+        recordSetting: current,
+      });
+    }
+
+    return res.status(501).json({
+      error:
+        "Bu tenant/model icin kayit yazma endpoint'i resmi Team OpenAPI dokumaninda dogrulanmadi. recordsettings/get okunuyor, yazma icin modelin ISAPI kayit semasi netlestirilmeli.",
+      cameraId,
+      deviceId,
+      recordSetting: current,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.post("/api/device-config/local-record", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.body.deviceId || "").trim();
+  const cameraId = String(req.body.cameraId || "").trim();
+  const action = String(req.body.action || "").trim().toLowerCase();
+
+  if (!deviceId) {
+    return res.status(400).json({ error: "deviceId zorunlu." });
+  }
+  if (!["enable", "disable", "continuous"].includes(action)) {
+    return res.status(400).json({ error: "action enable|disable|continuous olmali." });
+  }
+
+  try {
+    const operation = await applyLocalRecordOperation(deviceId, action);
+
+    let verifiedRecordSetting = null;
+    if (cameraId) {
+      try {
+        const settings = await teamOpenApiService.getRecordSettings([cameraId]);
+        verifiedRecordSetting = settings.length > 0 ? summarizeRecordSetting(settings[0]) : null;
+      } catch (error) {
+        verifiedRecordSetting = {
+          error: sanitizeMessage(error?.message || String(error)),
+        };
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      deviceId,
+      cameraId,
+      action,
+      verifiedRecordSetting,
+      operation,
+    });
+  } catch (error) {
+    return res.status(502).json({ error: sanitizeMessage(error?.message || String(error)) });
+  }
+});
+
+app.get("/api/recording-sync/status", (req, res) => {
+  const cameraId = String(req.query.cameraId || "").trim();
+  return res.json({
+    success: true,
+    ...buildRecordingSyncStatus(cameraId),
+  });
+});
+
+app.post("/api/recording-sync/config", (req, res) => {
+  try {
+    const input = normalizeRecordingSyncConfigInput(req.body || {});
+    const config = loadRecordingSyncConfig();
+    config.enabled = input.enabled;
+    config.dailyTime = input.dailyTime;
+    config.lookbackMinutes = input.lookbackMinutes;
+
+    const nextCamera = {
+      cameraId: input.cameraId,
+      deviceId: input.deviceId,
+      deviceSerial: input.deviceSerial,
+      name: input.name,
+      enabled: true,
+      updatedAt: new Date().toISOString(),
+    };
+
+    const existingIndex = config.cameras.findIndex((item) => item.cameraId === input.cameraId);
+    if (existingIndex >= 0) {
+      config.cameras[existingIndex] = {
+        ...config.cameras[existingIndex],
+        ...nextCamera,
+      };
+    } else {
+      config.cameras.push(nextCamera);
+    }
+
+    saveRecordingSyncConfig(config);
+    return res.status(200).json({
+      success: true,
+      message: "Kayit senkron konfigurasyonu kaydedildi.",
+      ...buildRecordingSyncStatus(input.cameraId),
+    });
+  } catch (error) {
+    return res.status(400).json({ error: sanitizeMessage(error?.message || String(error)) });
+  }
+});
+
+app.post("/api/recording-sync/run-once", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  try {
+    const cameraId = String(req.body.cameraId || "").trim();
+    if (!cameraId) {
+      return res.status(400).json({ error: "cameraId zorunlu." });
+    }
+
+    const result = await runRecordingSync({
+      reason: "manual",
+      cameraId,
+      beginTime: req.body.beginTime,
+      endTime: req.body.endTime,
+      cameras: [
+        {
+          cameraId,
+          deviceId: String(req.body.deviceId || "").trim(),
+          deviceSerial: String(req.body.deviceSerial || "").trim(),
+          name: String(req.body.name || "").trim(),
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Kayit senkronu tamamlandi.",
+      result,
+      ...buildRecordingSyncStatus(cameraId),
+    });
+  } catch (error) {
+    return res.status(502).json({ error: sanitizeMessage(error?.message || String(error)) });
   }
 });
 
@@ -3212,6 +4673,16 @@ app.get("/alpr-monitor", (req, res) => {
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
+
+ensureDirectory(RECORDING_SYNC_ROOT);
+ensureDirectory(RECORDING_ARCHIVE_ROOT);
+if (!fs.existsSync(RECORDING_SYNC_CONFIG_PATH)) {
+  saveRecordingSyncConfig(buildDefaultRecordingSyncConfig());
+}
+if (!fs.existsSync(RECORDING_SYNC_STATE_PATH)) {
+  saveRecordingSyncState(buildDefaultRecordingSyncState());
+}
+scheduleRecordingSyncLoop();
 
 app.listen(PORT, () => {
   console.log(`Sunucu ${PORT} portunda calisiyor`);

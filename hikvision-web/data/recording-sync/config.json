@@ -1,0 +1,15 @@
+{
+  "enabled": false,
+  "dailyTime": "02:00",
+  "lookbackMinutes": 1440,
+  "cameras": [
+    {
+      "cameraId": "640c7843565c4b7fb5131adf82b503d5",
+      "deviceId": "1e55e407e30548fbad15c38993c979c3",
+      "deviceSerial": "GL4477439",
+      "name": "CAM-GL4477439",
+      "enabled": true,
+      "updatedAt": "2026-08-03T14:09:40.504Z"
+    }
+  ]
+}

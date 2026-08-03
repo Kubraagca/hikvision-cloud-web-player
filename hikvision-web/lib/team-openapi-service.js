@@ -340,6 +340,38 @@ function createTeamOpenApiService({
     return channels;
   }
 
+  function findFirstObjectByKeys(rootNode, keys) {
+    for (const node of enumerateJsonNodes(rootNode)) {
+      if (!node || typeof node !== "object" || Array.isArray(node)) {
+        continue;
+      }
+
+      const normalizedKeys = Object.keys(node).map((item) => item.toLowerCase());
+      if (keys.every((key) => normalizedKeys.includes(String(key).toLowerCase()))) {
+        return node;
+      }
+    }
+
+    return null;
+  }
+
+  function summarizeDeviceDetailData(data) {
+    const deviceNode = findFirstObjectByKeys(data?.data, ["baseInfo"]) || null;
+    const diskStatus = deviceNode?.diskStatus || null;
+    const deviceRecordStatus = deviceNode?.deviceRecordStatus || null;
+    const hddStatusList = deviceNode?.hddStatusList || null;
+    const hddAttributeList = deviceNode?.hddAttributeList || null;
+
+    return {
+      device: deviceNode,
+      diskStatus,
+      deviceRecordStatus,
+      hddStatusList,
+      hddAttributeList,
+      availableKeys: deviceNode && typeof deviceNode === "object" ? Object.keys(deviceNode) : [],
+    };
+  }
+
   function isIgnorableAreaResourceError(errorCode) {
     return errorCode === "LAP000026";
   }
@@ -439,7 +471,37 @@ function createTeamOpenApiService({
       errorMessage: "",
       deviceId: extractDeviceId(data.data),
       cameraChannels: parseCameraChannels(data),
+      detailSummary: summarizeDeviceDetailData(data),
+      rawData: data.data || null,
     };
+  }
+
+  async function getRecordSettings(cameraIds) {
+    const normalizedCameraIds = Array.isArray(cameraIds)
+      ? cameraIds.map((item) => String(item || "").trim()).filter(Boolean)
+      : [];
+
+    if (normalizedCameraIds.length === 0) {
+      throw new Error("cameraIds zorunlu.");
+    }
+
+    const data = await postOpenApi(
+      "/api/hccgw/video/v1/recordsettings/get",
+      { cameraId: normalizedCameraIds },
+      { operation: "recordsettings.get" }
+    );
+
+    const errorCode = String(data.errorCode || data.code || "");
+    if (errorCode !== "0") {
+      throw new Error(
+        friendlyOpenApiError(
+          errorCode,
+          data.errorMsg || data.msg || "Kayit ayarlari alinamadi."
+        )
+      );
+    }
+
+    return Array.isArray(data?.data?.recordSetting) ? data.data.recordSetting : [];
   }
 
   async function addDeviceAndImportChannels({ shortSerial, verificationCode, alias, areaId, areaName, userName, password }) {
@@ -616,6 +678,7 @@ function createTeamOpenApiService({
     getAreas,
     ensureArea,
     getDeviceDetail,
+    getRecordSettings,
     disableStreamEncryption,
     addDeviceAndImportChannels,
     addDeviceToAreaWorkflow,

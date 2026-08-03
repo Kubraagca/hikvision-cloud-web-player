@@ -6,113 +6,348 @@
 <title>Cihaz Detayi</title>
 <style>
   :root {
-    --bg: #eef1f5;
+    --bg: #f3f6fa;
     --panel: #ffffff;
-    --panel-alt: #f7f9fc;
-    --border: #cfd6df;
-    --text: #1c2733;
-    --muted: #5f6c7b;
-    --accent: #1f5f99;
+    --panel-alt: #f8fafc;
+    --border: #d9e1ea;
+    --border-soft: #e9eef4;
+    --text: #18212b;
+    --muted: #6a7786;
+    --accent: #0f4c81;
+    --accent-soft: #eaf2f8;
     --ok: #0f8a4b;
     --err: #c62828;
+    --shadow: 0 14px 40px rgba(15, 23, 42, 0.05);
+    --radius: 14px;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
   }
-  header, main { padding: 16px; }
+  header, main {
+    width: min(1240px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+  header { padding: 24px 0 18px; }
+  main { padding: 0 0 32px; }
   .head {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    align-items: center;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
+    gap: 20px;
+    align-items: flex-start;
   }
   h1, h2, p { margin: 0; }
-  .sub { margin-top: 4px; color: var(--muted); font-size: 12px; }
-  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  h1 {
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .sub {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 760px;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
   button, a, input, textarea {
     font: inherit;
   }
   button, a.button-link {
-    min-height: 36px;
-    padding: 8px 12px;
+    min-height: 40px;
+    padding: 10px 14px;
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 10px;
     background: #fff;
     color: var(--text);
     text-decoration: none;
     cursor: pointer;
+    transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  button:hover, a.button-link:hover {
+    border-color: #bfd0df;
+    background: #fbfdff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  }
+  button:active, a.button-link:active {
+    transform: translateY(1px);
   }
   .layout {
     display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 16px;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 18px;
   }
   @media (max-width: 900px) {
     .layout { grid-template-columns: 1fr; }
   }
   .panel {
     background: var(--panel);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-top: 18px;
   }
-  .panel-head {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    background: var(--panel-alt);
+  .layout > .panel {
+    margin-top: 0;
   }
-  .panel-body { padding: 12px; }
-  .grid { display: grid; gap: 10px; }
-  .summary {
+  .split-panels {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 18px;
+  }
+  .split-panel {
+    margin-top: 0;
+  }
+  @media (max-width: 900px) {
+    .split-panels {
+      grid-template-columns: 1fr;
+    }
+  }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border-soft);
+    background: linear-gradient(180deg, #fcfdff 0%, #f8fafc 100%);
+  }
+  .panel-body { padding: 18px; }
+  .grid { display: grid; gap: 14px; }
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .summary.compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 1100px) {
+    .summary {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 720px) {
+    .summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .summary.compact {
+      grid-template-columns: 1fr;
+    }
   }
   .item {
-    padding: 10px;
-    border: 1px solid var(--border);
-    background: #fff;
+    padding: 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+    min-height: 82px;
   }
   .item span {
     display: block;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     text-transform: uppercase;
-    margin-bottom: 4px;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .item strong {
+    display: block;
+    font-size: 15px;
+    line-height: 1.35;
+    font-weight: 600;
+    word-break: break-word;
+  }
+  .identity-list {
+    display: grid;
+    gap: 10px;
+  }
+  .identity-row {
+    display: grid;
+    gap: 6px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+  }
+  .identity-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .identity-value {
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 600;
+    word-break: break-word;
+  }
+  .network-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+  .network-form .field-span-2 {
+    grid-column: 1 / -1;
+  }
+  .settings-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+  .settings-form .field-span-2 {
+    grid-column: 1 / -1;
+  }
+  @media (max-width: 900px) {
+    .network-form {
+      grid-template-columns: 1fr;
+    }
+    .network-form .field-span-2 {
+      grid-column: auto;
+    }
+    .settings-form {
+      grid-template-columns: 1fr;
+    }
+    .settings-form .field-span-2 {
+      grid-column: auto;
+    }
   }
   label {
     display: grid;
-    gap: 4px;
+    gap: 6px;
     font-size: 12px;
     color: var(--muted);
   }
   input, textarea {
     width: 100%;
-    min-height: 38px;
-    padding: 8px 10px;
+    min-height: 42px;
+    padding: 10px 12px;
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 10px;
     background: #fff;
     color: var(--text);
   }
-  textarea { min-height: 180px; resize: vertical; }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: #98b7cf;
+    box-shadow: 0 0 0 4px rgba(15, 76, 129, 0.08);
+  }
+  textarea {
+    min-height: 180px;
+    resize: vertical;
+    font-family: Consolas, "SFMono-Regular", monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    background: #fbfcfe;
+  }
   .status {
-    padding: 10px;
-    border: 1px solid var(--border);
+    padding: 12px 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
     background: var(--panel-alt);
     font-size: 12px;
+    line-height: 1.5;
     color: var(--muted);
   }
   .status.ok { color: var(--ok); }
   .status.err { color: var(--err); }
+  .status.warn { color: #9a6700; }
   .row {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
+  }
+  .row button,
+  .row .button-link {
+    background: #fff;
+    border-color: #cfd9e3;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .row button:hover,
+  .row .button-link:hover {
+    background: #f8fbfd;
+    border-color: #b7c9d9;
+  }
+  .row button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .row button.primary:hover {
+    background: #0d436f;
+    border-color: #0d436f;
+  }
+  input[type="checkbox"] {
+    min-height: auto;
+    width: 16px;
+    height: 16px;
+    margin: 0 8px 0 0;
+    padding: 0;
+    border-radius: 4px;
+    box-shadow: none;
+  }
+  .password-field {
+    position: relative;
+  }
+  .password-field input {
+    padding-right: 48px;
+  }
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    min-height: 32px;
+    min-width: 32px;
+    padding: 0 8px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    box-shadow: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .toggle-password:hover {
+    background: transparent;
+    border: 0;
+    color: var(--text);
+    box-shadow: none;
+  }
+  .toggle-password:focus {
+    outline: none;
+    color: var(--text);
+  }
+  .toggle-password svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .toggle-password .eye-off-line {
+    display: none;
+  }
+  .toggle-password[data-visible="true"] .eye-line {
+    display: none;
+  }
+  .toggle-password[data-visible="true"] .eye-off-line {
+    display: block;
   }
 </style>
 </head>
@@ -120,7 +355,7 @@
 <header class="head">
   <div>
     <h1>Cihaz Detayi</h1>
-    <div class="sub">Cloud proxypass uzerinden cihaz network ayarlarini oku, guncelle ve reboot et.</div>
+    <div class="sub">Cihazin ag, depolama ve yerel kayit ayarlarini tek ekrandan yonetin.</div>
   </div>
   <div class="actions">
     <a class="button-link" href="/">Izleme</a>
@@ -132,11 +367,23 @@
     <section class="panel">
       <div class="panel-head"><h2>Kimlik</h2></div>
       <div class="panel-body grid">
-        <div class="summary">
-          <div class="item"><span>Kamera</span><strong id="name-meta">-</strong></div>
-          <div class="item"><span>Device ID</span><strong id="device-id-meta">-</strong></div>
-          <div class="item"><span>Resource ID</span><strong id="resource-id-meta">-</strong></div>
-          <div class="item"><span>Serial</span><strong id="serial-meta">-</strong></div>
+        <div class="identity-list">
+          <div class="identity-row">
+            <span class="identity-label">Kamera</span>
+            <strong class="identity-value" id="name-meta">-</strong>
+          </div>
+          <div class="identity-row">
+            <span class="identity-label">Serial</span>
+            <strong class="identity-value" id="serial-meta">-</strong>
+          </div>
+          <div class="identity-row">
+            <span class="identity-label">Device ID</span>
+            <strong class="identity-value" id="device-id-meta">-</strong>
+          </div>
+          <div class="identity-row">
+            <span class="identity-label">Resource ID</span>
+            <strong class="identity-value" id="resource-id-meta">-</strong>
+          </div>
         </div>
         <div id="status-box" class="status">Bilgiler hazirlaniyor...</div>
       </div>
@@ -149,14 +396,16 @@
           <div class="item"><span>Interface ID</span><strong id="interface-id-meta">-</strong></div>
           <div class="item"><span>DHCP</span><strong id="dhcp-meta">-</strong></div>
         </div>
-        <label>IP Address <input id="ip-input" type="text" /></label>
-        <label>Subnet Mask <input id="mask-input" type="text" /></label>
-        <label>Gateway <input id="gateway-input" type="text" /></label>
-        <label>Primary DNS <input id="dns1-input" type="text" /></label>
-        <label>Secondary DNS <input id="dns2-input" type="text" /></label>
+        <div class="network-form">
+          <label class="field-span-2">IP Address <input id="ip-input" type="text" /></label>
+          <label>Subnet Mask <input id="mask-input" type="text" /></label>
+          <label>Gateway <input id="gateway-input" type="text" /></label>
+          <label>Primary DNS <input id="dns1-input" type="text" /></label>
+          <label>Secondary DNS <input id="dns2-input" type="text" /></label>
+        </div>
         <div class="row">
           <button id="load-btn" type="button">Network Oku</button>
-          <button id="save-btn" type="button">IP Ayarlarini Kaydet</button>
+          <button id="save-btn" type="button" class="primary">IP Ayarlarini Kaydet</button>
           <button id="reboot-btn" type="button">Cihazi Reboot Et</button>
         </div>
       </div>
@@ -164,35 +413,124 @@
   </div>
 
   <section class="panel" style="margin-top:16px;">
-    <div class="panel-head"><h2>Hik-Connect / EZVIZ</h2></div>
+    <div class="split-panels">
+      <section class="panel split-panel">
+        <div class="panel-head"><h2>Hik-Connect / EZVIZ</h2></div>
+        <div class="panel-body grid">
+          <div class="summary compact">
+            <div class="item"><span>Enabled</span><strong id="ezviz-enabled-meta">-</strong></div>
+            <div class="item"><span>Register Status</span><strong id="ezviz-register-meta">-</strong></div>
+          </div>
+          <label>Verification Code
+            <div class="password-field">
+              <input id="verification-input" type="password" />
+              <button class="toggle-password" type="button" data-target="verification-input" data-visible="false" aria-label="Parolayi goster">
+                <svg class="eye-line" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="eye-off-line" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18"></path>
+                  <path d="M10.6 10.7a3 3 0 0 0 4 4"></path>
+                  <path d="M9.9 5.2A11.5 11.5 0 0 1 12 5c6.5 0 10 7 10 7a17.7 17.7 0 0 1-4 4.9"></path>
+                  <path d="M6.2 6.3C3.7 8 2 12 2 12a18.8 18.8 0 0 0 7 5.5"></path>
+                </svg>
+              </button>
+            </div>
+          </label>
+          <div class="row">
+            <button id="load-ezviz-btn" type="button">Verification Oku</button>
+            <button id="save-ezviz-btn" type="button">Verification Kaydet</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel split-panel">
+        <div class="panel-head"><h2>Kamera Ayarlari</h2></div>
+        <div class="panel-body grid">
+          <div class="settings-form">
+            <label>Kamera IP <input id="provision-ip-input" type="text" /></label>
+            <label>Kullanici Adi <input id="provision-username-input" type="text" value="admin" /></label>
+            <label>Parola
+              <div class="password-field">
+                <input id="provision-password-input" type="password" />
+                <button class="toggle-password" type="button" data-target="provision-password-input" data-visible="false" aria-label="Parolayi goster">
+                  <svg class="eye-line" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  <svg class="eye-off-line" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 3l18 18"></path>
+                    <path d="M10.6 10.7a3 3 0 0 0 4 4"></path>
+                    <path d="M9.9 5.2A11.5 11.5 0 0 1 12 5c6.5 0 10 7 10 7a17.7 17.7 0 0 1-4 4.9"></path>
+                    <path d="M6.2 6.3C3.7 8 2 12 2 12a18.8 18.8 0 0 0 7 5.5"></path>
+                  </svg>
+                </button>
+              </div>
+            </label>
+            <label>Alan Adi <input id="provision-area-input" type="text" /></label>
+            <label>Gateway Override <input id="provision-gateway-input" type="text" /></label>
+            <label>SDK Port <input id="provision-sdk-port-input" type="number" value="8000" /></label>
+            <label class="field-span-2"><input id="provision-dhcp-input" type="checkbox" /> DHCP etkinlestir</label>
+          </div>
+          <div class="row">
+            <button id="start-provision-btn" type="button">Kamera Ayarlarini Uygula</button>
+          </div>
+          <div id="provision-status-box" class="status">Hazir.</div>
+          <textarea id="provision-result-output" readonly></textarea>
+        </div>
+      </section>
+    </div>
+  </section>
+ 
+  <section class="panel" style="margin-top:16px;">
+    <div class="panel-head"><h2>Depolama ve Kayit</h2></div>
     <div class="panel-body grid">
       <div class="summary">
-        <div class="item"><span>Enabled</span><strong id="ezviz-enabled-meta">-</strong></div>
-        <div class="item"><span>Register Status</span><strong id="ezviz-register-meta">-</strong></div>
+        <div class="item"><span>SD Durumu</span><strong id="storage-status-meta">-</strong></div>
+        <div class="item"><span>Durum</span><strong id="storage-warning-meta">-</strong></div>
+        <div class="item"><span>Kapasite</span><strong id="storage-capacity-meta">-</strong></div>
+        <div class="item"><span>Bos Alan</span><strong id="storage-free-meta">-</strong></div>
+        <div class="item"><span>Yerel Kayit</span><strong id="record-local-meta">-</strong></div>
+        <div class="item"><span>Kayit Turu</span><strong id="record-mode-meta">-</strong></div>
+        <div class="item"><span>Kayit Akisi</span><strong id="record-stream-meta">-</strong></div>
+        <div class="item"><span>Pre-record</span><strong id="record-pre-meta">-</strong></div>
+        <div class="item"><span>Post-record</span><strong id="record-post-meta">-</strong></div>
+        <div class="item"><span>Video Expiration</span><strong id="record-expiration-meta">-</strong></div>
+        <div class="item"><span>Expire in (Day)</span><strong id="record-expire-days-meta">-</strong></div>
+        <div class="item"><span>Track ID</span><strong id="record-track-id-meta">-</strong></div>
       </div>
-      <label>Verification Code <input id="verification-input" type="text" /></label>
+      <div id="storage-status-box" class="status">Depolama bilgileri henuz okunmadi.</div>
       <div class="row">
-        <button id="load-ezviz-btn" type="button">Verification Oku</button>
-        <button id="save-ezviz-btn" type="button">Verification Kaydet</button>
+        <button id="load-storage-btn" type="button">Depolama Oku</button>
+        <button id="format-storage-btn" type="button">SD Karti Yapilandir</button>
+        <button id="enable-local-record-btn" type="button">Yerel Kaydi Ac</button>
+        <button id="disable-local-record-btn" type="button">Yerel Kaydi Kapat</button>
+        <button id="apply-continuous-btn" type="button">7/24 Kayit Ayarla</button>
       </div>
+      <textarea id="storage-output" readonly></textarea>
     </div>
   </section>
 
   <section class="panel" style="margin-top:16px;">
-    <div class="panel-head"><h2>Kamera Ayarlari</h2></div>
+    <div class="panel-head"><h2>Kayit Aktarimi</h2></div>
     <div class="panel-body grid">
-      <label>Kamera IP <input id="provision-ip-input" type="text" /></label>
-      <label>Kullanici Adi <input id="provision-username-input" type="text" value="admin" /></label>
-      <label>Parola <input id="provision-password-input" type="password" /></label>
-      <label>Alan Adi <input id="provision-area-input" type="text" /></label>
-      <label>Gateway Override <input id="provision-gateway-input" type="text" /></label>
-      <label>SDK Port <input id="provision-sdk-port-input" type="number" value="8000" /></label>
-      <label><input id="provision-dhcp-input" type="checkbox" /> DHCP etkinlestir</label>
-      <div class="row">
-        <button id="start-provision-btn" type="button">Kamera Ayarlarini Uygula</button>
+      <div class="summary">
+        <div class="item"><span>Gunluk Senkron</span><strong id="sync-enabled-meta">-</strong></div>
+        <div class="item"><span>Calisma Saati</span><strong id="sync-time-meta">-</strong></div>
+        <div class="item"><span>Son Basarili Aralik</span><strong id="sync-last-success-meta">-</strong></div>
+        <div class="item"><span>Arsiv Klasoru</span><strong id="sync-archive-meta">-</strong></div>
       </div>
-      <div id="provision-status-box" class="status">Hazir.</div>
-      <textarea id="provision-result-output" readonly></textarea>
+      <label><input id="sync-enabled-input" type="checkbox" /> Gunluk otomatik aktarimi etkinlestir</label>
+      <label>Gunluk Saat <input id="sync-time-input" type="time" value="02:00" /></label>
+      <label>Geriye Donuk Tarama (dakika) <input id="sync-lookback-input" type="number" value="1440" min="10" max="10080" /></label>
+      <div id="sync-status-box" class="status">Kayit aktarim ayari henuz okunmadi.</div>
+      <div class="row">
+        <button id="load-sync-btn" type="button">Aktarim Ayarini Oku</button>
+        <button id="save-sync-btn" type="button">Aktarim Ayarini Kaydet</button>
+        <button id="run-sync-btn" type="button">Simdi Indir</button>
+      </div>
+      <textarea id="sync-output" readonly></textarea>
     </div>
   </section>
 
@@ -230,6 +568,29 @@
   const dns1InputEl = document.getElementById("dns1-input");
   const dns2InputEl = document.getElementById("dns2-input");
   const verificationInputEl = document.getElementById("verification-input");
+  const storageStatusMetaEl = document.getElementById("storage-status-meta");
+  const storageWarningMetaEl = document.getElementById("storage-warning-meta");
+  const storageCapacityMetaEl = document.getElementById("storage-capacity-meta");
+  const storageFreeMetaEl = document.getElementById("storage-free-meta");
+  const recordLocalMetaEl = document.getElementById("record-local-meta");
+  const recordModeMetaEl = document.getElementById("record-mode-meta");
+  const recordStreamMetaEl = document.getElementById("record-stream-meta");
+  const recordPreMetaEl = document.getElementById("record-pre-meta");
+  const recordPostMetaEl = document.getElementById("record-post-meta");
+  const recordExpirationMetaEl = document.getElementById("record-expiration-meta");
+  const recordExpireDaysMetaEl = document.getElementById("record-expire-days-meta");
+  const recordTrackIdMetaEl = document.getElementById("record-track-id-meta");
+  const storageStatusBoxEl = document.getElementById("storage-status-box");
+  const storageOutputEl = document.getElementById("storage-output");
+  const syncEnabledMetaEl = document.getElementById("sync-enabled-meta");
+  const syncTimeMetaEl = document.getElementById("sync-time-meta");
+  const syncLastSuccessMetaEl = document.getElementById("sync-last-success-meta");
+  const syncArchiveMetaEl = document.getElementById("sync-archive-meta");
+  const syncEnabledInputEl = document.getElementById("sync-enabled-input");
+  const syncTimeInputEl = document.getElementById("sync-time-input");
+  const syncLookbackInputEl = document.getElementById("sync-lookback-input");
+  const syncStatusBoxEl = document.getElementById("sync-status-box");
+  const syncOutputEl = document.getElementById("sync-output");
   const provisionIpInputEl = document.getElementById("provision-ip-input");
   const provisionUserInputEl = document.getElementById("provision-username-input");
   const provisionPasswordInputEl = document.getElementById("provision-password-input");
@@ -249,6 +610,164 @@
   function setProvisionStatus(text, kind = "") {
     provisionStatusBoxEl.textContent = text;
     provisionStatusBoxEl.className = `status ${kind}`.trim();
+  }
+
+  function setStorageStatus(text, kind = "") {
+    storageStatusBoxEl.textContent = text;
+    storageStatusBoxEl.className = `status ${kind}`.trim();
+  }
+
+  function setSyncStatus(text, kind = "") {
+    syncStatusBoxEl.textContent = text;
+    syncStatusBoxEl.className = `status ${kind}`.trim();
+  }
+
+  function formatMb(value) {
+    if (value === null || value === undefined || value === "") {
+      return "-";
+    }
+    const numeric = Number(value);
+    return Number.isFinite(numeric) && numeric >= 0 ? `${numeric} MB` : "-";
+  }
+
+  function summarizeStorageResult(data) {
+    const lines = [];
+    if (data.storage) {
+      lines.push(`SD Durumu: ${data.storage.status || "-"}`);
+      lines.push(`Uyari: ${data.storage.warning || "-"}`);
+      lines.push(`Kaynak: ${data.storage.source || "-"}`);
+      lines.push(`Kapasite: ${formatMb(data.storage.capacityMb)}`);
+      lines.push(`Bos Alan: ${formatMb(data.storage.freeSpaceMb)}`);
+      lines.push(`Algilandi: ${data.storage.isDetected === null ? "-" : String(data.storage.isDetected)}`);
+      lines.push(`Formatli: ${data.storage.isFormatted === null ? "-" : String(data.storage.isFormatted)}`);
+      lines.push(`Ham Durum: ${data.storage.rawStatus || "-"}`);
+    }
+    if (data.recordSetting) {
+      lines.push("");
+      lines.push(`Yerel Kayit: ${data.recordSetting.enableLocalStorage === 1 ? "acik" : data.recordSetting.enableLocalStorage === 0 ? "kapali" : "-"}`);
+      lines.push(`Cloud Kayit: ${data.recordSetting.enableCloudStorage === 1 ? "acik" : data.recordSetting.enableCloudStorage === 0 ? "kapali" : "-"}`);
+      lines.push(`Pre-record: ${data.recordSetting.preRecord ?? "-"}`);
+      lines.push(`Kayit Akisi: ${formatStreamType(data.recordSetting.recordingStreamType)}`);
+      lines.push(`Stream Type: ${data.recordSetting.recordingStreamType ?? "-"}`);
+      lines.push(`ANR: ${data.recordSetting.anr ?? "-"}`);
+      lines.push(`Storage Time: ${data.recordSetting.storageTime ?? "-"}`);
+    } else if (data.recordSetting?.error) {
+      lines.push("");
+      lines.push(`Kayit Ayari Hata: ${data.recordSetting.error}`);
+    }
+    if (data.recordingIsapi?.firstTrack) {
+      lines.push("");
+      lines.push(`Track ID: ${data.recordingIsapi.firstTrack.id || "-"}`);
+      lines.push(`Track Enabled: ${data.recordingIsapi.firstTrack.enabled === null ? "-" : String(data.recordingIsapi.firstTrack.enabled)}`);
+      lines.push(`Track Record Type: ${data.recordingIsapi.firstTrack.recordTypeRaw || "-"}`);
+      lines.push(`Track Record Mode: ${data.recordingIsapi.firstTrack.recordModeLabel || "-"}`);
+      lines.push(`Track Start: ${data.recordingIsapi.firstTrack.startTime || "-"}`);
+      lines.push(`Track End: ${data.recordingIsapi.firstTrack.endTime || "-"}`);
+    } else if (data.recordingIsapi?.error) {
+      lines.push("");
+      lines.push(`Track Hata: ${data.recordingIsapi.error}`);
+    }
+    if (Array.isArray(data.attempts) && data.attempts.length > 0) {
+      lines.push("");
+      lines.push(`Denemeler: ${JSON.stringify(data.attempts, null, 2)}`);
+    }
+    return lines.join("\n");
+  }
+
+  function formatStreamType(value) {
+    const numeric = Number(value);
+    if (numeric === 1) {
+      return "Ana akis";
+    }
+    if (numeric === 2) {
+      return "Alt akis";
+    }
+    return "-";
+  }
+
+  function inferRecordMode(data) {
+    const trackMode = data.recordingIsapi?.firstTrack?.recordModeLabel;
+    if (trackMode && trackMode !== "-") {
+      return trackMode;
+    }
+    return "-";
+  }
+
+  function formatPreRecord(value) {
+    const numeric = Number(value);
+    if (numeric === 1) {
+      return "Acik";
+    }
+    if (numeric === 0) {
+      return "Kapali";
+    }
+    return "-";
+  }
+
+  function formatPostRecord(value) {
+    const numeric = Number(value);
+    if (Number.isFinite(numeric) && numeric >= 0) {
+      return `${numeric}s`;
+    }
+    return "-";
+  }
+
+  function formatVideoExpiration(value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) {
+      return "-";
+    }
+    return numeric >= 0 ? "Acik" : "Kapali";
+  }
+
+  function formatExpireDays(value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) {
+      return "-";
+    }
+    if (numeric < 0) {
+      return "Sinirsiz";
+    }
+    return String(numeric);
+  }
+
+  function renderStorageState(data) {
+    const storage = data.storage || {};
+    const recordSetting = data.recordSetting && !data.recordSetting.error ? data.recordSetting : null;
+    const firstTrack = data.recordingIsapi?.firstTrack || null;
+    storageStatusMetaEl.textContent = storage.status || "-";
+    storageWarningMetaEl.textContent = storage.warning || storage.rawStatus || "-";
+    storageCapacityMetaEl.textContent = formatMb(storage.capacityMb);
+    storageFreeMetaEl.textContent = formatMb(storage.freeSpaceMb);
+    recordLocalMetaEl.textContent =
+      recordSetting?.enableLocalStorage === 1
+        ? "acik"
+        : recordSetting?.enableLocalStorage === 0
+          ? "kapali"
+          : "-";
+    recordModeMetaEl.textContent = inferRecordMode(data);
+    recordStreamMetaEl.textContent = formatStreamType(recordSetting?.recordingStreamType);
+    recordPreMetaEl.textContent = formatPreRecord(recordSetting?.preRecord);
+    recordPostMetaEl.textContent = formatPostRecord(recordSetting?.postRecordTime);
+    recordExpirationMetaEl.textContent = formatVideoExpiration(recordSetting?.storageTime);
+    recordExpireDaysMetaEl.textContent = formatExpireDays(recordSetting?.storageTime);
+    recordTrackIdMetaEl.textContent = firstTrack?.id || "-";
+    storageOutputEl.value = summarizeStorageResult(data);
+  }
+
+  function renderSyncState(data) {
+    const config = data.config || {};
+    const stateData = data.state || {};
+    syncEnabledMetaEl.textContent = config.enabled ? "acik" : "kapali";
+    syncTimeMetaEl.textContent = config.dailyTime || "-";
+    syncLastSuccessMetaEl.textContent = stateData.lastSuccessAt || "-";
+    syncArchiveMetaEl.textContent = data.archiveRoot || "-";
+    syncEnabledInputEl.checked = Boolean(config.enabled);
+    syncTimeInputEl.value = config.dailyTime || "02:00";
+    if (config.lookbackMinutes) {
+      syncLookbackInputEl.value = config.lookbackMinutes;
+    }
+    syncOutputEl.value = JSON.stringify(data, null, 2);
   }
 
   function syncMeta() {
@@ -379,6 +898,168 @@
     await loadEzviz();
   }
 
+  async function loadStorage() {
+    if (!state.deviceId) {
+      setStorageStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    setStorageStatus("Depolama bilgileri okunuyor...");
+    const qs = new URLSearchParams({ deviceId: state.deviceId });
+    if (state.resourceId) {
+      qs.set("cameraId", state.resourceId);
+    }
+    const res = await fetch(`/api/device-config/storage?${qs.toString()}`);
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Depolama bilgileri alinamadi.");
+    }
+
+    renderStorageState(data);
+    if (data.storage?.warning) {
+      setStorageStatus(data.storage.warning, "warn");
+    } else {
+      setStorageStatus("Depolama bilgileri okundu.", "ok");
+    }
+  }
+
+  async function formatStorage() {
+    if (!state.deviceId) {
+      setStorageStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+    if (!confirm("SD kart bicimlendirilsin mi? Bu islem mevcut kayitlari siler.")) {
+      return;
+    }
+
+    setStorageStatus("SD kart bicimlendirme istegi gonderiliyor...");
+    const res = await fetch("/api/device-config/storage/format", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deviceId: state.deviceId,
+        confirmed: true,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "SD kart bicimlendirilemedi.");
+    }
+
+    storageOutputEl.value = JSON.stringify(data, null, 2);
+    setStorageStatus("SD kart bicimlendirme istegi tamamlandi.", "ok");
+    await loadStorage();
+  }
+
+  async function applyLocalRecordAction(action) {
+    if (!state.deviceId || !state.resourceId) {
+      setStorageStatus("deviceId ve cameraId gerekli.", "err");
+      return;
+    }
+
+    const actionLabel =
+      action === "enable"
+        ? "Yerel kayit aciliyor"
+        : action === "disable"
+          ? "Yerel kayit kapatiliyor"
+          : "7/24 kayit ayarlaniyor";
+    setStorageStatus(`${actionLabel}...`);
+    const res = await fetch("/api/device-config/local-record", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deviceId: state.deviceId,
+        cameraId: state.resourceId,
+        action,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Yerel kayit islemi uygulanamadi.");
+    }
+
+    storageOutputEl.value = JSON.stringify(data, null, 2);
+    setStorageStatus("Yerel kayit islemi tamamlandi.", "ok");
+    await loadStorage();
+  }
+
+  async function applyContinuousRecording() {
+    return applyLocalRecordAction("continuous");
+  }
+
+  async function loadRecordingSyncStatus() {
+    if (!state.resourceId) {
+      setSyncStatus("cameraId bulunamadi.", "err");
+      return;
+    }
+
+    setSyncStatus("Kayit aktarim ayari okunuyor...");
+    const res = await fetch(`/api/recording-sync/status?cameraId=${encodeURIComponent(state.resourceId)}`);
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Kayit aktarim durumu alinamadi.");
+    }
+
+    renderSyncState(data);
+    setSyncStatus(data.runInProgress ? "Bir aktarim calisiyor." : "Kayit aktarim ayari okundu.", "ok");
+  }
+
+  async function saveRecordingSyncConfig() {
+    if (!state.resourceId || !state.deviceId) {
+      setSyncStatus("cameraId ve deviceId gerekli.", "err");
+      return;
+    }
+
+    setSyncStatus("Kayit aktarim ayari kaydediliyor...");
+    const res = await fetch("/api/recording-sync/config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cameraId: state.resourceId,
+        deviceId: state.deviceId,
+        deviceSerial: state.deviceSerial,
+        name: state.name,
+        enabled: syncEnabledInputEl.checked,
+        dailyTime: syncTimeInputEl.value,
+        lookbackMinutes: Number(syncLookbackInputEl.value || 1440),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Kayit aktarim ayari kaydedilemedi.");
+    }
+
+    renderSyncState(data);
+    setSyncStatus("Kayit aktarim ayari kaydedildi.", "ok");
+  }
+
+  async function runRecordingSyncNow() {
+    if (!state.resourceId) {
+      setSyncStatus("cameraId bulunamadi.", "err");
+      return;
+    }
+
+    setSyncStatus("Kayitlar indiriliyor...");
+    const res = await fetch("/api/recording-sync/run-once", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cameraId: state.resourceId,
+        deviceId: state.deviceId,
+        deviceSerial: state.deviceSerial,
+        name: state.name,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Kayit aktarimi basarisiz.");
+    }
+
+    renderSyncState(data);
+    syncOutputEl.value = JSON.stringify(data.result || data, null, 2);
+    setSyncStatus("Kayit aktarimi tamamlandi.", "ok");
+  }
+
   async function rebootDevice(options = {}) {
     const silent = Boolean(options.silent);
     if (!state.deviceId) {
@@ -505,16 +1186,61 @@
   document.getElementById("save-ezviz-btn").addEventListener("click", () => {
     saveEzviz().catch((err) => setStatus(err.message, "err"));
   });
+  document.getElementById("load-storage-btn").addEventListener("click", () => {
+    loadStorage().catch((err) => setStorageStatus(err.message, "err"));
+  });
+  document.getElementById("format-storage-btn").addEventListener("click", () => {
+    formatStorage().catch((err) => setStorageStatus(err.message, "err"));
+  });
+  document.getElementById("enable-local-record-btn").addEventListener("click", () => {
+    applyLocalRecordAction("enable").catch((err) => setStorageStatus(err.message, "err"));
+  });
+  document.getElementById("disable-local-record-btn").addEventListener("click", () => {
+    applyLocalRecordAction("disable").catch((err) => setStorageStatus(err.message, "err"));
+  });
+  document.getElementById("apply-continuous-btn").addEventListener("click", () => {
+    applyContinuousRecording().catch((err) => setStorageStatus(err.message, "err"));
+  });
+  document.getElementById("load-sync-btn").addEventListener("click", () => {
+    loadRecordingSyncStatus().catch((err) => setSyncStatus(err.message, "err"));
+  });
+  document.getElementById("save-sync-btn").addEventListener("click", () => {
+    saveRecordingSyncConfig().catch((err) => setSyncStatus(err.message, "err"));
+  });
+  document.getElementById("run-sync-btn").addEventListener("click", () => {
+    runRecordingSyncNow().catch((err) => setSyncStatus(err.message, "err"));
+  });
   document.getElementById("start-provision-btn").addEventListener("click", () => {
     startProvision().catch((err) => setProvisionStatus(err.message, "err"));
+  });
+  document.querySelectorAll(".toggle-password").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.getAttribute("data-target");
+      const input = targetId ? document.getElementById(targetId) : null;
+      if (!input) {
+        return;
+      }
+
+      const nextType = input.type === "password" ? "text" : "password";
+      input.type = nextType;
+      const isVisible = nextType === "text";
+      button.setAttribute("data-visible", isVisible ? "true" : "false");
+      button.setAttribute("aria-label", isVisible ? "Parolayi gizle" : "Parolayi goster");
+    });
   });
 
   syncMeta();
   if (state.deviceId) {
     loadNetwork().catch((err) => setStatus(err.message, "err"));
     loadEzviz().catch((err) => setStatus(err.message, "err"));
+    loadStorage().catch((err) => setStorageStatus(err.message, "err"));
+    if (state.resourceId) {
+      loadRecordingSyncStatus().catch((err) => setSyncStatus(err.message, "err"));
+    }
   } else {
     setStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
+    setStorageStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
+    setSyncStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
   }
 </script>
 </body>
