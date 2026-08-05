@@ -1,21 +1,13 @@
 {
-  "lastRunStartedAt": "2026-08-03T14:09:41.765Z",
-  "lastRunFinishedAt": "2026-08-03T14:09:42.525Z",
-  "lastRunStatus": "failed",
-  "lastRunReason": "manual",
-  "lastError": "OpenAPI istegi basarisiz. HTTP 404. Bilinmeyen hata",
+  "lastRunStartedAt": "",
+  "lastRunFinishedAt": "",
+  "lastRunStatus": "idle",
+  "lastRunReason": "",
+  "lastError": "",
+  "lastDiagnostic": null,
   "activeRun": null,
   "lastScheduledRunKey": "",
   "lastSuccessByCameraId": {},
   "downloadedSegments": {},
-  "recentRuns": [
-    {
-      "runId": "76f3b7a2-8c74-492c-bd85-f2d8847a1100",
-      "startedAt": "2026-08-03T14:09:41.765Z",
-      "finishedAt": "2026-08-03T14:09:42.525Z",
-      "status": "failed",
-      "reason": "manual",
-      "error": "OpenAPI istegi basarisiz. HTTP 404. Bilinmeyen hata"
-    }
-  ]
+  "recentRuns": []
 }

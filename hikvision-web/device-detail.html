@@ -63,7 +63,7 @@
     gap: 10px;
     flex-wrap: wrap;
   }
-  button, a, input, textarea {
+  button, a, input, select, textarea {
     font: inherit;
   }
   button, a.button-link {
@@ -230,7 +230,7 @@
     font-size: 12px;
     color: var(--muted);
   }
-  input, textarea {
+  input, select, textarea {
     width: 100%;
     min-height: 42px;
     padding: 10px 12px;
@@ -239,7 +239,7 @@
     background: #fff;
     color: var(--text);
   }
-  input:focus, textarea:focus {
+  input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #98b7cf;
     box-shadow: 0 0 0 4px rgba(15, 76, 129, 0.08);
@@ -289,6 +289,176 @@
   .row button.primary:hover {
     background: #0d436f;
     border-color: #0d436f;
+  }
+  .storage-config-card {
+    padding: 16px;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+    display: grid;
+    gap: 14px;
+  }
+  .storage-config-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .storage-config-head p {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .storage-program-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+  .storage-program-form > label:first-child:not(:has(select, input, textarea)) {
+    display: none;
+  }
+  .storage-program-form .field-span-3 {
+    grid-column: 1 / -1;
+  }
+  .storage-program-form .field-span-2 {
+    grid-column: span 2;
+  }
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .check-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text);
+  }
+  .check-chip input {
+    width: 16px;
+    flex: 0 0 16px;
+    margin: 0;
+  }
+  .inline-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .schedule-palette {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .schedule-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .schedule-actions button {
+    min-height: 36px;
+    padding: 8px 12px;
+  }
+  .schedule-tool {
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .schedule-tool.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+  }
+  .schedule-chip {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+  }
+  .schedule-grid-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    background: #fff;
+  }
+  .schedule-grid {
+    min-width: 980px;
+    display: grid;
+    grid-template-columns: 86px repeat(24, 1fr);
+    border-collapse: collapse;
+  }
+  .schedule-axis,
+  .schedule-day-label,
+  .schedule-cell {
+    min-height: 42px;
+    border-right: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .schedule-axis,
+  .schedule-day-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--muted);
+    background: #f8fafc;
+    font-weight: 600;
+  }
+  .schedule-day-label {
+    justify-content: flex-start;
+    padding-left: 12px;
+    color: var(--text);
+  }
+  .schedule-cell {
+    cursor: crosshair;
+  }
+  .schedule-cell.hour-even {
+    box-shadow: inset -1px 0 0 rgba(24, 33, 43, 0.18);
+  }
+  .schedule-cell.preview {
+    outline: 2px solid rgba(15, 76, 129, 0.65);
+    outline-offset: -2px;
+    filter: brightness(0.96);
+  }
+  .schedule-cell[data-mode="continuous"] { background: #3f7df3; }
+  .schedule-cell[data-mode="motion"] { background: #ff9f0a; }
+  .schedule-cell[data-mode="alarm"] { background: #39b563; }
+  .schedule-cell[data-mode="alarmandmotion"] { background: #d14a4a; }
+  .schedule-cell[data-mode="off"] { background: #eef3f8; }
+  .schedule-legend {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  @media (max-width: 980px) {
+    .storage-program-form {
+      grid-template-columns: 1fr 1fr;
+    }
+    .storage-program-form .field-span-3 {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 720px) {
+    .storage-program-form {
+      grid-template-columns: 1fr;
+    }
+    .storage-program-form .field-span-2,
+    .storage-program-form .field-span-3 {
+      grid-column: auto;
+    }
+    .checkbox-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   input[type="checkbox"] {
     min-height: auto;
@@ -420,6 +590,8 @@
           <div class="summary compact">
             <div class="item"><span>Enabled</span><strong id="ezviz-enabled-meta">-</strong></div>
             <div class="item"><span>Register Status</span><strong id="ezviz-register-meta">-</strong></div>
+            <div class="item"><span>Cihaz Saati</span><strong id="device-time-meta">-</strong></div>
+            <div class="item"><span>Saat Dilimi</span><strong id="device-timezone-meta">-</strong></div>
           </div>
           <label>Verification Code
             <div class="password-field">
@@ -441,6 +613,48 @@
           <div class="row">
             <button id="load-ezviz-btn" type="button">Verification Oku</button>
             <button id="save-ezviz-btn" type="button">Verification Kaydet</button>
+          </div>
+          <div class="panel-head" style="padding:0; border:0; background:none;">
+            <h2>Cihaz Saati</h2>
+          </div>
+          <div class="settings-form">
+            <label>Tarih ve Saat <input id="device-time-input" type="datetime-local" /></label>
+            <label>Saat Dilimi
+              <select id="device-timezone-input">
+                <option value="+00:00:00">UTC+00:00 - Greenwich</option>
+                <option value="+01:00:00">UTC+01:00 - Orta Avrupa</option>
+                <option value="+02:00:00">UTC+02:00 - Dogu Avrupa</option>
+                <option value="+03:00:00" selected>UTC+03:00 - Turkiye</option>
+                <option value="+03:30:00">UTC+03:30 - Tehran</option>
+                <option value="+04:00:00">UTC+04:00 - Dubai</option>
+                <option value="+04:30:00">UTC+04:30 - Kabul</option>
+                <option value="+05:00:00">UTC+05:00 - Karachi</option>
+                <option value="+05:30:00">UTC+05:30 - Hindistan</option>
+                <option value="+06:00:00">UTC+06:00 - Almaty</option>
+                <option value="+07:00:00">UTC+07:00 - Bangkok</option>
+                <option value="+08:00:00">UTC+08:00 - Pekin</option>
+                <option value="+09:00:00">UTC+09:00 - Tokyo</option>
+                <option value="+10:00:00">UTC+10:00 - Sydney</option>
+                <option value="-01:00:00">UTC-01:00 - Azores</option>
+                <option value="-02:00:00">UTC-02:00 - Mid-Atlantic</option>
+                <option value="-03:00:00">UTC-03:00 - Buenos Aires</option>
+                <option value="-04:00:00">UTC-04:00 - Atlantic</option>
+                <option value="-05:00:00">UTC-05:00 - Eastern</option>
+                <option value="-06:00:00">UTC-06:00 - Central</option>
+                <option value="-07:00:00">UTC-07:00 - Mountain</option>
+                <option value="-08:00:00">UTC-08:00 - Pacific</option>
+                <option value="-09:00:00">UTC-09:00 - Alaska</option>
+                <option value="-10:00:00">UTC-10:00 - Hawaii</option>
+                <option value="-11:00:00">UTC-11:00 - Midway</option>
+                <option value="-12:00:00">UTC-12:00 - International Date Line West</option>
+              </select>
+            </label>
+          </div>
+          <div id="device-time-status-box" class="status">Cihaz saati henuz okunmadi.</div>
+          <div class="row">
+            <button id="load-device-time-btn" type="button">Saati Oku</button>
+            <button id="sync-device-time-btn" type="button">Simdi Esitle</button>
+            <button id="save-device-time-btn" type="button">Saati Kaydet</button>
           </div>
         </div>
       </section>
@@ -508,6 +722,64 @@
         <button id="disable-local-record-btn" type="button">Yerel Kaydi Kapat</button>
         <button id="apply-continuous-btn" type="button">7/24 Kayit Ayarla</button>
       </div>
+      <div class="storage-config-card">
+        <div class="storage-config-head">
+          <div>
+            <h2>Kayit Programi ve Parametreleri</h2>
+            <p>Yalnizca cihazin mevcut ISAPI track XML icinde bulunan alanlar guncellenir. Desteklenmeyen alanlar acikca raporlanir.</p>
+          </div>
+        </div>
+        <div class="storage-program-form">
+          <label>Kayıt Etkin
+          <label>Kayit Akisi
+            <select id="record-stream-input">
+              <option value="">Cihaz XML'inde yoksa degistirme</option>
+              <option value="1">Ana akis</option>
+              <option value="2">Alt akis</option>
+            </select>
+          </label>
+          <label>Ustune Yaz
+            <select id="record-overwrite-input">
+              <option value="true">Acik</option>
+              <option value="false">Kapali</option>
+            </select>
+          </label>
+          <label>Takvimi Etkin Tut
+            <select id="record-schedule-enabled-input">
+              <option value="true">Acik</option>
+              <option value="false">Kapali</option>
+            </select>
+          </label>
+          <label>Pre-record (sn)
+            <input id="record-pre-seconds-input" type="number" min="0" step="1" placeholder="XML destekliyorsa" />
+          </label>
+          <label>Post-record (sn)
+            <input id="record-post-seconds-input" type="number" min="0" step="1" placeholder="XML destekliyorsa" />
+          </label>
+          <label class="field-span-2">Takvimdeki Gunler
+            <input id="record-days-display" type="text" readonly />
+          </label>
+          <div class="field-span-3">
+            <div class="schedule-palette" id="record-schedule-palette"></div>
+          </div>
+          <div class="field-span-3">
+            <div class="schedule-actions">
+              <button id="record-fill-week-btn" type="button">Tum Haftayi Doldur</button>
+              <button id="record-clear-week-btn" type="button">Tum Haftayi Temizle</button>
+              <span class="schedule-legend">Secili aracla tiklayip surukleyerek dikdortgen alan boyayabilirsin. Gun etiketine tiklamak tum gunu boyar.</span>
+            </div>
+          </div>
+          <div class="field-span-3 schedule-grid-wrap">
+            <div id="record-schedule-grid" class="schedule-grid"></div>
+          </div>
+          <div class="field-span-3 inline-note" id="record-settings-note">
+            Kayit programi cihazin mevcut haftalik zaman planina gore boyanir ve ayni XML yapisina geri yazilir.
+          </div>
+        </div>
+        <div class="row">
+          <button id="save-record-settings-btn" type="button" class="primary">Kayit Programini Kaydet</button>
+        </div>
+      </div>
       <textarea id="storage-output" readonly></textarea>
     </div>
   </section>
@@ -535,7 +807,7 @@
   </section>
 
   <section class="panel" style="margin-top:16px;">
-    <div class="panel-head"><h2>Ham XML</h2></div>
+    <div class="panel-head"><h2>ML</h2></div>
     <div class="panel-body">
       <textarea id="xml-output" readonly></textarea>
     </div>
@@ -562,6 +834,11 @@
   const xmlOutputEl = document.getElementById("xml-output");
   const ezvizEnabledMetaEl = document.getElementById("ezviz-enabled-meta");
   const ezvizRegisterMetaEl = document.getElementById("ezviz-register-meta");
+  const deviceTimeMetaEl = document.getElementById("device-time-meta");
+  const deviceTimezoneMetaEl = document.getElementById("device-timezone-meta");
+  const deviceTimeInputEl = document.getElementById("device-time-input");
+  const deviceTimezoneInputEl = document.getElementById("device-timezone-input");
+  const deviceTimeStatusBoxEl = document.getElementById("device-time-status-box");
   const ipInputEl = document.getElementById("ip-input");
   const maskInputEl = document.getElementById("mask-input");
   const gatewayInputEl = document.getElementById("gateway-input");
@@ -582,6 +859,17 @@
   const recordTrackIdMetaEl = document.getElementById("record-track-id-meta");
   const storageStatusBoxEl = document.getElementById("storage-status-box");
   const storageOutputEl = document.getElementById("storage-output");
+  const recordStreamInputEl = document.getElementById("record-stream-input");
+  const recordOverwriteInputEl = document.getElementById("record-overwrite-input");
+  const recordScheduleEnabledInputEl = document.getElementById("record-schedule-enabled-input");
+  const recordPreSecondsInputEl = document.getElementById("record-pre-seconds-input");
+  const recordPostSecondsInputEl = document.getElementById("record-post-seconds-input");
+  const recordDaysDisplayEl = document.getElementById("record-days-display");
+  const recordSchedulePaletteEl = document.getElementById("record-schedule-palette");
+  const recordScheduleGridEl = document.getElementById("record-schedule-grid");
+  const recordFillWeekBtn = document.getElementById("record-fill-week-btn");
+  const recordClearWeekBtn = document.getElementById("record-clear-week-btn");
+  const recordSettingsNoteEl = document.getElementById("record-settings-note");
   const syncEnabledMetaEl = document.getElementById("sync-enabled-meta");
   const syncTimeMetaEl = document.getElementById("sync-time-meta");
   const syncLastSuccessMetaEl = document.getElementById("sync-last-success-meta");
@@ -601,6 +889,33 @@
   const provisionStatusBoxEl = document.getElementById("provision-status-box");
   const provisionResultOutputEl = document.getElementById("provision-result-output");
   let provisionPollTimer = null;
+  const DEVICE_TIMEZONE_OPTIONS = Array.from(deviceTimezoneInputEl.options).map((option) => option.value);
+  const SCHEDULE_WEEK_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const SCHEDULE_DAY_LABELS = {
+    Monday: "Pzt",
+    Tuesday: "Sal",
+    Wednesday: "Car",
+    Thursday: "Per",
+    Friday: "Cum",
+    Saturday: "Cmt",
+    Sunday: "Paz",
+  };
+  const SCHEDULE_MODE_LABELS = {
+    continuous: "Surekli",
+    motion: "Hareket",
+    alarm: "Alarm",
+    alarmandmotion: "Hareket + Alarm",
+    off: "Sil",
+  };
+  const SCHEDULE_MODES = ["continuous", "motion", "alarm", "alarmandmotion", "off"];
+  const SCHEDULE_SLOT_LIMIT = 8;
+  const scheduleState = {
+    selectedTool: "continuous",
+    painting: false,
+    dragAnchor: null,
+    dragCurrent: null,
+    cells: {},
+  };
 
   function setStatus(text, kind = "") {
     statusBoxEl.textContent = text;
@@ -617,9 +932,51 @@
     storageStatusBoxEl.className = `status ${kind}`.trim();
   }
 
+  function setDeviceTimeStatus(text, kind = "") {
+    deviceTimeStatusBoxEl.textContent = text;
+    deviceTimeStatusBoxEl.className = `status ${kind}`.trim();
+  }
+
   function setSyncStatus(text, kind = "") {
     syncStatusBoxEl.textContent = text;
     syncStatusBoxEl.className = `status ${kind}`.trim();
+  }
+
+  function toDateTimeLocalValue(value) {
+    const normalized = String(value || "").trim().replace(/\//g, "-");
+    if (!normalized) {
+      return "";
+    }
+    const date = new Date(normalized);
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hour = String(date.getHours()).padStart(2, "0");
+    const minute = String(date.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day}T${hour}:${minute}`;
+  }
+
+  function renderDeviceTimeState(data) {
+    const time = data?.time || {};
+    deviceTimeMetaEl.textContent = time.localTime || "-";
+    deviceTimezoneMetaEl.textContent = time.timeZone || "-";
+    if (time.localTime) {
+      const localValue = toDateTimeLocalValue(time.localTime);
+      if (localValue) {
+        deviceTimeInputEl.value = localValue;
+      }
+    }
+    if (time.timeZone) {
+      if (DEVICE_TIMEZONE_OPTIONS.includes(time.timeZone)) {
+        deviceTimezoneInputEl.value = time.timeZone;
+      }
+    }
+    if (data.xml) {
+      xmlOutputEl.value = data.xml;
+    }
   }
 
   function formatMb(value) {
@@ -661,6 +1018,9 @@
       lines.push(`Track Enabled: ${data.recordingIsapi.firstTrack.enabled === null ? "-" : String(data.recordingIsapi.firstTrack.enabled)}`);
       lines.push(`Track Record Type: ${data.recordingIsapi.firstTrack.recordTypeRaw || "-"}`);
       lines.push(`Track Record Mode: ${data.recordingIsapi.firstTrack.recordModeLabel || "-"}`);
+      lines.push(`Track Ustune Yaz: ${data.recordingIsapi.firstTrack.loopEnable === null ? "-" : String(data.recordingIsapi.firstTrack.loopEnable)}`);
+      lines.push(`Track Takvim Etkin: ${data.recordingIsapi.firstTrack.enableSchedule === null ? "-" : String(data.recordingIsapi.firstTrack.enableSchedule)}`);
+      lines.push(`Track Kayit Akisi: ${data.recordingIsapi.firstTrack.streamTypeLabel || "-"}`);
       lines.push(`Track Start: ${data.recordingIsapi.firstTrack.startTime || "-"}`);
       lines.push(`Track End: ${data.recordingIsapi.firstTrack.endTime || "-"}`);
     } else if (data.recordingIsapi?.error) {
@@ -731,6 +1091,337 @@
     return String(numeric);
   }
 
+  function toTimeInputValue(value, fallback = "") {
+    const normalized = String(value || fallback || "").trim();
+    if (!normalized) {
+      return "";
+    }
+    const match = /^(\d{2}:\d{2})(?::(\d{2}))?$/.exec(normalized);
+    if (!match) {
+      return "";
+    }
+    return `${match[1]}:${match[2] || "00"}`;
+  }
+
+  function formatTrackDays(days) {
+    return Array.isArray(days) && days.length ? days.join(", ") : "Takvim bilgisi yok";
+  }
+
+  function ensureScheduleHourValue(value, fallback = "00:00:00") {
+    const normalized = String(value || "").trim();
+    if (/^\d{2}:\d{2}(:\d{2})?$/.test(normalized)) {
+      return normalized.length === 5 ? `${normalized}:00` : normalized;
+    }
+    return fallback;
+  }
+
+  function hourToScheduleTime(hour) {
+    if (hour >= 24) {
+      return "24:00";
+    }
+    return `${String(hour).padStart(2, "0")}:00:00`;
+  }
+
+  function scheduleTimeToHour(value, fallback = 0) {
+    const normalized = ensureScheduleHourValue(value, "");
+    if (!normalized) {
+      return fallback;
+    }
+    const hour = Number(normalized.slice(0, 2));
+    return Number.isFinite(hour) ? Math.max(0, Math.min(24, hour)) : fallback;
+  }
+
+  function createEmptyScheduleCells() {
+    const next = {};
+    for (const dayOfWeek of SCHEDULE_WEEK_DAYS) {
+      next[dayOfWeek] = Array.from({ length: 24 }, () => "off");
+    }
+    return next;
+  }
+
+  function buildScheduleCellsFromActions(actions) {
+    const cells = createEmptyScheduleCells();
+    for (const action of Array.isArray(actions) ? actions : []) {
+      const dayOfWeek = String(action?.dayOfWeek || "").trim();
+      if (!cells[dayOfWeek] || !action?.active) {
+        continue;
+      }
+      const mode = SCHEDULE_MODES.includes(action.recordMode) ? action.recordMode : "continuous";
+      const startHour = scheduleTimeToHour(action.startTime, 0);
+      const endHour = scheduleTimeToHour(action.endTime, 0);
+      const boundedEnd = endHour <= startHour ? startHour : Math.min(endHour, 24);
+      for (let hour = startHour; hour < boundedEnd; hour += 1) {
+        if (hour >= 0 && hour < 24) {
+          cells[dayOfWeek][hour] = mode;
+        }
+      }
+    }
+    return cells;
+  }
+
+  function renderSchedulePalette() {
+    recordSchedulePaletteEl.innerHTML = "";
+    for (const mode of SCHEDULE_MODES) {
+      const tool = document.createElement("button");
+      tool.type = "button";
+      tool.className = `schedule-tool ${scheduleState.selectedTool === mode ? "active" : ""}`.trim();
+      tool.dataset.mode = mode;
+      tool.innerHTML = `<span class="schedule-chip" style="background:${getScheduleModeColor(mode)}"></span><span>${SCHEDULE_MODE_LABELS[mode]}</span>`;
+      tool.addEventListener("click", () => {
+        scheduleState.selectedTool = mode;
+        renderSchedulePalette();
+      });
+      recordSchedulePaletteEl.appendChild(tool);
+    }
+  }
+
+  function getScheduleModeColor(mode) {
+    switch (mode) {
+      case "continuous":
+        return "#3f7df3";
+      case "motion":
+        return "#ff9f0a";
+      case "alarm":
+        return "#39b563";
+      case "alarmandmotion":
+        return "#d14a4a";
+      default:
+        return "#eef3f8";
+    }
+  }
+
+  function paintScheduleCell(dayOfWeek, hour) {
+    if (!scheduleState.cells[dayOfWeek] || hour < 0 || hour > 23) {
+      return;
+    }
+    scheduleState.cells[dayOfWeek][hour] = scheduleState.selectedTool;
+    renderScheduleGrid();
+  }
+
+  function getDayIndex(dayOfWeek) {
+    return SCHEDULE_WEEK_DAYS.indexOf(dayOfWeek);
+  }
+
+  function normalizeDragRange(anchor, current) {
+    if (!anchor || !current) {
+      return null;
+    }
+    const anchorDayIndex = getDayIndex(anchor.dayOfWeek);
+    const currentDayIndex = getDayIndex(current.dayOfWeek);
+    if (anchorDayIndex < 0 || currentDayIndex < 0) {
+      return null;
+    }
+    return {
+      dayStart: Math.min(anchorDayIndex, currentDayIndex),
+      dayEnd: Math.max(anchorDayIndex, currentDayIndex),
+      hourStart: Math.min(anchor.hour, current.hour),
+      hourEnd: Math.max(anchor.hour, current.hour),
+    };
+  }
+
+  function isCellInPreview(dayOfWeek, hour) {
+    const range = normalizeDragRange(scheduleState.dragAnchor, scheduleState.dragCurrent);
+    if (!range) {
+      return false;
+    }
+    const dayIndex = getDayIndex(dayOfWeek);
+    return (
+      dayIndex >= range.dayStart &&
+      dayIndex <= range.dayEnd &&
+      hour >= range.hourStart &&
+      hour <= range.hourEnd
+    );
+  }
+
+  function applyDragSelection() {
+    const range = normalizeDragRange(scheduleState.dragAnchor, scheduleState.dragCurrent);
+    if (!range) {
+      return;
+    }
+    for (let dayIndex = range.dayStart; dayIndex <= range.dayEnd; dayIndex += 1) {
+      const dayOfWeek = SCHEDULE_WEEK_DAYS[dayIndex];
+      for (let hour = range.hourStart; hour <= range.hourEnd; hour += 1) {
+        if (scheduleState.cells[dayOfWeek] && hour >= 0 && hour < 24) {
+          scheduleState.cells[dayOfWeek][hour] = scheduleState.selectedTool;
+        }
+      }
+    }
+  }
+
+  function fillScheduleDay(dayOfWeek, mode) {
+    if (!scheduleState.cells[dayOfWeek]) {
+      return;
+    }
+    scheduleState.cells[dayOfWeek] = scheduleState.cells[dayOfWeek].map(() => mode);
+    renderScheduleGrid();
+  }
+
+  function fillWholeSchedule(mode) {
+    for (const dayOfWeek of SCHEDULE_WEEK_DAYS) {
+      scheduleState.cells[dayOfWeek] = scheduleState.cells[dayOfWeek].map(() => mode);
+    }
+    renderScheduleGrid();
+  }
+
+  function renderScheduleGrid() {
+    recordScheduleGridEl.innerHTML = "";
+
+    const topLeft = document.createElement("div");
+    topLeft.className = "schedule-axis";
+    topLeft.textContent = "";
+    recordScheduleGridEl.appendChild(topLeft);
+
+    for (let hour = 0; hour < 24; hour += 1) {
+      const axis = document.createElement("div");
+      axis.className = "schedule-axis";
+      axis.textContent = String(hour).padStart(2, "0");
+      recordScheduleGridEl.appendChild(axis);
+    }
+
+    for (const dayOfWeek of SCHEDULE_WEEK_DAYS) {
+      const label = document.createElement("div");
+      label.className = "schedule-day-label";
+      label.textContent = SCHEDULE_DAY_LABELS[dayOfWeek] || dayOfWeek;
+      label.title = "Tum gunu secili araca boya";
+      label.addEventListener("click", () => {
+        fillScheduleDay(dayOfWeek, scheduleState.selectedTool);
+      });
+      recordScheduleGridEl.appendChild(label);
+
+      for (let hour = 0; hour < 24; hour += 1) {
+        const cell = document.createElement("div");
+        cell.className = `schedule-cell ${hour % 2 === 1 ? "hour-even" : ""}`.trim();
+        cell.dataset.mode = scheduleState.cells[dayOfWeek]?.[hour] || "off";
+        if (isCellInPreview(dayOfWeek, hour)) {
+          cell.classList.add("preview");
+        }
+        cell.title = `${label.textContent} ${String(hour).padStart(2, "0")}:00 - ${String(hour + 1).padStart(2, "0")}:00`;
+        cell.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+          scheduleState.painting = true;
+          scheduleState.dragAnchor = { dayOfWeek, hour };
+          scheduleState.dragCurrent = { dayOfWeek, hour };
+          renderScheduleGrid();
+        });
+        cell.addEventListener("mouseenter", () => {
+          if (scheduleState.painting) {
+            scheduleState.dragCurrent = { dayOfWeek, hour };
+            renderScheduleGrid();
+          }
+        });
+        cell.addEventListener("mouseup", () => {
+          if (scheduleState.painting) {
+            scheduleState.dragCurrent = { dayOfWeek, hour };
+            applyDragSelection();
+            scheduleState.painting = false;
+            scheduleState.dragAnchor = null;
+            scheduleState.dragCurrent = null;
+            renderScheduleGrid();
+          }
+        });
+        recordScheduleGridEl.appendChild(cell);
+      }
+    }
+  }
+
+  function collectScheduleActions() {
+    const actions = [];
+
+    for (const dayOfWeek of SCHEDULE_WEEK_DAYS) {
+      const hours = scheduleState.cells[dayOfWeek] || [];
+      const segments = [];
+      let segmentMode = hours[0] || "off";
+      let segmentStart = 0;
+
+      for (let hour = 1; hour <= 24; hour += 1) {
+        const nextMode = hour < 24 ? hours[hour] || "off" : "__end__";
+        if (nextMode !== segmentMode) {
+          if (segmentMode !== "off") {
+            segments.push({
+              dayOfWeek,
+              mode: segmentMode,
+              startHour: segmentStart,
+              endHour: hour,
+            });
+          }
+          segmentMode = nextMode;
+          segmentStart = hour;
+        }
+      }
+
+      if (segments.length > SCHEDULE_SLOT_LIMIT) {
+        throw new Error(`${SCHEDULE_DAY_LABELS[dayOfWeek]} icin en fazla ${SCHEDULE_SLOT_LIMIT} ayri kayit parcasi destekleniyor.`);
+      }
+
+      for (let index = 0; index < SCHEDULE_SLOT_LIMIT; index += 1) {
+        const segment = segments[index];
+        actions.push({
+          dayOfWeek,
+          id: String(index + 1),
+          enabled: Boolean(segment),
+          recordMode: segment ? segment.mode : "continuous",
+          startTime: segment ? hourToScheduleTime(segment.startHour) : "00:00:00",
+          endTime: segment ? hourToScheduleTime(segment.endHour) : "00:00:00",
+        });
+      }
+    }
+
+    return actions;
+  }
+
+  function renderRecordSettingsForm(data) {
+    const firstTrack = data.recordingIsapi?.firstTrack || null;
+    const recordSetting = data.recordSetting && !data.recordSetting.error ? data.recordSetting : null;
+    recordOverwriteInputEl.value = firstTrack?.loopEnable === false ? "false" : "true";
+    recordScheduleEnabledInputEl.value = firstTrack?.enableSchedule === false ? "false" : "true";
+    if (firstTrack?.streamTypeRaw) {
+      recordStreamInputEl.value = String(firstTrack.streamTypeRaw);
+    } else if (recordSetting?.recordingStreamType > 0) {
+      recordStreamInputEl.value = String(recordSetting.recordingStreamType);
+    } else {
+      recordStreamInputEl.value = "";
+    }
+    recordPreSecondsInputEl.value =
+      firstTrack?.preRecordRaw && Number(firstTrack.preRecordRaw) >= 0
+        ? String(firstTrack.preRecordRaw)
+        : recordSetting?.preRecord >= 0
+          ? String(recordSetting.preRecord)
+          : "";
+    recordPostSecondsInputEl.value =
+      firstTrack?.postRecordRaw && Number(firstTrack.postRecordRaw) >= 0
+        ? String(firstTrack.postRecordRaw)
+        : recordSetting?.postRecordTime >= 0
+          ? String(recordSetting.postRecordTime)
+          : "";
+    recordDaysDisplayEl.value = formatTrackDays(firstTrack?.days);
+    scheduleState.cells = buildScheduleCellsFromActions(firstTrack?.scheduleActions || []);
+    renderSchedulePalette();
+    renderScheduleGrid();
+
+    const unsupported = [];
+    if (firstTrack?.streamTypeRaw === "") {
+      unsupported.push("Kayit akisi");
+    }
+    if (firstTrack?.loopEnable === null) {
+      unsupported.push("Ustune yaz");
+    }
+    if (firstTrack?.enableSchedule === null) {
+      unsupported.push("Takvim etkinligi");
+    }
+    if (!Array.isArray(firstTrack?.scheduleActions) || firstTrack.scheduleActions.length === 0) {
+      unsupported.push("Cizim tablosu");
+    }
+    if (firstTrack?.preRecordRaw === "") {
+      unsupported.push("Pre-record");
+    }
+    if (firstTrack?.postRecordRaw === "") {
+      unsupported.push("Post-record");
+    }
+    recordSettingsNoteEl.textContent = unsupported.length
+      ? `Boyanan haftalik plan mevcut cihaz XML'ine geri yazilir. Bu cihaz track XML'inde su alanlar bulunmadi: ${unsupported.join(", ")}.`
+      : "Boyanan haftalik plan mevcut cihaz XML'ine geri yazilir.";
+  }
+
   function renderStorageState(data) {
     const storage = data.storage || {};
     const recordSetting = data.recordSetting && !data.recordSetting.error ? data.recordSetting : null;
@@ -753,6 +1444,7 @@
     recordExpireDaysMetaEl.textContent = formatExpireDays(recordSetting?.storageTime);
     recordTrackIdMetaEl.textContent = firstTrack?.id || "-";
     storageOutputEl.value = summarizeStorageResult(data);
+    renderRecordSettingsForm(data);
   }
 
   function renderSyncState(data) {
@@ -767,7 +1459,14 @@
     if (config.lookbackMinutes) {
       syncLookbackInputEl.value = config.lookbackMinutes;
     }
-    syncOutputEl.value = JSON.stringify(data, null, 2);
+    syncOutputEl.value = JSON.stringify(
+      {
+        ...data,
+        firstFailingRequest: data.diagnostic || stateData.lastDiagnostic || null,
+      },
+      null,
+      2
+    );
   }
 
   function syncMeta() {
@@ -898,6 +1597,64 @@
     await loadEzviz();
   }
 
+  async function loadDeviceTime() {
+    if (!state.deviceId) {
+      setDeviceTimeStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    setDeviceTimeStatus("Cihaz saati okunuyor...");
+    const res = await fetch(`/api/device-config/time?deviceId=${encodeURIComponent(state.deviceId)}`);
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Cihaz saati alinamadi.");
+    }
+
+    renderDeviceTimeState(data);
+    setDeviceTimeStatus("Cihaz saati okundu.", "ok");
+  }
+
+  async function saveDeviceTime(dateTimeLocal) {
+    if (!state.deviceId) {
+      setDeviceTimeStatus("Device ID bulunamadi.", "err");
+      return;
+    }
+
+    const nextDateTime = String(dateTimeLocal || deviceTimeInputEl.value || "").trim();
+    if (!nextDateTime) {
+      throw new Error("Tarih ve saat zorunlu.");
+    }
+
+    setDeviceTimeStatus("Cihaz saati kaydediliyor...");
+    const res = await fetch("/api/device-config/time", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deviceId: state.deviceId,
+        dateTimeLocal: nextDateTime,
+        timeZone: deviceTimezoneInputEl.value.trim(),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Cihaz saati kaydedilemedi.");
+    }
+
+    renderDeviceTimeState(data);
+    setDeviceTimeStatus("Cihaz saati kaydedildi.", "ok");
+  }
+
+  async function syncDeviceTimeNow() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hour = String(now.getHours()).padStart(2, "0");
+    const minute = String(now.getMinutes()).padStart(2, "0");
+    deviceTimeInputEl.value = `${year}-${month}-${day}T${hour}:${minute}`;
+    return saveDeviceTime(deviceTimeInputEl.value);
+  }
+
   async function loadStorage() {
     if (!state.deviceId) {
       setStorageStatus("Device ID bulunamadi.", "err");
@@ -987,6 +1744,50 @@
     return applyLocalRecordAction("continuous");
   }
 
+  async function saveRecordSettings() {
+    if (!state.deviceId || !state.resourceId) {
+      setStorageStatus("deviceId ve cameraId gerekli.", "err");
+      return;
+    }
+
+    setStorageStatus("Kayit programi kaydediliyor...");
+    const res = await fetch("/api/device-config/local-record", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deviceId: state.deviceId,
+        cameraId: state.resourceId,
+        mode: "settings",
+        overwriteEnabled: recordOverwriteInputEl.value === "true",
+        enableSchedule: recordScheduleEnabledInputEl.value === "true",
+        scheduleActions: collectScheduleActions(),
+        streamType: recordStreamInputEl.value,
+        preRecordSeconds: recordPreSecondsInputEl.value,
+        postRecordSeconds: recordPostSecondsInputEl.value,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Kayit programi kaydedilemedi.");
+    }
+
+    storageOutputEl.value = JSON.stringify(data, null, 2);
+    if (Array.isArray(data.operation?.changeSummary?.unchangedFields) && data.operation.changeSummary.unchangedFields.length) {
+      setStorageStatus(
+        `Kamera istegi kabul etti ama su alanlari uygulamadi: ${data.operation.changeSummary.unchangedFields.join(", ")}`,
+        "warn"
+      );
+    } else if (Array.isArray(data.operation?.unsupportedFields) && data.operation.unsupportedFields.length) {
+      setStorageStatus(
+        `Kayit programi kismen kaydedildi. Desteklenmeyen alanlar: ${data.operation.unsupportedFields.join(", ")}`,
+        "warn"
+      );
+    } else {
+      setStorageStatus("Kayit programi kaydedildi.", "ok");
+    }
+    await loadStorage();
+  }
+
   async function loadRecordingSyncStatus() {
     if (!state.resourceId) {
       setSyncStatus("cameraId bulunamadi.", "err");
@@ -1052,6 +1853,10 @@
     });
     const data = await res.json();
     if (!res.ok || !data.success) {
+      renderSyncState(data);
+      if (data.diagnostic || data.state?.lastDiagnostic) {
+        setSyncStatus("Ilk hata veren OpenAPI istegi ayrintilari loglandi.", "err");
+      }
       throw new Error(data.error || "Kayit aktarimi basarisiz.");
     }
 
@@ -1186,6 +1991,15 @@
   document.getElementById("save-ezviz-btn").addEventListener("click", () => {
     saveEzviz().catch((err) => setStatus(err.message, "err"));
   });
+  document.getElementById("load-device-time-btn").addEventListener("click", () => {
+    loadDeviceTime().catch((err) => setDeviceTimeStatus(err.message, "err"));
+  });
+  document.getElementById("sync-device-time-btn").addEventListener("click", () => {
+    syncDeviceTimeNow().catch((err) => setDeviceTimeStatus(err.message, "err"));
+  });
+  document.getElementById("save-device-time-btn").addEventListener("click", () => {
+    saveDeviceTime().catch((err) => setDeviceTimeStatus(err.message, "err"));
+  });
   document.getElementById("load-storage-btn").addEventListener("click", () => {
     loadStorage().catch((err) => setStorageStatus(err.message, "err"));
   });
@@ -1200,6 +2014,15 @@
   });
   document.getElementById("apply-continuous-btn").addEventListener("click", () => {
     applyContinuousRecording().catch((err) => setStorageStatus(err.message, "err"));
+  });
+  document.getElementById("save-record-settings-btn").addEventListener("click", () => {
+    saveRecordSettings().catch((err) => setStorageStatus(err.message, "err"));
+  });
+  recordFillWeekBtn.addEventListener("click", () => {
+    fillWholeSchedule(scheduleState.selectedTool);
+  });
+  recordClearWeekBtn.addEventListener("click", () => {
+    fillWholeSchedule("off");
   });
   document.getElementById("load-sync-btn").addEventListener("click", () => {
     loadRecordingSyncStatus().catch((err) => setSyncStatus(err.message, "err"));
@@ -1228,17 +2051,40 @@
       button.setAttribute("aria-label", isVisible ? "Parolayi gizle" : "Parolayi goster");
     });
   });
+  document.addEventListener("mouseup", () => {
+    if (scheduleState.painting) {
+      applyDragSelection();
+      scheduleState.painting = false;
+      scheduleState.dragAnchor = null;
+      scheduleState.dragCurrent = null;
+      renderScheduleGrid();
+    }
+  });
+  document.addEventListener("mouseleave", () => {
+    if (scheduleState.painting) {
+      applyDragSelection();
+      scheduleState.painting = false;
+      scheduleState.dragAnchor = null;
+      scheduleState.dragCurrent = null;
+      renderScheduleGrid();
+    }
+  });
 
   syncMeta();
+  scheduleState.cells = createEmptyScheduleCells();
+  renderSchedulePalette();
+  renderScheduleGrid();
   if (state.deviceId) {
     loadNetwork().catch((err) => setStatus(err.message, "err"));
     loadEzviz().catch((err) => setStatus(err.message, "err"));
+    loadDeviceTime().catch((err) => setDeviceTimeStatus(err.message, "err"));
     loadStorage().catch((err) => setStorageStatus(err.message, "err"));
     if (state.resourceId) {
       loadRecordingSyncStatus().catch((err) => setSyncStatus(err.message, "err"));
     }
   } else {
     setStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
+    setDeviceTimeStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
     setStorageStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
     setSyncStatus("Bu sayfaya deviceId ile gelinmeli.", "err");
   }

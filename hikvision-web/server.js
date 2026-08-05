@@ -37,6 +37,13 @@ let tokenCache = {
   areaDomain: null,
   expireTime: 0,
 };
+let openApiAuditState = {
+  lastByOperation: {},
+  mp4DownloadHosts: [],
+  tokenHost: "",
+  lastAreaDomainHost: "",
+  devicesAddHost: "",
+};
 let streamTokenCache = {
   appToken: null,
   appKey: null,
@@ -192,6 +199,7 @@ function buildDefaultRecordingSyncState() {
     lastRunStatus: "idle",
     lastRunReason: "",
     lastError: "",
+    lastDiagnostic: null,
     activeRun: null,
     lastScheduledRunKey: "",
     lastSuccessByCameraId: {},
@@ -218,6 +226,7 @@ function loadRecordingSyncState() {
   return {
     ...buildDefaultRecordingSyncState(),
     ...raw,
+    lastDiagnostic: raw?.lastDiagnostic && typeof raw.lastDiagnostic === "object" ? raw.lastDiagnostic : null,
     lastSuccessByCameraId:
       raw && typeof raw.lastSuccessByCameraId === "object" && raw.lastSuccessByCameraId
         ? raw.lastSuccessByCameraId
@@ -416,9 +425,156 @@ function sanitizeMessage(message) {
   return output
     .replace(/"password"\s*:\s*"[^"]*"/gi, '"password":"***"')
     .replace(/"userName"\s*:\s*"[^"]*"/gi, '"userName":"***"')
+    .replace(/"appKey"\s*:\s*"[^"]*"/gi, '"appKey":"***"')
+    .replace(/"secretKey"\s*:\s*"[^"]*"/gi, '"secretKey":"***"')
+    .replace(/"verificationCode"\s*:\s*"[^"]*"/gi, '"verificationCode":"***"')
+    .replace(/"ezvizVerifyCode"\s*:\s*"[^"]*"/gi, '"ezvizVerifyCode":"***"')
     .replace(/"token"\s*:\s*"[^"]+"/gi, '"token":"***"')
     .replace(/"accessToken"\s*:\s*"[^"]+"/gi, '"accessToken":"***"')
+    .replace(/([?&](?:token|accessToken|appKey|secretKey|verificationCode|ezvizVerifyCode|AK|SK|ak|sk)=)[^&]+/gi, "$1***")
     .replace(/Token:\s*[^\s,]+/gi, "Token: ***");
+}
+
+function safeJsonParse(rawText) {
+  try {
+    return rawText ? JSON.parse(rawText) : {};
+  } catch {
+    return null;
+  }
+}
+
+function extractUrlHost(value) {
+  try {
+    return new URL(String(value || "")).host;
+  } catch {
+    return "";
+  }
+}
+
+function analyzeHikConnectBaseUrl(baseDomain, pathName) {
+  const base = String(baseDomain || "").trim();
+  const pathValue = String(pathName || "").trim();
+  const actualUrl = `${base}${pathValue}`;
+  const normalizedPath = pathValue.startsWith("/") ? pathValue : `/${pathValue}`;
+  const report = {
+    baseDomain: sanitizeMessage(base),
+    pathName: normalizedPath,
+    actualUrl: sanitizeMessage(actualUrl),
+    host: "",
+    hasDoubleApi: false,
+    missingRegionalDomain: false,
+    wrongPath: false,
+    issues: [],
+  };
+
+  try {
+    const parsed = new URL(actualUrl);
+    report.host = parsed.host;
+    report.hasDoubleApi = /\/api\/api(?:\/|$)/i.test(parsed.pathname);
+    report.missingRegionalDomain = !/^(?:ieu|ius|isa|iindia|isgp)(?:-team)?\./i.test(parsed.hostname);
+    report.wrongPath =
+      !parsed.pathname.endsWith(normalizedPath) &&
+      !parsed.pathname.endsWith(normalizedPath.replace(/^\//, ""));
+  } catch {
+    report.issues.push("invalid-url");
+    return report;
+  }
+
+  if (report.hasDoubleApi) {
+    report.issues.push("double-/api");
+  }
+  if (report.missingRegionalDomain) {
+    report.issues.push("missing-or-unexpected-regional-domain");
+  }
+  if (report.wrongPath) {
+    report.issues.push("wrong-path");
+  }
+
+  return report;
+}
+
+function recordOpenApiAudit(entry) {
+  if (!entry || typeof entry !== "object") {
+    return;
+  }
+
+  const normalized = {
+    ...entry,
+    url: sanitizeMessage(entry.url || ""),
+    responseBody: sanitizeMessage(entry.responseBody || ""),
+    areaDomain: sanitizeMessage(entry.areaDomain || ""),
+  };
+
+  if (normalized.operation) {
+    openApiAuditState.lastByOperation[normalized.operation] = normalized;
+  }
+  if (normalized.operation === "token.get") {
+    openApiAuditState.tokenHost = normalized.host || extractUrlHost(INITIAL_SERVER);
+  }
+  if (normalized.areaDomainHost) {
+    openApiAuditState.lastAreaDomainHost = normalized.areaDomainHost;
+  }
+  if (normalized.operation === "devices.add") {
+    openApiAuditState.devicesAddHost = normalized.host || "";
+  }
+}
+
+function buildRecordingHostComparison() {
+  const downloadUrlEntry =
+    openApiAuditState.lastByOperation["video.download.url"] ||
+    openApiAuditState.lastByOperation["video.save"] ||
+    openApiAuditState.lastByOperation["record.search"] ||
+    null;
+  const downloadOpenApiHost = downloadUrlEntry?.host || "";
+  const mp4DownloadHosts = Array.isArray(openApiAuditState.mp4DownloadHosts)
+    ? [...new Set(openApiAuditState.mp4DownloadHosts.filter(Boolean))]
+    : [];
+
+  return {
+    tokenHost: openApiAuditState.tokenHost || extractUrlHost(INITIAL_SERVER),
+    devicesAddHost: openApiAuditState.devicesAddHost || openApiAuditState.lastAreaDomainHost || "",
+    downloadOpenApiHost,
+    mp4DownloadHosts,
+  };
+}
+
+function attachDiagnostic(error, diagnostic) {
+  if (error && diagnostic) {
+    error.diagnostic = diagnostic;
+  }
+  return error;
+}
+
+function buildEndpointUnavailableMessage(pathName, statusCode) {
+  const code = Number(statusCode || 0);
+  if (code !== 404) {
+    return "";
+  }
+
+  if (
+    pathName === "/api/hccgw/video/v1/video/save" ||
+    pathName === "/api/hccgw/video/v1/video/download/url"
+  ) {
+    return "Bu OpenAPI hesabinda/bolgesinde video indirme endpointi mevcut veya etkin degil.";
+  }
+
+  if (pathName === "/api/hccgw/video/v1/record/element/search") {
+    return "Bu OpenAPI hesabinda/bolgesinde kayit sorgu endpointi mevcut veya etkin degil.";
+  }
+
+  return "";
+}
+
+function logRecordingSyncStep(runId, cameraId, stage, payload = {}) {
+  console.log(
+    JSON.stringify({
+      scope: "recording-sync",
+      runId,
+      cameraId,
+      stage,
+      ...payload,
+    })
+  );
 }
 
 function md5(value) {
@@ -886,6 +1042,93 @@ function parseEzvizStatus(xml) {
   };
 }
 
+function parseDeviceTimeConfig(xml) {
+  const localTime =
+    getXmlValue(xml, ["localTime", "LocalTime", "deviceTime"]) ||
+    getXmlValue(xml, ["time", "Time"]);
+  const timeZone = getXmlValue(xml, ["timeZone", "TimeZone", "timeZoneInfo"]);
+  const timeMode = getXmlValue(xml, ["timeMode", "TimeMode", "timeModeType"]).toLowerCase();
+  const ntpEnabledRaw = getXmlValue(xml, ["enabled", "ntpEnabled", "autoSync"]);
+  const ntpServer = getXmlValue(xml, ["hostName", "serverAddress", "ntpServer", "ipAddress"]);
+
+  return {
+    localTime,
+    timeZone,
+    timeMode: timeMode || "",
+    ntpEnabled:
+      ntpEnabledRaw === ""
+        ? null
+        : ["true", "1", "yes", "enabled"].includes(String(ntpEnabledRaw).toLowerCase()),
+    ntpServer,
+  };
+}
+
+function normalizeDeviceDateTimeInput(value) {
+  const normalized = String(value || "").trim();
+  if (!normalized) {
+    return "";
+  }
+
+  const match = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?$/.exec(normalized);
+  if (!match) {
+    return "";
+  }
+
+  return `${match[1]}T${match[2]}:${match[3]}:${match[4] || "00"}`;
+}
+
+function buildDeviceTimeValue(dateTimeLocal, timeZone = "") {
+  const normalizedDateTime = normalizeDeviceDateTimeInput(dateTimeLocal);
+  if (!normalizedDateTime) {
+    return "";
+  }
+
+  const normalizedTimeZone = String(timeZone || "").trim();
+  const offsetMatch = /([+-])(\d{1,2}):?(\d{2})(?::?(\d{2}))?/.exec(normalizedTimeZone);
+  if (!offsetMatch) {
+    return normalizedDateTime;
+  }
+
+  const [, sign, hourText, minuteText, secondText] = offsetMatch;
+  const hour = String(hourText).padStart(2, "0");
+  const minute = String(minuteText || "00").padStart(2, "0");
+  const second = String(secondText || "00").padStart(2, "0");
+  return `${normalizedDateTime}${sign}${hour}:${minute}:${second}`;
+}
+
+function updateDeviceTimeXml(xml, { dateTimeLocal, timeZone, timeMode = "manual" }) {
+  let updated = xml;
+  const normalizedDateTime = normalizeDeviceDateTimeInput(dateTimeLocal);
+  if (!normalizedDateTime) {
+    throw new Error("Gecerli tarih/saat gerekli.");
+  }
+
+  const nextTimeZone = String(timeZone || "").trim();
+  const nextLocalTime = buildDeviceTimeValue(normalizedDateTime, nextTimeZone);
+
+  updated = replaceXmlValue(updated, ["localTime", "LocalTime", "deviceTime"], nextLocalTime || normalizedDateTime);
+  updated = replaceXmlValue(updated, ["timeMode", "TimeMode", "timeModeType"], timeMode);
+
+  if (nextTimeZone) {
+    updated = replaceXmlValue(updated, ["timeZone", "TimeZone", "timeZoneInfo"], nextTimeZone);
+  }
+
+  return updated;
+}
+
+function hasXmlTag(xml, names) {
+  return names.some((name) => new RegExp(`<(?:\\w+:)?${name}\\b`, "i").test(String(xml || "")));
+}
+
+function findExistingXmlTagName(xml, names) {
+  for (const name of names) {
+    if (new RegExp(`<(?:\\w+:)?${name}\\b`, "i").test(String(xml || ""))) {
+      return name;
+    }
+  }
+  return "";
+}
+
 function updateEzvizXml(xml, verificationCode) {
   const namespaceMatch = /<EZVIZ\b[^>]*xmlns="([^"]+)"/i.exec(xml);
   const namespace = namespaceMatch?.[1] || "http://www.hikvision.com/ver20/XMLSchema";
@@ -1234,6 +1477,200 @@ function splitTrackDays(trackXml) {
   return matches.map((item) => decodeXml(String(item[1] || "").trim())).filter(Boolean);
 }
 
+function uniqueValues(values) {
+  return [...new Set((Array.isArray(values) ? values : []).filter(Boolean))];
+}
+
+function parseBooleanText(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+  if (["true", "1", "yes", "on", "enabled"].includes(normalized)) {
+    return true;
+  }
+  if (["false", "0", "no", "off", "disabled"].includes(normalized)) {
+    return false;
+  }
+  return null;
+}
+
+function inferStreamTypeFromSrcUrl(url) {
+  const normalized = String(url || "").trim();
+  if (!normalized) {
+    return "";
+  }
+  const match = /\/channels\/(\d+)/i.exec(normalized);
+  if (!match) {
+    return "";
+  }
+  const channelNumber = Number(match[1]);
+  if (!Number.isFinite(channelNumber)) {
+    return "";
+  }
+  const suffix = channelNumber % 100;
+  if (suffix === 1) {
+    return "1";
+  }
+  if (suffix === 2) {
+    return "2";
+  }
+  return "";
+}
+
+function extractScheduleBoundaryTime(trackXml, boundaryTagNames) {
+  for (const tagName of boundaryTagNames) {
+    const match = new RegExp(
+      `<(?:\\w+:)?${tagName}\\b[^>]*>[\\s\\S]*?<TimeOfDay>([\\s\\S]*?)<\\/(?:\\w+:)?TimeOfDay>[\\s\\S]*?<\\/(?:\\w+:)?${tagName}>`,
+      "i"
+    ).exec(String(trackXml || ""));
+    if (match && match[1] != null) {
+      return decodeXml(String(match[1] || "").trim());
+    }
+  }
+  return "";
+}
+
+function replaceScheduleBoundaryTime(trackXml, boundaryTagNames, nextTime) {
+  let updated = String(trackXml || "");
+  let replacedAny = false;
+
+  for (const tagName of boundaryTagNames) {
+    const regex = new RegExp(
+      `(<(?:\\w+:)?${tagName}\\b[^>]*>[\\s\\S]*?<TimeOfDay>)([\\s\\S]*?)(<\\/(?:\\w+:)?TimeOfDay>[\\s\\S]*?<\\/(?:\\w+:)?${tagName}>)`,
+      "gi"
+    );
+    if (regex.test(updated)) {
+      updated = updated.replace(regex, `$1${escapeXml(nextTime)}$3`);
+      replacedAny = true;
+    }
+  }
+
+  return {
+    updated,
+    replacedAny,
+  };
+}
+
+function getScheduleActionBlocks(trackXml) {
+  const matches = [...String(trackXml || "").matchAll(/<(?:\w+:)?ScheduleAction\b[\s\S]*?<\/(?:\w+:)?ScheduleAction>/gi)];
+  return matches.map((item) => item[0]);
+}
+
+function parseTrackScheduleActions(trackXml) {
+  return getScheduleActionBlocks(trackXml)
+    .map((blockXml) => {
+      const slotId = firstTagValue(blockXml, ["id"]);
+      const dayOfWeek = firstTagValue(blockXml, ["DayOfWeek"]);
+      const startTime =
+        extractScheduleBoundaryTime(blockXml, ["ScheduleActionStartTime", "scheduleActionStartTime"]) || "00:00:00";
+      const endTime =
+        extractScheduleBoundaryTime(blockXml, ["ScheduleActionEndTime", "scheduleActionEndTime"]) || "00:00:00";
+      const recordRaw = firstTagValue(blockXml, ["Record"]);
+      const recordEnabled = parseBooleanText(recordRaw);
+      const recordModeRaw = firstTagValue(blockXml, ["ActionRecordingMode", "recordingMode", "recordType"]);
+      const recordMode = inferRecordMode(recordModeRaw);
+      const active =
+        recordEnabled !== false &&
+        Boolean(dayOfWeek) &&
+        !(normalizeTimeOfDayValue(startTime, "00:00:00") === "00:00:00" && normalizeTimeOfDayValue(endTime, "00:00:00") === "00:00:00");
+
+      return {
+        id: slotId,
+        dayOfWeek,
+        startTime,
+        endTime,
+        recordEnabled: recordEnabled !== false,
+        recordModeRaw,
+        recordMode,
+        recordModeLabel: mapRecordModeLabel(recordMode),
+        active,
+      };
+    })
+    .filter((item) => item.id && item.dayOfWeek);
+}
+
+function normalizeScheduleActionsInput(scheduleActions) {
+  if (!Array.isArray(scheduleActions)) {
+    return [];
+  }
+
+  return scheduleActions
+    .map((item) => {
+      const dayOfWeek = String(item?.dayOfWeek || "").trim();
+      const id = String(item?.id || "").trim();
+      const enabled = item?.enabled === undefined ? true : Boolean(item.enabled);
+      return {
+        id,
+        dayOfWeek,
+        enabled,
+        recordMode: String(item?.recordMode || "").trim().toLowerCase(),
+        startTime: enabled ? normalizeTimeOfDayValue(item?.startTime || "00:00:00") : "00:00:00",
+        endTime: enabled ? normalizeTimeOfDayValue(item?.endTime || "00:00:00") : "00:00:00",
+      };
+    })
+    .filter((item) => item.id && item.dayOfWeek);
+}
+
+function patchTrackScheduleActions(trackXml, trackInfo, scheduleActionsInput) {
+  const normalizedActions = normalizeScheduleActionsInput(scheduleActionsInput);
+  if (!normalizedActions.length) {
+    return {
+      updated: String(trackXml || ""),
+      unsupportedFields: [],
+    };
+  }
+
+  const actionMap = new Map(normalizedActions.map((item) => [`${item.dayOfWeek}#${item.id}`, item]));
+  const supportedModes = new Map();
+  let updated = String(trackXml || "");
+  let replacedAny = false;
+  const unsupportedFields = [];
+
+  updated = updated.replace(/<(?:\w+:)?ScheduleAction\b[\s\S]*?<\/(?:\w+:)?ScheduleAction>/gi, (blockXml) => {
+    const slotId = firstTagValue(blockXml, ["id"]);
+    const dayOfWeek = firstTagValue(blockXml, ["DayOfWeek"]);
+    const key = `${dayOfWeek}#${slotId}`;
+    const nextAction = actionMap.get(key);
+    if (!nextAction) {
+      return blockXml;
+    }
+
+    let nextBlock = String(blockXml);
+    const normalizedModeValue =
+      nextAction.recordMode && nextAction.enabled ? chooseTrackModeValue(trackInfo, nextAction.recordMode) : "";
+    if (nextAction.recordMode && nextAction.enabled && !normalizedModeValue) {
+      unsupportedFields.push(`schedule:${key}:recordMode`);
+    } else if (normalizedModeValue && hasXmlTag(nextBlock, ["ActionRecordingMode", "recordingMode", "recordType"])) {
+      nextBlock = replaceXmlValue(nextBlock, ["ActionRecordingMode", "recordingMode", "recordType"], normalizedModeValue);
+      supportedModes.set(key, true);
+    }
+
+    const startResult = replaceScheduleBoundaryTime(nextBlock, ["ScheduleActionStartTime", "scheduleActionStartTime"], nextAction.startTime);
+    nextBlock = startResult.updated;
+    const endResult = replaceScheduleBoundaryTime(nextBlock, ["ScheduleActionEndTime", "scheduleActionEndTime"], nextAction.endTime);
+    nextBlock = endResult.updated;
+
+    if (hasXmlTag(nextBlock, ["Record"])) {
+      nextBlock = replaceXmlValue(nextBlock, ["Record"], nextAction.enabled ? "true" : "false");
+    } else {
+      unsupportedFields.push(`schedule:${key}:record`);
+    }
+
+    replacedAny = true;
+    return nextBlock;
+  });
+
+  if (!replacedAny) {
+    unsupportedFields.push("scheduleActions");
+  }
+
+  return {
+    updated,
+    unsupportedFields: uniqueValues(unsupportedFields),
+  };
+}
+
 function inferRecordMode(recordTypeRaw) {
   const value = String(recordTypeRaw || "").trim().toLowerCase();
   if (!value) {
@@ -1242,8 +1679,14 @@ function inferRecordMode(recordTypeRaw) {
   if (["cmr", "continuous", "timing", "alltime", "always"].includes(value)) {
     return "continuous";
   }
-  if (["motion", "vmd", "edr", "event", "alarmandmotion", "smart"].includes(value)) {
+  if (["motion", "vmd", "edr", "event", "smart"].includes(value)) {
     return "motion";
+  }
+  if (["alarm"].includes(value)) {
+    return "alarm";
+  }
+  if (["alarmandmotion"].includes(value)) {
+    return "alarmandmotion";
   }
   return value;
 }
@@ -1254,6 +1697,10 @@ function mapRecordModeLabel(mode) {
       return "7/24";
     case "motion":
       return "Hareket";
+    case "alarm":
+      return "Alarm";
+    case "alarmandmotion":
+      return "Hareket + Alarm";
     default:
       return "-";
   }
@@ -1270,15 +1717,73 @@ function mapStreamTypeLabel(value) {
   return "-";
 }
 
+function normalizeTimeOfDayValue(value, fallback = "") {
+  const normalized = String(value || fallback || "").trim();
+  if (!normalized) {
+    throw new Error("Saat alani bos birakilamaz.");
+  }
+
+  const match = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(normalized);
+  if (!match) {
+    throw new Error(`Gecersiz saat formati: ${normalized}`);
+  }
+
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const second = Number(match[3] || "00");
+  if (
+    !Number.isInteger(hour) ||
+    !Number.isInteger(minute) ||
+    !Number.isInteger(second) ||
+    hour < 0 ||
+    hour > 24 ||
+    minute < 0 ||
+    minute > 59 ||
+    second < 0 ||
+    second > 59
+  ) {
+    throw new Error(`Gecersiz saat degeri: ${normalized}`);
+  }
+  if (hour === 24 && (minute !== 0 || second !== 0)) {
+    throw new Error(`24:00 yalnizca 24:00:00 olarak kullanilabilir: ${normalized}`);
+  }
+
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}`;
+}
+
 function parseTrackInfo(trackXml, trackCapabilitiesXml = "") {
   const id = firstTagValue(trackXml, ["id", "trackID"]);
   const enabledRaw = firstTagValue(trackXml, ["enabled", "enable"]);
-  const recordTypeRaw = firstTagValue(trackXml, ["recordType", "trackType", "recordingMode"]);
-  const supportedModes = extractTagOptValues(trackCapabilitiesXml, ["recordType", "trackType", "recordingMode"]);
-  const days = splitTrackDays(trackXml);
-  const startTime = firstTagValue(trackXml, ["ScheduleActionStartTime", "scheduleActionStartTime", "startTime", "beginTime"]);
-  const endTime = firstTagValue(trackXml, ["ScheduleActionEndTime", "scheduleActionEndTime", "endTime", "stopTime"]);
+  const defaultRecordingModeRaw = firstTagValue(trackXml, ["DefaultRecordingMode"]);
+  const recordTypeRaw = firstTagValue(trackXml, [
+    "ActionRecordingMode",
+    "DefaultRecordingMode",
+    "recordType",
+    "trackType",
+    "recordingMode",
+  ]);
+  const supportedModes = uniqueValues([
+    ...extractTagOptValues(trackCapabilitiesXml, ["DefaultRecordingMode"]),
+    ...extractTagOptValues(trackCapabilitiesXml, ["ActionRecordingMode"]),
+    ...extractTagOptValues(trackCapabilitiesXml, ["recordType", "trackType", "recordingMode"]),
+  ]);
+  const days = uniqueValues(splitTrackDays(trackXml));
+  const startTime =
+    extractScheduleBoundaryTime(trackXml, ["ScheduleActionStartTime", "scheduleActionStartTime"]) ||
+    firstTagValue(trackXml, ["startTime", "beginTime"]);
+  const endTime =
+    extractScheduleBoundaryTime(trackXml, ["ScheduleActionEndTime", "scheduleActionEndTime"]) ||
+    firstTagValue(trackXml, ["endTime", "stopTime"]);
+  const streamTypeRaw = firstTagValue(trackXml, ["StreamType", "streamType", "recordingStreamType", "srcStreamType"]);
+  const preRecordRaw = firstTagValue(trackXml, ["PreRecordTimeSeconds", "preRecordTimeSeconds", "PreRecordDuration", "preRecordDuration", "preRecordTime", "preRecord"]);
+  const postRecordRaw = firstTagValue(trackXml, ["PostRecordTimeSeconds", "postRecordTimeSeconds", "PostRecordDuration", "postRecordDuration", "postRecordTime", "postRecord"]);
+  const loopEnableRaw = firstTagValue(trackXml, ["LoopEnable", "loopEnable", "overwrite", "recycle"]);
+  const enableScheduleRaw = firstTagValue(trackXml, ["enableSchedule"]);
+  const srcUrl = firstTagValue(trackXml, ["SrcUrl", "srcUrl"]);
+  const srcUrlOptions = extractTagOptValues(trackCapabilitiesXml, ["SrcUrl", "srcUrl"]);
+  const inferredStreamType = streamTypeRaw || inferStreamTypeFromSrcUrl(srcUrl);
   const normalizedMode = inferRecordMode(recordTypeRaw);
+  const scheduleActions = parseTrackScheduleActions(trackXml);
   return {
     id,
     enabledRaw,
@@ -1290,6 +1795,7 @@ function parseTrackInfo(trackXml, trackCapabilitiesXml = "") {
           : ["false", "0", "no", "off", "disabled"].includes(enabledRaw.toLowerCase())
             ? false
             : null,
+    defaultRecordingModeRaw,
     recordTypeRaw,
     recordMode: normalizedMode,
     recordModeLabel: mapRecordModeLabel(normalizedMode),
@@ -1297,6 +1803,17 @@ function parseTrackInfo(trackXml, trackCapabilitiesXml = "") {
     days,
     startTime,
     endTime,
+    streamTypeRaw: inferredStreamType,
+    streamTypeLabel: mapStreamTypeLabel(inferredStreamType),
+    sourceUrl: srcUrl,
+    sourceUrlOptions: srcUrlOptions,
+    preRecordRaw,
+    postRecordRaw,
+    loopEnableRaw,
+    loopEnable: parseBooleanText(loopEnableRaw),
+    enableScheduleRaw,
+    enableSchedule: parseBooleanText(enableScheduleRaw),
+    scheduleActions,
     rawXml: decodeXml(String(trackXml || "")),
   };
 }
@@ -1362,24 +1879,55 @@ async function writeRecordTrack(deviceId, trackId, xml) {
 }
 
 function chooseContinuousModeValue(trackInfo) {
-  const supported = Array.isArray(trackInfo?.supportedModes) ? trackInfo.supportedModes.map((item) => item.toLowerCase()) : [];
-  const mapping = [
-    ["cmr", "CMR"],
-    ["continuous", "continuous"],
-    ["timing", "timing"],
-    ["alltime", "alltime"],
+  return chooseSupportedTrackModeValue(trackInfo, "continuous");
+}
+
+function chooseMotionModeValue(trackInfo) {
+  return chooseSupportedTrackModeValue(trackInfo, "motion");
+}
+
+function chooseAlarmModeValue(trackInfo) {
+  return chooseSupportedTrackModeValue(trackInfo, "alarm");
+}
+
+function chooseAlarmAndMotionModeValue(trackInfo) {
+  return chooseSupportedTrackModeValue(trackInfo, "alarmandmotion");
+}
+
+function chooseSupportedTrackModeValue(trackInfo, requestedMode) {
+  const supported = Array.isArray(trackInfo?.supportedModes) ? trackInfo.supportedModes : [];
+  const exactSupportedMatch = supported.find((item) => inferRecordMode(item) === requestedMode);
+  if (exactSupportedMatch) {
+    return String(exactSupportedMatch).trim();
+  }
+
+  const currentCandidates = [
+    trackInfo?.recordTypeRaw,
+    trackInfo?.defaultRecordingModeRaw,
   ];
-  for (const [candidate, output] of mapping) {
-    if (supported.includes(candidate)) {
-      return output;
+  for (const candidate of currentCandidates) {
+    const normalizedCandidate = String(candidate || "").trim();
+    if (normalizedCandidate && inferRecordMode(normalizedCandidate) === requestedMode) {
+      return normalizedCandidate;
     }
   }
 
-  const current = String(trackInfo?.recordTypeRaw || "").trim();
-  if (inferRecordMode(current) === "continuous") {
-    return current;
-  }
+  return "";
+}
 
+function chooseTrackModeValue(trackInfo, requestedMode) {
+  if (requestedMode === "continuous") {
+    return chooseContinuousModeValue(trackInfo);
+  }
+  if (requestedMode === "motion") {
+    return chooseMotionModeValue(trackInfo);
+  }
+  if (requestedMode === "alarm") {
+    return chooseAlarmModeValue(trackInfo);
+  }
+  if (requestedMode === "alarmandmotion") {
+    return chooseAlarmAndMotionModeValue(trackInfo);
+  }
   return "";
 }
 
@@ -1399,7 +1947,8 @@ function patchTrackContinuous(trackXml, trackInfo) {
   let updated = String(trackXml || "");
   const continuousModeValue = chooseContinuousModeValue(trackInfo);
   if (!continuousModeValue) {
-    throw new Error("Track capability icinde dogrulanmis 7/24 record mode bulunamadi.");
+    updated = patchTrackEnabled(updated, true);
+    return updated;
   }
 
   if (
@@ -1409,29 +1958,323 @@ function patchTrackContinuous(trackXml, trackInfo) {
   }
 
   updated = patchTrackEnabled(updated, true);
-  updated = replaceXmlValue(updated, ["recordType", "trackType", "recordingMode"], continuousModeValue);
+  updated = replaceXmlValue(
+    updated,
+    ["ActionRecordingMode", "DefaultRecordingMode", "recordType", "trackType", "recordingMode"],
+    continuousModeValue
+  );
 
-  const replacements = [
-    ["ScheduleActionStartTime", "00:00:00"],
-    ["scheduleActionStartTime", "00:00:00"],
-    ["ScheduleActionEndTime", "24:00:00"],
-    ["scheduleActionEndTime", "24:00:00"],
-  ];
-
-  let replacedAnyTime = false;
-  for (const [tagName, value] of replacements) {
-    const regex = new RegExp(`<(?:\\w+:)?${tagName}\\b`, "i");
-    if (regex.test(updated)) {
-      updated = replaceXmlValue(updated, [tagName], value);
-      replacedAnyTime = true;
-    }
-  }
+  const startResult = replaceScheduleBoundaryTime(updated, ["ScheduleActionStartTime", "scheduleActionStartTime"], "00:00:00");
+  updated = startResult.updated;
+  const endResult = replaceScheduleBoundaryTime(updated, ["ScheduleActionEndTime", "scheduleActionEndTime"], "24:00:00");
+  updated = endResult.updated;
+  const replacedAnyTime = startResult.replacedAny || endResult.replacedAny;
 
   if (!replacedAnyTime) {
     throw new Error("Track XML icinde 7/24 icin guncellenebilir zaman alanlari bulunamadi.");
   }
 
   return updated;
+}
+
+function patchTrackScheduleTimes(trackXml, startTime, endTime) {
+  let updated = String(trackXml || "");
+  const startResult = replaceScheduleBoundaryTime(updated, ["ScheduleActionStartTime", "scheduleActionStartTime"], startTime);
+  updated = startResult.updated;
+  const endResult = replaceScheduleBoundaryTime(updated, ["ScheduleActionEndTime", "scheduleActionEndTime"], endTime);
+  updated = endResult.updated;
+  let replacedAny = startResult.replacedAny || endResult.replacedAny;
+
+  if (!replacedAny) {
+    const replacements = [
+      ["startTime", startTime],
+      ["beginTime", startTime],
+      ["endTime", endTime],
+      ["stopTime", endTime],
+    ];
+
+    for (const [tagName, value] of replacements) {
+      if (hasXmlTag(updated, [tagName])) {
+        updated = replaceXmlValue(updated, [tagName], value);
+        replacedAny = true;
+      }
+    }
+  }
+
+  if (!replacedAny) {
+    throw new Error("Track XML icinde guncellenebilir zaman alanlari bulunamadi.");
+  }
+
+  return updated;
+}
+
+function patchTrackConfiguration(trackXml, trackInfo, input) {
+  let updated = String(trackXml || "");
+  const unsupportedFields = [];
+
+  if (typeof input.enabled === "boolean") {
+    updated = patchTrackEnabled(updated, input.enabled);
+  }
+
+  if (input.recordMode) {
+    const modeValue = chooseTrackModeValue(trackInfo, input.recordMode);
+    if (
+      !modeValue ||
+      !hasXmlTag(updated, ["ActionRecordingMode", "DefaultRecordingMode", "recordType", "trackType", "recordingMode"])
+    ) {
+      unsupportedFields.push("recordMode");
+    } else {
+      updated = replaceXmlValue(
+        updated,
+        ["ActionRecordingMode", "DefaultRecordingMode", "recordType", "trackType", "recordingMode"],
+        modeValue
+      );
+    }
+  }
+
+  if (input.overwriteEnabled !== undefined && input.overwriteEnabled !== null) {
+    if (!hasXmlTag(updated, ["LoopEnable", "loopEnable", "overwrite", "recycle"])) {
+      unsupportedFields.push("overwriteEnabled");
+    } else {
+      updated = replaceXmlValue(
+        updated,
+        ["LoopEnable", "loopEnable", "overwrite", "recycle"],
+        input.overwriteEnabled ? "true" : "false"
+      );
+    }
+  }
+
+  if (input.enableSchedule !== undefined && input.enableSchedule !== null) {
+    if (!hasXmlTag(updated, ["enableSchedule"])) {
+      unsupportedFields.push("enableSchedule");
+    } else {
+      updated = replaceXmlValue(updated, ["enableSchedule"], input.enableSchedule ? "true" : "false");
+    }
+  }
+
+  const nextStartTime = input.startTime ? normalizeTimeOfDayValue(input.startTime, trackInfo?.startTime) : "";
+  const nextEndTime = input.endTime ? normalizeTimeOfDayValue(input.endTime, trackInfo?.endTime) : "";
+  if (nextStartTime || nextEndTime) {
+    if (
+      hasXmlTag(updated, ["ScheduleActionStartTime", "scheduleActionStartTime", "startTime", "beginTime"]) ||
+      hasXmlTag(updated, ["ScheduleActionEndTime", "scheduleActionEndTime", "endTime", "stopTime"])
+    ) {
+      updated = patchTrackScheduleTimes(
+        updated,
+        nextStartTime || normalizeTimeOfDayValue(trackInfo?.startTime || "00:00:00"),
+        nextEndTime || normalizeTimeOfDayValue(trackInfo?.endTime || "24:00:00")
+      );
+    } else {
+      unsupportedFields.push("scheduleTime");
+    }
+  }
+
+  if (input.streamType !== undefined && input.streamType !== null && input.streamType !== "") {
+    const desiredStreamType = String(input.streamType).trim();
+    const currentSrcUrl = firstTagValue(updated, ["SrcUrl", "srcUrl"]);
+    const supportedSrcUrls = uniqueValues(trackInfo?.sourceUrlOptions || []);
+    const matchingSrcUrl = supportedSrcUrls.find((url) => inferStreamTypeFromSrcUrl(url) === desiredStreamType);
+    if (matchingSrcUrl && hasXmlTag(updated, ["SrcUrl", "srcUrl"])) {
+      updated = replaceXmlValue(updated, ["SrcUrl", "srcUrl"], matchingSrcUrl);
+    } else if (!hasXmlTag(updated, ["StreamType", "streamType", "recordingStreamType", "srcStreamType"])) {
+      unsupportedFields.push("streamType");
+    } else {
+      updated = replaceXmlValue(
+        updated,
+        ["StreamType", "streamType", "recordingStreamType", "srcStreamType"],
+        desiredStreamType
+      );
+    }
+  }
+
+  if (input.preRecordSeconds !== undefined && input.preRecordSeconds !== null && input.preRecordSeconds !== "") {
+    const normalizedPreRecord = Number(input.preRecordSeconds);
+    if (!Number.isFinite(normalizedPreRecord) || normalizedPreRecord < 0) {
+      throw new Error("Pre-record saniye degeri 0 veya daha buyuk bir sayi olmali.");
+    }
+    if (
+      !hasXmlTag(updated, [
+        "PreRecordTimeSeconds",
+        "preRecordTimeSeconds",
+        "PreRecordDuration",
+        "preRecordDuration",
+        "preRecordTime",
+        "preRecord",
+      ])
+    ) {
+      unsupportedFields.push("preRecordSeconds");
+    } else {
+      updated = replaceXmlValue(
+        updated,
+        ["PreRecordTimeSeconds", "preRecordTimeSeconds", "PreRecordDuration", "preRecordDuration", "preRecordTime", "preRecord"],
+        String(Math.round(normalizedPreRecord))
+      );
+    }
+  }
+
+  if (input.postRecordSeconds !== undefined && input.postRecordSeconds !== null && input.postRecordSeconds !== "") {
+    const normalizedPostRecord = Number(input.postRecordSeconds);
+    if (!Number.isFinite(normalizedPostRecord) || normalizedPostRecord < 0) {
+      throw new Error("Post-record saniye degeri 0 veya daha buyuk bir sayi olmali.");
+    }
+    if (
+      !hasXmlTag(updated, [
+        "PostRecordTimeSeconds",
+        "postRecordTimeSeconds",
+        "PostRecordDuration",
+        "postRecordDuration",
+        "postRecordTime",
+        "postRecord",
+      ])
+    ) {
+      unsupportedFields.push("postRecordSeconds");
+    } else {
+      updated = replaceXmlValue(
+        updated,
+        ["PostRecordTimeSeconds", "postRecordTimeSeconds", "PostRecordDuration", "postRecordDuration", "postRecordTime", "postRecord"],
+        String(Math.round(normalizedPostRecord))
+      );
+    }
+  }
+
+  if (Array.isArray(input.scheduleActions) && input.scheduleActions.length) {
+    const schedulePatch = patchTrackScheduleActions(updated, trackInfo, input.scheduleActions);
+    updated = schedulePatch.updated;
+    unsupportedFields.push(...schedulePatch.unsupportedFields);
+  }
+
+  return {
+    updated,
+    unsupportedFields: uniqueValues(unsupportedFields),
+  };
+}
+
+function listWritableRecordTracks(recordingState) {
+  return Array.isArray(recordingState?.trackList)
+    ? recordingState.trackList.filter((track) => String(track?.id || "").trim())
+    : [];
+}
+
+function buildTrackStateMap(recordingState) {
+  const map = new Map();
+  for (const track of Array.isArray(recordingState?.trackList) ? recordingState.trackList : []) {
+    const trackId = String(track?.id || "").trim();
+    if (!trackId) {
+      continue;
+    }
+    map.set(trackId, track);
+  }
+  return map;
+}
+
+function buildLocalRecordChangeSummary(input, before, after, targetTrackIds) {
+  const beforeMap = buildTrackStateMap(before);
+  const afterMap = buildTrackStateMap(after);
+  const requestedFields = [];
+  const unchangedFields = [];
+
+  const trackIds = Array.isArray(targetTrackIds) ? targetTrackIds.map((item) => String(item || "").trim()).filter(Boolean) : [];
+
+  const everyTrackMatches = (predicate) =>
+    trackIds.length > 0 &&
+    trackIds.every((trackId) => {
+      const afterTrack = afterMap.get(trackId);
+      return afterTrack ? predicate(afterTrack, beforeMap.get(trackId) || null) : false;
+    });
+
+  if (typeof input.enabled === "boolean") {
+    requestedFields.push("enabled");
+    if (!everyTrackMatches((afterTrack) => afterTrack.enabled === input.enabled)) {
+      unchangedFields.push("enabled");
+    }
+  }
+
+  if (input.recordMode) {
+    requestedFields.push("recordMode");
+    if (!everyTrackMatches((afterTrack) => afterTrack.recordMode === input.recordMode)) {
+      unchangedFields.push("recordMode");
+    }
+  }
+
+  if (input.streamType !== undefined && input.streamType !== null && input.streamType !== "") {
+    requestedFields.push("streamType");
+    if (!everyTrackMatches((afterTrack) => String(afterTrack.streamTypeRaw || "") === String(input.streamType))) {
+      unchangedFields.push("streamType");
+    }
+  }
+
+  if (input.overwriteEnabled !== undefined && input.overwriteEnabled !== null) {
+    requestedFields.push("overwriteEnabled");
+    if (!everyTrackMatches((afterTrack) => afterTrack.loopEnable === Boolean(input.overwriteEnabled))) {
+      unchangedFields.push("overwriteEnabled");
+    }
+  }
+
+  if (input.enableSchedule !== undefined && input.enableSchedule !== null) {
+    requestedFields.push("enableSchedule");
+    if (!everyTrackMatches((afterTrack) => afterTrack.enableSchedule === Boolean(input.enableSchedule))) {
+      unchangedFields.push("enableSchedule");
+    }
+  }
+
+  if (input.startTime) {
+    requestedFields.push("startTime");
+    const expected = normalizeTimeOfDayValue(input.startTime);
+    if (!everyTrackMatches((afterTrack) => normalizeTimeOfDayValue(afterTrack.startTime || "00:00:00") === expected)) {
+      unchangedFields.push("startTime");
+    }
+  }
+
+  if (input.endTime) {
+    requestedFields.push("endTime");
+    const expected = normalizeTimeOfDayValue(input.endTime);
+    if (!everyTrackMatches((afterTrack) => normalizeTimeOfDayValue(afterTrack.endTime || "00:00:00") === expected)) {
+      unchangedFields.push("endTime");
+    }
+  }
+
+  if (input.preRecordSeconds !== undefined && input.preRecordSeconds !== null && input.preRecordSeconds !== "") {
+    requestedFields.push("preRecordSeconds");
+    if (
+      !everyTrackMatches(
+        (afterTrack) => Number(afterTrack.preRecordRaw || NaN) === Number(input.preRecordSeconds)
+      )
+    ) {
+      unchangedFields.push("preRecordSeconds");
+    }
+  }
+
+  if (input.postRecordSeconds !== undefined && input.postRecordSeconds !== null && input.postRecordSeconds !== "") {
+    requestedFields.push("postRecordSeconds");
+    if (
+      !everyTrackMatches(
+        (afterTrack) => Number(afterTrack.postRecordRaw || NaN) === Number(input.postRecordSeconds)
+      )
+    ) {
+      unchangedFields.push("postRecordSeconds");
+    }
+  }
+
+  if (Array.isArray(input.scheduleActions) && input.scheduleActions.length) {
+    requestedFields.push("scheduleActions");
+    const beforeActionsByTrack = trackIds.map((trackId) => beforeMap.get(trackId)?.scheduleActions || []);
+    const afterActionsByTrack = trackIds.map((trackId) => afterMap.get(trackId)?.scheduleActions || []);
+    const expectedActiveCount = input.scheduleActions.filter((item) => item && item.enabled).length;
+    const anyTrackAppliedSchedule = afterActionsByTrack.some((actions, index) => {
+      const beforeActions = beforeActionsByTrack[index] || [];
+      const afterEnabledCount = actions.filter((item) => item && item.active).length;
+      return afterEnabledCount === expectedActiveCount && JSON.stringify(beforeActions) !== JSON.stringify(actions);
+    });
+    if (!anyTrackAppliedSchedule) {
+      unchangedFields.push("scheduleActions");
+    }
+  }
+
+  return {
+    requestedFields,
+    unchangedFields: uniqueValues(unchangedFields),
+    allApplied: requestedFields.length > 0 && uniqueValues(unchangedFields).length === 0,
+  };
 }
 
 async function readRecordingIsapiState(deviceId) {
@@ -1471,35 +2314,82 @@ async function readRecordingIsapiState(deviceId) {
 
 async function applyLocalRecordOperation(deviceId, action) {
   const before = await readRecordingIsapiState(deviceId);
-  const trackId = String(before.firstTrack?.id || "").trim();
-  if (!trackId) {
+  const targetTracks = listWritableRecordTracks(before);
+  if (!targetTracks.length) {
     throw new Error("Yazilabilir record track bulunamadi.");
   }
+  const operations = [];
 
-  const currentTrackResult = await readRecordTrack(deviceId, trackId);
-  const currentTrackXml = decodeXml(String(currentTrackResult.data || ""));
-  const currentTrackInfo = parseTrackInfo(currentTrackXml, before.trackCapabilitiesXmlMap[trackId] || "");
+  for (const targetTrack of targetTracks) {
+    const trackId = String(targetTrack.id || "").trim();
+    const currentTrackResult = await readRecordTrack(deviceId, trackId);
+    const currentTrackXml = decodeXml(String(currentTrackResult.data || ""));
+    const currentTrackInfo = parseTrackInfo(currentTrackXml, before.trackCapabilitiesXmlMap[trackId] || "");
 
-  let nextTrackXml = currentTrackXml;
-  if (action === "enable") {
-    nextTrackXml = patchTrackEnabled(currentTrackXml, true);
-  } else if (action === "disable") {
-    nextTrackXml = patchTrackEnabled(currentTrackXml, false);
-  } else if (action === "continuous") {
-    nextTrackXml = patchTrackContinuous(currentTrackXml, currentTrackInfo);
-  } else {
-    throw new Error(`Desteklenmeyen local record action: ${action}`);
+    let nextTrackXml = currentTrackXml;
+    if (action === "enable") {
+      nextTrackXml = patchTrackEnabled(currentTrackXml, true);
+    } else if (action === "disable") {
+      nextTrackXml = patchTrackEnabled(currentTrackXml, false);
+    } else if (action === "continuous") {
+      nextTrackXml = patchTrackContinuous(currentTrackXml, currentTrackInfo);
+    } else {
+      throw new Error(`Desteklenmeyen local record action: ${action}`);
+    }
+
+    const writeResult = await writeRecordTrack(deviceId, trackId, nextTrackXml);
+    operations.push({
+      trackId,
+      currentTrackInfo,
+      appliedTrackXml: nextTrackXml,
+      writeResult,
+    });
   }
-
-  const writeResult = await writeRecordTrack(deviceId, trackId, nextTrackXml);
   const after = await readRecordingIsapiState(deviceId);
   return {
     action,
-    trackId,
+    targetTrackIds: targetTracks.map((track) => track.id),
     before,
-    currentTrackInfo,
-    appliedTrackXml: nextTrackXml,
-    writeResult,
+    operations,
+    after,
+  };
+}
+
+async function applyLocalRecordSettings(deviceId, input) {
+  const before = await readRecordingIsapiState(deviceId);
+  const targetTracks = listWritableRecordTracks(before);
+  if (!targetTracks.length) {
+    throw new Error("Yazilabilir record track bulunamadi.");
+  }
+  const operations = [];
+  const allUnsupportedFields = [];
+
+  for (const targetTrack of targetTracks) {
+    const trackId = String(targetTrack.id || "").trim();
+    const currentTrackResult = await readRecordTrack(deviceId, trackId);
+    const currentTrackXml = decodeXml(String(currentTrackResult.data || ""));
+    const currentTrackInfo = parseTrackInfo(currentTrackXml, before.trackCapabilitiesXmlMap[trackId] || "");
+    const patched = patchTrackConfiguration(currentTrackXml, currentTrackInfo, input || {});
+    const writeResult = await writeRecordTrack(deviceId, trackId, patched.updated);
+
+    operations.push({
+      trackId,
+      currentTrackInfo,
+      appliedTrackXml: patched.updated,
+      unsupportedFields: patched.unsupportedFields,
+      writeResult,
+    });
+    allUnsupportedFields.push(...patched.unsupportedFields);
+  }
+
+  const after = await readRecordingIsapiState(deviceId);
+  const changeSummary = buildLocalRecordChangeSummary(input || {}, before, after, targetTracks.map((track) => track.id));
+  return {
+    targetTrackIds: targetTracks.map((track) => track.id),
+    before,
+    operations,
+    unsupportedFields: uniqueValues(allUnsupportedFields),
+    changeSummary,
     after,
   };
 }
@@ -1542,8 +2432,19 @@ async function searchCameraRecordings({
   pageSize = 50,
   targetType = 0,
   timeType = 1,
+  onTrace = null,
 }) {
-  const data = await postOpenApi("/api/hccgw/video/v1/record/search", {
+  onTrace?.({
+    stage: "record.search.request",
+    pageIndex,
+    pageSize,
+    beginTime,
+    endTime,
+    targetType,
+    timeType,
+  });
+
+  const data = await postOpenApi("/api/hccgw/video/v1/record/element/search", {
     pageSize,
     pageIndex,
     cameraId,
@@ -1553,17 +2454,27 @@ async function searchCameraRecordings({
       endTime,
       targetType,
     },
-  });
+  }, { operation: "record.search" });
 
   const errorCode = String(data.errorCode || data.code || "");
   if (errorCode !== "0") {
-    throw new Error(
-      friendlyOpenApiError(
+    throw attachDiagnostic(
+      new Error(
+        friendlyOpenApiError(
         errorCode,
         data.errorMsg || data.msg || "Kayit arama basarisiz."
-      )
+        )
+      ),
+      data.__diagnostic
     );
   }
+
+  onTrace?.({
+    stage: "record.search.response",
+    pageIndex: Number(data?.data?.pageIndex || pageIndex),
+    pageSize: Number(data?.data?.pageSize || pageSize),
+    recordCount: Array.isArray(data?.data?.recordList) ? data.data.recordList.length : 0,
+  });
 
   return {
     pageIndex: Number(data?.data?.pageIndex || pageIndex),
@@ -1572,7 +2483,14 @@ async function searchCameraRecordings({
   };
 }
 
-async function searchAllCameraRecordings({ cameraId, beginTime, endTime, targetType = 0, timeType = 1 }) {
+async function searchAllCameraRecordings({
+  cameraId,
+  beginTime,
+  endTime,
+  targetType = 0,
+  timeType = 1,
+  onTrace = null,
+}) {
   const pageSize = 50;
   const segments = [];
 
@@ -1585,6 +2503,7 @@ async function searchAllCameraRecordings({ cameraId, beginTime, endTime, targetT
       pageSize,
       targetType,
       timeType,
+      onTrace,
     });
     segments.push(...page.recordList);
     if (page.recordList.length < pageSize) {
@@ -1595,21 +2514,89 @@ async function searchAllCameraRecordings({ cameraId, beginTime, endTime, targetT
   return segments;
 }
 
-async function requestRecordingExport(cameraId, beginTime, endTime, voiceSwitch = 2) {
-  const data = await postOpenApi("/api/hccgw/video/v1/video/save", {
-    cameraId,
+async function searchRecordingCandidates({
+  cameraId,
+  beginTime,
+  endTime,
+  onTrace = null,
+  targetTypes = [0, 1],
+}) {
+  const searches = [];
+
+  for (const targetType of targetTypes) {
+    onTrace?.({
+      stage: "record.search.target.begin",
+      targetType,
+      beginTime,
+      endTime,
+    });
+
+    const recordList = await searchAllCameraRecordings({
+      cameraId,
+      beginTime,
+      endTime,
+      targetType,
+      timeType: 1,
+      onTrace,
+    });
+
+    const searchResult = {
+      targetType,
+      targetLabel: targetType === 0 ? "local-device" : "cloud-storage",
+      foundSegments: recordList.length,
+      recordList,
+    };
+    searches.push(searchResult);
+
+    onTrace?.({
+      stage: "record.search.target.complete",
+      targetType,
+      foundSegments: recordList.length,
+    });
+
+    if (recordList.length > 0) {
+      return {
+        selectedTargetType: targetType,
+        selectedTargetLabel: searchResult.targetLabel,
+        recordList,
+        searches,
+      };
+    }
+  }
+
+  return {
+    selectedTargetType: null,
+    selectedTargetLabel: "",
+    recordList: [],
+    searches,
+  };
+}
+
+async function requestRecordingExport(cameraId, beginTime, endTime, voiceSwitch = 2, onTrace = null) {
+  onTrace?.({
+    stage: "video.save.request",
     beginTime,
     endTime,
     voiceSwitch,
   });
 
+  const data = await postOpenApi("/api/hccgw/video/v1/video/save", {
+    cameraId,
+    beginTime,
+    endTime,
+    voiceSwitch,
+  }, { operation: "video.save" });
+
   const errorCode = String(data.errorCode || data.code || "");
   if (errorCode !== "0") {
-    throw new Error(
-      friendlyOpenApiError(
+    throw attachDiagnostic(
+      new Error(
+        friendlyOpenApiError(
         errorCode,
         data.errorMsg || data.msg || "Kayit export istegi basarisiz."
-      )
+        )
+      ),
+      data.__diagnostic
     );
   }
 
@@ -1618,20 +2605,41 @@ async function requestRecordingExport(cameraId, beginTime, endTime, voiceSwitch 
     throw new Error("video/save yanitinda taskId bulunamadi.");
   }
 
+  onTrace?.({
+    stage: "video.save.response",
+    taskId,
+  });
+
   return taskId;
 }
 
-async function getRecordingDownloadUrl(taskId) {
-  const data = await postOpenApi("/api/hccgw/video/v1/video/download/url", { taskId });
+async function getRecordingDownloadUrl(taskId, onTrace = null) {
+  onTrace?.({
+    stage: "video.download.url.request",
+    taskId,
+  });
+
+  const data = await postOpenApi("/api/hccgw/video/v1/video/download/url", { taskId }, { operation: "video.download.url" });
   const errorCode = String(data.errorCode || data.code || "");
   if (errorCode !== "0") {
-    throw new Error(
-      friendlyOpenApiError(
+    throw attachDiagnostic(
+      new Error(
+        friendlyOpenApiError(
         errorCode,
         data.errorMsg || data.msg || "Kayit indirme URL bilgisi alinamadi."
-      )
+        )
+      ),
+      data.__diagnostic
     );
   }
+
+  onTrace?.({
+    stage: "video.download.url.response",
+    taskId,
+    status: Number(data?.data?.status ?? -1),
+    urlCount: Array.isArray(data?.data?.urls) ? data.data.urls.length : 0,
+    expireTime: Number(data?.data?.expireTime || 0),
+  });
 
   return {
     status: Number(data?.data?.status ?? -1),
@@ -1647,7 +2655,7 @@ async function waitForRecordingDownloadUrl(taskId, options = {}) {
   let lastResult = null;
 
   while (Date.now() - startedAt < timeoutMs) {
-    lastResult = await getRecordingDownloadUrl(taskId);
+    lastResult = await getRecordingDownloadUrl(taskId, options.onTrace);
     if (lastResult.status === 0 && lastResult.urls.length > 0) {
       return lastResult;
     }
@@ -1665,9 +2673,32 @@ async function waitForRecordingDownloadUrl(taskId, options = {}) {
 }
 
 async function downloadRecordingFile(downloadUrl, outputPath) {
+  const maskedUrl = sanitizeMessage(downloadUrl);
+  openApiAuditState.mp4DownloadHosts = [
+    ...new Set([...(openApiAuditState.mp4DownloadHosts || []), extractUrlHost(downloadUrl)].filter(Boolean)),
+  ].slice(-10);
+  recordOpenApiAudit({
+    operation: "mp4.download",
+    method: "GET",
+    url: downloadUrl,
+    host: extractUrlHost(downloadUrl),
+    responseBody: "",
+  });
+
   const response = await fetch(downloadUrl);
   if (!response.ok) {
-    throw new Error(`Kayit dosyasi indirilemedi. HTTP ${response.status}`);
+    const rawBody = await response.text();
+    throw attachDiagnostic(
+      new Error(`Kayit dosyasi indirilemedi. HTTP ${response.status}`),
+      {
+        operation: "mp4.download",
+        method: "GET",
+        url: maskedUrl,
+        host: extractUrlHost(downloadUrl),
+        statusCode: response.status,
+        responseBody: sanitizeMessage(rawBody),
+      }
+    );
   }
 
   const arrayBuffer = await response.arrayBuffer();
@@ -1696,6 +2727,8 @@ function buildRecordingSyncStatus(cameraId = "") {
       lastRunStatus: state.lastRunStatus,
       lastRunReason: state.lastRunReason,
       lastError: state.lastError,
+      lastDiagnostic: state.lastDiagnostic,
+      hostComparison: buildRecordingHostComparison(),
       lastSuccessAt: camera ? state.lastSuccessByCameraId?.[camera] || "" : "",
       recentRuns: state.recentRuns,
     },
@@ -1777,6 +2810,7 @@ async function runRecordingSync(options = {}) {
     state.lastRunStatus = "running";
     state.lastRunReason = String(options.reason || "manual");
     state.lastError = "";
+    state.lastDiagnostic = null;
     saveRecordingSyncState(state);
 
     const result = {
@@ -1793,15 +2827,6 @@ async function runRecordingSync(options = {}) {
         const defaultBeginTime = new Date(now.getTime() - Number(config.lookbackMinutes || 1440) * 60 * 1000);
         const beginTime = beginTimeOverride || lastSuccess || formatIsoOffset(defaultBeginTime);
         const endTime = endTimeOverride || formatIsoOffset(now);
-
-        const recordList = await searchAllCameraRecordings({
-          cameraId: camera.cameraId,
-          beginTime,
-          endTime,
-          targetType: 0,
-          timeType: 1,
-        });
-
         const cameraResult = {
           cameraId: camera.cameraId,
           deviceId: camera.deviceId,
@@ -1809,10 +2834,54 @@ async function runRecordingSync(options = {}) {
           name: camera.name || "",
           beginTime,
           endTime,
-          foundSegments: recordList.length,
+          foundSegments: 0,
+          selectedTargetType: null,
+          selectedTargetLabel: "",
+          noRecordsFound: false,
+          searchSummary: [],
           downloadedSegments: [],
           skippedSegments: [],
+          trace: [],
         };
+        const traceCameraStep = (entry) => {
+          const normalizedEntry = {
+            at: new Date().toISOString(),
+            ...entry,
+          };
+          cameraResult.trace.push(normalizedEntry);
+          logRecordingSyncStep(runId, camera.cameraId, normalizedEntry.stage || "unknown", normalizedEntry);
+        };
+        result.cameras.push(cameraResult);
+
+        const searchResult = await searchRecordingCandidates({
+          cameraId: camera.cameraId,
+          beginTime,
+          endTime,
+          onTrace: traceCameraStep,
+        });
+        const recordList = searchResult.recordList;
+        cameraResult.foundSegments = recordList.length;
+        cameraResult.selectedTargetType = searchResult.selectedTargetType;
+        cameraResult.selectedTargetLabel = searchResult.selectedTargetLabel;
+        cameraResult.searchSummary = searchResult.searches.map((entry) => ({
+          targetType: entry.targetType,
+          targetLabel: entry.targetLabel,
+          foundSegments: entry.foundSegments,
+        }));
+        traceCameraStep({
+          stage: "record.search.complete",
+          foundSegments: recordList.length,
+          selectedTargetType: searchResult.selectedTargetType,
+          beginTime,
+          endTime,
+        });
+
+        if (recordList.length === 0) {
+          cameraResult.noRecordsFound = true;
+          cameraResult.warning =
+            "Belirtilen zaman araliginda ne local device ne de cloud storage kaydi bulundu. Bu nedenle video/save ve MP4 indirme asamalarina gecilmedi.";
+          continue;
+        }
 
         for (const segment of recordList) {
           const segmentBeginTime = String(segment.beginTime || "").trim();
@@ -1834,15 +2903,25 @@ async function runRecordingSync(options = {}) {
               endTime: segmentEndTime,
               reason: "already-downloaded",
             });
+            traceCameraStep({
+              stage: "segment.skip",
+              beginTime: segmentBeginTime,
+              endTime: segmentEndTime,
+              reason: "already-downloaded",
+            });
             continue;
           }
 
           const taskId = await requestRecordingExport(
             camera.cameraId,
             segmentBeginTime,
-            segmentEndTime
+            segmentEndTime,
+            2,
+            traceCameraStep
           );
-          const downloadInfo = await waitForRecordingDownloadUrl(taskId);
+          const downloadInfo = await waitForRecordingDownloadUrl(taskId, {
+            onTrace: traceCameraStep,
+          });
           const outputDir = buildArchiveDirectory(camera);
           const baseName = buildSegmentBaseName(camera, segment);
           const downloadedFiles = [];
@@ -1854,7 +2933,17 @@ async function runRecordingSync(options = {}) {
                 ? `${baseName}_${index + 1}${extension}`
                 : `${baseName}${extension}`;
             const outputPath = path.join(outputDir, fileName);
+            traceCameraStep({
+              stage: "mp4.download.request",
+              url: sanitizeMessage(downloadUrl),
+              outputPath,
+            });
             await downloadRecordingFile(downloadUrl, outputPath);
+            traceCameraStep({
+              stage: "mp4.download.response",
+              url: sanitizeMessage(downloadUrl),
+              outputPath,
+            });
             downloadedFiles.push(outputPath);
           }
 
@@ -1876,8 +2965,6 @@ async function runRecordingSync(options = {}) {
             files: downloadedFiles,
           });
         }
-
-        result.cameras.push(cameraResult);
       }
 
       state.lastRunStatus = "completed";
@@ -1903,6 +2990,12 @@ async function runRecordingSync(options = {}) {
       state.lastRunFinishedAt = new Date().toISOString();
       state.activeRun = null;
       state.lastError = sanitizeMessage(error?.message || String(error));
+      state.lastDiagnostic = error?.diagnostic
+        ? {
+            ...error.diagnostic,
+            hostComparison: buildRecordingHostComparison(),
+          }
+        : null;
       mergeRecentRun(state, {
         runId,
         startedAt: result.startedAt,
@@ -1911,6 +3004,15 @@ async function runRecordingSync(options = {}) {
         reason: result.reason,
         error: state.lastError,
       });
+      if (state.lastDiagnostic) {
+        console.error(
+          JSON.stringify({
+            scope: "recording-sync-failure",
+            runId,
+            diagnostic: state.lastDiagnostic,
+          })
+        );
+      }
       saveRecordingSyncState(state);
       throw error;
     }
@@ -2294,21 +3396,46 @@ async function getToken(forceRefresh = false) {
     return tokenCache;
   }
 
-  const response = await fetch(`${INITIAL_SERVER}/api/hccgw/platform/v1/token/get`, {
+  const requestUrl = `${INITIAL_SERVER}/api/hccgw/platform/v1/token/get`;
+  const response = await fetch(requestUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ appKey: APP_KEY, secretKey: APP_SECRET }),
   });
 
-  const data = await response.json();
+  const rawText = await response.text();
+  const data = safeJsonParse(rawText) || {};
   const errorCode = String(data.errorCode || data.code || "");
+  recordOpenApiAudit({
+    operation: "token.get",
+    method: "POST",
+    url: requestUrl,
+    host: extractUrlHost(requestUrl),
+    httpStatus: response.status,
+    errorCode,
+    responseBody: rawText,
+  });
   if (!response.ok || errorCode !== "0") {
-    throw new Error(
+    const diagnostic = {
+      operation: "token.get",
+      method: "POST",
+      url: sanitizeMessage(requestUrl),
+      host: extractUrlHost(requestUrl),
+      statusCode: response.status,
+      responseBody: sanitizeMessage(rawText),
+    };
+    throw attachDiagnostic(
+      new Error(
       `Token alinamadi. ${friendlyOpenApiError(errorCode, data.errorMsg || data.msg || "Token istegi basarisiz.")}`
+      ),
+      diagnostic
     );
   }
 
   tokenCache = extractTokenInfo(data);
+  if (tokenCache.areaDomain) {
+    openApiAuditState.lastAreaDomainHost = extractUrlHost(tokenCache.areaDomain);
+  }
   return tokenCache;
 }
 
@@ -2383,11 +3510,28 @@ async function getStreamToken(forceRefresh = false) {
   return streamTokenCache;
 }
 
-async function postOpenApi(pathName, payload, forceRefresh = false) {
-  let token = await getToken(forceRefresh);
+function normalizeOpenApiCallOptions(forceRefreshOrOptions) {
+  if (typeof forceRefreshOrOptions === "boolean") {
+    return { forceRefresh: forceRefreshOrOptions };
+  }
+  if (forceRefreshOrOptions && typeof forceRefreshOrOptions === "object") {
+    return {
+      forceRefresh: Boolean(forceRefreshOrOptions.forceRefresh),
+      operation: String(forceRefreshOrOptions.operation || "").trim(),
+    };
+  }
+  return { forceRefresh: false };
+}
+
+async function postOpenApi(pathName, payload, forceRefreshOrOptions = false) {
+  const options = normalizeOpenApiCallOptions(forceRefreshOrOptions);
+  const operation = options.operation || pathName;
+  let token = await getToken(Boolean(options.forceRefresh));
 
   const call = async () => {
-    const response = await fetch(`${token.areaDomain}${pathName}`, {
+    const requestUrl = `${token.areaDomain}${pathName}`;
+    const baseUrlCheck = analyzeHikConnectBaseUrl(token.areaDomain, pathName);
+    const response = await fetch(requestUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -2396,20 +3540,58 @@ async function postOpenApi(pathName, payload, forceRefresh = false) {
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
-    return { response, data };
+    const rawText = await response.text();
+    const data = safeJsonParse(rawText) || {};
+    const diagnostic = {
+      operation,
+      method: "POST",
+      pathName,
+      url: sanitizeMessage(requestUrl),
+      host: extractUrlHost(requestUrl),
+      areaDomain: sanitizeMessage(token.areaDomain || ""),
+      areaDomainHost: extractUrlHost(token.areaDomain),
+      statusCode: response.status,
+      errorCode: String(data.errorCode || data.code || ""),
+      responseBody: sanitizeMessage(rawText),
+      baseUrlCheck,
+    };
+
+    recordOpenApiAudit({
+      operation,
+      method: "POST",
+      url: requestUrl,
+      host: diagnostic.host,
+      areaDomain: token.areaDomain,
+      areaDomainHost: diagnostic.areaDomainHost,
+      httpStatus: response.status,
+      errorCode: diagnostic.errorCode,
+      responseBody: rawText,
+    });
+
+    return { response, data, diagnostic };
   };
 
-  let { response, data } = await call();
+  let { response, data, diagnostic } = await call();
   const errorCode = String(data.errorCode || data.code || "");
-  if (errorCode === "OPEN000007" && !forceRefresh) {
+  if (errorCode === "OPEN000007" && !options.forceRefresh) {
     token = await getToken(true);
-    ({ response, data } = await call());
+    ({ response, data, diagnostic } = await call());
   }
 
+  data.__diagnostic = diagnostic;
+
   if (!response.ok) {
-    throw new Error(
-      `OpenAPI istegi basarisiz. HTTP ${response.status}. ${data.errorMsg || data.msg || "Bilinmeyen hata"}`
+    const endpointUnavailableMessage =
+      diagnostic.baseUrlCheck.issues.length === 0
+        ? buildEndpointUnavailableMessage(pathName, response.status)
+        : "";
+    const baseUrlMessage = diagnostic.baseUrlCheck.issues.length
+      ? `Base URL sorunu: ${diagnostic.baseUrlCheck.issues.join(", ")}`
+      : "";
+    const detailMessage = endpointUnavailableMessage || baseUrlMessage || data.errorMsg || data.msg || "Bilinmeyen hata";
+    throw attachDiagnostic(
+      new Error(`OpenAPI istegi basarisiz. HTTP ${response.status}. ${detailMessage}`),
+      diagnostic
     );
   }
 
@@ -3057,6 +4239,110 @@ async function requestLiveAddress({
     }
   }
 
+  throw err;
+}
+
+function normalizePlaybackDateTimeInput(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) {
+    return "";
+  }
+
+  const normalized = trimmed.replace("T", " ");
+  if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(normalized)) {
+    return `${normalized}:00`;
+  }
+  if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(normalized)) {
+    return normalized;
+  }
+  return "";
+}
+
+async function requestPlaybackAddress({
+  accessToken,
+  areaDomain,
+  resourceId,
+  deviceSerial,
+  quality,
+  code,
+  beginTime,
+  endTime,
+  preferredTarget = "auto",
+}) {
+  const candidateTypes =
+    preferredTarget === "local"
+      ? ["2"]
+      : preferredTarget === "cloud"
+        ? ["3"]
+        : ["2", "3"];
+  const candidatePath = "/api/hccgw/video/v1/live/address/get";
+  const attempts = [];
+
+  for (const type of candidateTypes) {
+    const payload = {
+      resourceId,
+      deviceSerial,
+      type,
+      protocol: 1,
+      quality,
+      expireTime: 600,
+      startTime: beginTime,
+      stopTime: endTime,
+    };
+
+    if (code) {
+      payload.code = code;
+    }
+
+    const response = await fetch(`${areaDomain}${candidatePath}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: accessToken,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const rawText = await response.text();
+    const parsed = safeJsonParse(rawText);
+    attempts.push({
+      type,
+      targetLabel: type === "2" ? "local-device-playback" : "cloud-storage-playback",
+      status: response.status,
+      errorCode: parsed?.errorCode || "",
+      message: parsed?.errorMsg || parsed?.message || "",
+      rawText: parsed ? "" : rawText.slice(0, 300),
+    });
+
+    if (response.ok && parsed?.errorCode === "0" && parsed?.data?.url) {
+      return {
+        url: parsed.data.url,
+        expireTime: normalizeUrlExpireTime(parsed.data.expireTime),
+        resolvedPath: candidatePath,
+        raw: parsed.data,
+        attempts,
+        selectedType: type,
+        selectedTargetLabel: type === "2" ? "local-device-playback" : "cloud-storage-playback",
+      };
+    }
+  }
+
+  const err = new Error("Calisabilir bir playback adresi bulunamadi.");
+  err.details = {
+    error: err.message,
+    attempts,
+    requestPayload: {
+      resourceId,
+      deviceSerial,
+      protocol: 1,
+      quality,
+      codeProvided: Boolean(code),
+      startTime: beginTime,
+      stopTime: endTime,
+      preferredTarget,
+    },
+    areaDomain,
+  };
   throw err;
 }
 
@@ -3890,6 +5176,156 @@ app.get("/api/device-config/ezviz", async (req, res) => {
   }
 });
 
+app.get("/api/device-config/time", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.query.deviceId || "").trim();
+  if (!deviceId) {
+    return res.status(400).json({ error: "deviceId zorunlu." });
+  }
+
+  try {
+    const result = await callIsapiProxyPass({
+      deviceId,
+      method: "GET",
+      url: "/ISAPI/System/time",
+      contentType: "application/xml",
+      body: "",
+    });
+    const xml = decodeXml(String(result.data || ""));
+    const time = parseDeviceTimeConfig(xml);
+    return res.json({
+      success: true,
+      deviceId,
+      xml,
+      time,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.put("/api/device-config/time", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const deviceId = String(req.body.deviceId || "").trim();
+  const dateTimeLocal = String(req.body.dateTimeLocal || "").trim();
+  const requestedTimeZone = String(req.body.timeZone || "").trim();
+
+  if (!deviceId || !dateTimeLocal) {
+    return res.status(400).json({ error: "deviceId ve dateTimeLocal zorunlu." });
+  }
+
+  try {
+    const current = await callIsapiProxyPass({
+      deviceId,
+      method: "GET",
+      url: "/ISAPI/System/time",
+      contentType: "application/xml",
+      body: "",
+    });
+    const currentXml = decodeXml(String(current.data || ""));
+    const currentConfig = parseDeviceTimeConfig(currentXml);
+    const appliedXml = updateDeviceTimeXml(currentXml, {
+      dateTimeLocal,
+      timeZone: requestedTimeZone || currentConfig.timeZone || "",
+      timeMode: "manual",
+    });
+
+    const result = await callIsapiProxyPass({
+      deviceId,
+      method: "PUT",
+      url: "/ISAPI/System/time",
+      contentType: "application/xml",
+      body: appliedXml,
+    });
+
+    const refreshed = await callIsapiProxyPass({
+      deviceId,
+      method: "GET",
+      url: "/ISAPI/System/time",
+      contentType: "application/xml",
+      body: "",
+    });
+    const refreshedXml = decodeXml(String(refreshed.data || ""));
+
+    return res.json({
+      success: true,
+      deviceId,
+      appliedXml,
+      result,
+      time: parseDeviceTimeConfig(refreshedXml),
+      xml: refreshedXml,
+    });
+  } catch (err) {
+    return res.status(502).json({ error: sanitizeMessage(err.message) });
+  }
+});
+
+app.get("/api/sdk-playback-input", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const resourceId = String(req.query.resourceId || "").trim();
+  const deviceSerial = String(req.query.deviceSerial || "").trim();
+  const code = String(req.query.code || "").trim();
+  const quality = Number(req.query.quality || 1);
+  const channelNo = Number(req.query.channelNo || 1);
+  const beginTime = normalizePlaybackDateTimeInput(req.query.beginTime);
+  const endTime = normalizePlaybackDateTimeInput(req.query.endTime);
+  const preferredTarget = String(req.query.preferredTarget || "auto").trim().toLowerCase();
+
+  if (!resourceId || !deviceSerial) {
+    return res.status(400).json({
+      error: "resourceId ve deviceSerial parametreleri zorunlu.",
+    });
+  }
+
+  if (!beginTime || !endTime) {
+    return res.status(400).json({
+      error: "beginTime ve endTime gecerli tarih/saat olmali.",
+    });
+  }
+
+  try {
+    const [streamToken, playback] = await Promise.all([
+      getStreamToken(),
+      (async () => {
+        const { accessToken, areaDomain } = await getToken();
+        return requestPlaybackAddress({
+          accessToken,
+          areaDomain,
+          resourceId,
+          deviceSerial,
+          quality,
+          code,
+          beginTime,
+          endTime,
+          preferredTarget,
+        });
+      })(),
+    ]);
+
+    return res.json({
+      accessToken: streamToken.appToken,
+      appKey: streamToken.appKey,
+      domain: streamToken.streamAreaDomain,
+      sourceUrl: playback.url,
+      deviceSerial,
+      channelNo,
+      quality,
+      beginTime,
+      endTime,
+      expireTime: playback.expireTime,
+      selectedPlaybackType: playback.selectedType,
+      selectedTargetLabel: playback.selectedTargetLabel,
+      raw: playback.raw,
+      attempts: playback.attempts,
+    });
+  } catch (err) {
+    return res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
+  }
+});
+
 app.get("/api/device-config/storage", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
@@ -4032,16 +5468,74 @@ app.post("/api/device-config/local-record", async (req, res) => {
   const deviceId = String(req.body.deviceId || "").trim();
   const cameraId = String(req.body.cameraId || "").trim();
   const action = String(req.body.action || "").trim().toLowerCase();
+  const settingsPayloadPresent =
+    req.body.recordMode !== undefined ||
+    req.body.startTime !== undefined ||
+    req.body.endTime !== undefined ||
+    req.body.streamType !== undefined ||
+    req.body.overwriteEnabled !== undefined ||
+    req.body.enableSchedule !== undefined ||
+    req.body.scheduleActions !== undefined ||
+    req.body.preRecordSeconds !== undefined ||
+    req.body.postRecordSeconds !== undefined ||
+    req.body.enabled !== undefined;
+  const mode = String(req.body.mode || (settingsPayloadPresent ? "settings" : "action"))
+    .trim()
+    .toLowerCase();
 
   if (!deviceId) {
     return res.status(400).json({ error: "deviceId zorunlu." });
   }
-  if (!["enable", "disable", "continuous"].includes(action)) {
-    return res.status(400).json({ error: "action enable|disable|continuous olmali." });
-  }
 
   try {
-    const operation = await applyLocalRecordOperation(deviceId, action);
+    let operation;
+    if (mode === "settings") {
+      operation = await applyLocalRecordSettings(deviceId, {
+        enabled:
+          typeof req.body.enabled === "boolean"
+            ? req.body.enabled
+            : req.body.enabled === null || req.body.enabled === undefined
+              ? undefined
+              : String(req.body.enabled).trim().toLowerCase() === "true",
+        overwriteEnabled:
+          typeof req.body.overwriteEnabled === "boolean"
+            ? req.body.overwriteEnabled
+            : req.body.overwriteEnabled === null || req.body.overwriteEnabled === undefined
+              ? undefined
+              : String(req.body.overwriteEnabled).trim().toLowerCase() === "true",
+        enableSchedule:
+          typeof req.body.enableSchedule === "boolean"
+            ? req.body.enableSchedule
+            : req.body.enableSchedule === null || req.body.enableSchedule === undefined
+              ? undefined
+              : String(req.body.enableSchedule).trim().toLowerCase() === "true",
+        scheduleActions: Array.isArray(req.body.scheduleActions) ? req.body.scheduleActions : [],
+        recordMode: req.body.recordMode ? String(req.body.recordMode).trim().toLowerCase() : "",
+        startTime: req.body.startTime ? String(req.body.startTime).trim() : "",
+        endTime: req.body.endTime ? String(req.body.endTime).trim() : "",
+        streamType:
+          req.body.streamType === "" || req.body.streamType === null || req.body.streamType === undefined
+            ? undefined
+            : Number(req.body.streamType),
+        preRecordSeconds:
+          req.body.preRecordSeconds === "" ||
+          req.body.preRecordSeconds === null ||
+          req.body.preRecordSeconds === undefined
+            ? undefined
+            : Number(req.body.preRecordSeconds),
+        postRecordSeconds:
+          req.body.postRecordSeconds === "" ||
+          req.body.postRecordSeconds === null ||
+          req.body.postRecordSeconds === undefined
+            ? undefined
+            : Number(req.body.postRecordSeconds),
+      });
+    } else {
+      if (!["enable", "disable", "continuous"].includes(action)) {
+        return res.status(400).json({ error: "action enable|disable|continuous olmali." });
+      }
+      operation = await applyLocalRecordOperation(deviceId, action);
+    }
 
     let verifiedRecordSetting = null;
     if (cameraId) {
@@ -4059,6 +5553,7 @@ app.post("/api/device-config/local-record", async (req, res) => {
       success: true,
       deviceId,
       cameraId,
+      mode,
       action,
       verifiedRecordSetting,
       operation,
@@ -4145,7 +5640,17 @@ app.post("/api/recording-sync/run-once", async (req, res) => {
       ...buildRecordingSyncStatus(cameraId),
     });
   } catch (error) {
-    return res.status(502).json({ error: sanitizeMessage(error?.message || String(error)) });
+    return res.status(502).json({
+      success: false,
+      error: sanitizeMessage(error?.message || String(error)),
+      diagnostic: error?.diagnostic
+        ? {
+            ...error.diagnostic,
+            hostComparison: buildRecordingHostComparison(),
+          }
+        : null,
+      ...buildRecordingSyncStatus(String(req.body.cameraId || "").trim()),
+    });
   }
 });
 
