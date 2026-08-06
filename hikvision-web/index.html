@@ -235,11 +235,11 @@
 
   .playback-controls {
     display: none;
-    gap: 10px;
+    gap: 12px;
     margin-top: 12px;
-    padding: 12px;
-    border: 1px solid var(--border);
-    background: var(--panel-alt);
+    padding: 14px;
+    border: 1px solid #d6dde6;
+    background: linear-gradient(180deg, #fbfbfc 0%, #f0f2f5 100%);
   }
 
   .playback-controls.active {
@@ -253,9 +253,243 @@
     flex-wrap: wrap;
   }
 
+  .playback-topline {
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
   .playback-row input[type="range"] {
     flex: 1;
     min-width: 180px;
+  }
+
+  .playback-timeline-panel {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 14px 12px;
+    border: 1px solid #d2d9e2;
+    background: linear-gradient(180deg, #f5f5f6 0%, #ebeef2 100%);
+  }
+
+  .playback-ruler {
+    position: relative;
+    height: 22px;
+    margin: 0 64px 0 84px;
+  }
+
+  .playback-ruler-tick {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .playback-ruler-tick::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 16px;
+    width: 1px;
+    height: 6px;
+    background: #aeb8c4;
+    transform: translateX(-50%);
+  }
+
+  .playback-seek-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 180px;
+    padding: 0;
+  }
+
+  .playback-segments {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .playback-segments-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 26px;
+    transform: translateY(-50%);
+    border-radius: 6px;
+    background: #d8dee6;
+    border: 1px solid #c5ced8;
+    overflow: hidden;
+  }
+
+  .playback-segment {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+    opacity: 0.95;
+  }
+
+  .playback-segment[data-mode="continuous"] {
+    background: #2196f3;
+  }
+
+  .playback-segment[data-mode="motion"] {
+    background: #ef5350;
+  }
+
+  .playback-segment[data-mode="other"] {
+    background: #8b9bb0;
+  }
+
+  .playback-segments-indicator {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 3px;
+    margin-left: -1.5px;
+    border-radius: 999px;
+    background: #ff5a36;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+  }
+
+  .playback-seek-wrap input[type="range"] {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin: 0;
+    background: transparent;
+    opacity: 0;
+    height: 26px;
+  }
+
+  .playback-seek-wrap input[type="range"]::-webkit-slider-runnable-track {
+    height: 26px;
+    background: transparent;
+  }
+
+  .playback-seek-wrap input[type="range"]::-moz-range-track {
+    height: 26px;
+    background: transparent;
+  }
+
+  .playback-seek-wrap input[type="range"]::-webkit-slider-thumb {
+    position: relative;
+    z-index: 2;
+  }
+
+  .playback-legend {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .playback-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .playback-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(17, 24, 39, 0.08);
+  }
+
+  .playback-legend-swatch[data-mode="continuous"] {
+    background: #2196f3;
+  }
+
+  .playback-legend-swatch[data-mode="motion"] {
+    background: #ef5350;
+  }
+
+  .playback-track-row {
+    display: grid;
+    grid-template-columns: 74px minmax(0, 1fr) 64px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .playback-edge-time {
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .playback-edge-time.end {
+    text-align: right;
+  }
+
+  .playback-track-label {
+    font-size: 12px;
+    color: #334155;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .playback-current-stamp {
+    justify-self: center;
+    padding: 6px 14px;
+    border: 1px solid #d7dbe2;
+    background: #fff;
+    color: #111827;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+
+  .playback-actionbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .playback-action-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .playback-action-group.center {
+    justify-content: center;
+  }
+
+  .playback-action-group.right {
+    justify-content: flex-end;
+  }
+
+  .playback-mini-btn {
+    min-width: 44px;
+    min-height: 34px;
+    padding: 6px 10px;
+    border: 1px solid #cfd6df;
+    background: #fff;
+    color: #223043;
+    font-size: 13px;
+  }
+
+  .playback-mini-btn.primary {
+    background: #ffffff;
+    border-color: #b9c3cf;
+    font-weight: 600;
+  }
+
+  .playback-rate-readout {
+    min-width: 52px;
+    text-align: center;
+    font-size: 14px;
+    color: #111827;
   }
 
   .playback-time {
@@ -398,9 +632,7 @@
               <option value="cloud">Cloud storage</option>
             </select>
           </div>
-          <div class="info-box" style="margin-bottom:10px;">
-            HLS icin kamera cloud tarafinda online ve H.264 uyumlu olmali. Gecmis kayit izleme resmi playback akisi nedeniyle EZOPEN + SDK ile calisir. Encrypted yayinlarda verification code girmeniz gerekebilir.
-          </div>
+          
           <div class="cam-list" id="camera-list"></div>
           <div class="empty-state" id="camera-placeholder">Kameralar yukleniyor...</div>
         </div>
@@ -434,20 +666,44 @@
             </div>
             <div id="playback-controls" class="playback-controls">
               <div class="playback-row">
-                <button id="playback-back-btn" type="button">-10 sn</button>
-                <button id="playback-slower-btn" type="button">0.5x</button>
-                <button id="playback-toggle-btn" type="button">Duraklat</button>
-                <button id="playback-faster-btn" type="button">2x</button>
-                <button id="playback-forward-btn" type="button">+10 sn</button>
-                <button id="playback-frame-btn" type="button">Kare Ilerle</button>
-                <span id="playback-speed-chip" class="playback-chip">Hiz: 1x</span>
+                <div class="playback-topline" style="width:100%;">
+                  <span id="playback-track-title">Playback</span>
+                  <span id="playback-source-badge">Kaynak: Otomatik</span>
+                </div>
               </div>
-              <div class="playback-row">
-                <span id="playback-current-time" class="playback-time">--:--:--</span>
-                <input id="playback-seek-range" type="range" min="0" max="0" step="1" value="0" />
-                <span id="playback-end-time" class="playback-time">--:--:--</span>
-              </div>
-              <div class="playback-row">
+              <div class="playback-timeline-panel">
+                <div id="playback-ruler" class="playback-ruler"></div>
+                <div class="playback-track-row">
+                  <span id="playback-track-label" class="playback-track-label">Kamera</span>
+                  <div class="playback-seek-wrap">
+                    <div id="playback-segments" class="playback-segments">
+                      <div class="playback-segments-track"></div>
+                      <div id="playback-segments-indicator" class="playback-segments-indicator"></div>
+                    </div>
+                    <input id="playback-seek-range" type="range" min="0" max="0" step="1" value="0" />
+                  </div>
+                  <span id="playback-end-time" class="playback-edge-time end">--:--:--</span>
+                </div>
+                <div class="playback-current-stamp" id="playback-current-time">--.--.---- --:--:--</div>
+                <div class="playback-legend">
+                  <span class="playback-legend-item"><span class="playback-legend-swatch" data-mode="continuous"></span>Surekli kayit</span>
+                  <span class="playback-legend-item"><span class="playback-legend-swatch" data-mode="motion"></span>Hareket kaydi</span>
+                </div>
+                <div class="playback-actionbar">
+                  <div class="playback-action-group">
+                    <button id="playback-back-btn" type="button" class="playback-mini-btn">-10</button>
+                    <button id="playback-slower-btn" type="button" class="playback-mini-btn"><<</button>
+                  </div>
+                  <div class="playback-action-group center">
+                    <button id="playback-toggle-btn" type="button" class="playback-mini-btn primary">Duraklat</button>
+                    <button id="playback-frame-btn" type="button" class="playback-mini-btn">Tek Kare</button>
+                    <span id="playback-speed-chip" class="playback-rate-readout">1X</span>
+                  </div>
+                  <div class="playback-action-group right">
+                    <button id="playback-faster-btn" type="button" class="playback-mini-btn">>></button>
+                    <button id="playback-forward-btn" type="button" class="playback-mini-btn">+10</button>
+                  </div>
+                </div>
                 <span id="playback-window-text" class="playback-time">Kayit araligi secilmedi.</span>
               </div>
             </div>
@@ -509,6 +765,9 @@
   const playbackEndInputEl = document.getElementById("playback-end-input");
   const playbackTargetSelectEl = document.getElementById("playback-target-select");
   const playbackControlsEl = document.getElementById("playback-controls");
+  const playbackTrackTitleEl = document.getElementById("playback-track-title");
+  const playbackSourceBadgeEl = document.getElementById("playback-source-badge");
+  const playbackTrackLabelEl = document.getElementById("playback-track-label");
   const playbackBackBtn = document.getElementById("playback-back-btn");
   const playbackSlowerBtn = document.getElementById("playback-slower-btn");
   const playbackToggleBtn = document.getElementById("playback-toggle-btn");
@@ -517,6 +776,9 @@
   const playbackFrameBtn = document.getElementById("playback-frame-btn");
   const playbackSpeedChipEl = document.getElementById("playback-speed-chip");
   const playbackSeekRangeEl = document.getElementById("playback-seek-range");
+  const playbackRulerEl = document.getElementById("playback-ruler");
+  const playbackSegmentsEl = document.getElementById("playback-segments");
+  const playbackSegmentsIndicatorEl = document.getElementById("playback-segments-indicator");
   const playbackCurrentTimeEl = document.getElementById("playback-current-time");
   const playbackEndTimeEl = document.getElementById("playback-end-time");
   const playbackWindowTextEl = document.getElementById("playback-window-text");
@@ -549,6 +811,9 @@
     rate: 1,
     requestBeginValue: "",
     requestEndValue: "",
+    segments: [],
+    targetType: null,
+    targetLabel: "",
   };
 
   function formatDateTimeLocalValue(date) {
@@ -596,6 +861,20 @@
     });
   }
 
+  function formatPlaybackStamp(dateValue) {
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
+    if (Number.isNaN(date.getTime())) {
+      return "--.--.---- --:--:--";
+    }
+    const datePart = date.toLocaleDateString("tr-TR");
+    const timePart = date.toLocaleTimeString("tr-TR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+    return `${datePart} ${timePart}`;
+  }
+
   function formatPlaybackWindowText(startMs, endMs) {
     if (!startMs || !endMs) {
       return "Kayit araligi secilmedi.";
@@ -623,8 +902,200 @@
     playbackState.rate = 1;
     playbackState.requestBeginValue = "";
     playbackState.requestEndValue = "";
+    playbackState.segments = [];
+    playbackState.targetType = null;
+    playbackState.targetLabel = "";
     playbackToggleBtn.textContent = "Duraklat";
     updatePlaybackControls();
+  }
+
+  function parsePlaybackSegmentTime(value) {
+    if (!value) {
+      return NaN;
+    }
+    const parsed = new Date(String(value).replace(" ", "T")).getTime();
+    return Number.isFinite(parsed) ? parsed : NaN;
+  }
+
+  function inferPlaybackSegmentMode(segment, windowDurationMs) {
+    const rawMode = String(
+      segment?.recordMode ||
+      segment?.recordType ||
+      segment?.recordingMode ||
+      segment?.eventType ||
+      ""
+    ).trim().toLowerCase();
+
+    if (rawMode.includes("motion") || rawMode.includes("event") || rawMode.includes("vmd")) {
+      return "motion";
+    }
+    if (rawMode.includes("continuous") || rawMode.includes("timing") || rawMode.includes("alltime")) {
+      return "continuous";
+    }
+
+    const beginMs = parsePlaybackSegmentTime(segment?.beginTime);
+    const endMs = parsePlaybackSegmentTime(segment?.endTime);
+    const durationMs = Number.isFinite(beginMs) && Number.isFinite(endMs) ? Math.max(0, endMs - beginMs) : 0;
+    if (durationMs > 0 && durationMs <= Math.min(windowDurationMs * 0.15, 5 * 60 * 1000)) {
+      return "motion";
+    }
+    if (durationMs >= Math.max(windowDurationMs * 0.4, 10 * 60 * 1000)) {
+      return "continuous";
+    }
+    return "other";
+  }
+
+  function normalizePlaybackSegments(recordList, windowStartMs, windowEndMs) {
+    if (!Array.isArray(recordList) || !windowStartMs || !windowEndMs || windowEndMs <= windowStartMs) {
+      return [];
+    }
+
+    const windowDurationMs = windowEndMs - windowStartMs;
+    const normalized = recordList
+      .map((segment) => {
+        const beginMs = parsePlaybackSegmentTime(segment?.beginTime);
+        const endMs = parsePlaybackSegmentTime(segment?.endTime);
+        if (!Number.isFinite(beginMs) || !Number.isFinite(endMs) || endMs <= beginMs) {
+          return null;
+        }
+        const startMs = Math.max(windowStartMs, beginMs);
+        const stopMs = Math.min(windowEndMs, endMs);
+        if (stopMs <= startMs) {
+          return null;
+        }
+        return {
+          mode: inferPlaybackSegmentMode(segment, windowDurationMs),
+          startMs,
+          endMs: stopMs,
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.startMs - b.startMs || a.endMs - b.endMs);
+
+    const merged = [];
+    for (const segment of normalized) {
+      const previous = merged[merged.length - 1];
+      if (previous && previous.mode === segment.mode && segment.startMs <= previous.endMs) {
+        previous.endMs = Math.max(previous.endMs, segment.endMs);
+      } else {
+        merged.push({ ...segment });
+      }
+    }
+    return merged;
+  }
+
+  function renderPlaybackSegments() {
+    const trackEl = playbackSegmentsEl?.querySelector(".playback-segments-track");
+    if (!playbackSegmentsEl || !trackEl) {
+      return;
+    }
+
+    playbackSegmentsEl.querySelectorAll(".playback-segment").forEach((element) => element.remove());
+
+    const hasClip = playbackState.clipStartMs > 0 && playbackState.clipEndMs > playbackState.clipStartMs;
+    const totalDurationMs = hasClip ? playbackState.clipEndMs - playbackState.clipStartMs : 0;
+
+    if (hasClip && totalDurationMs > 0) {
+      for (const segment of playbackState.segments) {
+        const left = ((segment.startMs - playbackState.clipStartMs) / totalDurationMs) * 100;
+        const width = ((segment.endMs - segment.startMs) / totalDurationMs) * 100;
+        const segmentEl = document.createElement("div");
+        segmentEl.className = "playback-segment";
+        segmentEl.dataset.mode = segment.mode;
+        segmentEl.style.left = `${Math.max(0, left)}%`;
+        segmentEl.style.width = `${Math.max(width, 0.35)}%`;
+        trackEl.appendChild(segmentEl);
+      }
+
+      const indicatorLeft = ((playbackState.currentMs - playbackState.clipStartMs) / totalDurationMs) * 100;
+      playbackSegmentsIndicatorEl.style.display = "block";
+      playbackSegmentsIndicatorEl.style.left = `${Math.max(0, Math.min(100, indicatorLeft))}%`;
+    } else {
+      playbackSegmentsIndicatorEl.style.display = "none";
+    }
+  }
+
+  function renderPlaybackRuler() {
+    if (!playbackRulerEl) {
+      return;
+    }
+    playbackRulerEl.replaceChildren();
+
+    const hasClip = playbackState.clipStartMs > 0 && playbackState.clipEndMs > playbackState.clipStartMs;
+    const totalDurationMs = hasClip ? playbackState.clipEndMs - playbackState.clipStartMs : 0;
+    if (!hasClip || totalDurationMs <= 0) {
+      return;
+    }
+
+    const tickCount = 6;
+    for (let index = 0; index <= tickCount; index += 1) {
+      const ratio = index / tickCount;
+      const tickMs = playbackState.clipStartMs + (totalDurationMs * ratio);
+      const tickEl = document.createElement("span");
+      tickEl.className = "playback-ruler-tick";
+      tickEl.style.left = `${ratio * 100}%`;
+      tickEl.textContent = formatClockTime(tickMs);
+      playbackRulerEl.appendChild(tickEl);
+    }
+  }
+
+  function resolveRequestedTargetTypes(preferredTarget) {
+    if (preferredTarget === "local") {
+      return [0];
+    }
+    if (preferredTarget === "cloud") {
+      return [1];
+    }
+    return [0, 1];
+  }
+
+  async function loadPlaybackSegments(cameraId, beginTime, endTime, preferredTarget) {
+    if (!cameraId || !beginTime || !endTime) {
+      playbackState.segments = [];
+      playbackState.targetType = null;
+      playbackState.targetLabel = "";
+      renderPlaybackSegments();
+      return;
+    }
+
+    try {
+      let loaded = false;
+      for (const targetType of resolveRequestedTargetTypes(preferredTarget)) {
+        const params = new URLSearchParams({
+          beginTime: String(beginTime),
+          endTime: String(endTime),
+          targetType: String(targetType),
+        });
+        const response = await fetch(`/api/cameras/${encodeURIComponent(cameraId)}/recordings?${params.toString()}`);
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data?.error || "Playback segmentleri alinamadi.");
+        }
+        if (Array.isArray(data.recordList) && data.recordList.length > 0) {
+          playbackState.targetType = targetType;
+          playbackState.targetLabel = targetType === 0 ? "local-device-playback" : "cloud-storage-playback";
+          playbackState.segments = normalizePlaybackSegments(
+            data.recordList,
+            playbackState.clipStartMs,
+            playbackState.clipEndMs
+          );
+          loaded = true;
+          break;
+        }
+      }
+      if (!loaded) {
+        playbackState.segments = [];
+        playbackState.targetType = resolveRequestedTargetTypes(preferredTarget)[0] ?? null;
+        playbackState.targetLabel =
+          playbackState.targetType === 1 ? "cloud-storage-playback" : "local-device-playback";
+      }
+      renderPlaybackSegments();
+    } catch (_error) {
+      playbackState.segments = [];
+      playbackState.targetType = null;
+      playbackState.targetLabel = "";
+      renderPlaybackSegments();
+    }
   }
 
   function formatPlaybackRate(rate) {
@@ -670,13 +1141,13 @@
     playbackFasterBtn.disabled = !playbackState.active || playbackState.seeking;
     playbackToggleBtn.disabled = !playbackState.active || playbackState.seeking;
     playbackFrameBtn.disabled = !playbackState.active || playbackState.seeking;
-    playbackCurrentTimeEl.textContent = hasClip ? formatClockTime(playbackState.currentMs) : "--:--:--";
+    playbackCurrentTimeEl.textContent = hasClip ? formatPlaybackStamp(playbackState.currentMs) : "--.--.---- --:--:--";
     playbackEndTimeEl.textContent = hasClip ? formatClockTime(playbackState.clipEndMs) : "--:--:--";
     playbackWindowTextEl.textContent = formatPlaybackWindowText(playbackState.clipStartMs, playbackState.clipEndMs);
     playbackToggleBtn.textContent = playbackState.paused ? "Devam Et" : "Duraklat";
-    playbackSpeedChipEl.textContent = playbackState.paused
-      ? `Hiz: Duraklatildi (${formatPlaybackRate(playbackState.rate)})`
-      : `Hiz: ${formatPlaybackRate(playbackState.rate)}`;
+    playbackSpeedChipEl.textContent = String(formatPlaybackRate(playbackState.rate)).toUpperCase();
+    renderPlaybackRuler();
+    renderPlaybackSegments();
   }
 
   function setPlaybackWindow(startMs, endMs, currentMs = startMs) {
@@ -773,6 +1244,21 @@
   function getCameraVerificationCode(cam) {
     if (!cam?.resourceId) return "";
     return cameraVerificationCodes.get(cam.resourceId) || "";
+  }
+
+  function getEffectiveCameraVerificationCode(cam) {
+    if (!cam?.resourceId) {
+      return "";
+    }
+    if (activeCard && selectedCamera?.resourceId === cam.resourceId) {
+      const liveInput = activeCard.querySelector(".cam-verify-input");
+      const liveValue = String(liveInput?.value || "").trim();
+      if (liveValue) {
+        cameraVerificationCodes.set(cam.resourceId, liveValue);
+        return liveValue;
+      }
+    }
+    return getCameraVerificationCode(cam);
   }
 
   function setCameraVerificationCode(cam, value) {
@@ -1046,45 +1532,47 @@
 
   async function fillSdkPlaybackInputFromBackend({
     resourceId,
-    deviceSerial,
-    channelNo,
     quality,
     code,
     beginTime,
     endTime,
-    preferredTarget,
+    targetType,
   }) {
-    const params = new URLSearchParams({
-      resourceId: String(resourceId),
-      deviceSerial: String(deviceSerial),
-      channelNo: String(channelNo || "1"),
-      quality: String(quality || "1"),
-      beginTime: String(beginTime || ""),
-      endTime: String(endTime || ""),
-      preferredTarget: String(preferredTarget || "auto"),
+    const response = await fetch(`/api/cameras/${encodeURIComponent(resourceId)}/playback`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        beginTime: String(beginTime || ""),
+        endTime: String(endTime || ""),
+        targetType: Number(targetType ?? 0),
+        quality: Number(quality || 1),
+        verificationCode: code || "",
+      }),
     });
-    if (code) {
-      params.set("code", code);
-    }
-
-    const response = await fetch(`/api/sdk-playback-input?${params.toString()}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data?.error || "SDK playback input alinamadi.");
     }
 
-    setValue("accessToken", data.accessToken || "");
-    setValue("appKey", data.appKey || "");
-    setValue("domain", data.domain || "");
-    setValue("deviceSerial", data.deviceSerial || deviceSerial || "");
-    setValue("channelNo", String(data.channelNo || channelNo || "1"));
-    setValue("playUrl", data.sourceUrl || "");
-    if (code) {
-      setValue("secretKey", code);
+    const playerInput = data.playerInput || {};
+    setValue("accessToken", playerInput.accessToken || "");
+    setValue("appKey", playerInput.appKey || "");
+    setValue("domain", playerInput.domain || "");
+    setValue("deviceSerial", data.deviceSerial || "");
+    setValue("channelNo", String(data.channelNo || "1"));
+    setValue("playUrl", playerInput.sourceUrl || "");
+    if (playerInput.code) {
+      setValue("secretKey", playerInput.code);
     }
-    window.__sdkPlaybackInput = data;
+    window.__sdkPlaybackInput = {
+      ...data,
+      sourceUrl: playerInput.sourceUrl || "",
+      selectedTargetLabel: data.playback?.selectedTargetLabel || playbackState.targetLabel || "",
+    };
     console.log("[SDK PLAYBACK INPUT]", data);
-    return data;
+    return window.__sdkPlaybackInput;
   }
 
   function setStatus(message) {
@@ -1515,7 +2003,7 @@
     try {
       const viewMode = viewModeEl.value;
       const selectedMode = playModeEl.value;
-      const verificationCode = getCameraVerificationCode(cam);
+      const verificationCode = getEffectiveCameraVerificationCode(cam);
       if (viewMode === "playback") {
         await playSdkPlayback(cam, verificationCode);
         return;
@@ -1641,7 +2129,7 @@
         await refreshPlaybackClock(true);
       } else {
         const targetDate = new Date(boundedTargetMs);
-        await playSdkPlayback(selectedCamera, getCameraVerificationCode(selectedCamera), {
+        await playSdkPlayback(selectedCamera, getEffectiveCameraVerificationCode(selectedCamera), {
           beginTime: formatDateTimeLocalValue(targetDate),
           endTime: playbackEndInputEl.value,
           resumeAtMs: boundedTargetMs,
@@ -1656,7 +2144,7 @@
         setStatus(`${selectedCamera.name} - seek dogrudan uygulanamadi, hizli yeniden konumlama deneniyor...`);
         try {
           await restartSdkPlaybackFast(
-            getCameraVerificationCode(selectedCamera),
+            getEffectiveCameraVerificationCode(selectedCamera),
             targetBeginTime,
             targetEndTime
           );
@@ -1666,7 +2154,7 @@
         } catch (_fastRestartError) {
           setStatus(`${selectedCamera.name} - hizli konumlama yetmedi, playback yeniden aciliyor...`);
           const targetDate = new Date(boundedTargetMs);
-          await playSdkPlayback(selectedCamera, getCameraVerificationCode(selectedCamera), {
+          await playSdkPlayback(selectedCamera, getEffectiveCameraVerificationCode(selectedCamera), {
             beginTime: formatDateTimeLocalValue(targetDate),
             endTime: playbackEndInputEl.value,
             resumeAtMs: boundedTargetMs,
@@ -1732,15 +2220,18 @@
     await waitForNextPaint();
     await ensureSdkPlayer();
 
+    const requestedTargetType =
+      options.targetType ??
+      playbackState.targetType ??
+      (playbackTargetSelectEl.value === "cloud" ? 1 : 0);
+
     const playbackInput = await fillSdkPlaybackInputFromBackend({
       resourceId: cam.resourceId,
-      deviceSerial: cam.deviceSerial,
-      channelNo: String(Number(cam.channelNo || 1)),
       quality: String(qualityEl.value),
       code: verificationCode,
       beginTime: beginValue,
       endTime: options.endTime || playbackEndInputEl.value,
-      preferredTarget: playbackTargetSelectEl.value,
+      targetType: requestedTargetType,
     });
 
     protocolMetaEl.textContent =
@@ -1749,6 +2240,16 @@
         : playbackInput.selectedTargetLabel === "local-device-playback"
           ? "Playback Local"
           : "Playback";
+    playbackTrackTitleEl.textContent = cam.name || "Playback";
+    playbackTrackLabelEl.textContent = cam.name || "Kamera";
+    playbackState.targetType = requestedTargetType;
+    playbackState.targetLabel = playbackInput.selectedTargetLabel || "";
+    playbackSourceBadgeEl.textContent =
+      playbackInput.selectedTargetLabel === "cloud-storage-playback"
+        ? "Kaynak: Cloud"
+        : playbackInput.selectedTargetLabel === "local-device-playback"
+          ? "Kaynak: Yerel"
+          : "Kaynak: Otomatik";
 
     if (playbackInput.expireTime) {
       const expires = new Date(playbackInput.expireTime);
@@ -1762,6 +2263,12 @@
     playbackState.paused = false;
     playbackState.rate = 1;
     setPlaybackWindow(windowStartMs, windowEndMs, options.resumeAtMs || beginMs);
+    await loadPlaybackSegments(
+      cam.resourceId,
+      beginValue,
+      options.endTime || playbackEndInputEl.value,
+      requestedTargetType === 1 ? "cloud" : "local"
+    );
     startPlaybackClock();
     updateAlprBridgeContext({ playerType: "ezopen-inline", viewMode: "playback" });
   }

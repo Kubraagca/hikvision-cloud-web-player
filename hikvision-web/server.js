@@ -4255,7 +4255,116 @@ function normalizePlaybackDateTimeInput(value) {
   if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(normalized)) {
     return normalized;
   }
+  const parsed = new Date(trimmed);
+  if (!Number.isNaN(parsed.getTime())) {
+    const year = parsed.getFullYear();
+    const month = padNumber(parsed.getMonth() + 1);
+    const day = padNumber(parsed.getDate());
+    const hour = padNumber(parsed.getHours());
+    const minute = padNumber(parsed.getMinutes());
+    const second = padNumber(parsed.getSeconds());
+    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+  }
   return "";
+}
+
+function normalizePlaybackDateTimeToIsoOffset(value) {
+  const normalized = normalizePlaybackDateTimeInput(value);
+  if (!normalized) {
+    return "";
+  }
+
+  const parsed = new Date(normalized.replace(" ", "T"));
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+
+  return formatIsoOffset(parsed);
+}
+
+function buildDayRangeIsoOffset(dateValue) {
+  const trimmed = String(dateValue || "").trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+    return null;
+  }
+
+  const start = new Date(`${trimmed}T00:00:00`);
+  const end = new Date(`${trimmed}T23:59:59`);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return null;
+  }
+
+  return {
+    beginTime: formatIsoOffset(start),
+    endTime: formatIsoOffset(end),
+  };
+}
+
+async function fetchCameraCatalog(cameraIds = []) {
+  const { accessToken, areaDomain } = await getToken();
+  const payload = {
+    pageIndex: 1,
+    pageSize: Math.max(50, Array.isArray(cameraIds) && cameraIds.length ? cameraIds.length : 50),
+    filter: {
+      areaID: Array.isArray(cameraIds) && cameraIds.length ? "" : "-1",
+      includeSubArea: Array.isArray(cameraIds) && cameraIds.length ? "0" : "1",
+      cameraID: Array.isArray(cameraIds) && cameraIds.length ? cameraIds : [],
+    },
+  };
+
+  const response = await fetch(`${areaDomain}/api/hccgw/resource/v1/areas/cameras/get`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Token: accessToken,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json();
+  const errorCode = String(data.errorCode || data.code || "");
+  if (!response.ok || errorCode !== "0") {
+    throw new Error(
+      `Kamera listesi alinamadi. ${friendlyOpenApiError(errorCode, data.errorMsg || data.msg || "areas/cameras/get basarisiz.")}`
+    );
+  }
+
+  const rawCameras = (data.data?.camera || []).map((cam) => ({
+    name: cam.name,
+    online: cam.online === "1",
+    resourceId: cam.id,
+    deviceId: cam.deviceId || cam.device?.id || cam.device?.deviceId || cam.device?.devInfo?.id || null,
+    cameraIndexCode: cam.cameraIndexCode || null,
+    deviceSerial: cam.device?.devInfo?.serialNo || null,
+    streamSecretKey: cam.device?.devInfo?.streamSecretKey || cam.streamSecretKey || null,
+    channelNo: cam.device?.channelInfo?.no || cam.device?.channelNo || cam.channelNo || null,
+  }));
+
+  return Promise.all(
+    rawCameras.map(async (cam) => {
+      if (cam.deviceId || !cam.deviceSerial) {
+        return cam;
+      }
+
+      try {
+        const searchedDeviceId = await findDeviceIdBySerial(cam.deviceSerial);
+        if (searchedDeviceId) {
+          return {
+            ...cam,
+            deviceId: searchedDeviceId,
+          };
+        }
+
+        const detail = await getDeviceDetail(cam.deviceSerial);
+        return {
+          ...cam,
+          deviceId: detail.deviceId || cam.deviceId || null,
+        };
+      } catch {
+        return cam;
+      }
+    })
+  );
 }
 
 async function requestPlaybackAddress({
@@ -5019,66 +5128,7 @@ app.get("/api/cameras", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
   try {
-    const { accessToken, areaDomain } = await getToken();
-    const response = await fetch(`${areaDomain}/api/hccgw/resource/v1/areas/cameras/get`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Token: accessToken,
-      },
-      body: JSON.stringify({
-        pageIndex: "1",
-        pageSize: "50",
-        filter: { areaID: "-1", includeSubArea: "1" },
-      }),
-    });
-
-    const data = await response.json();
-    if (String(data.errorCode || data.code || "") !== "0") {
-      return res.status(502).json({
-        error: `Hikvision hata dondu. ${friendlyOpenApiError(
-          String(data.errorCode || data.code || ""),
-          data.errorMsg || data.msg || "Kamera listesi alinamadi."
-        )}`,
-      });
-    }
-
-    const rawCameras = (data.data?.camera || []).map((cam) => ({
-      name: cam.name,
-      online: cam.online === "1",
-      resourceId: cam.id,
-      deviceId: cam.deviceId || cam.device?.id || cam.device?.deviceId || null,
-      cameraIndexCode: cam.cameraIndexCode || null,
-      deviceSerial: cam.device?.devInfo?.serialNo || null,
-      channelNo: cam.device?.channelNo || cam.channelNo || null,
-    }));
-
-    const cameras = await Promise.all(
-      rawCameras.map(async (cam) => {
-        if (cam.deviceId || !cam.deviceSerial) {
-          return cam;
-        }
-
-        try {
-          const searchedDeviceId = await findDeviceIdBySerial(cam.deviceSerial);
-          if (searchedDeviceId) {
-            return {
-              ...cam,
-              deviceId: searchedDeviceId,
-            };
-          }
-
-          const detail = await getDeviceDetail(cam.deviceSerial);
-          return {
-            ...cam,
-            deviceId: detail.deviceId || cam.deviceId || null,
-          };
-        } catch {
-          return cam;
-        }
-      })
-    );
-
+    const cameras = await fetchCameraCatalog();
     res.json({ cameras });
   } catch (err) {
     res.status(500).json({ error: sanitizeMessage(err.message) });
@@ -5291,6 +5341,24 @@ app.get("/api/sdk-playback-input", async (req, res) => {
       getStreamToken(),
       (async () => {
         const { accessToken, areaDomain } = await getToken();
+        let resolvedPreferredTarget = preferredTarget;
+
+        // In auto mode, first ask the recording search API where segments actually exist.
+        // This avoids opening an empty local playback session when today's recordings only exist in cloud storage.
+        if (preferredTarget === "auto") {
+          const searchResult = await searchRecordingCandidates({
+            cameraId: resourceId,
+            beginTime: normalizePlaybackDateTimeToIsoOffset(beginTime),
+            endTime: normalizePlaybackDateTimeToIsoOffset(endTime),
+            targetTypes: [0, 1],
+          });
+          if (searchResult.selectedTargetType === 0) {
+            resolvedPreferredTarget = "local";
+          } else if (searchResult.selectedTargetType === 1) {
+            resolvedPreferredTarget = "cloud";
+          }
+        }
+
         return requestPlaybackAddress({
           accessToken,
           areaDomain,
@@ -5300,7 +5368,7 @@ app.get("/api/sdk-playback-input", async (req, res) => {
           code,
           beginTime,
           endTime,
-          preferredTarget,
+          preferredTarget: resolvedPreferredTarget,
         });
       })(),
     ]);
@@ -5320,6 +5388,188 @@ app.get("/api/sdk-playback-input", async (req, res) => {
       selectedTargetLabel: playback.selectedTargetLabel,
       raw: playback.raw,
       attempts: playback.attempts,
+    });
+  } catch (err) {
+    return res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
+  }
+});
+
+app.get("/api/playback-segments", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const cameraId = String(req.query.cameraId || req.query.resourceId || "").trim();
+  const beginTime = normalizePlaybackDateTimeToIsoOffset(req.query.beginTime);
+  const endTime = normalizePlaybackDateTimeToIsoOffset(req.query.endTime);
+  const preferredTarget = String(req.query.preferredTarget || "auto").trim().toLowerCase();
+  const targetTypes =
+    preferredTarget === "local" ? [0] : preferredTarget === "cloud" ? [1] : [0, 1];
+
+  if (!cameraId) {
+    return res.status(400).json({ error: "cameraId veya resourceId zorunlu." });
+  }
+
+  if (!beginTime || !endTime) {
+    return res.status(400).json({ error: "beginTime ve endTime gecerli tarih/saat olmali." });
+  }
+
+  try {
+    const result = await searchRecordingCandidates({
+      cameraId,
+      beginTime,
+      endTime,
+      targetTypes,
+    });
+
+    return res.json({
+      success: true,
+      cameraId,
+      beginTime,
+      endTime,
+      selectedTargetType: result.selectedTargetType,
+      selectedTargetLabel: result.selectedTargetLabel,
+      recordList: result.recordList,
+      searches: result.searches,
+    });
+  } catch (err) {
+    return res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
+  }
+});
+
+app.get("/api/cameras/:cameraId/recordings", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const cameraId = String(req.params.cameraId || "").trim();
+  const date = String(req.query.date || "").trim();
+  const targetType = Number(req.query.targetType ?? 0);
+  const rangeFromDate = date ? buildDayRangeIsoOffset(date) : null;
+  const beginTime = rangeFromDate?.beginTime || normalizePlaybackDateTimeToIsoOffset(req.query.beginTime);
+  const endTime = rangeFromDate?.endTime || normalizePlaybackDateTimeToIsoOffset(req.query.endTime);
+
+  if (!cameraId) {
+    return res.status(400).json({ error: "cameraId zorunlu." });
+  }
+
+  if (!beginTime || !endTime) {
+    return res.status(400).json({ error: "date veya beginTime/endTime gecerli olmali." });
+  }
+
+  if (![0, 1].includes(targetType)) {
+    return res.status(400).json({ error: "targetType 0 veya 1 olmali." });
+  }
+
+  try {
+    const recordList = await searchAllCameraRecordings({
+      cameraId,
+      beginTime,
+      endTime,
+      targetType,
+      timeType: 1,
+    });
+
+    let recordSetting = null;
+    try {
+      const settings = await teamOpenApiService.getRecordSettings([cameraId]);
+      recordSetting = settings.length > 0 ? summarizeRecordSetting(settings[0]) : null;
+    } catch {
+      recordSetting = null;
+    }
+
+    return res.json({
+      success: true,
+      cameraId,
+      date: date || null,
+      beginTime,
+      endTime,
+      targetType,
+      recordSetting,
+      recordList,
+    });
+  } catch (err) {
+    return res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
+  }
+});
+
+app.post("/api/cameras/:cameraId/playback", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const cameraId = String(req.params.cameraId || "").trim();
+  const beginTimeInput = req.body?.beginTime;
+  const endTimeInput = req.body?.endTime;
+  const targetType = Number(req.body?.targetType ?? 0);
+  const quality = Number(req.body?.quality ?? 1);
+  const verificationCode = String(req.body?.verificationCode || req.body?.code || "").trim();
+  const beginTime = normalizePlaybackDateTimeInput(beginTimeInput);
+  const endTime = normalizePlaybackDateTimeInput(endTimeInput);
+
+  if (!cameraId) {
+    return res.status(400).json({ error: "cameraId zorunlu." });
+  }
+
+  if (!beginTime || !endTime) {
+    return res.status(400).json({ error: "beginTime ve endTime gecerli tarih/saat olmali." });
+  }
+
+  if (![0, 1].includes(targetType)) {
+    return res.status(400).json({ error: "targetType 0 veya 1 olmali." });
+  }
+
+  try {
+    const cameras = await fetchCameraCatalog([cameraId]);
+    const camera = cameras.find((item) => String(item.resourceId || "") === cameraId);
+    if (!camera) {
+      return res.status(404).json({ error: "Kamera bulunamadi." });
+    }
+    if (!camera.deviceSerial) {
+      return res.status(400).json({ error: "Kamera deviceSerial bilgisi eksik." });
+    }
+
+    const [streamToken, token] = await Promise.all([
+      getStreamToken(),
+      getToken(),
+    ]);
+
+    const playback = await requestPlaybackAddress({
+      accessToken: token.accessToken,
+      areaDomain: token.areaDomain,
+      resourceId: camera.resourceId,
+      deviceSerial: camera.deviceSerial,
+      quality,
+      code: verificationCode || camera.streamSecretKey || "",
+      beginTime,
+      endTime,
+      preferredTarget: targetType === 0 ? "local" : "cloud",
+    });
+
+    return res.json({
+      success: true,
+      cameraId: camera.resourceId,
+      resourceId: camera.resourceId,
+      deviceId: camera.deviceId,
+      deviceSerial: camera.deviceSerial,
+      channelNo: Number(camera.channelNo || 1),
+      quality,
+      targetType,
+      verificationCodeRequired: !verificationCode && !camera.streamSecretKey,
+      playback: {
+        sourceUrl: playback.url,
+        expireTime: playback.expireTime,
+        selectedPlaybackType: playback.selectedType,
+        selectedTargetLabel: playback.selectedTargetLabel,
+      },
+      streamToken: {
+        appKey: streamToken.appKey,
+        appToken: streamToken.appToken,
+        areaDomain: streamToken.streamAreaDomain,
+      },
+      playerInput: {
+        appKey: streamToken.appKey,
+        accessToken: streamToken.appToken,
+        domain: streamToken.streamAreaDomain,
+        sourceUrl: playback.url,
+        code: verificationCode || camera.streamSecretKey || "",
+        beginTime,
+        endTime,
+      },
     });
   } catch (err) {
     return res.status(502).json(err.details || { error: sanitizeMessage(err.message) });
