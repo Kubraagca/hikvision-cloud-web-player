@@ -202,14 +202,14 @@
 
   video {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     display: block;
     background: #000;
   }
 
   .sdk-host {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     display: none;
     background: #000;
     overflow: hidden;
@@ -217,7 +217,7 @@
 
   .sdk-frame {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     display: none;
     border: 0;
     background: #000;
@@ -235,11 +235,15 @@
 
   .playback-controls {
     display: none;
-    gap: 12px;
-    margin-top: 12px;
-    padding: 14px;
-    border: 1px solid #d6dde6;
-    background: linear-gradient(180deg, #fbfbfc 0%, #f0f2f5 100%);
+    gap: 8px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 8;
+    margin: 0;
+    padding: 10px 14px 12px;
+    background: linear-gradient(180deg, rgba(11, 18, 32, 0) 0%, rgba(11, 18, 32, 0.45) 34%, rgba(11, 18, 32, 0.78) 100%);
   }
 
   .playback-controls.active {
@@ -255,8 +259,8 @@
 
   .playback-topline {
     justify-content: space-between;
-    font-size: 12px;
-    color: var(--muted);
+    font-size: 11px;
+    color: rgba(241, 245, 249, 0.82);
   }
 
   .playback-row input[type="range"] {
@@ -266,25 +270,25 @@
 
   .playback-timeline-panel {
     display: grid;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
-    padding: 10px 14px 12px;
-    border: 1px solid #d2d9e2;
-    background: linear-gradient(180deg, #f5f5f6 0%, #ebeef2 100%);
+    padding: 0;
+    border: 0;
+    background: transparent;
   }
 
   .playback-ruler {
     position: relative;
-    height: 22px;
-    margin: 0 64px 0 84px;
+    height: 18px;
+    margin: 0 54px 0 74px;
   }
 
   .playback-ruler-tick {
     position: absolute;
     top: 0;
     transform: translateX(-50%);
-    font-size: 11px;
-    color: var(--muted);
+    font-size: 10px;
+    color: rgba(226, 232, 240, 0.72);
     white-space: nowrap;
   }
 
@@ -292,10 +296,10 @@
     content: "";
     position: absolute;
     left: 50%;
-    top: 16px;
+    top: 13px;
     width: 1px;
-    height: 6px;
-    background: #aeb8c4;
+    height: 4px;
+    background: rgba(226, 232, 240, 0.32);
     transform: translateX(-50%);
   }
 
@@ -317,11 +321,11 @@
     left: 0;
     right: 0;
     top: 50%;
-    height: 26px;
+    height: 18px;
     transform: translateY(-50%);
-    border-radius: 6px;
-    background: #d8dee6;
-    border: 1px solid #c5ced8;
+    border-radius: 999px;
+    background: rgba(241, 245, 249, 0.12);
+    border: 1px solid rgba(226, 232, 240, 0.16);
     overflow: hidden;
   }
 
@@ -347,13 +351,13 @@
 
   .playback-segments-indicator {
     position: absolute;
-    top: -4px;
-    bottom: -4px;
-    width: 3px;
-    margin-left: -1.5px;
+    top: -3px;
+    bottom: -3px;
+    width: 2px;
+    margin-left: -1px;
     border-radius: 999px;
     background: #ff5a36;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.55);
   }
 
   .playback-seek-wrap input[type="range"] {
@@ -363,64 +367,29 @@
     margin: 0;
     background: transparent;
     opacity: 0;
-    height: 26px;
+    height: 18px;
   }
 
   .playback-seek-wrap input[type="range"]::-webkit-slider-runnable-track {
-    height: 26px;
+    height: 18px;
     background: transparent;
   }
 
   .playback-seek-wrap input[type="range"]::-moz-range-track {
-    height: 26px;
+    height: 18px;
     background: transparent;
-  }
-
-  .playback-seek-wrap input[type="range"]::-webkit-slider-thumb {
-    position: relative;
-    z-index: 2;
-  }
-
-  .playback-legend {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .playback-legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .playback-legend-swatch {
-    width: 14px;
-    height: 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(17, 24, 39, 0.08);
-  }
-
-  .playback-legend-swatch[data-mode="continuous"] {
-    background: #2196f3;
-  }
-
-  .playback-legend-swatch[data-mode="motion"] {
-    background: #ef5350;
   }
 
   .playback-track-row {
     display: grid;
-    grid-template-columns: 74px minmax(0, 1fr) 64px;
-    gap: 10px;
+    grid-template-columns: 64px minmax(0, 1fr) 54px;
+    gap: 8px;
     align-items: center;
   }
 
   .playback-edge-time {
-    font-size: 12px;
-    color: var(--muted);
+    font-size: 11px;
+    color: rgba(241, 245, 249, 0.78);
     font-variant-numeric: tabular-nums;
   }
 
@@ -429,8 +398,8 @@
   }
 
   .playback-track-label {
-    font-size: 12px;
-    color: #334155;
+    font-size: 11px;
+    color: rgba(241, 245, 249, 0.82);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -438,25 +407,25 @@
 
   .playback-current-stamp {
     justify-self: center;
-    padding: 6px 14px;
-    border: 1px solid #d7dbe2;
-    background: #fff;
+    padding: 4px 10px;
+    border: 1px solid rgba(226, 232, 240, 0.18);
+    background: rgba(255, 255, 255, 0.9);
     color: #111827;
-    font-size: 14px;
+    font-size: 12px;
     font-variant-numeric: tabular-nums;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
   }
 
   .playback-actionbar {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    gap: 12px;
+    gap: 8px;
     align-items: center;
   }
 
   .playback-action-group {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
     flex-wrap: wrap;
   }
@@ -470,31 +439,33 @@
   }
 
   .playback-mini-btn {
-    min-width: 44px;
-    min-height: 34px;
-    padding: 6px 10px;
-    border: 1px solid #cfd6df;
-    background: #fff;
-    color: #223043;
-    font-size: 13px;
+    min-width: 38px;
+    min-height: 30px;
+    padding: 5px 9px;
+    border: 1px solid rgba(226, 232, 240, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: #f8fafc;
+    font-size: 12px;
+    backdrop-filter: blur(6px);
   }
 
   .playback-mini-btn.primary {
-    background: #ffffff;
-    border-color: #b9c3cf;
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(255, 255, 255, 0.96);
+    color: #0f172a;
     font-weight: 600;
   }
 
   .playback-rate-readout {
-    min-width: 52px;
+    min-width: 42px;
     text-align: center;
-    font-size: 14px;
-    color: #111827;
+    font-size: 12px;
+    color: rgba(248, 250, 252, 0.94);
   }
 
   .playback-time {
-    font-size: 12px;
-    color: var(--muted);
+    font-size: 11px;
+    color: rgba(226, 232, 240, 0.76);
     white-space: nowrap;
   }
 
@@ -510,7 +481,7 @@
   }
   .live-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.6fr) 320px;
+    grid-template-columns: minmax(0, 1.82fr) 286px;
     gap: 14px;
     align-items: start;
   }
@@ -526,7 +497,18 @@
   }
 
   .media-stage {
+    position: relative;
     max-width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .media-stage > video,
+  .media-stage > .sdk-host,
+  .media-stage > .sdk-frame {
+    position: absolute;
+    inset: 0;
   }
 
   .summary-grid {
@@ -650,6 +632,45 @@
               <video id="player" controls muted playsinline></video>
               <div id="playWind" class="sdk-host"></div>
               <iframe id="sdk-frame" class="sdk-frame" title="SDK Izleyici"></iframe>
+              <div id="playback-controls" class="playback-controls">
+                <div class="playback-row">
+                  <div class="playback-topline" style="width:100%;">
+                    <span id="playback-track-title">Playback</span>
+                    <span id="playback-source-badge">Kaynak: Otomatik</span>
+                  </div>
+                </div>
+                <div class="playback-timeline-panel">
+                  <div id="playback-ruler" class="playback-ruler"></div>
+                  <div class="playback-track-row">
+                    <span id="playback-track-label" class="playback-track-label">Kamera</span>
+                    <div class="playback-seek-wrap">
+                      <div id="playback-segments" class="playback-segments">
+                        <div class="playback-segments-track"></div>
+                        <div id="playback-segments-indicator" class="playback-segments-indicator"></div>
+                      </div>
+                      <input id="playback-seek-range" type="range" min="0" max="0" step="1" value="0" />
+                    </div>
+                    <span id="playback-end-time" class="playback-edge-time end">--:--:--</span>
+                  </div>
+                  <div class="playback-current-stamp" id="playback-current-time">--.--.---- --:--:--</div>
+                  <div class="playback-actionbar">
+                    <div class="playback-action-group">
+                      <button id="playback-back-btn" type="button" class="playback-mini-btn">-10</button>
+                      <button id="playback-slower-btn" type="button" class="playback-mini-btn"><<</button>
+                    </div>
+                    <div class="playback-action-group center">
+                      <button id="playback-toggle-btn" type="button" class="playback-mini-btn primary">Duraklat</button>
+                      <button id="playback-frame-btn" type="button" class="playback-mini-btn">Tek Kare</button>
+                      <span id="playback-speed-chip" class="playback-rate-readout">1X</span>
+                    </div>
+                    <div class="playback-action-group right">
+                      <button id="playback-faster-btn" type="button" class="playback-mini-btn">>></button>
+                      <button id="playback-forward-btn" type="button" class="playback-mini-btn">+10</button>
+                    </div>
+                  </div>
+                  <span id="playback-window-text" class="playback-time">Kayit araligi secilmedi.</span>
+                </div>
+              </div>
             </div>
             <div id="sdk-live-fields" style="display:none;">
               <input id="accessToken" type="text" />
@@ -663,49 +684,6 @@
             <div class="player-status">
               <span id="status-text">Bir kamera secin</span>
               <span id="expire-text"></span>
-            </div>
-            <div id="playback-controls" class="playback-controls">
-              <div class="playback-row">
-                <div class="playback-topline" style="width:100%;">
-                  <span id="playback-track-title">Playback</span>
-                  <span id="playback-source-badge">Kaynak: Otomatik</span>
-                </div>
-              </div>
-              <div class="playback-timeline-panel">
-                <div id="playback-ruler" class="playback-ruler"></div>
-                <div class="playback-track-row">
-                  <span id="playback-track-label" class="playback-track-label">Kamera</span>
-                  <div class="playback-seek-wrap">
-                    <div id="playback-segments" class="playback-segments">
-                      <div class="playback-segments-track"></div>
-                      <div id="playback-segments-indicator" class="playback-segments-indicator"></div>
-                    </div>
-                    <input id="playback-seek-range" type="range" min="0" max="0" step="1" value="0" />
-                  </div>
-                  <span id="playback-end-time" class="playback-edge-time end">--:--:--</span>
-                </div>
-                <div class="playback-current-stamp" id="playback-current-time">--.--.---- --:--:--</div>
-                <div class="playback-legend">
-                  <span class="playback-legend-item"><span class="playback-legend-swatch" data-mode="continuous"></span>Surekli kayit</span>
-                  <span class="playback-legend-item"><span class="playback-legend-swatch" data-mode="motion"></span>Hareket kaydi</span>
-                </div>
-                <div class="playback-actionbar">
-                  <div class="playback-action-group">
-                    <button id="playback-back-btn" type="button" class="playback-mini-btn">-10</button>
-                    <button id="playback-slower-btn" type="button" class="playback-mini-btn"><<</button>
-                  </div>
-                  <div class="playback-action-group center">
-                    <button id="playback-toggle-btn" type="button" class="playback-mini-btn primary">Duraklat</button>
-                    <button id="playback-frame-btn" type="button" class="playback-mini-btn">Tek Kare</button>
-                    <span id="playback-speed-chip" class="playback-rate-readout">1X</span>
-                  </div>
-                  <div class="playback-action-group right">
-                    <button id="playback-faster-btn" type="button" class="playback-mini-btn">>></button>
-                    <button id="playback-forward-btn" type="button" class="playback-mini-btn">+10</button>
-                  </div>
-                </div>
-                <span id="playback-window-text" class="playback-time">Kayit araligi secilmedi.</span>
-              </div>
             </div>
           </div>
           <aside class="live-sidebar">
@@ -814,6 +792,7 @@
     segments: [],
     targetType: null,
     targetLabel: "",
+    activeSegment: null,
   };
 
   function formatDateTimeLocalValue(date) {
@@ -905,6 +884,7 @@
     playbackState.segments = [];
     playbackState.targetType = null;
     playbackState.targetLabel = "";
+    playbackState.activeSegment = null;
     playbackToggleBtn.textContent = "Duraklat";
     updatePlaybackControls();
   }
@@ -1015,6 +995,34 @@
     }
   }
 
+  function findPlaybackSegmentAt(targetMs) {
+    if (!Number.isFinite(targetMs) || !Array.isArray(playbackState.segments)) {
+      return null;
+    }
+    return playbackState.segments.find((segment) => targetMs >= segment.startMs && targetMs < segment.endMs) || null;
+  }
+
+  function updateActivePlaybackSegment(targetMs = playbackState.currentMs) {
+    playbackState.activeSegment = findPlaybackSegmentAt(targetMs);
+    return playbackState.activeSegment;
+  }
+
+  function getSegmentPlaybackBounds(targetMs) {
+    const segment = findPlaybackSegmentAt(targetMs);
+    if (segment) {
+      return {
+        segment,
+        beginMs: segment.startMs,
+        endMs: segment.endMs,
+      };
+    }
+    return {
+      segment: null,
+      beginMs: playbackState.clipStartMs,
+      endMs: playbackState.clipEndMs,
+    };
+  }
+
   function renderPlaybackRuler() {
     if (!playbackRulerEl) {
       return;
@@ -1027,7 +1035,8 @@
       return;
     }
 
-    const tickCount = 6;
+    const totalHours = totalDurationMs / (60 * 60 * 1000);
+    const tickCount = totalHours <= 2 ? 8 : totalHours <= 6 ? 12 : 8;
     for (let index = 0; index <= tickCount; index += 1) {
       const ratio = index / tickCount;
       const tickMs = playbackState.clipStartMs + (totalDurationMs * ratio);
@@ -1079,6 +1088,7 @@
             playbackState.clipStartMs,
             playbackState.clipEndMs
           );
+          updateActivePlaybackSegment();
           loaded = true;
           break;
         }
@@ -1088,12 +1098,14 @@
         playbackState.targetType = resolveRequestedTargetTypes(preferredTarget)[0] ?? null;
         playbackState.targetLabel =
           playbackState.targetType === 1 ? "cloud-storage-playback" : "local-device-playback";
+        playbackState.activeSegment = null;
       }
       renderPlaybackSegments();
     } catch (_error) {
       playbackState.segments = [];
       playbackState.targetType = null;
       playbackState.targetLabel = "";
+      playbackState.activeSegment = null;
       renderPlaybackSegments();
     }
   }
@@ -1154,6 +1166,7 @@
     playbackState.clipStartMs = startMs;
     playbackState.clipEndMs = endMs;
     playbackState.currentMs = Math.max(startMs, Math.min(endMs, currentMs));
+    updateActivePlaybackSegment(playbackState.currentMs);
     updatePlaybackControls();
   }
 
@@ -1204,7 +1217,10 @@
   }
 
   async function refreshPlaybackClock(force = false) {
-    if (!playbackState.active || playbackState.seeking) {
+    if (!playbackState.active) {
+      return;
+    }
+    if (playbackState.seeking && !force) {
       return;
     }
     if (playbackState.paused && !force) {
@@ -1220,6 +1236,7 @@
             playbackState.clipStartMs,
             Math.min(playbackState.clipEndMs, parsedMs)
           );
+          updateActivePlaybackSegment(playbackState.currentMs);
           if (playbackState.currentMs >= playbackState.clipEndMs) {
             playbackState.paused = true;
             stopPlaybackClock();
@@ -1623,6 +1640,135 @@
     throw new Error("SDK kare ilerletme komutunu desteklemiyor.");
   }
 
+  function getSdkMethodCandidates(pattern) {
+    if (!sdkPlayer || !(pattern instanceof RegExp)) {
+      return [];
+    }
+
+    const seen = new Set();
+    const matches = [];
+    let cursor = sdkPlayer;
+
+    while (cursor && cursor !== Object.prototype) {
+      for (const key of Object.getOwnPropertyNames(cursor)) {
+        if (seen.has(key) || key === "constructor") {
+          continue;
+        }
+        seen.add(key);
+        if (pattern.test(key) && typeof sdkPlayer[key] === "function") {
+          matches.push(key);
+        }
+      }
+      cursor = Object.getPrototypeOf(cursor);
+    }
+
+    return matches;
+  }
+
+  async function waitForPlaybackPosition(targetMs, timeoutMs = 4000, toleranceMs = 3000) {
+    const startedAt = Date.now();
+    while (Date.now() - startedAt < timeoutMs) {
+      await refreshPlaybackClock(true);
+      const delta = Math.abs((playbackState.currentMs || 0) - targetMs);
+      if (delta <= toleranceMs) {
+        return true;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    return false;
+  }
+
+  async function trySdkSeekMethod(methodName, targetMs, segmentEndMs) {
+    if (!sdkPlayer || typeof sdkPlayer[methodName] !== "function") {
+      return false;
+    }
+
+    const targetDateTime = formatSdkPlaybackDateTime(targetMs);
+    const segmentEndDateTime = formatSdkPlaybackDateTime(segmentEndMs);
+    const targetSeconds = Math.max(0, Math.floor((targetMs - playbackState.clipStartMs) / 1000));
+    const trialArgs = [
+      [getWnd(), targetDateTime, segmentEndDateTime],
+      [getWnd(), targetDateTime],
+      [targetDateTime, segmentEndDateTime],
+      [targetDateTime],
+      [getWnd(), targetSeconds],
+      [targetSeconds],
+    ];
+
+    for (const args of trialArgs) {
+      try {
+        const result = sdkPlayer[methodName](...args);
+        Promise.resolve(result).catch(() => {});
+      } catch (_error) {
+        continue;
+      }
+
+      const moved = await waitForPlaybackPosition(targetMs, 3500, 3500);
+      if (moved) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  async function seekPlaybackWithinCurrentSession(targetMs, segmentEndMs) {
+    const candidateNames = [
+      "JS_PlaybackSeek",
+      "JS_SeekPlayback",
+      "JS_SetPlaybackTime",
+      "JS_SetCurrentTime",
+      "JS_SeekTime",
+      "JS_Seek",
+    ];
+    const patternMatches = getSdkMethodCandidates(/seek|currenttime|playbacktime/i);
+    const orderedCandidates = Array.from(new Set([...candidateNames, ...patternMatches]));
+
+    for (const methodName of orderedCandidates) {
+      const success = await trySdkSeekMethod(methodName, targetMs, segmentEndMs);
+      if (success) {
+        return methodName;
+      }
+    }
+
+    throw new Error("SDK seek metodu yanit vermedi.");
+  }
+
+  function getNearestPlaybackRate(currentRate, direction) {
+    const steps = [0.5, 1, 2, 4, 8];
+    const normalizedRate = Number(currentRate) > 0 ? Number(currentRate) : 1;
+    const currentIndex = steps.findIndex((value) => value >= normalizedRate);
+    const baseIndex = currentIndex === -1 ? 1 : currentIndex;
+    if (direction === "faster") {
+      return steps[Math.min(steps.length - 1, baseIndex + 1)];
+    }
+    return steps[Math.max(0, baseIndex - 1)];
+  }
+
+  async function tryPlaybackRateMethod(methodName, targetRate) {
+    if (typeof sdkPlayer?.[methodName] !== "function") {
+      return false;
+    }
+
+    const trialArgs = [
+      [getWnd(), targetRate],
+      [targetRate, getWnd()],
+      [targetRate],
+      [String(targetRate)],
+      [getWnd(), String(targetRate)],
+    ];
+
+    for (const args of trialArgs) {
+      try {
+        await callSdk(() => sdkPlayer[methodName](...args), "Playback hiz ayari");
+        return true;
+      } catch (_error) {
+      }
+    }
+
+    return false;
+  }
+
   async function callSdk(action, label) {
     try {
       const result = await action();
@@ -1755,9 +1901,7 @@
             domain: getValue("domain"),
           },
         },
-        getWnd(),
-        beginTime || undefined,
-        endTime || undefined
+        getWnd()
       ),
       "Playback"
     );
@@ -2100,71 +2244,36 @@
 
     const boundedTargetMs = Math.max(playbackState.clipStartMs, Math.min(playbackState.clipEndMs, targetMs));
     const originalCurrentMs = playbackState.currentMs;
+    const wasPaused = playbackState.paused;
     playbackState.seeking = true;
     updatePlaybackControls();
     setStatus(`${selectedCamera.name} - playback yeni zamana aliniyor...`);
 
     try {
-      const targetBeginTime = formatSdkPlaybackDateTime(boundedTargetMs);
-      const targetEndTime = formatSdkPlaybackDateTime(playbackState.clipEndMs);
-      const wasPaused = playbackState.paused;
-      if (sdkPlayer?.JS_Seek) {
-        stopPlaybackClock();
+      stopPlaybackClock();
+      const activeSegment = findPlaybackSegmentAt(playbackState.currentMs);
+      const targetSegment = findPlaybackSegmentAt(boundedTargetMs);
+      const segmentEndMs = targetSegment?.endMs || activeSegment?.endMs || playbackState.clipEndMs;
+      const usedMethod = await seekPlaybackWithinCurrentSession(boundedTargetMs, segmentEndMs);
+      playbackState.currentMs = boundedTargetMs;
+      playbackState.paused = wasPaused;
+      playbackState.activeSegment = targetSegment || activeSegment || null;
+      if (wasPaused && sdkPlayer?.JS_Pause) {
         await withTimeout(
-          callSdk(() => sdkPlayer.JS_Seek(getWnd(), targetBeginTime, targetEndTime), "Playback zaman atla"),
-          2500,
-          "SDK seek yanit vermedi."
+          callSdk(() => sdkPlayer.JS_Pause(getWnd()), "Playback yeniden duraklat"),
+          1500,
+          "Playback yeniden duraklatma zaman asimina ugradi."
         );
-        playbackState.currentMs = boundedTargetMs;
-        playbackState.paused = wasPaused;
-        if (wasPaused && sdkPlayer?.JS_Pause) {
-          await withTimeout(
-            callSdk(() => sdkPlayer.JS_Pause(getWnd()), "Playback yeniden duraklat"),
-            1500,
-            "Playback yeniden duraklatma zaman asimina ugradi."
-          );
-        } else {
-          startPlaybackClock();
-        }
-        await refreshPlaybackClock(true);
       } else {
-        const targetDate = new Date(boundedTargetMs);
-        await playSdkPlayback(selectedCamera, getEffectiveCameraVerificationCode(selectedCamera), {
-          beginTime: formatDateTimeLocalValue(targetDate),
-          endTime: playbackEndInputEl.value,
-          resumeAtMs: boundedTargetMs,
-          windowStartMs: playbackState.clipStartMs,
-          windowEndMs: playbackState.clipEndMs,
-        });
+        startPlaybackClock();
       }
+      setStatus(`${selectedCamera.name} - playback ${usedMethod} ile mevcut oturumda ilerletildi.`);
+      await refreshPlaybackClock(true);
     } catch (error) {
-      if (sdkPlayer?.JS_Seek) {
-        playbackState.currentMs = originalCurrentMs;
-        playbackState.paused = false;
-        setStatus(`${selectedCamera.name} - seek dogrudan uygulanamadi, hizli yeniden konumlama deneniyor...`);
-        try {
-          await restartSdkPlaybackFast(
-            getEffectiveCameraVerificationCode(selectedCamera),
-            targetBeginTime,
-            targetEndTime
-          );
-          setPlaybackWindow(playbackState.clipStartMs, playbackState.clipEndMs, boundedTargetMs);
-          startPlaybackClock();
-          await refreshPlaybackClock(true);
-        } catch (_fastRestartError) {
-          setStatus(`${selectedCamera.name} - hizli konumlama yetmedi, playback yeniden aciliyor...`);
-          const targetDate = new Date(boundedTargetMs);
-          await playSdkPlayback(selectedCamera, getEffectiveCameraVerificationCode(selectedCamera), {
-            beginTime: formatDateTimeLocalValue(targetDate),
-            endTime: playbackEndInputEl.value,
-            resumeAtMs: boundedTargetMs,
-            windowStartMs: playbackState.clipStartMs,
-            windowEndMs: playbackState.clipEndMs,
-          });
-        }
-      } else {
-        throw error;
-      }
+      playbackState.currentMs = originalCurrentMs;
+      playbackState.paused = wasPaused;
+      updateActivePlaybackSegment(originalCurrentMs);
+      setStatus(`${selectedCamera.name} - playback mevcut oturumda seek hatasi: ${error?.message || error}`);
     } finally {
       playbackState.seeking = false;
       updatePlaybackControls();
@@ -2175,10 +2284,34 @@
     if (!playbackState.active) {
       return;
     }
+    const targetRate = getNearestPlaybackRate(playbackState.rate, direction);
+    const rateMethodCandidates = [
+      "JS_SetPlayRate",
+      "JS_SetPlaybackSpeed",
+      "JS_SetSpeed",
+      "JS_PlaySpeed",
+      "JS_PlayRate",
+      "JS_SetRate",
+      "JS_SetCurrentRate",
+      ...getSdkMethodCandidates(/playrate|speed/i),
+    ];
+
+    for (const methodName of Array.from(new Set(rateMethodCandidates))) {
+      const success = await tryPlaybackRateMethod(methodName, targetRate);
+      if (success) {
+        playbackState.rate = targetRate;
+        setStatus(`${selectedCamera?.name || "Kamera"} - playback hizi ${methodName} ile ${targetRate}x yapildi.`);
+        updatePlaybackControls();
+        return;
+      }
+    }
+
     if (direction === "faster" && sdkPlayer?.JS_Fast) {
       const nextRate = await callSdk(() => sdkPlayer.JS_Fast(getWnd()), "Playback hiz artir");
       if (typeof nextRate === "number" && Number.isFinite(nextRate)) {
         playbackState.rate = nextRate;
+      } else {
+        playbackState.rate = targetRate;
       }
       updatePlaybackControls();
       return;
@@ -2187,10 +2320,13 @@
       const nextRate = await callSdk(() => sdkPlayer.JS_Slow(getWnd()), "Playback hiz azalt");
       if (typeof nextRate === "number" && Number.isFinite(nextRate)) {
         playbackState.rate = nextRate;
+      } else {
+        playbackState.rate = targetRate;
       }
       updatePlaybackControls();
       return;
     }
+
     throw new Error("SDK hiz kontrolunu desteklemiyor.");
   }
 
@@ -2209,6 +2345,7 @@
 
     const windowStartMs = options.windowStartMs ?? beginMs;
     const windowEndMs = options.windowEndMs ?? endMs;
+    const preservedSegments = options.preserveSegments ? [...playbackState.segments] : [];
 
     await stopSdkPlayer();
     destroyHls();
@@ -2263,12 +2400,18 @@
     playbackState.paused = false;
     playbackState.rate = 1;
     setPlaybackWindow(windowStartMs, windowEndMs, options.resumeAtMs || beginMs);
-    await loadPlaybackSegments(
-      cam.resourceId,
-      beginValue,
-      options.endTime || playbackEndInputEl.value,
-      requestedTargetType === 1 ? "cloud" : "local"
-    );
+    if (!options.preserveSegments) {
+      await loadPlaybackSegments(
+        cam.resourceId,
+        beginValue,
+        options.endTime || playbackEndInputEl.value,
+        requestedTargetType === 1 ? "cloud" : "local"
+      );
+    } else {
+      playbackState.segments = preservedSegments;
+      updateActivePlaybackSegment(options.resumeAtMs || beginMs);
+      renderPlaybackSegments();
+    }
     startPlaybackClock();
     updateAlprBridgeContext({ playerType: "ezopen-inline", viewMode: "playback" });
   }
