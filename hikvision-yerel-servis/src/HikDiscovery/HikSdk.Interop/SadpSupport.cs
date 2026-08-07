@@ -8,6 +8,9 @@ public sealed record SadpDeviceInfo(
     string SerialNumber,
     string MacAddress,
     string IpAddress,
+    ushort SdkPort,
+    string Gateway,
+    string SubnetMask,
     bool DhcpEnabled,
     string ActivationStatus);
 
@@ -92,7 +95,7 @@ public sealed class HikSdkSession : IDisposable
         }
     }
 
-    public SadpPollResult PollSadpDevices(int userId = 0)
+    public SadpPollResult PollSadpDevices(int userId = -1)
     {
         var sadpInfoList = NET_DVR_SADPINFO_LIST.Create();
         var success = HikSdkNative.NET_DVR_GetSadpInfoList(userId, ref sadpInfoList);
@@ -111,6 +114,9 @@ public sealed class HikSdkSession : IDisposable
                 DecodeSByteString(item.chSerialNo),
                 FormatMac(item.byMACAddr),
                 DecodeSByteString(item.struIP.sIpV4),
+                item.wPort,
+                DecodeSByteString(item.struGatewayIpAddr.sIpV4),
+                DecodeSByteString(item.struSubDVRIPMask.sIpV4),
                 item.byDhcp == 1,
                 item.byActivated switch
                 {

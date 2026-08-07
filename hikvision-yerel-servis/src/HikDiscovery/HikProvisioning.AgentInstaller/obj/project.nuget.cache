@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CPZva+4fW78=",
+  "dgSpecHash": "YrAZ0gPVvOU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Kubra\\Desktop\\kamera\\src\\HikDiscovery\\HikProvisioning.AgentInstaller\\HikProvisioning.AgentInstaller.csproj",
+  "projectFilePath": "C:\\Users\\Kubra\\Desktop\\kamera\\hikvision-yerel-servis\\src\\HikDiscovery\\HikProvisioning.AgentInstaller\\HikProvisioning.AgentInstaller.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Kubra\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.17\\microsoft.net.illink.tasks.9.0.17.nupkg.sha512",
     "C:\\Users\\Kubra\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.17\\microsoft.netcore.app.runtime.win-x64.9.0.17.nupkg.sha512",

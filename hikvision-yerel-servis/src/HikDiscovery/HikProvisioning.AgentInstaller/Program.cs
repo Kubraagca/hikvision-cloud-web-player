@@ -2,6 +2,7 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using System.Linq;
 
 internal static class Program
 {
@@ -156,19 +157,33 @@ HikProvisioning.Agent
 
     private static void StartAgent(string targetDir)
     {
-        var exePath = Path.Combine(targetDir, "HikProvisioning.Agent.exe");
-        if (!File.Exists(exePath))
+        var exePath = LocateAgentExecutable(targetDir);
+        if (exePath is null)
         {
-            throw new FileNotFoundException("Kurulan agent exe bulunamadi.", exePath);
+            throw new FileNotFoundException("Kurulan agent exe bulunamadi.", Path.Combine(targetDir, "HikProvisioning.Agent.exe"));
         }
 
         var startInfo = new System.Diagnostics.ProcessStartInfo
         {
             FileName = exePath,
-            WorkingDirectory = targetDir,
+            WorkingDirectory = Path.GetDirectoryName(exePath) ?? targetDir,
             UseShellExecute = true
         };
 
         System.Diagnostics.Process.Start(startInfo);
+    }
+
+    private static string? LocateAgentExecutable(string targetDir)
+    {
+        var rootExePath = Path.Combine(targetDir, "HikProvisioning.Agent.exe");
+        if (File.Exists(rootExePath))
+        {
+            return rootExePath;
+        }
+
+        return Directory
+            .EnumerateFiles(targetDir, "HikProvisioning.Agent.exe", SearchOption.AllDirectories)
+            .OrderBy(path => path.Count(character => character == Path.DirectorySeparatorChar || character == Path.AltDirectorySeparatorChar))
+            .FirstOrDefault();
     }
 }

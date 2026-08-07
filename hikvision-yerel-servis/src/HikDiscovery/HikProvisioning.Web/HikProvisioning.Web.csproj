@@ -24,4 +24,11 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\downloads\local-agent\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

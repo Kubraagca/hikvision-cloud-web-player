@@ -315,9 +315,6 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px 16px;
   }
-  .storage-program-form > label:first-child:not(:has(select, input, textarea)) {
-    display: none;
-  }
   .storage-program-form .field-span-3 {
     grid-column: 1 / -1;
   }
@@ -726,11 +723,16 @@
         <div class="storage-config-head">
           <div>
             <h2>Kayit Programi ve Parametreleri</h2>
-            <p>Yalnizca cihazin mevcut ISAPI track XML icinde bulunan alanlar guncellenir. Desteklenmeyen alanlar acikca raporlanir.</p>
+           
           </div>
         </div>
         <div class="storage-program-form">
-          <label>Kayıt Etkin
+ <label>Takvimi Etkin Tut
+            <select id="record-schedule-enabled-input">
+              <option value="true">Acik</option>
+              <option value="false">Kapali</option>
+            </select>
+          </label>
           <label>Kayit Akisi
             <select id="record-stream-input">
               <option value="">Cihaz XML'inde yoksa degistirme</option>
@@ -744,12 +746,7 @@
               <option value="false">Kapali</option>
             </select>
           </label>
-          <label>Takvimi Etkin Tut
-            <select id="record-schedule-enabled-input">
-              <option value="true">Acik</option>
-              <option value="false">Kapali</option>
-            </select>
-          </label>
+         
           <label>Pre-record (sn)
             <input id="record-pre-seconds-input" type="number" min="0" step="1" placeholder="XML destekliyorsa" />
           </label>
@@ -822,6 +819,7 @@
     resourceId: qs.get("resourceId") || "",
     deviceSerial: qs.get("deviceSerial") || "",
     interfaceId: "1",
+    storageDiskId: "",
   };
 
   const nameMetaEl = document.getElementById("name-meta");
@@ -859,6 +857,7 @@
   const recordTrackIdMetaEl = document.getElementById("record-track-id-meta");
   const storageStatusBoxEl = document.getElementById("storage-status-box");
   const storageOutputEl = document.getElementById("storage-output");
+  const recordEnabledInputEl = document.getElementById("record-enabled-input");
   const recordStreamInputEl = document.getElementById("record-stream-input");
   const recordOverwriteInputEl = document.getElementById("record-overwrite-input");
   const recordScheduleEnabledInputEl = document.getElementById("record-schedule-enabled-input");
@@ -916,6 +915,53 @@
     dragCurrent: null,
     cells: {},
   };
+  const provisionSessionKey = `hikvision-device-detail:${state.deviceId || "unknown"}:provision`;
+  const provisionLocalKey = `hikvision-device-detail:${state.deviceId || "unknown"}:provision:local`;
+
+  function loadProvisionDraft() {
+    try {
+      const raw = sessionStorage.getItem(provisionSessionKey) || localStorage.getItem(provisionLocalKey);
+      if (!raw) {
+        return {};
+      }
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveProvisionDraft() {
+    try {
+      const payload = JSON.stringify({
+        ipAddress: provisionIpInputEl.value.trim(),
+        userName: provisionUserInputEl.value.trim() || "admin",
+        password: provisionPasswordInputEl.value || "",
+        sdkPort: provisionSdkPortInputEl.value.trim() || "8000",
+      });
+      sessionStorage.setItem(provisionSessionKey, payload);
+      localStorage.setItem(provisionLocalKey, payload);
+    } catch {
+    }
+  }
+
+  function hydrateProvisionInputs() {
+    const draft = loadProvisionDraft();
+    if (draft.ipAddress && !provisionIpInputEl.value.trim()) {
+      provisionIpInputEl.value = String(draft.ipAddress).trim();
+    }
+    if (draft.userName && !provisionUserInputEl.value.trim()) {
+      provisionUserInputEl.value = String(draft.userName).trim();
+    } else if (!provisionUserInputEl.value.trim()) {
+      provisionUserInputEl.value = "admin";
+    }
+    if (draft.password && !provisionPasswordInputEl.value) {
+      provisionPasswordInputEl.value = String(draft.password);
+    }
+    if (draft.sdkPort && !provisionSdkPortInputEl.value.trim()) {
+      provisionSdkPortInputEl.value = String(draft.sdkPort).trim();
+    }
+  }
 
   function setStatus(text, kind = "") {
     statusBoxEl.textContent = text;
@@ -1426,6 +1472,10 @@
     const storage = data.storage || {};
     const recordSetting = data.recordSetting && !data.recordSetting.error ? data.recordSetting : null;
     const firstTrack = data.recordingIsapi?.firstTrack || null;
+    const isRecordEnabled =
+      firstTrack?.enabled !== null && firstTrack?.enabled !== undefined
+        ? Boolean(firstTrack.enabled)
+        : recordSetting?.enableLocalStorage === 1;
     storageStatusMetaEl.textContent = storage.status || "-";
     storageWarningMetaEl.textContent = storage.warning || storage.rawStatus || "-";
     storageCapacityMetaEl.textContent = formatMb(storage.capacityMb);
@@ -1443,6 +1493,10 @@
     recordExpirationMetaEl.textContent = formatVideoExpiration(recordSetting?.storageTime);
     recordExpireDaysMetaEl.textContent = formatExpireDays(recordSetting?.storageTime);
     recordTrackIdMetaEl.textContent = firstTrack?.id || "-";
+    if (recordEnabledInputEl) {
+      recordEnabledInputEl.checked = Boolean(isRecordEnabled);
+    }
+    state.storageDiskId = String(storage.diskId || "").trim();
     storageOutputEl.value = summarizeStorageResult(data);
     renderRecordSettingsForm(data);
   }
@@ -1504,10 +1558,13 @@
     gatewayInputEl.value = current.gateway === "-" ? "" : current.gateway;
     dns1InputEl.value = current.primaryDns === "-" ? "" : current.primaryDns;
     dns2InputEl.value = current.secondaryDns === "-" ? "" : current.secondaryDns;
-    provisionIpInputEl.value = current.ipAddress === "-" ? "" : current.ipAddress;
+    if (!provisionIpInputEl.value.trim()) {
+      provisionIpInputEl.value = current.ipAddress === "-" ? "" : current.ipAddress;
+    }
     if (!provisionGatewayInputEl.value.trim()) {
       provisionGatewayInputEl.value = current.gateway === "-" ? "" : current.gateway;
     }
+    saveProvisionDraft();
     setStatus("Network ayarlari okundu.", "ok");
   }
 
@@ -1685,6 +1742,14 @@
       setStorageStatus("Device ID bulunamadi.", "err");
       return;
     }
+    const formatIpAddress = provisionIpInputEl.value.trim() || ipInputEl.value.trim();
+    const formatPassword = provisionPasswordInputEl.value || "";
+    if (!formatIpAddress) {
+      throw new Error("HCNetSDK SD kart bicimlendirme icin cihaz IP adresi gerekli.");
+    }
+    if (!formatPassword) {
+      throw new Error("HCNetSDK SD kart bicimlendirme icin cihaz parolasi gerekli.");
+    }
     if (!confirm("SD kart bicimlendirilsin mi? Bu islem mevcut kayitlari siler.")) {
       return;
     }
@@ -1696,15 +1761,24 @@
       body: JSON.stringify({
         deviceId: state.deviceId,
         confirmed: true,
+        diskId: state.storageDiskId || undefined,
+        ipAddress: formatIpAddress,
+        userName: provisionUserInputEl.value.trim() || "admin",
+        password: formatPassword,
+        sdkPort: provisionSdkPortInputEl.value.trim() || undefined,
       }),
     });
     const data = await res.json();
     if (!res.ok || !data.success) {
+      storageOutputEl.value = JSON.stringify(data, null, 2);
       throw new Error(data.error || "SD kart bicimlendirilemedi.");
     }
 
     storageOutputEl.value = JSON.stringify(data, null, 2);
-    setStorageStatus("SD kart bicimlendirme istegi tamamlandi.", "ok");
+    setStorageStatus(
+      `SD kart bicimlendirme istegi tamamlandi. Disk ID: ${data.diskId || state.storageDiskId || "-"}`,
+      "ok"
+    );
     await loadStorage();
   }
 
@@ -2012,6 +2086,20 @@
   document.getElementById("disable-local-record-btn").addEventListener("click", () => {
     applyLocalRecordAction("disable").catch((err) => setStorageStatus(err.message, "err"));
   });
+  if (recordEnabledInputEl) {
+    recordEnabledInputEl.addEventListener("change", async () => {
+      const nextChecked = recordEnabledInputEl.checked;
+      recordEnabledInputEl.disabled = true;
+      try {
+        await applyLocalRecordAction(nextChecked ? "enable" : "disable");
+      } catch (err) {
+        recordEnabledInputEl.checked = !nextChecked;
+        setStorageStatus(err.message, "err");
+      } finally {
+        recordEnabledInputEl.disabled = false;
+      }
+    });
+  }
   document.getElementById("apply-continuous-btn").addEventListener("click", () => {
     applyContinuousRecording().catch((err) => setStorageStatus(err.message, "err"));
   });
@@ -2068,6 +2156,12 @@
       scheduleState.dragCurrent = null;
       renderScheduleGrid();
     }
+  });
+
+  hydrateProvisionInputs();
+  [provisionIpInputEl, provisionUserInputEl, provisionPasswordInputEl, provisionSdkPortInputEl].forEach((input) => {
+    input.addEventListener("input", saveProvisionDraft);
+    input.addEventListener("change", saveProvisionDraft);
   });
 
   syncMeta();

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HikProvisioning.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+528da560b573f3a54fb5341fc9368c2ef9be3982")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+418be620e5d990346a8b693e6d1104f3f33a5c84")]
 [assembly: System.Reflection.AssemblyProductAttribute("HikProvisioning.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HikProvisioning.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

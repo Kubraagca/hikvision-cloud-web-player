@@ -1468,6 +1468,7 @@ function parseStorageInfo(xml, source = "ISAPI", requestUri = "") {
   const candidate = blocks
     .map((block) => ({ block, score: scoreStorageBlock(block) }))
     .sort((left, right) => right.score - left.score)[0]?.block || decodedXml;
+  const hasStorageBlock = blocks.length > 0 && blocks[0] !== decodedXml;
 
   const statusText = firstTagValue(candidate, [
     "status",
@@ -1494,19 +1495,42 @@ function parseStorageInfo(xml, source = "ISAPI", requestUri = "") {
     firstTagValue(candidate, ["freeSpace", "free", "remainSpace", "residualSpace", "unusedSpace", "freeCapacity"])
   );
   const combined = `${statusText} ${formatText} ${candidate}`.toLowerCase();
+  const statusCombined = `${statusText} ${formatText}`.toLowerCase();
+  const hasStorageSignals =
+    hasStorageBlock ||
+    capacityMb !== null ||
+    freeSpaceMb !== null ||
+    Boolean(statusText) ||
+    Boolean(formatText) ||
+    /<(?:\w+:)?(?:capacity|totalCapacity|capacityTotal|diskCapacity|totalSpace|size|freeSpace|free|remainSpace|residualSpace|unusedSpace|freeCapacity|status|storageStatus|hddStatus|state|formatStatus|fileSystemStatus|fileSystemState)\b/i.test(
+      candidate
+    );
 
   let isDetected = null;
   if (containsAnyText(combined, "nocar", "no card", "notexist", "not exist", "absent", "unplugged", "unmounted")) {
     isDetected = false;
-  } else if (candidate && candidate !== decodedXml || capacityMb !== null || freeSpaceMb !== null || statusText) {
+  } else if (hasStorageSignals) {
     isDetected = true;
   }
 
   let isFormatted = null;
-  if (isDetected !== false) {
-    if (containsAnyText(combined, "unformat", "notformat", "not format", "uninitialized", "needformat", "formatrequired")) {
+  if (isDetected !== false && hasStorageSignals) {
+    if (
+      containsAnyText(
+        statusCombined,
+        "unformat",
+        "notformat",
+        "not format",
+        "uninitialized",
+        "needformat",
+        "formatrequired",
+        "unformatted"
+      )
+    ) {
       isFormatted = false;
-    } else if (containsAnyText(combined, "normal", "ok", "ready", "mounted", "rw", "readwrite", "good")) {
+    } else if (containsAnyText(statusCombined, "normal", "ok", "ready", "mounted", "rw", "readwrite", "good")) {
+      isFormatted = true;
+    } else if (capacityMb !== null && freeSpaceMb !== null && freeSpaceMb <= capacityMb) {
       isFormatted = true;
     }
   }
@@ -1531,10 +1555,74 @@ function parseStorageInfo(xml, source = "ISAPI", requestUri = "") {
     rawXml: decodedXml,
     diskId: firstTagValue(candidate, ["id", "diskID", "diskId", "hddID", "hddNo", "no"]),
     loopEnable: firstTagValue(candidate, ["loopEnable", "recycle", "overwrite"]),
-    hasEntries:
-      /<(?:\w+:)?(?:hdd|disk|storageMedium|storage|medium)\b/i.test(decodedXml) &&
-      /<(?:\w+:)?(?:capacity|totalCapacity|capacityTotal|diskCapacity|totalSpace|size|freeSpace|free|remainSpace|residualSpace|unusedSpace|freeCapacity|status|storageStatus|hddStatus|state)\b/i.test(decodedXml),
+    hasEntries: hasStorageSignals,
   };
+}
+
+function extractStorageDiskIds(xml) {
+  const blocks = getStorageBlocks(decodeXml(String(xml || "")));
+  const ids = [];
+
+  for (const block of blocks) {
+    const diskId = firstTagValue(block, ["id", "diskID", "diskId", "hddID", "hddNo", "no"]);
+    if (diskId) {
+      ids.push(String(diskId).trim());
+    }
+  }
+
+  return uniqueValues(ids);
+}
+
+function buildStorageFormatDiskCandidates(preferredDiskId, storageInfo) {
+  const preferred = String(preferredDiskId || "").trim();
+  const parsedDiskId = String(storageInfo?.diskId || "").trim();
+  const discovered = extractStorageDiskIds(storageInfo?.rawXml || "");
+  const candidates = uniqueValues([preferred, parsedDiskId, ...discovered, "1"]);
+  return candidates.filter(Boolean);
+}
+
+function parseFormatOperationStatus(result) {
+  const responseXml = decodeXml(String(result?.data || ""));
+  if (!responseXml) {
+    return {
+      responseXml,
+      responseStatus: null,
+      accepted: true,
+    };
+  }
+
+  const responseStatus = parseResponseStatus(responseXml);
+  const statusCode = String(responseStatus.statusCode || "").trim();
+  const subStatusCode = String(responseStatus.subStatusCode || "").trim().toLowerCase();
+  const statusString = String(responseStatus.statusString || "").trim().toLowerCase();
+  const description = String(responseStatus.description || "").trim().toLowerCase();
+  const accepted =
+    !statusCode ||
+    statusCode === "1" ||
+    (statusCode === "7" && ["rebootrequired", "ok", "success"].includes(subStatusCode)) ||
+    containsAnyText(statusString, "ok", "success") ||
+    containsAnyText(description, "ok", "success");
+
+  return {
+    responseXml,
+    responseStatus,
+    accepted,
+  };
+}
+
+function isStorageFormatUnsupportedError(error, attempts = []) {
+  const message = sanitizeMessage(error?.message || String(error || ""));
+  if (/methodnotallowed|invalid operation/i.test(message)) {
+    return true;
+  }
+
+  return (Array.isArray(attempts) ? attempts : []).some((attempt) =>
+    /methodnotallowed|invalid operation/i.test(
+      `${attempt?.error || ""} ${attempt?.responseStatus?.subStatusCode || ""} ${attempt?.responseStatus?.statusString || ""} ${
+        attempt?.responseStatus?.description || ""
+      }`
+    )
+  );
 }
 
 function isMeaningfulStorageInfo(info) {
@@ -2585,34 +2673,77 @@ async function applyLocalRecordSettings(deviceId, input) {
   };
 }
 
-async function tryFormatStorage(deviceId, diskId) {
-  const normalizedDiskId = String(diskId || "").trim() || "1";
-  const attempts = [
-    {
-      method: "PUT",
-      url: `/ISAPI/ContentMgmt/Storage/hdd/${encodeURIComponent(normalizedDiskId)}/format`,
-      contentType: "application/xml",
-      body: "",
-    },
-    {
-      method: "POST",
-      url: `/ISAPI/ContentMgmt/Storage/hdd/${encodeURIComponent(normalizedDiskId)}/format`,
-      contentType: "application/xml",
-      body: "",
-    },
-  ];
-
+async function tryFormatStorage(deviceId, diskIds) {
+  const normalizedDiskIds = uniqueValues(
+    (Array.isArray(diskIds) ? diskIds : [diskIds])
+      .map((item) => String(item || "").trim())
+      .filter(Boolean)
+  );
+  const candidateDiskIds = normalizedDiskIds.length ? normalizedDiskIds : ["1"];
+  const allAttempts = [];
   let lastError = null;
-  for (const attempt of attempts) {
-    try {
-      const result = await callIsapiProxyPass({ deviceId, ...attempt });
-      return { result, attempt };
-    } catch (error) {
-      lastError = error;
+
+  for (const normalizedDiskId of candidateDiskIds) {
+    const attempts = [
+      {
+        diskId: normalizedDiskId,
+        method: "PUT",
+        url: `/ISAPI/ContentMgmt/Storage/hdd/${encodeURIComponent(normalizedDiskId)}/format`,
+        contentType: "application/xml",
+        body: "",
+      },
+      {
+        diskId: normalizedDiskId,
+        method: "POST",
+        url: `/ISAPI/ContentMgmt/Storage/hdd/${encodeURIComponent(normalizedDiskId)}/format`,
+        contentType: "application/xml",
+        body: "",
+      },
+    ];
+
+    for (const attempt of attempts) {
+      try {
+        const result = await callIsapiProxyPass({ deviceId, ...attempt });
+        const operation = parseFormatOperationStatus(result);
+        const summary = {
+          diskId: attempt.diskId,
+          method: attempt.method,
+          url: attempt.url,
+          responseStatus: operation.responseStatus,
+          accepted: operation.accepted,
+        };
+        allAttempts.push(summary);
+        if (!operation.accepted) {
+          throw new Error(
+            `SD kart bicimlendirme cihaza ulasti ancak kabul edilmedi. statusCode=${
+              operation.responseStatus?.statusCode || "-"
+            }, subStatusCode=${operation.responseStatus?.subStatusCode || "-"}, statusString=${
+              operation.responseStatus?.statusString || "-"
+            }, description=${operation.responseStatus?.description || "-"}`
+          );
+        }
+        return {
+          diskId: attempt.diskId,
+          result,
+          attempt: summary,
+          attempts: allAttempts,
+          responseXml: operation.responseXml,
+        };
+      } catch (error) {
+        lastError = error;
+        allAttempts.push({
+          diskId: attempt.diskId,
+          method: attempt.method,
+          url: attempt.url,
+          error: sanitizeMessage(error?.message || String(error)),
+        });
+      }
     }
   }
 
-  throw lastError || new Error("SD kart bicimlendirme istegi basarisiz.");
+  const fallbackError = lastError || new Error("SD kart bicimlendirme istegi basarisiz.");
+  fallbackError.formatAttempts = allAttempts;
+  throw fallbackError;
 }
 
 async function searchCameraRecordings({
@@ -3353,7 +3484,7 @@ async function readActivateStatus(cameraIp) {
   return { status: response.status, body };
 }
 
-function resolveSdkHelperCommand() {
+function resolveSdkHelperCommand(command = "activate") {
   if (process.platform === "linux") {
     const linuxHelper = path.join(
       LOCAL_SERVICE_ROOT,
@@ -3378,6 +3509,42 @@ function resolveSdkHelperCommand() {
       },
       logDir: path.join(LOCAL_SERVICE_ROOT, "native", "hik_activation_helper_linux", "logs"),
     };
+  }
+
+  const dllCandidates = [
+    path.join(
+      LOCAL_SERVICE_ROOT,
+      "src",
+      "HikDiscovery",
+      "HikSdk.SadpConsole",
+      "bin",
+      "Release",
+      "net9.0-windows",
+      "win-x64",
+      "HikSdk.SadpConsole.dll"
+    ),
+    path.join(
+      LOCAL_SERVICE_ROOT,
+      "src",
+      "HikDiscovery",
+      "HikSdk.SadpConsole",
+      "bin",
+      "Release",
+      "net8.0-windows",
+      "win-x64",
+      "HikSdk.SadpConsole.dll"
+    ),
+  ];
+
+  for (const candidate of dllCandidates) {
+    if (fs.existsSync(candidate)) {
+      return {
+        file: "dotnet",
+        args: [candidate, command],
+        env: {},
+        logDir: path.join(LOCAL_SERVICE_ROOT, "src", "HikDiscovery", "HikSdk.SadpConsole", "bin", "sdk-logs"),
+      };
+    }
   }
 
   const exeCandidates = [
@@ -3422,7 +3589,7 @@ function resolveSdkHelperCommand() {
     if (fs.existsSync(candidate)) {
       return {
         file: candidate,
-        args: ["activate"],
+        args: [command],
         env: {},
         logDir: path.join(LOCAL_SERVICE_ROOT, "src", "HikDiscovery", "HikSdk.SadpConsole", "bin", "sdk-logs"),
       };
@@ -3433,20 +3600,21 @@ function resolveSdkHelperCommand() {
     file: "dotnet",
     args: [
       "run",
+      "--no-restore",
       "--project",
       path.join(LOCAL_SERVICE_ROOT, "src", "HikDiscovery", "HikSdk.SadpConsole", "HikSdk.SadpConsole.csproj"),
       "-c",
       "Release",
       "--",
-      "activate",
+      command,
     ],
     env: {},
     logDir: path.join(LOCAL_SERVICE_ROOT, "src", "HikDiscovery", "HikSdk.SadpConsole", "bin", "sdk-logs"),
   };
 }
 
-async function activateCameraWithSdk(cameraIp, sdkPort, password) {
-  const helper = resolveSdkHelperCommand();
+async function runSdkHelper(command, namedArgs, secretEnv = {}) {
+  const helper = resolveSdkHelperCommand(command);
   if (!fs.existsSync(helper.file) && helper.file !== "dotnet") {
     throw new Error(
       `HCNetSDK helper bulunamadi: ${helper.file}. Linux deploy icin native/hik_activation_helper_linux klasorunde 'make' calistirin.`
@@ -3454,16 +3622,14 @@ async function activateCameraWithSdk(cameraIp, sdkPort, password) {
   }
 
   const logDir = helper.logDir;
-
-  const args = [
-    ...helper.args,
-    "--ip",
-    cameraIp,
-    "--port",
-    String(sdkPort),
-    "--logDir",
-    logDir,
-  ];
+  const args = [...helper.args];
+  for (const [key, value] of Object.entries(namedArgs || {})) {
+    if (value === undefined || value === null || value === "") {
+      continue;
+    }
+    args.push(`--${key}`, String(value));
+  }
+  args.push("--logDir", logDir);
 
   return new Promise((resolve, reject) => {
     const child = spawn(helper.file, args, {
@@ -3471,7 +3637,7 @@ async function activateCameraWithSdk(cameraIp, sdkPort, password) {
       env: {
         ...process.env,
         ...helper.env,
-        HIKSDK_ACTIVATE_PASSWORD: password,
+        ...secretEnv,
       },
       windowsHide: true,
     });
@@ -3497,24 +3663,63 @@ async function activateCameraWithSdk(cameraIp, sdkPort, password) {
         .map((item) => item.trim())
         .filter(Boolean);
       const jsonLine = lines.reverse().find((item) => item.startsWith("{") && item.endsWith("}"));
+      const firstBraceIndex = stdout.indexOf("{");
+      const lastBraceIndex = stdout.lastIndexOf("}");
+      const jsonPayload =
+        jsonLine ||
+        (firstBraceIndex >= 0 && lastBraceIndex > firstBraceIndex
+          ? stdout.slice(firstBraceIndex, lastBraceIndex + 1).trim()
+          : "");
 
-      if (!jsonLine) {
+      if (!jsonPayload) {
         reject(
           new Error(
-            `HCNetSDK aktivasyon yardimcisi beklenen JSON yanitini vermedi. exitCode=${code}, stderr=${stderr.trim() || "-"}`
+            `HCNetSDK aktivasyon yardimcisi beklenen JSON yanitini vermedi. exitCode=${code}, stderr=${stderr.trim() || "-"}, stdout=${stdout.trim() || "-"}`
           )
         );
         return;
       }
 
       try {
-        const payload = JSON.parse(jsonLine);
+        const payload = JSON.parse(jsonPayload);
         resolve(payload);
       } catch (error) {
-        reject(new Error(`HCNetSDK yardimci yaniti parse edilemedi. ${error.message}`));
+        reject(
+          new Error(
+            `HCNetSDK yardimci yaniti parse edilemedi. stderr=${stderr.trim() || "-"}, stdout=${stdout.trim() || "-"}, error=${error.message}`
+          )
+        );
       }
     });
   });
+}
+
+async function activateCameraWithSdk(cameraIp, sdkPort, password) {
+  return runSdkHelper(
+    "activate",
+    {
+      ip: cameraIp,
+      port: String(sdkPort),
+    },
+    {
+      HIKSDK_ACTIVATE_PASSWORD: password,
+    }
+  );
+}
+
+async function formatStorageWithSdk({ ipAddress, sdkPort, userName, password, diskNumber }) {
+  return runSdkHelper(
+    "format-disk",
+    {
+      ip: ipAddress,
+      port: String(sdkPort || 8000),
+      userName: userName || "admin",
+      diskNumber: String(diskNumber || 1),
+    },
+    {
+      HIKSDK_DEVICE_PASSWORD: password,
+    }
+  );
 }
 
 async function limitedSubnetScan({
@@ -6163,6 +6368,10 @@ app.post("/api/device-config/storage/format", async (req, res) => {
   const deviceId = String(req.body.deviceId || "").trim();
   const confirmed = Boolean(req.body.confirmed);
   const diskId = String(req.body.diskId || "").trim();
+  const ipAddress = String(req.body.ipAddress || "").trim();
+  const userName = String(req.body.userName || "").trim() || "admin";
+  const password = String(req.body.password || "");
+  const sdkPort = Number.parseInt(String(req.body.sdkPort || "8000"), 10) || 8000;
 
   if (!deviceId) {
     return res.status(400).json({ error: "deviceId zorunlu." });
@@ -6173,19 +6382,104 @@ app.post("/api/device-config/storage/format", async (req, res) => {
 
   try {
     const before = await readStorageViaProxy(deviceId);
-    const formatResult = await tryFormatStorage(deviceId, diskId || before.info.diskId);
-    const after = await readStorageViaProxy(deviceId);
+    const candidateDiskIds = buildStorageFormatDiskCandidates(diskId, before.info);
+    const normalizedDiskId = candidateDiskIds.find(Boolean) || "1";
+    let formatResult = null;
+    const formatAttempts = [];
+    let sdkAttemptFailedMessage = "";
+
+    if (ipAddress && password) {
+      try {
+        const sdkResult = await formatStorageWithSdk({
+          ipAddress,
+          sdkPort,
+          userName,
+          password,
+          diskNumber: Number.parseInt(String(normalizedDiskId), 10) || 1,
+        });
+        formatAttempts.push({
+          path: "HCNetSDK:NET_DVR_FormatDisk",
+          status: sdkResult?.success ? 200 : 502,
+          errorCode: sdkResult?.errorCode ?? null,
+          message: sdkResult?.errorMessage || null,
+          stage: sdkResult?.stage || "format-disk",
+        });
+
+        if (!sdkResult?.success) {
+          throw new Error(
+            sdkResult?.errorMessage ||
+              `HCNetSDK SD kart bicimlendirme basarisiz. errorCode=${sdkResult?.errorCode ?? "-"}`
+          );
+        }
+
+        formatResult = {
+          path: "HCNetSDK:NET_DVR_FormatDisk",
+          diskId: String(sdkResult.diskNumber || normalizedDiskId),
+          method: "SDK",
+          responseText: JSON.stringify(sdkResult),
+          sdk: true,
+        };
+      } catch (sdkError) {
+        sdkAttemptFailedMessage = sanitizeMessage(sdkError?.message || String(sdkError));
+        formatAttempts.push({
+          path: "HCNetSDK:NET_DVR_FormatDisk",
+          status: 502,
+          errorCode: null,
+          message: sdkAttemptFailedMessage,
+          stage: "format-disk",
+        });
+      }
+    }
+
+    if (!formatResult) {
+      try {
+        formatResult = await tryFormatStorage(deviceId, candidateDiskIds);
+      } catch (proxyError) {
+        if (sdkAttemptFailedMessage) {
+          proxyError.message = `HCNetSDK format denemesi de basarisiz oldu: ${sdkAttemptFailedMessage}`;
+        }
+        proxyError.formatAttempts = [
+          ...formatAttempts,
+          ...(Array.isArray(proxyError?.formatAttempts) ? proxyError.formatAttempts : []),
+        ];
+        throw proxyError;
+      }
+    }
+
+    let after = null;
+    for (let attemptIndex = 0; attemptIndex < 5; attemptIndex += 1) {
+      if (attemptIndex > 0) {
+        await delay(2000);
+      }
+      after = await readStorageViaProxy(deviceId);
+      if (after?.info?.isDetected !== false) {
+        break;
+      }
+    }
 
     return res.json({
       success: true,
       deviceId,
-      diskId: diskId || before.info.diskId || "1",
+      diskId: formatResult.diskId || diskId || before.info.diskId || "1",
+      candidateDiskIds,
       formatResult,
+      formatAttempts,
       before: before.info,
-      after: after.info,
+      after: after?.info || null,
+      afterAttempts: after?.attempts || [],
     });
   } catch (err) {
-    return res.status(502).json({ error: sanitizeMessage(err.message) });
+    const attempts = Array.isArray(err?.formatAttempts) ? err.formatAttempts : [];
+    const unsupported = isStorageFormatUnsupportedError(err, attempts);
+    return res.status(502).json({
+      error: err?.message && /HCNetSDK format denemesi de basarisiz oldu:/i.test(String(err.message))
+        ? sanitizeMessage(err.message)
+        : unsupported
+        ? "Bu cihazda veya Hik-Connect ISAPI proxy akisinda SD kart bicimlendirme komutu desteklenmiyor."
+        : sanitizeMessage(err.message),
+      unsupported,
+      attempts,
+    });
   }
 });
 

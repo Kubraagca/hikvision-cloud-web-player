@@ -1,7 +1,7 @@
 param(
     [string]$Configuration = "Release",
     [string]$Runtime = "win-x64",
-    [switch]$SkipBuild = $true
+    [switch]$SkipBuild = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -164,7 +164,7 @@ $iexpressPayloadZip = Join-Path $iexpressDir "payload.zip"
 Copy-Item -LiteralPath $zipPath -Destination $iexpressPayloadZip -Force
 
 Write-Host "Tek dosya Setup EXE uretiliyor..."
-dotnet publish $installerProject -c $Configuration -r $Runtime --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:Platform=x64
+dotnet publish $installerProject -c $Configuration -r $Runtime --self-contained true --no-restore -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:Platform=x64 -p:RestoreIgnoreFailedSources=true -p:NuGetAudit=false
 if ($LASTEXITCODE -ne 0) { throw "Setup EXE publish basarisiz." }
 
 if (!(Test-Path $installerPublishDir) -and (Test-Path $installerPublishDirAlt)) { $installerPublishDir = $installerPublishDirAlt }

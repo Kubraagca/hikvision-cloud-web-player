@@ -256,6 +256,9 @@ internal static class Program
                 SerialNumber: string.Empty,
                 MacAddress: string.Empty,
                 IpAddress: explicitIp!,
+                SdkPort: 8000,
+                Gateway: string.Empty,
+                SubnetMask: string.Empty,
                 DhcpEnabled: false,
                 ActivationStatus: "Unknown");
         }
@@ -348,6 +351,9 @@ internal static class Program
             SerialNumber: camera.SerialNumber,
             MacAddress: camera.MacAddress,
             IpAddress: camera.IpAddress,
+            SdkPort: camera.Port8000Open ? (ushort)8000 : (ushort)0,
+            Gateway: string.Empty,
+            SubnetMask: string.Empty,
             DhcpEnabled: false,
             ActivationStatus: camera.ActivationStatus);
     }

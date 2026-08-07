@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HikSdk.ProvisioningCli")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73a574e1e1723022eecc21afc7704a8b53664f51")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+418be620e5d990346a8b693e6d1104f3f33a5c84")]
 [assembly: System.Reflection.AssemblyProductAttribute("HikSdk.ProvisioningCli")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HikSdk.ProvisioningCli")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

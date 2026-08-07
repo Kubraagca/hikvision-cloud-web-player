@@ -1,7 +1,7 @@
-[2026-07-28 18:28:56.548][INF] The COM:HCCoreBase ver is 6.1.4.15, 2020_03_05. Async:1.
-[2026-07-28 18:28:56.548][INF] The COM:Core ver is 6.1.9.4, 2022_04_12. Async:1.
-[2026-07-28 18:28:56.548][INF] This HCNetSDK ver is 6.1.9.4 Ver 2022_04_12.
-[2026-07-28 18:28:56.565][DBG] CComBase::Load, Load szDllPath[C:/Users/Kubra/Desktop/kamera/src/HikDiscovery/HikSdk.SadpConsole/bin/Release/net8.0-windows/win-x64/publish/HCNetSDKCom/HCGeneralCfgMgr.dll] SUCC
-[2026-07-28 18:28:56.565][INF] dwTotalNum[2048]
-[2026-07-28 18:28:56.565][INF] AbilityAnalyze---Init-- start
-[2026-07-28 18:28:56.572][INF] The COM:HCGeneralCfgMgr ver is 6.1.9.4, 2022_04_12.
+[2026-08-07 17:20:12.970][INF] The COM:HCCoreBase ver is 6.1.4.15, 2020_03_05. Async:1.
+[2026-08-07 17:20:12.970][INF] The COM:Core ver is 6.1.9.4, 2022_04_12. Async:1.
+[2026-08-07 17:20:12.970][INF] This HCNetSDK ver is 6.1.9.4 Ver 2022_04_12.
+[2026-08-07 17:20:12.987][DBG] CComBase::Load, Load szDllPath[C:/Users/Kubra/Desktop/kamera/hikvision-yerel-servis/src/HikDiscovery/HikSdk.SadpConsole/bin/Release/net8.0-windows/win-x64/publish/HCNetSDKCom/HCGeneralCfgMgr.dll] SUCC
+[2026-08-07 17:20:12.987][INF] dwTotalNum[2048]
+[2026-08-07 17:20:12.987][INF] AbilityAnalyze---Init-- start
+[2026-08-07 17:20:12.994][INF] The COM:HCGeneralCfgMgr ver is 6.1.9.4, 2022_04_12.

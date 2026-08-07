@@ -300,8 +300,8 @@
         </div>
         <div class="service-actions">
           <button id="agent-health-btn" type="button" class="accent">Servis Durumu</button>
-          <button id="discover-btn" type="button">Hizli Tara</button>
-          <button id="discover-full-btn" type="button">Tum Agi Tara</button>
+          <button id="discover-btn" type="button">HCNetSDK Tara</button>
+          <button id="discover-full-btn" type="button">HCNetSDK Yenile</button>
           <a class="button-link" href="/downloads/local-agent/HikProvisioning.Agent-win-x64.zip">Zip Paket</a>
         </div>
       </div>
@@ -315,11 +315,12 @@
               <th>Model No</th>
               <th>Seri No</th>
               <th>MAC</th>
+              <th>SDK Port</th>
               <th>Durum</th>
             </tr>
           </thead>
           <tbody id="discover-body">
-            <tr><td colspan="6">Henuz tarama yapilmadi.</td></tr>
+            <tr><td colspan="7">Henuz HCNetSDK taramasi yapilmadi.</td></tr>
           </tbody>
         </table>
       </div>
@@ -378,15 +379,10 @@
         <div class="meta-card"><span>Guncel IP</span><strong id="meta-ip">-</strong></div>
         <div class="meta-card"><span>Verification Code</span><strong id="meta-verification-code">-</strong></div>
         <div class="meta-card"><span>Hik-Connect</span><strong id="meta-hik-connect">-</strong></div>
-        <div class="meta-card"><span>SD Kart</span><strong id="meta-sd-status">-</strong></div>
-        <div class="meta-card"><span>SD Kapasite</span><strong id="meta-sd-capacity">-</strong></div>
-        <div class="meta-card"><span>SD Bos Alan</span><strong id="meta-sd-free">-</strong></div>
-        <div class="meta-card"><span>SD Kaynak</span><strong id="meta-sd-source">-</strong></div>
       </div>
 
       <div class="status-line">
         <div class="pill">Akis: Tara -> Sec -> Aktive Et ve Baglan -> Kamera Ayarlarini Uygula -> Team'e Ekle sayfasina gec</div>
-        <div class="pill" id="sd-warning-pill" style="display:none;"></div>
       </div>
     </section>
 
@@ -507,11 +503,6 @@
   const ipEl = document.getElementById("meta-ip");
   const verificationCodeEl = document.getElementById("meta-verification-code");
   const hikConnectEl = document.getElementById("meta-hik-connect");
-  const sdStatusEl = document.getElementById("meta-sd-status");
-  const sdCapacityEl = document.getElementById("meta-sd-capacity");
-  const sdFreeEl = document.getElementById("meta-sd-free");
-  const sdSourceEl = document.getElementById("meta-sd-source");
-  const sdWarningPill = document.getElementById("sd-warning-pill");
 
   let activeTaskId = null;
   let pollTimer = null;
@@ -600,12 +591,6 @@
       ipEl.textContent = "-";
       verificationCodeEl.textContent = "-";
       hikConnectEl.textContent = "-";
-      sdStatusEl.textContent = "-";
-      sdCapacityEl.textContent = "-";
-      sdFreeEl.textContent = "-";
-      sdSourceEl.textContent = "-";
-      sdWarningPill.style.display = "none";
-      sdWarningPill.textContent = "";
       renderNetwork([]);
       return;
     }
@@ -616,28 +601,13 @@
     ipEl.textContent = pick(result, "cameraIp", "CurrentIpAddress") || "-";
     verificationCodeEl.textContent = pick(result, "verificationCode", "VerificationCode") || "-";
     hikConnectEl.textContent = pick(result, "hikConnectStatus", "HikConnectStatus") || "-";
-    const sdCard = result?.sdCard || result?.SdCard || null;
-    const capacityMb = pick(sdCard, "capacityMb", "CapacityMb");
-    const freeSpaceMb = pick(sdCard, "freeSpaceMb", "FreeSpaceMb");
-    sdStatusEl.textContent = pick(sdCard, "status", "Status") || "-";
-    sdCapacityEl.textContent = capacityMb !== "" ? `${capacityMb} MB` : "-";
-    sdFreeEl.textContent = freeSpaceMb !== "" ? `${freeSpaceMb} MB` : "-";
-    sdSourceEl.textContent = pick(sdCard, "source", "Source") || "-";
-    const sdWarning = pick(sdCard, "warning", "Warning");
-    if (sdWarning) {
-      sdWarningPill.style.display = "inline-flex";
-      sdWarningPill.textContent = sdWarning;
-    } else {
-      sdWarningPill.style.display = "none";
-      sdWarningPill.textContent = "";
-    }
     renderNetwork(result?.networkInterfaces || result?.NetworkInterfaces || []);
   }
 
   function renderDiscoveredDevices(devices) {
     discoveredDevices = Array.isArray(devices) ? devices : [];
     if (!discoveredDevices.length) {
-      discoverBody.innerHTML = "<tr><td colspan='6'>Kamera bulunamadi.</td></tr>";
+      discoverBody.innerHTML = "<tr><td colspan='7'>HCNetSDK ile kamera bulunamadi.</td></tr>";
       return;
     }
 
@@ -648,6 +618,7 @@
         <td>${escapeHtml(pick(device, "model", "Model") || "-")}</td>
         <td>${escapeHtml(pick(device, "serialNumber", "SerialNumber") || "-")}</td>
         <td>${escapeHtml(pick(device, "macAddress", "MacAddress") || "-")}</td>
+        <td>${escapeHtml(String(pick(device, "sdkPort", "SdkPort") || "-"))}</td>
         <td><span class="tag">${escapeHtml(pick(device, "activationStatus", "ActivationStatus") || "-")}</span></td>
       </tr>
     `).join("");
@@ -671,7 +642,6 @@
       cameraIp,
       verificationCode: "-",
       hikConnectStatus: activationStatus,
-      sdCard: null,
       networkInterfaces: []
     });
     setStatus(`Secilen kamera: ${cameraIp} | Model No: ${model} | Seri No: ${serialNumber} | Durum: ${activationStatus}`);
@@ -687,13 +657,13 @@
   }
 
   async function discover(fullScan = false) {
-    setStatus(fullScan ? "Tam ag taramasi baslatiliyor..." : "Hizli kamera taramasi baslatiliyor...");
+    setStatus(fullScan ? "HCNetSDK cihaz listesi yenileniyor..." : "HCNetSDK kamera taramasi baslatiliyor...");
     const response = await fetch("/agent/discover", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        scanSeconds: fullScan ? 15 : 4,
-        concurrency: fullScan ? 64 : 24,
+        scanSeconds: fullScan ? 15 : 8,
+        concurrency: 1,
         fullScan
       })
     });
@@ -705,9 +675,9 @@
 
     renderDiscoveredDevices(data.devices || []);
     const count = Array.isArray(data.devices) ? data.devices.length : 0;
-    setStatus(data.timedOut
-      ? `Tarama suresi doldu. ${count} aday bulundu.`
-      : `${fullScan ? "Tam ag taramasi" : "Hizli tarama"} tamamlandi. ${count} aday bulundu.`);
+    setStatus(data.message || (data.timedOut
+      ? `HCNetSDK tarama suresi doldu. ${count} cihaz bulundu.`
+      : `${fullScan ? "HCNetSDK yenileme" : "HCNetSDK tarama"} tamamlandi. ${count} cihaz bulundu.`));
   }
 
   function parseResultJson(text) {
@@ -757,7 +727,6 @@
         cameraIp: pick(payload?.device, "currentIpAddress", "CurrentIpAddress") || task.cameraAddress || "-",
         verificationCode: payload?.verificationCode || "-",
         hikConnectStatus: pick(payload?.ezviz, "registerStatus", "RegisterStatus") === true ? "Acik / Online" : "-",
-        sdCard: payload?.sdCard || payload?.SdCard || null,
         networkInterfaces: payload?.network || []
       });
     }

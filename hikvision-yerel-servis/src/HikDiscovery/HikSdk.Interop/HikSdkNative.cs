@@ -79,6 +79,10 @@ public static class HikSdkNative
 
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool NET_DVR_FormatDisk(int lUserID, int lDiskNumber);
+
+    [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi, ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool NET_DVR_GetDeviceConfig(
         int lUserID,
         uint dwCommand,

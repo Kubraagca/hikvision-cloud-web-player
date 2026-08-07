@@ -6,6 +6,7 @@ public sealed record ActivationResult(bool Success, uint ErrorCode, string Error
 
 public sealed record LoginResult(bool Success, int UserId, uint ErrorCode, string ErrorMessage);
 public sealed record StreamEncryptionResult(bool Success, bool Enabled, uint ErrorCode, string ErrorMessage);
+public sealed record DiskFormatResult(bool Success, int DiskNumber, uint ErrorCode, string ErrorMessage);
 
 public sealed class HikActivationSession : IDisposable
 {
@@ -136,6 +137,26 @@ public sealed class HikActivationSession : IDisposable
 
         var error = HikSdkSession.CaptureLastError();
         return new StreamEncryptionResult(false, enabled, error.ErrorCode, $"{error.ErrorSymbol}: {error.ErrorMessage}");
+    }
+
+    public DiskFormatResult FormatDisk(int diskNumber)
+    {
+        EnsureInitialized();
+        EnsureLoggedIn();
+
+        if (diskNumber < 1)
+        {
+            throw new InvalidOperationException("Disk numarasi 1 veya daha buyuk olmali.");
+        }
+
+        var success = HikSdkNative.NET_DVR_FormatDisk(_userId, diskNumber);
+        if (success)
+        {
+            return new DiskFormatResult(true, diskNumber, 0, string.Empty);
+        }
+
+        var error = HikSdkSession.CaptureLastError();
+        return new DiskFormatResult(false, diskNumber, error.ErrorCode, $"{error.ErrorSymbol}: {error.ErrorMessage}");
     }
 
     public void Dispose()

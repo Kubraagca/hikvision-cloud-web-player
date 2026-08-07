@@ -11,6 +11,10 @@ try
             await RunActivateAsync(args.Skip(1).ToArray());
             break;
 
+        case "format-disk":
+            await RunFormatDiskAsync(args.Skip(1).ToArray());
+            break;
+
         case "sadp-test":
             await RunSadpTestAsync();
             break;
@@ -64,6 +68,63 @@ static async Task RunActivateAsync(string[] args)
     }
 }
 
+static async Task RunFormatDiskAsync(string[] args)
+{
+    var options = ParseNamedArgs(args);
+    var ip = GetRequired(options, "ip");
+    var userName = options.TryGetValue("userName", out var explicitUserName) && !string.IsNullOrWhiteSpace(explicitUserName)
+        ? explicitUserName.Trim()
+        : "admin";
+    var password = options.TryGetValue("password", out var explicitPassword) && !string.IsNullOrWhiteSpace(explicitPassword)
+        ? explicitPassword
+        : Environment.GetEnvironmentVariable("HIKSDK_DEVICE_PASSWORD");
+    if (string.IsNullOrWhiteSpace(password))
+    {
+        throw new InvalidOperationException("Eksik parametre: --password veya HIKSDK_DEVICE_PASSWORD");
+    }
+
+    var port = ushort.TryParse(options.GetValueOrDefault("port"), out var parsedPort) ? parsedPort : (ushort)8000;
+    var diskNumber = int.TryParse(options.GetValueOrDefault("diskNumber"), out var parsedDiskNumber) ? parsedDiskNumber : 1;
+    var logDir = options.GetValueOrDefault("logDir");
+    var baseDirectory = AppContext.BaseDirectory;
+    var effectiveLogDir = string.IsNullOrWhiteSpace(logDir)
+        ? Path.Combine(baseDirectory, "sdk-logs")
+        : logDir!;
+
+    using var session = new HikActivationSession();
+    session.Initialize(effectiveLogDir);
+
+    var loginResult = session.Login(ip, port, userName, password);
+    if (!loginResult.Success)
+    {
+        await WriteJsonAsync(new
+        {
+            success = false,
+            stage = "login",
+            diskNumber,
+            errorCode = loginResult.ErrorCode,
+            errorMessage = loginResult.ErrorMessage
+        });
+        Environment.ExitCode = 1;
+        return;
+    }
+
+    var formatResult = session.FormatDisk(diskNumber);
+    await WriteJsonAsync(new
+    {
+        success = formatResult.Success,
+        stage = "format-disk",
+        diskNumber = formatResult.DiskNumber,
+        errorCode = formatResult.ErrorCode,
+        errorMessage = formatResult.ErrorMessage
+    });
+
+    if (!formatResult.Success)
+    {
+        Environment.ExitCode = 1;
+    }
+}
+
 static async Task RunSadpTestAsync()
 {
     var baseDirectory = AppContext.BaseDirectory;
@@ -96,7 +157,7 @@ static async Task RunSadpTestAsync()
         var result = session.PollSadpDevices();
         if (!result.Success)
         {
-            Console.WriteLine($"  Failed. NET_DVR_GetLastError={result.ErrorCode}, Message={result.ErrorMessage}");
+            Console.WriteLine($"  Failed. NET_DVR_GetLastError={result.Error?.ErrorCode ?? 0}, Message={result.Error?.ErrorMessage ?? "-"}");
         }
         else if (result.Devices.Count == 0)
         {

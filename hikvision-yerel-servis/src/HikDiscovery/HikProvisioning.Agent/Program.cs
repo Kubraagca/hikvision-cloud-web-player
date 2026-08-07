@@ -48,10 +48,14 @@ app.MapPost("/agent/discover", async (DiscoverAgentRequest? request, LocalDiscov
     return Results.Json(new
     {
         success = true,
-        method = "agent-network-scan",
+        method = "hcnetsdk-sadp",
         stage = "discover",
         timedOut = result.TimedOut,
-        message = result.TimedOut ? "Tarama suresi doldu. Kismi sonuc donuldu." : "Tarama tamamlandi.",
+        message = result.TimedOut
+            ? "HCNetSDK tarama suresi doldu. Kismi sonuc donuldu."
+            : !string.IsNullOrWhiteSpace(result.ErrorMessage)
+                ? result.ErrorMessage
+                : "HCNetSDK taramasi tamamlandi.",
         devices = result.Devices.Select(device => new
         {
             device.IpAddress,
@@ -59,6 +63,9 @@ app.MapPost("/agent/discover", async (DiscoverAgentRequest? request, LocalDiscov
             device.SerialNumber,
             device.Model,
             device.ActivationStatus,
+            device.SdkPort,
+            device.Gateway,
+            device.SubnetMask,
             device.IsHikvision,
             device.SupportsIsapi,
             device.SupportsSdkPort

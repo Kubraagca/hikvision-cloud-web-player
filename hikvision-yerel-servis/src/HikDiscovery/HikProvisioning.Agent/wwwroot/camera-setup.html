@@ -300,8 +300,8 @@
         </div>
         <div class="service-actions">
           <button id="agent-health-btn" type="button" class="accent">Servis Durumu</button>
-          <button id="discover-btn" type="button">Hizli Tara</button>
-          <button id="discover-full-btn" type="button">Tum Agi Tara</button>
+          <button id="discover-btn" type="button">HCNetSDK Tara</button>
+          <button id="discover-full-btn" type="button">HCNetSDK Yenile</button>
           <a class="button-link" href="/downloads/local-agent/HikProvisioning.Agent-win-x64.zip">Zip Paket</a>
         </div>
       </div>
@@ -315,11 +315,12 @@
               <th>Model No</th>
               <th>Seri No</th>
               <th>MAC</th>
+              <th>SDK Port</th>
               <th>Durum</th>
             </tr>
           </thead>
           <tbody id="discover-body">
-            <tr><td colspan="6">Henuz tarama yapilmadi.</td></tr>
+            <tr><td colspan="7">Henuz HCNetSDK taramasi yapilmadi.</td></tr>
           </tbody>
         </table>
       </div>
@@ -606,7 +607,7 @@
   function renderDiscoveredDevices(devices) {
     discoveredDevices = Array.isArray(devices) ? devices : [];
     if (!discoveredDevices.length) {
-      discoverBody.innerHTML = "<tr><td colspan='6'>Kamera bulunamadi.</td></tr>";
+      discoverBody.innerHTML = "<tr><td colspan='7'>HCNetSDK ile kamera bulunamadi.</td></tr>";
       return;
     }
 
@@ -617,6 +618,7 @@
         <td>${escapeHtml(pick(device, "model", "Model") || "-")}</td>
         <td>${escapeHtml(pick(device, "serialNumber", "SerialNumber") || "-")}</td>
         <td>${escapeHtml(pick(device, "macAddress", "MacAddress") || "-")}</td>
+        <td>${escapeHtml(String(pick(device, "sdkPort", "SdkPort") || "-"))}</td>
         <td><span class="tag">${escapeHtml(pick(device, "activationStatus", "ActivationStatus") || "-")}</span></td>
       </tr>
     `).join("");
@@ -655,13 +657,13 @@
   }
 
   async function discover(fullScan = false) {
-    setStatus(fullScan ? "Tam ag taramasi baslatiliyor..." : "Hizli kamera taramasi baslatiliyor...");
+    setStatus(fullScan ? "HCNetSDK cihaz listesi yenileniyor..." : "HCNetSDK kamera taramasi baslatiliyor...");
     const response = await fetch("/agent/discover", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        scanSeconds: fullScan ? 15 : 4,
-        concurrency: fullScan ? 64 : 24,
+        scanSeconds: fullScan ? 15 : 8,
+        concurrency: 1,
         fullScan
       })
     });
@@ -673,9 +675,9 @@
 
     renderDiscoveredDevices(data.devices || []);
     const count = Array.isArray(data.devices) ? data.devices.length : 0;
-    setStatus(data.timedOut
-      ? `Tarama suresi doldu. ${count} aday bulundu.`
-      : `${fullScan ? "Tam ag taramasi" : "Hizli tarama"} tamamlandi. ${count} aday bulundu.`);
+    setStatus(data.message || (data.timedOut
+      ? `HCNetSDK tarama suresi doldu. ${count} cihaz bulundu.`
+      : `${fullScan ? "HCNetSDK yenileme" : "HCNetSDK tarama"} tamamlandi. ${count} cihaz bulundu.`));
   }
 
   function parseResultJson(text) {

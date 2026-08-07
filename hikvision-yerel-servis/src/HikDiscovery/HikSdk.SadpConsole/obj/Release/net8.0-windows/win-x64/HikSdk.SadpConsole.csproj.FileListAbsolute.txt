@@ -66,3 +66,6 @@ C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.SadpConsole\bin\Release\ne
 C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.SadpConsole\bin\Release\net8.0-windows\win-x64\HCNetSDKCom\HCPreview.lib
 C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.SadpConsole\bin\Release\net8.0-windows\win-x64\LocalXml.zip
 C:\Users\Kubra\Desktop\kamera\src\HikDiscovery\HikSdk.SadpConsole\bin\Release\net8.0-windows\win-x64\PlayCtrl.lib
+C:\Users\Kubra\Desktop\kamera\hikvision-yerel-servis\src\HikDiscovery\HikSdk.SadpConsole\obj\Release\net8.0-windows\win-x64\HikSdk.SadpConsole.dll
+C:\Users\Kubra\Desktop\kamera\hikvision-yerel-servis\src\HikDiscovery\HikSdk.SadpConsole\obj\Release\net8.0-windows\win-x64\refint\HikSdk.SadpConsole.dll
+C:\Users\Kubra\Desktop\kamera\hikvision-yerel-servis\src\HikDiscovery\HikSdk.SadpConsole\obj\Release\net8.0-windows\win-x64\HikSdk.SadpConsole.pdb
