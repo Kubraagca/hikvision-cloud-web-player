@@ -619,10 +619,9 @@
     color: var(--muted);
   }
 
-  .stage-capture-btn {
+  .stage-overlay-btn {
     position: absolute;
     top: 12px;
-    right: 12px;
     z-index: 9;
     min-width: 40px;
     min-height: 40px;
@@ -635,9 +634,22 @@
     box-shadow: 0 8px 20px rgba(15, 23, 42, 0.28);
   }
 
-  .stage-capture-btn[disabled] {
+  .stage-overlay-btn[disabled] {
     opacity: 0.55;
     cursor: wait;
+  }
+
+  .stage-record-btn {
+    right: 78px;
+  }
+
+  .stage-record-btn.is-recording {
+    background: rgba(185, 28, 28, 0.92);
+    border-color: rgba(254, 202, 202, 0.58);
+  }
+
+  .stage-capture-btn {
+    right: 12px;
   }
 </style>
 </head>
@@ -723,7 +735,8 @@
               <video id="player" controls muted playsinline></video>
               <div id="playWind" class="sdk-host"></div>
               <iframe id="sdk-frame" class="sdk-frame" title="SDK Izleyici"></iframe>
-              <button id="stage-capture-btn" class="stage-capture-btn" type="button" title="Fotograf Cek">Foto</button>
+              <button id="stage-record-btn" class="stage-overlay-btn stage-record-btn" type="button" title="Canli yayini kaydet">REC</button>
+              <button id="stage-capture-btn" class="stage-overlay-btn stage-capture-btn" type="button" title="Fotograf Cek">Foto</button>
               <div id="playback-controls" class="playback-controls">
                 <div class="playback-row">
                   <div class="playback-topline" style="width:100%;">
@@ -881,6 +894,7 @@
   const zoomOutBtn = document.getElementById("zoom-out-btn");
   const alprBtn = document.getElementById("alpr-btn");
   const deviceDetailBtn = document.getElementById("device-detail-btn");
+  const stageRecordBtn = document.getElementById("stage-record-btn");
   const stageCaptureBtn = document.getElementById("stage-capture-btn");
   const captureModalEl = document.getElementById("capture-modal");
   const captureModalTitleEl = document.getElementById("capture-modal-title");
@@ -897,6 +911,15 @@
   let sdkSessionActive = false;
   let selectedCamera = null;
   let capturePreviewUrl = "";
+  const manualRecordState = {
+    active: false,
+    busy: false,
+    recorder: null,
+    stream: null,
+    chunks: [],
+    mimeType: "",
+    fileName: "",
+  };
   const cameraVerificationCodes = new Map();
   const playbackState = {
     active: false,
@@ -946,6 +969,36 @@
       playModeEl.disabled = false;
       resetPlaybackState();
     }
+    updateStageButtons();
+  }
+
+  function isSdkLiveSessionReady() {
+    return viewModeEl.value !== "playback" && sdkHostEl.style.display !== "none" && sdkSessionActive;
+  }
+
+  function updateStageButtons() {
+    const hasCamera = Boolean(selectedCamera);
+    stageCaptureBtn.disabled = !hasCamera;
+    stageRecordBtn.disabled = !hasCamera || manualRecordState.busy || !isSdkLiveSessionReady();
+    stageRecordBtn.classList.toggle("is-recording", manualRecordState.active);
+    stageRecordBtn.textContent = manualRecordState.active ? "STOP" : "REC";
+    stageRecordBtn.title = manualRecordState.active ? "Kaydi durdur" : "Canli yayini kaydet";
+  }
+
+  function resetManualRecordingState() {
+    manualRecordState.active = false;
+    manualRecordState.busy = false;
+    manualRecordState.recorder = null;
+    if (manualRecordState.stream) {
+      for (const track of manualRecordState.stream.getTracks()) {
+        track.stop();
+      }
+    }
+    manualRecordState.stream = null;
+    manualRecordState.chunks = [];
+    manualRecordState.mimeType = "";
+    manualRecordState.fileName = "";
+    updateStageButtons();
   }
 
   function formatClockTime(dateValue) {
@@ -1280,6 +1333,7 @@
     playbackSpeedChipEl.textContent = String(formatPlaybackRate(playbackState.rate)).toUpperCase();
     renderPlaybackRuler();
     renderPlaybackSegments();
+    updateStageButtons();
   }
 
   function setPlaybackWindow(startMs, endMs, currentMs = startMs) {
@@ -1572,9 +1626,12 @@
   }
 
   async function stopSdkPlayer() {
+    await stopManualLiveRecordingSilently();
+    resetManualRecordingState();
     resetPlaybackState();
     if (!sdkPlayer || !sdkSessionActive) {
       updateAlprBridgeContext({ playerType: "none" });
+      updateStageButtons();
       return;
     }
     try {
@@ -1584,6 +1641,7 @@
     }
     sdkSessionActive = false;
     updateAlprBridgeContext({ playerType: "none" });
+    updateStageButtons();
   }
 
   async function rebuildSdkPlayer() {
@@ -1900,6 +1958,160 @@
     }
   }
 
+  function buildManualRecordFileName() {
+    const safeCameraName = String(selectedCamera?.name || "kamera")
+      .replace(/[^\w.-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 48) || "kamera";
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+    return `${safeCameraName}-${stamp}.webm`;
+  }
+
+  function pickManualRecordMimeType() {
+    const candidates = [
+      "video/webm;codecs=vp9",
+      "video/webm;codecs=vp8",
+      "video/webm",
+    ];
+    if (typeof window.MediaRecorder === "undefined") {
+      return "";
+    }
+    for (const mimeType of candidates) {
+      if (typeof window.MediaRecorder.isTypeSupported !== "function" || window.MediaRecorder.isTypeSupported(mimeType)) {
+        return mimeType;
+      }
+    }
+    return "";
+  }
+
+  function getManualRecordSourceElement() {
+    const source = getSdkDrawCanvas();
+    if (source?.element instanceof HTMLCanvasElement || source?.element instanceof HTMLVideoElement) {
+      return source.element;
+    }
+    return null;
+  }
+
+  function downloadManualRecording(blob, fileName) {
+    const objectUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = fileName;
+    anchor.style.display = "none";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.setTimeout(() => {
+      URL.revokeObjectURL(objectUrl);
+    }, 1000);
+  }
+
+  async function finalizeManualRecording() {
+    const chunks = Array.isArray(manualRecordState.chunks) ? manualRecordState.chunks.filter(Boolean) : [];
+    const fileName = manualRecordState.fileName || buildManualRecordFileName();
+    const mimeType = manualRecordState.mimeType || "video/webm";
+    resetManualRecordingState();
+
+    if (!chunks.length) {
+      throw new Error("Kayit verisi olusmadi.");
+    }
+
+    const blob = new Blob(chunks, { type: mimeType });
+    if (!blob.size) {
+      throw new Error("Kayit dosyasi bos olustu.");
+    }
+    downloadManualRecording(blob, fileName);
+    setStatus(`${selectedCamera?.name || "Kamera"} - kayit indirildi (${fileName}).`);
+  }
+
+  async function startManualLiveRecording() {
+    if (!selectedCamera) {
+      throw new Error("Once bir kamera secin.");
+    }
+    if (!isSdkLiveSessionReady()) {
+      throw new Error("Kayit yalnizca canli EZOPEN oturumu acikken baslatilabilir.");
+    }
+    const sourceElement = getManualRecordSourceElement();
+    if (!sourceElement) {
+      throw new Error("Kayit icin player goruntu kaynagi bulunamadi.");
+    }
+    if (typeof sourceElement.captureStream !== "function") {
+      throw new Error("Tarayici player kaydini desteklemiyor.");
+    }
+    const mimeType = pickManualRecordMimeType();
+    if (!mimeType) {
+      throw new Error("Tarayicida desteklenen yerel video kayit bicimi bulunamadi.");
+    }
+
+    const stream = sourceElement.captureStream(25);
+    const recorder = new MediaRecorder(stream, { mimeType });
+    manualRecordState.recorder = recorder;
+    manualRecordState.stream = stream;
+    manualRecordState.chunks = [];
+    manualRecordState.mimeType = mimeType;
+    manualRecordState.fileName = buildManualRecordFileName();
+
+    recorder.ondataavailable = (event) => {
+      if (event.data && event.data.size > 0) {
+        manualRecordState.chunks.push(event.data);
+      }
+    };
+    recorder.onerror = () => {
+      resetManualRecordingState();
+      setStatus(`${selectedCamera?.name || "Kamera"} - kayit sirasinda MediaRecorder hatasi olustu.`);
+    };
+    recorder.start(1000);
+    manualRecordState.active = true;
+    updateStageButtons();
+    setStatus(`${selectedCamera.name} - yerel kayit basladi.`);
+  }
+
+  async function stopManualLiveRecording() {
+    const recorder = manualRecordState.recorder;
+    if (!manualRecordState.active || !recorder) {
+      return;
+    }
+    await new Promise((resolve, reject) => {
+      recorder.onstop = () => resolve();
+      recorder.onerror = () => reject(new Error("Kayit durdurulamadi."));
+      try {
+        recorder.stop();
+      } catch (error) {
+        reject(error);
+      }
+    });
+    await finalizeManualRecording();
+  }
+
+  async function stopManualLiveRecordingSilently() {
+    if (!manualRecordState.active) {
+      return;
+    }
+    try {
+      await stopManualLiveRecording();
+    } catch (_error) {
+      resetManualRecordingState();
+    }
+  }
+
+  async function toggleManualLiveRecording() {
+    if (manualRecordState.busy) {
+      return;
+    }
+    manualRecordState.busy = true;
+    updateStageButtons();
+    try {
+      if (manualRecordState.active) {
+        await stopManualLiveRecording();
+      } else {
+        await startManualLiveRecording();
+      }
+    } finally {
+      manualRecordState.busy = false;
+      updateStageButtons();
+    }
+  }
+
   async function startSdkLiveView(code) {
     return startSdkLiveViewAttempt(code, true);
   }
@@ -1985,6 +2197,7 @@
       return;
     }
     setStatus(`${selectedCamera?.name || "Kamera"} - EZOPEN yayini basladi.`);
+    updateStageButtons();
   }
 
   async function startSdkPlaybackAttempt(code, allowRetry, beginTime = "", endTime = "") {
@@ -2040,6 +2253,7 @@
       return;
     }
     setStatus(`${selectedCamera?.name || "Kamera"} - gecmis kayit oynatiliyor.`);
+    updateStageButtons();
   }
 
   async function waitForSdkFrame(timeoutMs = 8000) {
@@ -2047,10 +2261,23 @@
     while (Date.now() - startedAt < timeoutMs) {
       const source = getSdkDrawCanvas();
       if (source?.element) {
+        const width =
+          source.element.videoWidth ||
+          source.element.naturalWidth ||
+          source.element.width ||
+          source.element.clientWidth;
+        const height =
+          source.element.videoHeight ||
+          source.element.naturalHeight ||
+          source.element.height ||
+          source.element.clientHeight;
         const score = getElementContentScore(source.element);
-        if (score > 0) {
+        if (score > 0 || (width > 0 && height > 0)) {
           return true;
         }
+      }
+      if (sdkHostEl.querySelector("canvas, video")) {
+        return true;
       }
       await new Promise((resolve) => setTimeout(resolve, 250));
     }
@@ -2396,6 +2623,7 @@
     deviceSerialMetaEl.textContent = cam.deviceSerial || "-";
     statusEl.textContent = `${cam.name} - yayin adresi aliniyor...`;
     expireEl.textContent = "";
+    updateStageButtons();
 
     if (!cam.deviceSerial) {
       statusEl.textContent = "Bu kamerada deviceSerial bilgisi yok.";
@@ -2675,6 +2903,7 @@
   }
 
   async function playHls(url) {
+    resetManualRecordingState();
     await stopSdkPlayer();
     sdkSessionActive = false;
     destroyHls();
@@ -2702,6 +2931,7 @@
     }
 
     statusEl.textContent = "Tarayiciniz HLS oynatmayi desteklemiyor.";
+    updateStageButtons();
   }
 
   async function fetchStream({ resourceId, deviceSerial, quality, protocol, code }) {
@@ -2926,6 +3156,14 @@
     }
     await captureCameraPhoto(selectedCamera, activeCard, stageCaptureBtn);
   });
+  stageRecordBtn.addEventListener("click", async () => {
+    try {
+      await toggleManualLiveRecording();
+    } catch (err) {
+      resetManualRecordingState();
+      setStatus(`${selectedCamera?.name || "Kamera"} - kayit hatasi: ${err.message}`);
+    }
+  });
   captureModalEl.addEventListener("click", (event) => {
     if (event.target === captureModalEl) {
       closeCaptureModal();
@@ -2936,6 +3174,7 @@
   ensurePlaybackDefaults();
   updatePlaybackControls();
   syncViewModeUi();
+  updateStageButtons();
   window.addEventListener("resize", () => {
     if (!sdkPlayer) return;
     const { width, height } = getSdkHostSize();
