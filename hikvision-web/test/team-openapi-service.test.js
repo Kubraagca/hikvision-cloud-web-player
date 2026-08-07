@@ -55,6 +55,10 @@ test("token yenilenir ve cihaz ekleme akisi tamamlanir", async () => {
       return jsonResponse(200, { errorCode: "0", data: { succeeded: 1, failed: 0, deviceId: "DEV-1" } });
     }
 
+    if (String(url).includes("/hcc/resource/v1/physicalresource/devices/DEV-1/modify")) {
+      return jsonResponse(200, { errorCode: "0", data: {} });
+    }
+
     throw new Error(`Beklenmeyen fetch cagrisi: ${url}`);
   });
 
@@ -103,6 +107,10 @@ test("area yoksa olusturur ve mevcut cihazin eksik kanalini import eder", async 
     }
 
     if (String(url).includes("/api/hccgw/resource/v1/areas/resources/add")) {
+      return jsonResponse(200, { errorCode: "0", data: {} });
+    }
+
+    if (String(url).includes("/hcc/resource/v1/physicalresource/devices/DEV-2/modify")) {
       return jsonResponse(200, { errorCode: "0", data: {} });
     }
 

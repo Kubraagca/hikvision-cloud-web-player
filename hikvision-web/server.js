@@ -443,9 +443,200 @@ function safeJsonParse(rawText) {
   }
 }
 
+const CAMERA_CAPTURE_TIMEOUT_MS = Number(process.env.CAMERA_CAPTURE_TIMEOUT_MS || 15_000);
+const CAMERA_CAPTURE_MAX_BYTES = Number(process.env.CAMERA_CAPTURE_MAX_BYTES || 10 * 1024 * 1024);
+
+function createTimeoutSignal(timeoutMs, parentSignal = null) {
+  const controller = new AbortController();
+  const timerId = setTimeout(() => {
+    controller.abort(new Error(`Istek zaman asimina ugradi (${timeoutMs} ms).`));
+  }, timeoutMs);
+
+  if (parentSignal) {
+    if (parentSignal.aborted) {
+      controller.abort(parentSignal.reason || new Error("Istek iptal edildi."));
+    } else {
+      parentSignal.addEventListener(
+        "abort",
+        () => controller.abort(parentSignal.reason || new Error("Istek iptal edildi.")),
+        { once: true }
+      );
+    }
+  }
+
+  return {
+    signal: controller.signal,
+    cancel() {
+      clearTimeout(timerId);
+    },
+  };
+}
+
+function normalizeCameraChannelNo(value) {
+  const normalized = Number(value);
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    return null;
+  }
+  return normalized;
+}
+
+function deriveRegistrableDomain(hostname) {
+  const normalized = String(hostname || "").trim().toLowerCase();
+  if (!normalized) {
+    return "";
+  }
+  const parts = normalized.split(".").filter(Boolean);
+  if (parts.length <= 2) {
+    return normalized;
+  }
+  return parts.slice(-2).join(".");
+}
+
+function buildTrustedHikCaptureHostSuffixes(areaDomain) {
+  const suffixes = new Set([
+    "ezvizlife.com",
+    "hikcentralconnect.com",
+    "ezviz.com",
+    "ys7.com",
+    "hik-connect.com",
+  ]);
+  for (const candidate of [areaDomain, INITIAL_SERVER]) {
+    try {
+      const parsed = new URL(String(candidate || ""));
+      const registrable = deriveRegistrableDomain(parsed.hostname);
+      if (registrable) {
+        suffixes.add(registrable);
+      }
+      if (parsed.hostname) {
+        suffixes.add(parsed.hostname.toLowerCase());
+      }
+    } catch {
+    }
+  }
+  return [...suffixes].filter(Boolean);
+}
+
+function isLikelyTrustedHikCaptureHostname(hostname) {
+  const normalized = String(hostname || "").trim().toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  return (
+    normalized.includes("ezviz") ||
+    normalized.includes("hik") ||
+    normalized.includes("ys7")
+  );
+}
+
+function normalizeHikCaptureUrl(value) {
+  const rawValue = String(value || "").trim();
+  if (!rawValue) {
+    return "";
+  }
+
+  try {
+    const parsed = new URL(rawValue);
+    const pathValue = `${parsed.pathname || ""}${parsed.search || ""}${parsed.hash || ""}`;
+    const nestedMatch = pathValue.match(/\/(https?:\/\/.+)$/i);
+    if (nestedMatch?.[1]) {
+      return decodeURIComponent(nestedMatch[1]);
+    }
+    return parsed.toString();
+  } catch {
+    return rawValue;
+  }
+}
+
+function isTrustedHikCaptureUrl(captureUrl, areaDomain) {
+  try {
+    const parsed = new URL(normalizeHikCaptureUrl(captureUrl));
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      return false;
+    }
+
+    const hostname = parsed.hostname.toLowerCase();
+    if (
+      hostname === "localhost" ||
+      hostname.endsWith(".localhost") ||
+      hostname === "::1" ||
+      hostname === "[::1]" ||
+      hostname === "127.0.0.1"
+    ) {
+      return false;
+    }
+
+    return (
+      buildTrustedHikCaptureHostSuffixes(areaDomain).some(
+        (suffix) => hostname === suffix || hostname.endsWith(`.${suffix}`)
+      ) ||
+      isLikelyTrustedHikCaptureHostname(hostname) ||
+      hostname.includes(".")
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isSupportedImageContentType(contentType) {
+  const normalized = String(contentType || "").toLowerCase();
+  return (
+    normalized.startsWith("image/jpeg") ||
+    normalized.startsWith("image/jpg") ||
+    normalized.startsWith("image/png") ||
+    normalized.startsWith("image/webp") ||
+    normalized.startsWith("image/gif") ||
+    normalized.startsWith("image/bmp")
+  );
+}
+
+function isCameraOnline(camera) {
+  return camera?.online === true || camera?.online === "1" || camera?.online === 1;
+}
+
+function sniffImageContentType(buffer) {
+  if (!Buffer.isBuffer(buffer) || buffer.length < 4) {
+    return "";
+  }
+
+  if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
+    return "image/jpeg";
+  }
+  if (
+    buffer.length >= 8 &&
+    buffer[0] === 0x89 &&
+    buffer[1] === 0x50 &&
+    buffer[2] === 0x4e &&
+    buffer[3] === 0x47 &&
+    buffer[4] === 0x0d &&
+    buffer[5] === 0x0a &&
+    buffer[6] === 0x1a &&
+    buffer[7] === 0x0a
+  ) {
+    return "image/png";
+  }
+  if (
+    buffer.length >= 12 &&
+    buffer.subarray(0, 4).toString("ascii") === "RIFF" &&
+    buffer.subarray(8, 12).toString("ascii") === "WEBP"
+  ) {
+    return "image/webp";
+  }
+  if (buffer.length >= 6) {
+    const gifHeader = buffer.subarray(0, 6).toString("ascii");
+    if (gifHeader === "GIF87a" || gifHeader === "GIF89a") {
+      return "image/gif";
+    }
+  }
+  if (buffer.length >= 2 && buffer[0] === 0x42 && buffer[1] === 0x4d) {
+    return "image/bmp";
+  }
+  return "";
+}
+
 function extractUrlHost(value) {
   try {
-    return new URL(String(value || "")).host;
+    return new URL(normalizeHikCaptureUrl(value)).host;
   } catch {
     return "";
   }
@@ -4367,6 +4558,295 @@ async function fetchCameraCatalog(cameraIds = []) {
   );
 }
 
+async function requestCameraCapture({
+  accessToken,
+  areaDomain,
+  deviceSerial,
+  channelNo,
+}) {
+  const normalizedChannelNo = normalizeCameraChannelNo(channelNo);
+  if (!deviceSerial) {
+    throw new Error("Fotograf cekmek icin deviceSerial gerekli.");
+  }
+  if (!normalizedChannelNo) {
+    throw new Error("Fotograf cekmek icin gecerli channelNo gerekli.");
+  }
+
+  const payload = {
+    deviceSerial: String(deviceSerial),
+    channelNo: normalizedChannelNo,
+  };
+
+  const response = await fetch(`${areaDomain}/api/hccgw/resource/v1/device/capturePic`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Token: accessToken,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const rawText = await response.text();
+  const data = safeJsonParse(rawText) || {};
+  const errorCode = String(data.errorCode || data.code || "");
+  recordOpenApiAudit({
+    operation: "camera.capturePic",
+    method: "POST",
+    url: `${areaDomain}/api/hccgw/resource/v1/device/capturePic`,
+    host: extractUrlHost(areaDomain),
+    areaDomain,
+    httpStatus: response.status,
+    errorCode,
+    responseBody: rawText,
+  });
+
+  const diagnostic = {
+    operation: "camera.capturePic",
+    method: "POST",
+    url: sanitizeMessage(`${areaDomain}/api/hccgw/resource/v1/device/capturePic`),
+    host: extractUrlHost(areaDomain),
+    statusCode: response.status,
+    errorCode,
+    responseBody: sanitizeMessage(rawText),
+  };
+
+  if (!response.ok || errorCode !== "0") {
+    throw attachDiagnostic(
+      new Error(
+        `Anlik fotograf istegi basarisiz. ${friendlyOpenApiError(
+          errorCode,
+          data.errorMsg || data.msg || "device/capturePic basarisiz."
+        )}`
+      ),
+      diagnostic
+    );
+  }
+
+  const captureUrl = String(data.data?.captureUrl || "").trim();
+  if (!captureUrl) {
+    throw attachDiagnostic(new Error("Anlik fotograf URL'i bos dondu."), diagnostic);
+  }
+  if (!isTrustedHikCaptureUrl(captureUrl, areaDomain)) {
+    throw attachDiagnostic(new Error("Anlik fotograf URL'i guvenilir Hik-Connect alanindan donmedi."), diagnostic);
+  }
+  if (Number(data.data?.isEncrypted ?? 0) === 1) {
+    throw attachDiagnostic(
+      new Error("Sifreli fotograf cozme destegi bulunmuyor."),
+      diagnostic
+    );
+  }
+
+  return {
+    captureUrl,
+    isEncrypted: Number(data.data?.isEncrypted ?? 0),
+  };
+}
+
+async function requestCameraThumbnail({
+  accessToken,
+  areaDomain,
+  cameraId,
+  refresh = 1,
+}) {
+  if (!cameraId) {
+    throw new Error("Thumbnail almak icin cameraId gerekli.");
+  }
+
+  const payload = {
+    cameraID: String(cameraId),
+    refresh: Number(refresh) === 0 ? 0 : 1,
+  };
+
+  const response = await fetch(`${areaDomain}/api/hccgw/resource/v1/areas/cameras/thumbnail/get`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Token: accessToken,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const rawText = await response.text();
+  const data = safeJsonParse(rawText) || {};
+  const errorCode = String(data.errorCode || data.code || "");
+  recordOpenApiAudit({
+    operation: "camera.thumbnail.get",
+    method: "POST",
+    url: `${areaDomain}/api/hccgw/resource/v1/areas/cameras/thumbnail/get`,
+    host: extractUrlHost(areaDomain),
+    areaDomain,
+    httpStatus: response.status,
+    errorCode,
+    responseBody: rawText,
+  });
+
+  const diagnostic = {
+    operation: "camera.thumbnail.get",
+    method: "POST",
+    url: sanitizeMessage(`${areaDomain}/api/hccgw/resource/v1/areas/cameras/thumbnail/get`),
+    host: extractUrlHost(areaDomain),
+    statusCode: response.status,
+    errorCode,
+    responseBody: sanitizeMessage(rawText),
+  };
+
+  if (!response.ok || errorCode !== "0") {
+    throw attachDiagnostic(
+      new Error(
+        `Kamera kucuk resmi alinamadi. ${friendlyOpenApiError(
+          errorCode,
+          data.errorMsg || data.msg || "areas/cameras/thumbnail/get basarisiz."
+        )}`
+      ),
+      diagnostic
+    );
+  }
+
+  const pictureUrl = String(data.data?.pictureURL || data.data?.pictureUrl || "").trim();
+  if (!pictureUrl) {
+    throw attachDiagnostic(new Error("Kamera kucuk resim URL'i bos dondu."), diagnostic);
+  }
+  if (!isTrustedHikCaptureUrl(pictureUrl, areaDomain)) {
+    throw attachDiagnostic(new Error("Kamera kucuk resim URL'i guvenilir alandan donmedi."), diagnostic);
+  }
+  if (Number(data.data?.isEncrypted ?? 0) === 1) {
+    throw attachDiagnostic(
+      new Error("Sifreli fotograf cozme destegi bulunmuyor."),
+      diagnostic
+    );
+  }
+
+  return {
+    captureUrl: pictureUrl,
+    isEncrypted: Number(data.data?.isEncrypted ?? 0),
+  };
+}
+
+async function downloadCameraCaptureBinary(captureUrl, options = {}) {
+  const timeoutMs = Number(options.timeoutMs || CAMERA_CAPTURE_TIMEOUT_MS);
+  const maxBytes = Number(options.maxBytes || CAMERA_CAPTURE_MAX_BYTES);
+  const timeoutHandle = createTimeoutSignal(timeoutMs, options.signal || null);
+  const normalizedCaptureUrl = normalizeHikCaptureUrl(captureUrl);
+
+  try {
+    recordOpenApiAudit({
+      operation: "camera.capture.download",
+      method: "GET",
+      url: normalizedCaptureUrl,
+      host: extractUrlHost(normalizedCaptureUrl),
+      responseBody: "",
+    });
+
+    const response = await fetch(normalizedCaptureUrl, {
+      method: "GET",
+      signal: timeoutHandle.signal,
+    });
+
+    const contentType = String(response.headers.get("content-type") || "").trim();
+    const contentLength = Number(response.headers.get("content-length") || 0);
+    if (!response.ok) {
+      const rawBody = await response.text();
+      throw attachDiagnostic(new Error(`Anlik fotograf indirilemedi. HTTP ${response.status}`), {
+        operation: "camera.capture.download",
+        method: "GET",
+        url: sanitizeMessage(normalizedCaptureUrl),
+        host: extractUrlHost(normalizedCaptureUrl),
+        statusCode: response.status,
+        responseBody: sanitizeMessage(rawBody),
+      });
+    }
+
+    if (contentLength > 0 && contentLength > maxBytes) {
+      throw new Error(`Anlik fotograf boyutu limiti asiyor. contentLength=${contentLength}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    if (!buffer.length) {
+      throw new Error("Anlik fotograf cevabi bos dondu.");
+    }
+    if (buffer.length > maxBytes) {
+      throw new Error(`Anlik fotograf boyutu limiti asiyor. bytes=${buffer.length}`);
+    }
+
+    const detectedContentType = sniffImageContentType(buffer);
+    if (!detectedContentType) {
+      const rawBody = buffer.toString("utf8", 0, Math.min(buffer.length, 512));
+      throw attachDiagnostic(new Error("Anlik fotograf istegi gecerli bir resim donmedi."), {
+        operation: "camera.capture.download",
+        method: "GET",
+        url: sanitizeMessage(normalizedCaptureUrl),
+        host: extractUrlHost(normalizedCaptureUrl),
+        statusCode: response.status,
+        responseBody: sanitizeMessage(rawBody),
+      });
+    }
+
+    if (contentType && !isSupportedImageContentType(contentType)) {
+      recordOpenApiAudit({
+        operation: "camera.capture.download.contentType.override",
+        method: "GET",
+        url: normalizedCaptureUrl,
+        host: extractUrlHost(normalizedCaptureUrl),
+        responseBody: `declared=${contentType}; detected=${detectedContentType}`,
+      });
+    }
+
+    return {
+      contentType: detectedContentType,
+      buffer,
+      size: buffer.length,
+    };
+  } finally {
+    timeoutHandle.cancel();
+  }
+}
+
+async function captureCameraSnapshot(camera, options = {}) {
+  if (!camera) {
+    throw new Error("Kamera bulunamadi.");
+  }
+  if (!isCameraOnline(camera)) {
+    throw new Error("Kamera cevrimdisi.");
+  }
+  if (!camera.deviceSerial) {
+    throw new Error("Kamera deviceSerial bilgisi eksik.");
+  }
+
+  const channelNo = normalizeCameraChannelNo(camera.channelNo);
+  if (!channelNo) {
+    throw new Error("Kamera channelNo bilgisi eksik.");
+  }
+
+  const { accessToken, areaDomain } = await getToken(Boolean(options.forceRefresh));
+  let capture;
+  try {
+    capture = await requestCameraCapture({
+      accessToken,
+      areaDomain,
+      deviceSerial: camera.deviceSerial,
+      channelNo,
+    });
+  } catch (error) {
+    if (!String(error?.message || "").includes("Sifreli fotograf cozme destegi bulunmuyor")) {
+      throw error;
+    }
+
+    capture = await requestCameraThumbnail({
+      accessToken,
+      areaDomain,
+      cameraId: camera.resourceId,
+      refresh: 1,
+    });
+  }
+
+  return downloadCameraCaptureBinary(capture.captureUrl, {
+    signal: options.signal,
+    timeoutMs: options.timeoutMs,
+    maxBytes: options.maxBytes,
+  });
+}
+
 async function requestPlaybackAddress({
   accessToken,
   areaDomain,
@@ -5576,6 +6056,60 @@ app.post("/api/cameras/:cameraId/playback", async (req, res) => {
   }
 });
 
+app.post("/api/cameras/:cameraId/capture", async (req, res) => {
+  if (!ensureCredentials(res)) return;
+
+  const cameraId = String(req.params.cameraId || "").trim();
+  if (!cameraId) {
+    return res.status(400).json({ error: "cameraId zorunlu." });
+  }
+
+  const requestController = new AbortController();
+  req.on("close", () => {
+    if (!res.writableEnded) {
+      requestController.abort(new Error("Istek istemci tarafindan kapatildi."));
+    }
+  });
+
+  try {
+    const cameras = await fetchCameraCatalog([cameraId]);
+    const camera = cameras.find((item) => String(item.resourceId || "") === cameraId);
+    if (!camera) {
+      return res.status(404).json({ error: "Kamera bulunamadi." });
+    }
+    if (!isCameraOnline(camera)) {
+      return res.status(409).json({ error: "Kamera cevrimdisi." });
+    }
+
+    const capture = await captureCameraSnapshot(camera, {
+      signal: requestController.signal,
+    });
+
+    res.setHeader("Content-Type", capture.contentType);
+    res.setHeader("Content-Length", String(capture.size));
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename="${sanitizeFileName(`${camera.name || camera.resourceId}-capture-${Date.now()}.jpg`)}"`
+    );
+    return res.send(capture.buffer);
+  } catch (err) {
+    const message = sanitizeMessage(err?.message || String(err));
+    if (message.includes("Sifreli fotograf cozme destegi bulunmuyor")) {
+      return res.status(501).json({ error: message });
+    }
+    if (message.includes("cevrimdisi")) {
+      return res.status(409).json({ error: message });
+    }
+    if (message.includes("bulunamadi")) {
+      return res.status(404).json({ error: message });
+    }
+    return res.status(502).json(err.details || { error: message });
+  }
+});
+
 app.get("/api/device-config/storage", async (req, res) => {
   if (!ensureCredentials(res)) return;
 
@@ -6429,16 +6963,37 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-ensureDirectory(RECORDING_SYNC_ROOT);
-ensureDirectory(RECORDING_ARCHIVE_ROOT);
-if (!fs.existsSync(RECORDING_SYNC_CONFIG_PATH)) {
-  saveRecordingSyncConfig(buildDefaultRecordingSyncConfig());
+function initializeApp() {
+  ensureDirectory(RECORDING_SYNC_ROOT);
+  ensureDirectory(RECORDING_ARCHIVE_ROOT);
+  if (!fs.existsSync(RECORDING_SYNC_CONFIG_PATH)) {
+    saveRecordingSyncConfig(buildDefaultRecordingSyncConfig());
+  }
+  if (!fs.existsSync(RECORDING_SYNC_STATE_PATH)) {
+    saveRecordingSyncState(buildDefaultRecordingSyncState());
+  }
+  scheduleRecordingSyncLoop();
 }
-if (!fs.existsSync(RECORDING_SYNC_STATE_PATH)) {
-  saveRecordingSyncState(buildDefaultRecordingSyncState());
-}
-scheduleRecordingSyncLoop();
 
-app.listen(PORT, () => {
-  console.log(`Sunucu ${PORT} portunda calisiyor`);
-});
+if (require.main === module) {
+  initializeApp();
+  app.listen(PORT, () => {
+    console.log(`Sunucu ${PORT} portunda calisiyor`);
+  });
+}
+
+module.exports = {
+  app,
+  initializeApp,
+  sanitizeMessage,
+  normalizeCameraChannelNo,
+  buildTrustedHikCaptureHostSuffixes,
+  isTrustedHikCaptureUrl,
+  isSupportedImageContentType,
+  sniffImageContentType,
+  normalizeHikCaptureUrl,
+  requestCameraCapture,
+  requestCameraThumbnail,
+  downloadCameraCaptureBinary,
+  captureCameraSnapshot,
+};

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hikvision Izleme</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.15/hls.min.js"></script>
+<script src="/capture-preview.js"></script>
 <script src="/sdk/dist/jsPlugin-3.0.0.min.js?v=20260727-2"></script>
 <style>
   :root {
@@ -176,7 +177,7 @@
 
   .cam-verify {
     display: none;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 8px;
     padding-top: 2px;
   }
@@ -191,6 +192,11 @@
     border: 1px solid var(--border-strong);
     border-radius: 4px;
     font: inherit;
+  }
+
+  .cam-capture-button[disabled] {
+    opacity: 0.55;
+    cursor: wait;
   }
 
   .empty-state {
@@ -548,6 +554,91 @@
       grid-template-columns: 1fr;
     }
   }
+
+  .capture-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.66);
+    z-index: 50;
+  }
+
+  .capture-modal.open {
+    display: flex;
+  }
+
+  .capture-dialog {
+    width: min(920px, 100%);
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.24);
+  }
+
+  .capture-dialog-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-alt);
+  }
+
+  .capture-dialog-body {
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .capture-preview-wrap {
+    display: grid;
+    place-items: center;
+    min-height: 240px;
+    background: #0f172a;
+  }
+
+  .capture-preview-wrap img {
+    max-width: 100%;
+    max-height: 72vh;
+    display: block;
+  }
+
+  .capture-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .capture-meta {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .stage-capture-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 9;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(15, 23, 42, 0.72);
+    color: #fff;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.28);
+  }
+
+  .stage-capture-btn[disabled] {
+    opacity: 0.55;
+    cursor: wait;
+  }
 </style>
 </head>
 <body>
@@ -632,6 +723,7 @@
               <video id="player" controls muted playsinline></video>
               <div id="playWind" class="sdk-host"></div>
               <iframe id="sdk-frame" class="sdk-frame" title="SDK Izleyici"></iframe>
+              <button id="stage-capture-btn" class="stage-capture-btn" type="button" title="Fotograf Cek">Foto</button>
               <div id="playback-controls" class="playback-controls">
                 <div class="playback-row">
                   <div class="playback-topline" style="width:100%;">
@@ -726,6 +818,25 @@
   </div>
 </main>
 
+<div id="capture-modal" class="capture-modal" aria-hidden="true">
+  <div class="capture-dialog">
+    <div class="capture-dialog-head">
+      <strong id="capture-modal-title">Anlik Fotograf</strong>
+      <button id="capture-close-btn" type="button">Kapat</button>
+    </div>
+    <div class="capture-dialog-body">
+      <div class="capture-preview-wrap">
+        <img id="capture-preview-image" alt="Kamera fotograf onizlemesi" />
+      </div>
+      <div class="capture-meta" id="capture-meta-text">Onizleme hazir degil.</div>
+      <div class="capture-actions">
+        <a id="capture-download-link" class="button-link" download="kamera-capture.jpg">Indir</a>
+        <button id="capture-dismiss-btn" type="button">Onizlemeyi Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   const listEl = document.getElementById("camera-list");
   const placeholderEl = document.getElementById("camera-placeholder");
@@ -770,6 +881,14 @@
   const zoomOutBtn = document.getElementById("zoom-out-btn");
   const alprBtn = document.getElementById("alpr-btn");
   const deviceDetailBtn = document.getElementById("device-detail-btn");
+  const stageCaptureBtn = document.getElementById("stage-capture-btn");
+  const captureModalEl = document.getElementById("capture-modal");
+  const captureModalTitleEl = document.getElementById("capture-modal-title");
+  const capturePreviewImageEl = document.getElementById("capture-preview-image");
+  const captureMetaTextEl = document.getElementById("capture-meta-text");
+  const captureDownloadLinkEl = document.getElementById("capture-download-link");
+  const captureCloseBtn = document.getElementById("capture-close-btn");
+  const captureDismissBtn = document.getElementById("capture-dismiss-btn");
   let hls = null;
   let activeCard = null;
   let sdkConfig = null;
@@ -777,6 +896,7 @@
   let sdkHostObserver = null;
   let sdkSessionActive = false;
   let selectedCamera = null;
+  let capturePreviewUrl = "";
   const cameraVerificationCodes = new Map();
   const playbackState = {
     active: false,
@@ -2054,6 +2174,144 @@
     };
   }
 
+  function clearCapturePreview() {
+    if (capturePreviewUrl) {
+      window.HikCapturePreview?.revokeCaptureObjectUrl(capturePreviewUrl);
+      capturePreviewUrl = "";
+    }
+    capturePreviewImageEl.removeAttribute("src");
+    captureDownloadLinkEl.removeAttribute("href");
+  }
+
+  function closeCaptureModal() {
+    captureModalEl.classList.remove("open");
+    captureModalEl.setAttribute("aria-hidden", "true");
+    clearCapturePreview();
+    captureMetaTextEl.textContent = "Onizleme hazir degil.";
+  }
+
+  function openCaptureModal({ cameraName, objectUrl, contentType }) {
+    clearCapturePreview();
+    capturePreviewUrl = objectUrl;
+    captureModalTitleEl.textContent = `${cameraName || "Kamera"} - Anlik Fotograf`;
+    capturePreviewImageEl.src = capturePreviewUrl;
+    captureDownloadLinkEl.href = capturePreviewUrl;
+    captureDownloadLinkEl.download = `${(cameraName || "kamera").replace(/\s+/g, "-")}-capture.jpg`;
+    captureMetaTextEl.textContent = `Fotograf basariyla cekildi. Icerik tipi: ${contentType || "image/jpeg"}`;
+    captureModalEl.classList.add("open");
+    captureModalEl.setAttribute("aria-hidden", "false");
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    const parts = String(dataUrl || "").split(",");
+    if (parts.length < 2) {
+      throw new Error("Gecerli bir veri URL'i olusturulamadi.");
+    }
+
+    const header = parts[0];
+    const base64Data = parts.slice(1).join(",");
+    const mimeMatch = header.match(/^data:([^;]+);base64$/i);
+    const contentType = mimeMatch?.[1] || "image/jpeg";
+    const binary = atob(base64Data);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return new Blob([bytes], { type: contentType });
+  }
+
+  async function captureCameraPhotoFromCurrentFrame(cam, card) {
+    const frame = captureCurrentFrameFromSdk();
+    if (!frame?.imageBase64) {
+      throw new Error("Izlenen goruntuden fotograf alinamadi.");
+    }
+
+    const blob = dataUrlToBlob(frame.imageBase64);
+    const objectUrl = window.HikCapturePreview.createCaptureObjectUrl(blob);
+    openCaptureModal({
+      cameraName: cam?.name,
+      objectUrl,
+      contentType: blob.type || "image/jpeg",
+    });
+    setStatus(`${cam?.name || "Kamera"} - ekran karesi olarak fotograf alindi.`);
+    if (card && activeCard !== card) {
+      activeCard?.classList.remove("active");
+      card.classList.add("active");
+      activeCard = card;
+    }
+  }
+
+  async function captureCameraPhoto(cam, card, buttonEl) {
+    if (!cam?.resourceId) {
+      setStatus("Kamera bilgisi eksik.");
+      return;
+    }
+    if (!cam.online) {
+      setStatus(`${cam.name} - kamera cevrimdisi.`);
+      return;
+    }
+
+    const originalLabel = buttonEl.textContent;
+    buttonEl.disabled = true;
+    buttonEl.textContent = "Cekiliyor...";
+    setStatus(`${cam.name} - fotograf cekiliyor...`);
+
+    try {
+      try {
+        await captureCameraPhotoFromCurrentFrame(cam, card);
+        return;
+      } catch (_frameError) {
+      }
+
+      const response = await fetch(`/api/cameras/${encodeURIComponent(cam.resourceId)}/capture`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const contentType = String(response.headers.get("content-type") || "");
+        let message = "Fotograf alinamadi.";
+        if (contentType.includes("application/json")) {
+          const errorData = await response.json().catch(() => null);
+          message = errorData?.error || message;
+        }
+        const shouldFallbackToFrame =
+          /gecerli bir resim donmedi/i.test(message) ||
+          /sifreli fotograf/i.test(message) ||
+          /fotograf alinamadi/i.test(message);
+        if (!shouldFallbackToFrame) {
+          setStatus(`${cam.name} - ${message}`);
+          return;
+        }
+
+        await captureCameraPhotoFromCurrentFrame(cam, card);
+        return;
+      }
+
+      const blob = await response.blob();
+      const objectUrl = window.HikCapturePreview.createCaptureObjectUrl(blob);
+      openCaptureModal({
+        cameraName: cam.name,
+        objectUrl,
+        contentType: blob.type,
+      });
+      setStatus(`${cam.name} - backend snapshot ile fotograf cekildi.`);
+      if (card && activeCard !== card) {
+        activeCard?.classList.remove("active");
+        card.classList.add("active");
+        activeCard = card;
+      }
+    } catch (error) {
+      try {
+        await captureCameraPhotoFromCurrentFrame(cam, card);
+      } catch (_fallbackError) {
+        setStatus(`${cam.name} - fotograf alinamadi: ${error.message}`);
+      }
+    } finally {
+      buttonEl.disabled = false;
+      buttonEl.textContent = originalLabel;
+    }
+  }
+
   async function loadCameras() {
     listEl.innerHTML = "";
     placeholderEl.style.display = "block";
@@ -2659,6 +2917,20 @@
   });
   bindContinuousButton(zoomInBtn, { pan: 0, tilt: 0, zoom: 30 });
   bindContinuousButton(zoomOutBtn, { pan: 0, tilt: 0, zoom: -30 });
+  captureCloseBtn.addEventListener("click", closeCaptureModal);
+  captureDismissBtn.addEventListener("click", closeCaptureModal);
+  stageCaptureBtn.addEventListener("click", async () => {
+    if (!selectedCamera) {
+      setStatus("Once bir kamera secin.");
+      return;
+    }
+    await captureCameraPhoto(selectedCamera, activeCard, stageCaptureBtn);
+  });
+  captureModalEl.addEventListener("click", (event) => {
+    if (event.target === captureModalEl) {
+      closeCaptureModal();
+    }
+  });
   ensureSdkHostObserver();
   applyInlineSdkFill();
   ensurePlaybackDefaults();
